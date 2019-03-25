@@ -188,21 +188,4 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 		return $this->trans($message, $parameters, $domain, $locale);
 	}
-
-
-	/**
-	 * @param string $message
-	 * @return array
-	 */
-	private function extractMessageDomain($message)
-	{
-		if (strpos($message, '.') !== FALSE && strpos($message, ' ') === FALSE) {
-			list($domain, $message) = explode('.', $message, 2);
-
-		} else {
-			$domain = 'messages';
-		}
-
-		return [$domain, $message];
-	}
 }
