@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace Translette\Translation\Latte;
 
-use Latte;
 use Kdyby\Translation\PrefixedTranslator;
+use Latte;
 
 
 /**
@@ -76,7 +76,7 @@ class Macros extends Latte\Macros\MacroSet
 	public function macroDomain(Latte\MacroNode $node, Latte\PhpWriter $writer)
 	{
 		if ($node->closing) {
-			if ($node->content !== NULL && $node->content !== '') {
+			if ($node->content !== null && $node->content !== '') {
 				return $writer->write('$_translator->unregister($this);');
 			}
 

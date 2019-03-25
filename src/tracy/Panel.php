@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace Translette\Translation\Tracy;
 
 use Nette;
-use Symfony;
 use Tracy;
 use Translette;
 
@@ -66,7 +65,7 @@ class Panel implements Tracy\IBarPanel
 				$panel[] = '<br><br>';
 			}
 
-			$panel[] = '<h1>Loaded resources: '. $this->resourcesCount .'</h1>';
+			$panel[] = '<h1>Loaded resources: ' . $this->resourcesCount . '</h1>';
 			$panel[] = self::createResourcePanelHelper($this->resources);
 		}
 
@@ -79,14 +78,13 @@ class Panel implements Tracy\IBarPanel
 				$panel[] = '<br><br>';
 			}
 
-			$panel[] = '<h1>Ignored resources: '. $this->ignoredResourcesCount .', <small>whitelist: ' . implode(', ', array_map('htmlspecialchars', $this->localesWhitelist)) . '</small></h1>';
+			$panel[] = '<h1>Ignored resources: ' . $this->ignoredResourcesCount . ', <small>whitelist: ' . implode(', ', array_map('htmlspecialchars', $this->localesWhitelist)) . '</small></h1>';
 			$panel[] = self::createResourcePanelHelper($this->ignoredResources);
 		}
 
 
 		return count($panel) === 0 ? null : implode($panel);
 	}
-
 
 
 	/**
@@ -111,7 +109,6 @@ class Panel implements Tracy\IBarPanel
 
 		return '<table style="width: 100%"><tr><th>Locale</th><th>Domain</th><th>Resource file name</th></tr>' . $string . '</table>';
 	}
-
 
 
 	/**
