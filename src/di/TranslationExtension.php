@@ -105,7 +105,6 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		$translator = $builder->addDefinition($this->prefix('translator'))
 			->setType(Nette\Localization\ITranslator::class)
 			->setFactory(Translette\Translation\Translator::class, ['defaultLocale' => $config['locales']['default'], 'cacheDir' => $config['cache']['dir'], 'debug' => $config['debug']])
-			->setAutowired(true)
 			->addSetup('setLocalesWhitelist', [$config['locales']['whitelist']])
 			->addSetup('setConfigCacheFactory', [$configCacheFactory])
 			->addSetup('setFallbackLocales', [$config['locales']['fallback']]);
@@ -120,8 +119,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			}
 
 			$loader = $builder->addDefinition($this->prefix('loader.' . $k1))
-				->setFactory($v1)
-				->setAutowired(false);
+				->setFactory($v1);
 
 			$translator->addSetup('addLoader', [$k1, $loader]);
 		}
