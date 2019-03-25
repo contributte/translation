@@ -191,6 +191,16 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/**
 	 * {@inheritdoc}
 	 */
+	public function setFallbackLocales(array $locales)
+	{
+		parent::setFallbackLocales($locales);
+		$this->fallbackLocales = $locales;
+	}
+
+
+	/**
+	 * {@inheritdoc}
+	 */
 	//function translate($message, ...$parameters): string;
 	public function translate($message, $count = null, $parameters = [], $domain = null, $locale = null)
 	{
