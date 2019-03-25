@@ -16,9 +16,7 @@ extensions:
 
 translation:
 	locales:
-		whitelist:
-			- en
-			- sk
+		whitelist: [en, cs, sk]
 		default: en
 	dirs:
 		- %appDir%/lang
