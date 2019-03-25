@@ -21,7 +21,7 @@
 		"symfony/translation": "^4.0"
 	},
 	"require-dev": {
-		"nette/bootsrap": "^2.4",
+		"nette/bootstrap": "^2.4",
 		"nette/tester": "^2.0",
 		"mockery/mockery": "^1.0"
 	},
