@@ -222,8 +222,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
-	 * @param string $locale
-	 * @return array
+	 * {@inheritdoc}
 	 */
 	protected function computeFallbackLocales($locale)
 	{
