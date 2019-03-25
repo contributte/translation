@@ -35,34 +35,37 @@ class Header extends Tester\TestCase
 
 	public function test01(): void
 	{
-		$requestMock = \Mockery::mock(Nette\Http\Request::class);
+		Tester\Assert::null($this->resolve(null, ['foo']));
+		Tester\Assert::null($this->resolve('en', []));
+		Tester\Assert::null($this->resolve('foo', ['en']));
+		Tester\Assert::same('en', $this->resolve('en, cs', ['en', 'cs']));
+		Tester\Assert::same('en', $this->resolve('en, cs', ['cs', 'en']));
+		Tester\Assert::same('en-us', $this->resolve('da, en-us;q=0.8, en;q=0.7', ['en', 'en-us']));
+		Tester\Assert::same('en', $this->resolve('da, en-us;q=0.8, en;q=0.7', ['en']));
+		Tester\Assert::same('en', $this->resolve('da, en_us', ['en']));
+		Tester\Assert::same('en-us', $this->resolve('da, en_us', ['en', 'en-us']));
+	}
+
+
+	/**
+	 * @internal
+	 *
+	 * @param string|null $locale
+	 * @param array $availableLocales
+	 * @return string|null
+	 */
+	private function resolve(?string $locale, array $availableLocales): ?string
+	{
+		$request = new Nette\Http\Request(new Nette\Http\UrlScript, null, null, null, null, ['Accept-Language' => $locale]);
+		$resolver = new Translette\Translation\LocalesResolvers\Header($request);
 		$translatorMock = \Mockery::mock(Translette\Translation\Translator::class);
-		$headerResolver = new Translette\Translation\LocalesResolvers\Header($requestMock);
-
-		$requestMock->shouldReceive('detectLanguage')
-			->once()
-			->withArgs([['en']])
-			->andReturn(null);
 
 		$translatorMock->shouldReceive('getAvailableLocales')
 			->once()
 			->withNoArgs()
-			->andReturn(['en']);
+			->andReturn($availableLocales);
 
-		Tester\Assert::null($headerResolver->resolve($translatorMock));
-
-
-		$translatorMock->shouldReceive('getAvailableLocales')
-			->once()
-			->withNoArgs()
-			->andReturn(['en']);
-
-		$requestMock->shouldReceive('detectLanguage')
-			->once()
-			->withArgs([['en']])
-			->andReturn('en');
-
-		Tester\Assert::same('en', $headerResolver->resolve($translatorMock));
+		return $resolver->resolve($translatorMock);
 	}
 }
 

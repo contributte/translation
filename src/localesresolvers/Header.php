@@ -39,6 +39,20 @@ class Header implements ResolverInterface
 	 */
 	public function resolve(Translette\Translation\Translator $translator): ?string
 	{
-		return $this->httpRequest->detectLanguage($translator->availableLocales);
+		$langs = [];
+
+		foreach ($translator->availableLocales as $v1) {
+			$langs[] = $v1;
+
+			if (Nette\Utils\Strings::length($v1) > 2) {
+				$langs[] = Nette\Utils\Strings::substring($v1, 0, 2);// en_US => en
+			}
+		}
+
+		if (count($langs) === 0) {
+			return null;
+		}
+
+		return $this->httpRequest->detectLanguage($langs);
 	}
 }
