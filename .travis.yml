@@ -1,9 +1,9 @@
 language: php
 
 php:
-    - 7.1
     - 7.2
     - 7.3
+    - 7.4snapshot
 
 install:
     - travis_retry composer install --no-interaction --no-progress
@@ -22,7 +22,7 @@ jobs:
                     - travis_retry composer update --no-interaction --no-progress --prefer-lowest --prefer-stable
 
         -   stage: Code Standard Checker
-            php: 7.1
+            php: 7.2
             install:
                 - travis_retry composer create-project nette/code-checker temp/code-checker --no-interaction --no-progress
                 - travis_retry composer create-project nette/coding-standard temp/coding-standard dev-master --no-interaction --no-progress
