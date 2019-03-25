@@ -1,6 +1,7 @@
 language: php
 
 php:
+    - 7.1
     - 7.2
     - 7.3
     - 7.4snapshot
@@ -17,29 +18,31 @@ after_failure:
 
 jobs:
     include:
-        -   env: title="Lowest Dependencies"
+        -   name: Lowest Dependencies
             install:
-                    - travis_retry composer update --no-interaction --no-progress --prefer-lowest --prefer-stable
+                    - travis_retry composer update --no-progress --prefer-dist --prefer-lowest --prefer-stable
 
-        -   stage: Code Standard Checker
-            php: 7.2
+        -   name: Nette Code Checker
             install:
-                - travis_retry composer create-project nette/code-checker temp/code-checker --no-interaction --no-progress
-                - travis_retry composer create-project nette/coding-standard temp/coding-standard dev-master --no-interaction --no-progress
-
+                - travis_retry composer create-project nette/code-checker temp/code-checker ^3 --no-progress
             script:
-                - php temp/code-checker/src/code-checker.php --short-arrays --strict-types
-                - php temp/coding-standard/ecs check src tests --config temp/coding-standard/coding-standard-php71.neon
+                - php temp/code-checker/code-checker --strict-types
+
+        -   name: Nette Coding Standard
+            install:
+                - travis_retry composer create-project nette/coding-standard temp/coding-standard ^2 --no-progress
+            script:
+                - php temp/coding-standard/ecs check src tests examples --config temp/coding-standard/coding-standard-php71.yml
 
         -   stage: Code Coverage
             script:
                 - vendor/bin/tester -p phpdbg tests -s --coverage ./coverage.xml --coverage-src ./src
-
             after_script:
                 - wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
                 - php coveralls.phar --verbose --config tests/.coveralls.yml
 
     allow_failures:
+        - name: Lowest Dependencies
         - stage: Code Standard Checker
         - stage: Code Coverage
 
