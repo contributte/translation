@@ -15,6 +15,7 @@ use Translette;
 
 /**
  * @property-read Translette\Translation\LocaleResolver $localeResolver
+ * @property-read Translette\Translation\Tracy\Panel|null $tracyPanel
  * @property-read string $defaultLocale
  * @property-read string|null $cacheDir
  * @property-read bool $debug
@@ -42,26 +43,30 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/** @var bool */
 	private $debug;
 
+	/** @var Translette\Translation\Tracy\Panel|null */
+	private $tracyPanel;
+
 	/** @var array|null */
 	private $localesWhitelist;
 
 	/** @var array|null */
 	private $resourcesLocales;
-	
 
 	/**
 	 * @param Translette\Translation\LocaleResolver $localeResolver
 	 * @param $defaultLocale
 	 * @param string|null $cacheDir
 	 * @param bool $debug
+	 * @param Translette\Translation\Tracy\Panel|null $tracyPanel
 	 */
-	public function __construct(LocaleResolver $localeResolver, string $defaultLocale, string $cacheDir = null, bool $debug = false)
+	public function __construct(LocaleResolver $localeResolver, string $defaultLocale, string $cacheDir = null, bool $debug = false, ?Tracy\Panel $tracyPanel = null)
 	{
 		$this->localeResolver = $localeResolver;
 		$this->assertValidLocale($defaultLocale);
 		$this->defaultLocale = $defaultLocale;
 		$this->cacheDir = $cacheDir;
 		$this->debug = $debug;
+		$this->tracyPanel = $tracyPanel;
 
 		parent::__construct('', null, $cacheDir, $debug);
 		$this->setLocale(null);
@@ -74,6 +79,15 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	public function getLocaleResolver(): LocaleResolver
 	{
 		return $this->localeResolver;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getDefaultLocale(): string
+	{
+		return $this->defaultLocale;
 	}
 
 
@@ -96,6 +110,15 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
+	 * @return Tracy\Panel|null
+	 */
+	public function getTracyPanel(): ?Tracy\Panel
+	{
+		return $this->tracyPanel;
+	}
+
+
+	/**
 	 * @return array|null
 	 */
 	public function getLocalesWhitelist(): ?array
@@ -110,17 +133,12 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	 */
 	public function setLocalesWhitelist(?array $whitelist): self
 	{
+		if ($this->tracyPanel !== null) {
+			$this->tracyPanel->setLocalesWhitelist($whitelist);
+		}
+
 		$this->localesWhitelist = $whitelist;
 		return $this;
-	}
-
-
-	/**
-	 * @return string
-	 */
-	public function getDefaultLocale(): string
-	{
-		return $this->defaultLocale;
 	}
 
 
@@ -140,6 +158,16 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	 */
 	public function addResource($format, $resource, $locale, $domain = null)
 	{
+		if ($this->tracyPanel !== null) {
+			if ($this->localesWhitelist !== null && Nette\Utils\Strings::match($locale, Helpers::whitelistRegexp($this->localesWhitelist))) {
+				$this->tracyPanel->addResource($format, $resource, $locale, $domain);
+
+			} else {
+				$this->tracyPanel->addIgnoredResource($format, $resource, $locale, $domain);
+				return;
+			}
+		}
+
 		parent::addResource($format, $resource, $locale, $domain);
 		$this->resourcesLocales[$locale] = true;
 	}
