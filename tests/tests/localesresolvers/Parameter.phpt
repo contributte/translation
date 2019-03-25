@@ -35,76 +35,31 @@ class Parameter extends Tester\TestCase
 
 	public function test01(): void
 	{
-		$applicationMock = \Mockery::mock(Nette\Application\Application::class);
-		$translatorMock = \Mockery::mock(Translette\Translation\Translator::class);
-
-		$applicationMock->shouldReceive('getRequests')
-			->once()
-			->withNoArgs()
-			->andReturn([]);
-
-		$parameterResolver = new Translette\Translation\LocalesResolvers\Parameter($applicationMock);
-
-		$translatorMock->shouldReceive('getAvailableLocales')
-			->once()
-			->withNoArgs()
-			->andReturn(['en']);
-
-		Tester\Assert::null($parameterResolver->resolve($translatorMock));
+		Tester\Assert::null($this->resolve(null));
+		Tester\Assert::same('en', $this->resolve('en'));
+		Tester\Assert::same('cs', $this->resolve('cs'));
 	}
 
 
-	public function test02(): void
+	/**
+	 * @internal
+	 *
+	 * @param string|null $locale
+	 * @return string|null
+	 */
+	private function resolve(?string $locale): ?string
 	{
 		$applicationMock = \Mockery::mock(Nette\Application\Application::class);
-		$requestMock = \Mockery::mock(Nette\Application\Request::class);
-		$translatorMock = \Mockery::mock(Translette\Translation\Translator::class);
 
 		$applicationMock->shouldReceive('getRequests')
 			->once()
 			->withNoArgs()
-			->andReturn([$requestMock]);
+			->andReturn([new Nette\Application\Request('presenter', 'GET', ['action' => 'default', Translette\Translation\LocalesResolvers\Parameter::$localeParameter => $locale])]);
 
-		$parameterResolver = new Translette\Translation\LocalesResolvers\Parameter($applicationMock);
-
-		$requestMock->shouldReceive('getParameters')
-			->once()
-			->withNoArgs()
-			->andReturn([]);
-
-		$translatorMock->shouldReceive('getAvailableLocales')
-			->once()
-			->withNoArgs()
-			->andReturn(['en']);
-
-		Tester\Assert::null($parameterResolver->resolve($translatorMock));
-	}
-
-
-	public function test03(): void
-	{
-		$applicationMock = \Mockery::mock(Nette\Application\Application::class);
-		$requestMock = \Mockery::mock(Nette\Application\Request::class);
+		$resolver = new Translette\Translation\LocalesResolvers\Parameter($applicationMock);
 		$translatorMock = \Mockery::mock(Translette\Translation\Translator::class);
 
-		$applicationMock->shouldReceive('getRequests')
-			->once()
-			->withNoArgs()
-			->andReturn([$requestMock]);
-
-		$parameterResolver = new Translette\Translation\LocalesResolvers\Parameter($applicationMock);
-
-		$requestMock->shouldReceive('getParameters')
-			->once()
-			->withNoArgs()
-			->andReturn(['locale' => 'en']);
-
-		$translatorMock->shouldReceive('getAvailableLocales')
-			->once()
-			->withNoArgs()
-			->andReturn(['en']);
-
-		Tester\Assert::same('en', $parameterResolver->resolve($translatorMock));
+		return $resolver->resolve($translatorMock);
 	}
 }
 
