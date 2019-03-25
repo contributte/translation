@@ -1,7 +1,15 @@
 {
 	"name": "translette/translation",
 	"description": "Symfony/Translation integration for Nette Framework.",
-	"type": "project",
+	"type": "library",
+	"keywords": ["symfony", "nette", "translation"],
+	"license": "MIT",
+	"homepage": "https://github.com/translette/translation",
+	"authors": [
+		{
+			"name": "Ales Wita"
+		}
+	],
 	"require": {
 		"php": "^7.1",
 		"latte/latte": "^2.4",
@@ -13,9 +21,11 @@
 		"symfony/translation": "^4.0"
 	},
 	"require-dev": {
+		"nette/bootsrap": "^2.4",
 		"nette/tester": "^2.0",
 		"mockery/mockery": "^1.0"
 	},
-	"minimum-stability": "dev",
-	"prefer-stable": true
+	"autoload": {
+		"classmap": ["src/"]
+	}
 }
