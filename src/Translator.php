@@ -31,23 +31,23 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	use Nette\SmartObject;
 
 	/** @var Translette\Translation\LocaleResolver */
-	protected $localeResolver;
+	private $localeResolver;
 
 	/** @var string */
-	protected $defaultLocale;
+	private $defaultLocale;
 
 	/** @var string|null */
-	protected $cacheDir;
+	private $cacheDir;
 
 	/** @var bool */
-	protected $debug;
+	private $debug;
 
 	/** @var array|null */
-	protected $localesWhitelist;
+	private $localesWhitelist;
 
 	/** @var array|null */
-	protected $resourcesLocales;
-
+	private $resourcesLocales;
+	
 
 	/**
 	 * @param Translette\Translation\LocaleResolver $localeResolver
