@@ -62,17 +62,9 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		}
 
 
-		// Tracy\Panel
-		if ($config['debug']) {
-			$panel = $builder->addDefinition($this->prefix('panel'))
-				->setFactory(Translette\Translation\Tracy\Panel::class);
-		}
-
-
 		// LocaleResolver
 		$localeResolver = $builder->addDefinition($this->prefix('localeResolver'))
-			->setFactory(Translette\Translation\LocaleResolver::class)
-			->setAutowired(false);
+			->setFactory(Translette\Translation\LocaleResolver::class);
 
 
 		// Resolvers
@@ -90,6 +82,13 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		}
 
 
+		// Tracy\Panel
+		if ($config['debug']) {
+			$builder->addDefinition($this->prefix('panel'))
+				->setFactory(Translette\Translation\Tracy\Panel::class);
+		}
+
+
 		// ConfigCacheFactory
 		$reflection = new \ReflectionClass($config['cache']['factory']);
 
@@ -99,8 +98,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 		$configCacheFactory = $builder->addDefinition($this->prefix('configCacheFactory'))
 			->setType(Symfony\Component\Config\ConfigCacheFactoryInterface::class)
-			->setFactory($config['cache']['factory'], [$config['debug']])
-			->setAutowired(false);
+			->setFactory($config['cache']['factory'], [$config['debug']]);
 
 
 		// Translator
@@ -110,15 +108,11 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 		$translator = $builder->addDefinition($this->prefix('translator'))
 			->setType(Nette\Localization\ITranslator::class)
-			->setFactory(Translette\Translation\Translator::class, [$localeResolver, $config['locales']['default'], $config['cache']['dir'], $config['debug']])
+			->setFactory(Translette\Translation\Translator::class, ['defaultLocale' => $config['locales']['default'], 'cacheDir' => $config['cache']['dir'], 'debug' => $config['debug']])
 			->setAutowired(true)
 			->addSetup('setLocalesWhitelist', [$config['locales']['whitelist']])
 			->addSetup('setConfigCacheFactory', [$configCacheFactory])
 			->addSetup('setFallbackLocales', [$config['locales']['fallback']]);
-
-		if (isset($panel)) {
-			$panel->addSetup('setLocalesWhitelist', [$config['locales']['whitelist']]);
-		}
 
 
 		// Loaders
@@ -156,10 +150,6 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 					};', [$translator]);
 		}
 
-		if ($config['debug']) {
-			$panel = $builder->getDefinition($this->prefix('panel'));
-		}
-
 		foreach ($config['loaders'] as $k1 => $v1) {
 			foreach (Nette\Utils\Finder::find('*.' . $k1)->from($config['dirs']) as $v2) {
 				$match = Nette\Utils\Strings::match($v2->getFilename(), '~^(?P<domain>.*?)\.(?P<locale>[^\.]+)\.(?P<format>[^\.]+)$~');
@@ -168,14 +158,8 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 					continue;
 				}
 
-				if ($whitelistRegexp !== null && !preg_match($whitelistRegexp, $match['locale'])) {
-					if (isset($panel)) {
-						$panel->addSetup('addIgnoredResource', [$match['format'], $v2->getPathname(), $match['locale'], $match['domain']]);
-					}
-
-					if (!$config['debug']) {
-						continue;// ignore in production mode, there is no need to pass the ignored resources
-					}
+				if ($whitelistRegexp !== null && !preg_match($whitelistRegexp, $match['locale']) && !$config['debug']) {
+					continue;// ignore in production mode, there is no need to pass the ignored resources
 				}
 
 				/*$loaderDefinition = $builder->getDefinition($this->prefix('loader.' . $k1));
@@ -195,10 +179,6 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 				$loader->load($v2->getPathname(), $match['locale'], $match['domain']);*/
 				$translator->addSetup('addResource', [$match['format'], $v2->getPathname(), $match['locale'], $match['domain']]);
-
-				if (isset($panel)) {
-					$panel->addSetup('addResource', [$match['format'], $v2->getPathname(), $match['locale'], $match['domain']]);
-				}
 			}
 		}
 
