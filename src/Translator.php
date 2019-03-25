@@ -52,6 +52,9 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/** @var array|null */
 	private $resourcesLocales;
 
+	/** @var array */
+	private $fallbackLocales = [];
+
 	/**
 	 * @param Translette\Translation\LocaleResolver $localeResolver
 	 * @param $defaultLocale
@@ -215,5 +218,39 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		}
 
 		return $this->trans($message, $parameters, $domain, $locale);
+	}
+
+
+	/**
+	 * @param string $locale
+	 * @return array
+	 */
+	protected function computeFallbackLocales($locale)
+	{
+		$locales = [];
+		foreach ($this->fallbackLocales as $fallback) {
+			if ($fallback === $locale) {
+				continue;
+			}
+
+			$locales[] = $fallback;
+		}
+
+		if (strrchr($locale, '_') !== false) {
+			array_unshift($locales, substr($locale, 0, -strlen(strrchr($locale, '_'))));
+		}
+
+		foreach ($this->getAvailableLocales() as $v1) {
+			if ($v1 === $locale) {
+				continue;
+			}
+
+			if (substr($v1, 0, 2) === substr($locale, 0, 2)) {
+				array_unshift($locales, $v1);
+				break;
+			}
+		}
+
+		return array_unique($locales);
 	}
 }
