@@ -18,8 +18,8 @@
 		"nette/http": "^2.4",
 		"nette/neon": "^2.4",
 		"nette/utils": "^2.5",
-		"symfony/translation": "^4.0",
-		"symfony/config": "^4.0"
+		"symfony/translation": "^4.2",
+		"symfony/config": "^4.2"
 	},
 	"require-dev": {
 		"nette/bootstrap": "^2.4",
