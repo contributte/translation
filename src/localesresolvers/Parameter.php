@@ -33,7 +33,11 @@ class Parameter implements ResolverInterface
 	public function __construct(Nette\Application\Application $application)
 	{
 		$requests = $application->getRequests();
-		$this->request = end($requests);
+		$request = end($requests);
+
+		if ($request !== false) {
+			$this->request = $request;
+		}
 	}
 
 
