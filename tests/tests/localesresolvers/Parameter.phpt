@@ -61,6 +61,22 @@ class Parameter extends Tester\TestCase
 
 		return $resolver->resolve($translatorMock);
 	}
+
+
+	public function test02(): void
+	{
+		$applicationMock = \Mockery::mock(Nette\Application\Application::class);
+
+		$applicationMock->shouldReceive('getRequests')
+			->once()
+			->withNoArgs()
+			->andReturn([null]);
+
+		$resolver = new Translette\Translation\LocalesResolvers\Parameter($applicationMock);
+		$translatorMock = \Mockery::mock(Translette\Translation\Translator::class);
+
+		Tester\Assert::null($resolver->resolve($translatorMock));
+	}
 }
 
 
