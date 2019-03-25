@@ -50,7 +50,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 	public function loadConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
-		$config = $this->validateConfig($this->defaults);
+		$config = $this->validateConfig($this->defaults, $this->config);
 
 		if ($config['debug'] === null) {
 			$this->defaults['debug'] = $config['debug'] = $builder->parameters['debugMode'];
@@ -65,9 +65,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		// Tracy\Panel
 		if ($config['debug']) {
 			$panel = $builder->addDefinition($this->prefix('panel'))
-				->setType(Tracy\IBarPanel::class)
-				->setFactory(Translette\Translation\Tracy\Panel::class)
-				->setAutowired(false);
+				->setFactory(Translette\Translation\Tracy\Panel::class);
 		}
 
 
@@ -143,7 +141,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 	public function beforeCompile(): void
 	{
 		$builder = $this->getContainerBuilder();
-		$config = $this->validateConfig($this->defaults);
+		$config = $this->validateConfig($this->defaults, $this->config);
 
 		$translator = $builder->getDefinition($this->prefix('translator'));
 		$whitelistRegexp = Translette\Translation\Helpers::whitelistRegexp($config['locales']['whitelist']);
