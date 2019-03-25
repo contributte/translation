@@ -15,11 +15,10 @@ use Translette;
 
 /**
  * @property-read Translette\Translation\LocaleResolver $localeResolver
- * @property-read Translette\Translation\Tracy\Panel|null $tracyPanel
  * @property-read string $defaultLocale
  * @property-read string|null $cacheDir
  * @property-read bool $debug
- * @property-read Symfony\Component\Translation\Formatter\MessageFormatterInterface $messageFormatter
+ * @property-read Translette\Translation\Tracy\Panel|null $tracyPanel
  * @property      array|null $localesWhitelist
  * @property-read array $availableLocales
  * @property      string|null $locale
