@@ -24,31 +24,31 @@ translation:
 
 ```php
 <?php
-	declare(strict_types=1);
 
-	namespace App;
+declare(strict_types=1);
+
+namespace App;
 	
-	use Nette;
-	use Translette;
+use Nette;
+use Translette;
 	
 	
-	class BasePresenter extends Nette\Application\UI\Presenter
+class BasePresenter extends Nette\Application\UI\Presenter
+{
+	/** @var Nette\Localization\ITranslator @inject */
+	public $translator;
+	
+	/** @var Translette\Translation\LocalesResolvers\Session @inject */
+	public $translatorSessionResolver;
+	
+	
+	/**
+	 * @param string $locale
+	 */
+	public function handleChangeLocale(string $locale): void
 	{
-		/** @var Nette\Localization\ITranslator @inject */
-		public $translator;
-	
-		/** @var Translette\Translation\LocalesResolvers\Session @inject */
-		public $translatorSessionResolver;
-	
-	
-		/**
-		 * @param string $locale
-		 */
-		public function handleChangeLocale(string $locale): void
-		{
-			$this->translatorSessionResolver->setLocale($locale);
-			$this->redirect('this');
-		}
+		$this->translatorSessionResolver->setLocale($locale);
+		$this->redirect('this');
 	}
 }
 ```
