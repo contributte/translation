@@ -12,7 +12,7 @@ use Nette;
 use Tester;
 use Translette;
 
-$container = require __DIR__ . '/../bootstrap.phpt';
+$container = require __DIR__ . '/../bootstrap.php';
 
 
 /**
