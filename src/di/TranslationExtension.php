@@ -10,7 +10,6 @@ namespace Translette\Translation\DI;
 
 use Nette;
 use Symfony;
-use Tracy;
 use Translette;
 
 
@@ -26,9 +25,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		'locales' => [
 			'whitelist' => null,
 			'default' => null,
-			'fallback' => [
-				'en_US',
-			],
+			'fallback' => ['en_US'],
 		],
 		'resolvers' => [
 			Translette\Translation\LocalesResolvers\Session::class,
@@ -97,7 +94,6 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		}
 
 		$configCacheFactory = $builder->addDefinition($this->prefix('configCacheFactory'))
-			->setType(Symfony\Component\Config\ConfigCacheFactoryInterface::class)
 			->setFactory($config['cache']['factory'], [$config['debug']]);
 
 
@@ -162,63 +158,9 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 					continue;// ignore in production mode, there is no need to pass the ignored resources
 				}
 
-				/*$loaderDefinition = $builder->getDefinition($this->prefix('loader.' . $k1));
-				$reflection = new \ReflectionClass($loaderDefinition->getEntity() ?: $loaderDefinition->getType());
-
-				$method = $reflection->getConstructor();
-
-				if ($method !== NULL && $method->getNumberOfRequiredParameters() > 1) {
-					return;
-				}
-
-				$loader = $reflection->newInstance();
-
-				if (!$loader instanceof Symfony\Component\Translation\Loader\LoaderInterface) {
-					return;
-				}
-
-				$loader->load($v2->getPathname(), $match['locale'], $match['domain']);*/
 				$translator->addSetup('addResource', [$match['format'], $v2->getPathname(), $match['locale'], $match['domain']]);
 			}
 		}
-
-
-
-		/*$application = $builder->getByType(Nette\Application\Application::class);
-
-		if ($application !== null) {
-			$builder->getDefinition($application)
-				->addSetup('$service->onRequest[] = function (Nette\Application\Application $application, Nette\Application\Request $request): void {
-					$params = $request->getParameters();
-
-					if ($request->getMethod() === Nette\Application\Request::FORWARD && empty($params[Translette\Translette\Resolvers\Parameter::$localeParameter])) {
-						return;
-					}
-
-					$this->request = $request;
-
-					if (!$this->translator) {
-						return;
-					}
-
-					$this->translator->setLocale(null);
-					$this->translator->getLocale();// invoke resolver', [[$this->prefix('@userLocaleResolver.param'), 'onRequest']]);
-
-		}*/
-
-		/*
-				$applicationService = $builder->getByType(Nette\Application\Application::class) ?: 'application';
-				if ($builder->hasDefinition($applicationService)) {
-					$builder->getDefinition($applicationService)
-						->addSetup('$service->onRequest[] = ?', [[$this->prefix('@userLocaleResolver.param'), 'onRequest']]);
-
-					if ($config['debugger'] && interface_exists(IBarPanel::class)) {
-						$builder->getDefinition($applicationService)
-							->addSetup('$self = $this; $service->onStartup[] = function () use ($self) { $self->getService(?); }', [$this->prefix('default')])
-							->addSetup('$service->onRequest[] = ?', [[$this->prefix('@panel'), 'onRequest']]);
-					}
-				}
-		*/
 	}
 
 
