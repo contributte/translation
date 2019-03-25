@@ -54,6 +54,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/** @var array */
 	private $fallbackLocales = [];
 
+	
 	/**
 	 * @param Translette\Translation\LocaleResolver $localeResolver
 	 * @param $defaultLocale
