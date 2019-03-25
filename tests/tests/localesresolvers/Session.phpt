@@ -88,7 +88,7 @@ class Session extends Tester\TestCase
 			->withNoArgs()
 			->andReturn(true);
 
-		$sessionSection->locale = $locale;
+		$resolver->setLocale($locale);
 
 		return $resolver->resolve($translatorMock);
 	}
