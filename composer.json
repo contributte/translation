@@ -1,6 +1,6 @@
 {
 	"name": "translette/translation",
-	"description": "Symfony\Translation integration for Nette Framework.",
+	"description": "Symfony/Translation integration for Nette Framework.",
 	"type": "project",
 	"require": {
 		"php": "^7.1",
