@@ -22,7 +22,7 @@ class Panel implements Tracy\IBarPanel
 {
 	use Nette\SmartObject;
 
-	/** @var Translette\Translette\Translator */
+	/** @var Translette\Translation\Translator */
 	private $translator;
 
 	/** @var array */
