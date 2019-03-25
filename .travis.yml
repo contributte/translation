@@ -42,6 +42,7 @@ jobs:
                 - php coveralls.phar --verbose --config tests/.coveralls.yml
 
     allow_failures:
+        - php: 7.4snapshot
         - name: Lowest Dependencies
         - stage: Code Standard Checker
         - stage: Code Coverage
