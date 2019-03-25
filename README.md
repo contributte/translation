@@ -1,5 +1,5 @@
 # Translation
-Symfony\Translation integration for [Nette Framework](https://nette.org).
+Symfony/Translation integration for [Nette Framework](https://nette.org).
 
 [![Build Status](https://travis-ci.org/translette/translation.svg?branch=master)](https://travis-ci.org/translette/translation)
 
@@ -25,29 +25,32 @@ translation:
 ```
 
 ```php
-declare(strict_types=1);
+<?php
+	declare(strict_types=1);
 
-namespace App;
-
-use Nette;
-
-
-class BasePresenter extends Nette\Application\UI\Presenter
-{
-	/** @var Nette\Localization\ITranslator @inject */
-	public $translator;
-
-	/** @var Translette\Translation\LocalesResolvers\Session @inject */
-	public $translatorSessionResolver;
-
-
-	/**
-	 * @param string $locale
-	 */
-	public function handleChangeLocale(string $locale): void
+	namespace App;
+	
+	use Nette;
+	use Translette;
+	
+	
+	class BasePresenter extends Nette\Application\UI\Presenter
 	{
-		$this->translatorSessionResolver->setLocale($locale);
-		$this->redirect('this');
+		/** @var Nette\Localization\ITranslator @inject */
+		public $translator;
+	
+		/** @var Translette\Translation\LocalesResolvers\Session @inject */
+		public $translatorSessionResolver;
+	
+	
+		/**
+		 * @param string $locale
+		 */
+		public function handleChangeLocale(string $locale): void
+		{
+			$this->translatorSessionResolver->setLocale($locale);
+			$this->redirect('this');
+		}
 	}
 }
 ```
