@@ -29,20 +29,20 @@ translation:
 declare(strict_types=1);
 
 namespace App;
-	
+
 use Nette;
 use Translette;
-	
-	
+
+
 class BasePresenter extends Nette\Application\UI\Presenter
 {
 	/** @var Nette\Localization\ITranslator @inject */
 	public $translator;
-	
+
 	/** @var Translette\Translation\LocalesResolvers\Session @inject */
 	public $translatorSessionResolver;
-	
-	
+
+
 	/**
 	 * @param string $locale
 	 */
