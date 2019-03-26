@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace Translette\Translation\DI;
 
-use Latte;
 use Nette;
 use Symfony;
 use Translette;
