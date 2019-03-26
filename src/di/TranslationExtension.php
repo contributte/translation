@@ -65,6 +65,11 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			->setFactory(Translette\Translation\LocaleResolver::class);
 
 
+		// FallbackResolver
+		$builder->addDefinition($this->prefix('fallbackResolver'))
+			->setFactory(Translette\Translation\FallbackResolver::class);
+
+
 		// Resolvers
 		foreach ($config['resolvers'] as $v1) {
 			$reflection = new \ReflectionClass($v1);

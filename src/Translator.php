@@ -15,6 +15,7 @@ use Translette;
 
 /**
  * @property-read Translette\Translation\LocaleResolver $localeResolver
+ * @property-read Translette\Translation\FallbackResolver $fallbackResolver
  * @property-read string $defaultLocale
  * @property-read string|null $cacheDir
  * @property-read bool $debug
@@ -32,6 +33,9 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 	/** @var Translette\Translation\LocaleResolver */
 	private $localeResolver;
+
+	/** @var Translette\Translation\FallbackResolver */
+	private $fallbackResolver;
 
 	/** @var string */
 	private $defaultLocale;
@@ -57,14 +61,16 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 	/**
 	 * @param Translette\Translation\LocaleResolver $localeResolver
+	 * @param Translette\Translation\FallbackResolver $fallbackResolver
 	 * @param $defaultLocale
 	 * @param string|null $cacheDir
 	 * @param bool $debug
 	 * @param Translette\Translation\Tracy\Panel|null $tracyPanel
 	 */
-	public function __construct(LocaleResolver $localeResolver, string $defaultLocale, string $cacheDir = null, bool $debug = false, ?Tracy\Panel $tracyPanel = null)
+	public function __construct(LocaleResolver $localeResolver, FallbackResolver $fallbackResolver, string $defaultLocale, string $cacheDir = null, bool $debug = false, ?Tracy\Panel $tracyPanel = null)
 	{
 		$this->localeResolver = $localeResolver;
+		$this->fallbackResolver = $fallbackResolver;
 		$this->assertValidLocale($defaultLocale);
 		$this->defaultLocale = $defaultLocale;
 		$this->cacheDir = $cacheDir;
@@ -195,7 +201,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	public function setFallbackLocales(array $locales)
 	{
 		parent::setFallbackLocales($locales);
-		$this->fallbackLocales = $locales;
+		$this->fallbackResolver->setFallbackLocales($locales);
 	}
 
 
@@ -236,30 +242,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	 */
 	protected function computeFallbackLocales($locale)
 	{
-		$locales = [];
-		foreach ($this->fallbackLocales as $fallback) {
-			if ($fallback === $locale) {
-				continue;
-			}
-
-			$locales[] = $fallback;
-		}
-
-		if (strrchr($locale, '_') !== false) {
-			array_unshift($locales, substr($locale, 0, -strlen(strrchr($locale, '_'))));
-		}
-
-		foreach ($this->getAvailableLocales() as $v1) {
-			if ($v1 === $locale) {
-				continue;
-			}
-
-			if (substr($v1, 0, 2) === substr($locale, 0, 2)) {
-				array_unshift($locales, $v1);
-				break;
-			}
-		}
-
-		return array_unique($locales);
+		return $this->fallbackResolver->compute($this, $locale);
 	}
 }
