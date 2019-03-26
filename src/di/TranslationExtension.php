@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace Translette\Translation\DI;
 
+use Latte;
 use Nette;
 use Symfony;
 use Translette;
@@ -123,6 +124,11 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 			$translator->addSetup('addLoader', [$k1, $loader]);
 		}
+
+
+		// latte\Filters
+		$builder->addDefinition($this->prefix('latteFilters'))
+			->setFactory(Translette\Translation\Latte\Filters::class);
 	}
 
 
@@ -142,6 +148,16 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 					$service->onCreate[] = function (Nette\\Bridges\\ApplicationLatte\\Template $template): void {
 						$template->setTranslator(?);
 					};', [$translator]);
+		}
+
+		try {
+			$builder->getDefinition('latte.latteFactory')
+				->addSetup('?->onCompile[] = function ($engine): void { ?::install($engine->getCompiler()); }', ['@self', new Nette\PhpGenerator\PhpLiteral(Translette\Translation\Latte\Macros::class)])
+				->addSetup('addProvider', ['translator', $this->prefix('translator')])
+				->addSetup('addFilter', ['translate', [$this->prefix('@latteFilters')]]);
+
+
+		} catch (Nette\DI\MissingServiceException $e) {
 		}
 
 		foreach ($config['loaders'] as $k1 => $v1) {
