@@ -128,11 +128,6 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 			$translator->addSetup('addLoader', [$k1, $loader]);
 		}
-
-
-		// latte\Filters
-		$builder->addDefinition($this->prefix('latteFilters'))
-			->setFactory(Translette\Translation\Latte\Filters::class);
 	}
 
 
@@ -157,8 +152,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		try {
 			$builder->getDefinition('latte.latteFactory')
 				->addSetup('?->onCompile[] = function (Latte\\Engine $engine): void { ?::install($engine->getCompiler()); }', ['@self', new Nette\PhpGenerator\PhpLiteral(Translette\Translation\Latte\Macros::class)])
-				->addSetup('addProvider', ['translator', $this->prefix('translator')])
-				->addSetup('addFilter', ['translate', [$this->prefix('latteFilters')]]);
+				->addSetup('addProvider', ['translator', $this->prefix('translator')]);
 
 		} catch (Nette\DI\MissingServiceException $e) {
 		}

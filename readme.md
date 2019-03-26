@@ -15,6 +15,9 @@ $ composer require translette/translation
 - make ConfigCacheFactory
 - return full string, if translation missing
 
+## Kdyby/Translation BC breaks
+- drop template filters (translate, translateFilterAware) -> use {_translate} macro
+
 ## Documentation
 ```neon
 extensions:
