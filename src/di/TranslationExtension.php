@@ -82,7 +82,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 		// Tracy\Panel
 		if ($config['debug']) {
-			$builder->addDefinition($this->prefix('panel'))
+			$builder->addDefinition($this->prefix('tracyPanel'))
 				->setFactory(Translette\Translation\Tracy\Panel::class);
 		}
 
@@ -152,10 +152,9 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 		try {
 			$builder->getDefinition('latte.latteFactory')
-				->addSetup('?->onCompile[] = function ($engine): void { ?::install($engine->getCompiler()); }', ['@self', new Nette\PhpGenerator\PhpLiteral(Translette\Translation\Latte\Macros::class)])
+				->addSetup('?->onCompile[] = function (Latte\\Engine $engine): void { ?::install($engine->getCompiler()); }', ['@self', new Nette\PhpGenerator\PhpLiteral(Translette\Translation\Latte\Macros::class)])
 				->addSetup('addProvider', ['translator', $this->prefix('translator')])
-				->addSetup('addFilter', ['translate', [$this->prefix('@latteFilters')]]);
-
+				->addSetup('addFilter', ['translate', [$this->prefix('latteFilters')]]);
 
 		} catch (Nette\DI\MissingServiceException $e) {
 		}
@@ -187,7 +186,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 		if ($config['debug']) {
 			$initialize = $class->getMethod('initialize');
-			$initialize->addBody('$this->getService(?)->addPanel($this->getService(?));', ['tracy.bar', $this->prefix('panel')]);
+			$initialize->addBody('$this->getService(?)->addPanel($this->getService(?));', ['tracy.bar', $this->prefix('tracyPanel')]);
 		}
 	}
 }
