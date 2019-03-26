@@ -13,18 +13,18 @@
 	"require": {
 		"php": "^7.1",
 		"latte/latte": "^2.4",
-		"nette/application": "^2.4",
-		"nette/di": "^2.4",
+		"nette/application": "^2.4 || ^3.0",
+		"nette/di": "^2.4 || ^3.0",
 		"nette/finder": "^2.5",
-		"nette/http": "^2.4",
-		"nette/neon": "^2.4",
-		"nette/utils": "^2.5",
+		"nette/http": "^2.4 || ^3.0",
+		"nette/neon": "^2.4 || ^3.0",
+		"nette/utils": "^2.5 || ^3.0",
 		"symfony/translation": "^4.2",
 		"symfony/config": "^4.2"
 	},
 	"require-dev": {
-		"nette/bootstrap": "^2.4",
-		"nette/robot-loader": "^2.4",
+		"nette/bootstrap": "^2.4 || ^3.0",
+		"nette/robot-loader": "^2.4 || ^3.0",
 		"nette/tester": "^2.2",
 		"tracy/tracy": "^2.5",
 		"mockery/mockery": "^1.0"
