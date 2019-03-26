@@ -128,11 +128,6 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 			$translator->addSetup('addLoader', [$k1, $loader]);
 		}
-
-
-		// latte\Filters
-		$builder->addDefinition($this->prefix('latteFilters'))
-			->setFactory(Translette\Translation\Latte\Filters::class);
 	}
 
 
