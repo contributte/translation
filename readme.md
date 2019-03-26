@@ -16,7 +16,7 @@ $ composer require translette/translation
 - return full string, if translation missing
 
 ## Kdyby/Translation BC breaks
-- drop template filters (translate, translateFilterAware) -> use {_translate} macro
+- drop template filters (translate, translateFilterAware) -> use {_translate} macro or $this->global->translator->translate('translate')
 
 ## Documentation
 ```neon
