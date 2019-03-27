@@ -62,9 +62,8 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	 * @param $defaultLocale
 	 * @param string|null $cacheDir
 	 * @param bool $debug
-	 * @param Translette\Translation\Tracy\Panel|null $tracyPanel
 	 */
-	public function __construct(LocaleResolver $localeResolver, FallbackResolver $fallbackResolver, string $defaultLocale, string $cacheDir = null, bool $debug = false, ?Tracy\Panel $tracyPanel = null)
+	public function __construct(LocaleResolver $localeResolver, FallbackResolver $fallbackResolver, string $defaultLocale, string $cacheDir = null, bool $debug = false)
 	{
 		$this->localeResolver = $localeResolver;
 		$this->fallbackResolver = $fallbackResolver;
@@ -72,7 +71,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		$this->defaultLocale = $defaultLocale;
 		$this->cacheDir = $cacheDir;
 		$this->debug = $debug;
-		$this->tracyPanel = $tracyPanel;
 
 		parent::__construct('', null, $cacheDir, $debug);
 		$this->setLocale(null);
@@ -121,6 +119,17 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	public function getTracyPanel(): ?Tracy\Panel
 	{
 		return $this->tracyPanel;
+	}
+
+
+	/**
+	 * @param Tracy\Panel|null $tracyPanel
+	 * @return self
+	 */
+	public function setTracyPanel(?Tracy\Panel $tracyPanel): self
+	{
+		$this->tracyPanel = $tracyPanel;
+		return $this;
 	}
 
 
