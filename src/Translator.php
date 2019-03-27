@@ -148,10 +148,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	 */
 	public function setLocalesWhitelist(?array $whitelist): self
 	{
-		if ($this->tracyPanel !== null) {
-			$this->tracyPanel->setLocalesWhitelist($whitelist);
-		}
-
 		$this->localesWhitelist = $whitelist;
 		return $this;
 	}
@@ -173,16 +169,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	 */
 	public function addResource($format, $resource, $locale, $domain = null)
 	{
-		if ($this->tracyPanel !== null) {
-			if ($this->localesWhitelist !== null && Nette\Utils\Strings::match($locale, Helpers::whitelistRegexp($this->localesWhitelist))) {
-				$this->tracyPanel->addResource($format, $resource, $locale, $domain);
-
-			} else {
-				$this->tracyPanel->addIgnoredResource($format, $resource, $locale, $domain);
-				return;
-			}
-		}
-
 		parent::addResource($format, $resource, $locale, $domain);
 		$this->resourcesLocales[$locale] = true;
 	}
