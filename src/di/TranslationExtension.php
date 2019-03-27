@@ -64,12 +64,9 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			->setFactory(Translette\Translation\LocaleResolver::class);
 
 
-		// FallbackResolver
-		$builder->addDefinition($this->prefix('fallbackResolver'))
-			->setFactory(Translette\Translation\FallbackResolver::class);
-
-
 		// Resolvers
+		$localeResolvers = [];
+
 		foreach ($config['resolvers'] as $v1) {
 			$reflection = new \ReflectionClass($v1);
 
@@ -77,18 +74,16 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 				throw new Translette\Translation\InvalidArgumentException('Resolver must implement interface "' . Translette\Translation\LocalesResolvers\ResolverInterface::class . '".');
 			}
 
-			$resolver = $builder->addDefinition($this->prefix('resolver.' . Nette\Utils\Strings::lower($reflection->getShortName())))
+			$localeResolvers[] = $resolver = $builder->addDefinition($this->prefix('resolver' . $reflection->getShortName()))
 				->setFactory($v1);
 
 			$localeResolver->addSetup('addResolver', [$resolver]);
 		}
 
 
-		// Tracy\Panel
-		if ($config['debug']) {
-			$builder->addDefinition($this->prefix('tracyPanel'))
-				->setFactory(Translette\Translation\Tracy\Panel::class);
-		}
+		// FallbackResolver
+		$builder->addDefinition($this->prefix('fallbackResolver'))
+			->setFactory(Translette\Translation\FallbackResolver::class);
 
 
 		// ConfigCacheFactory
@@ -128,6 +123,17 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 			$translator->addSetup('addLoader', [$k1, $loader]);
 		}
+
+
+		// Tracy\Panel
+		if ($config['debug']) {
+			$tracyPanel = $builder->addDefinition($this->prefix('tracyPanel'))
+				->setFactory(Translette\Translation\Tracy\Panel::class, [$translator]);
+
+			foreach ($localeResolvers as $v1) {
+				$tracyPanel->addSetup('addLocaleResolver', [$v1]);
+			}
+		}
 	}
 
 
@@ -138,6 +144,10 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 		$translator = $builder->getDefinition($this->prefix('translator'));
 		$whitelistRegexp = Translette\Translation\Helpers::whitelistRegexp($config['locales']['whitelist']);
+
+		if ($config['debug']) {
+			$tracyPanel = $builder->getDefinition($this->prefix('tracyPanel'));
+		}
 
 		$templateFactoryName = $builder->getByType(Nette\Application\UI\ITemplateFactory::class);
 
@@ -165,11 +175,21 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 					continue;
 				}
 
-				if ($whitelistRegexp !== null && !preg_match($whitelistRegexp, $match['locale']) && !$config['debug']) {
-					continue;// ignore in production mode, there is no need to pass the ignored resources
+				if ($whitelistRegexp !== null && !preg_match($whitelistRegexp, $match['locale'])) {
+					if (isset($tracyPanel)) {
+						$tracyPanel->addSetup('addIgnoredResource', [$match['format'], $v2->getPathname(), $match['locale'], $match['domain']]);
+					}
+
+					if (!$config['debug']) {
+						continue;// ignore in production mode, there is no need to pass the ignored resources
+					}
 				}
 
 				$translator->addSetup('addResource', [$match['format'], $v2->getPathname(), $match['locale'], $match['domain']]);
+
+				if (isset($tracyPanel)) {
+					$tracyPanel->addSetup('addResource', [$match['format'], $v2->getPathname(), $match['locale'], $match['domain']]);
+				}
 			}
 		}
 	}
