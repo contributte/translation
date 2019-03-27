@@ -82,5 +82,4 @@ class Session extends Translette\Translation\Tests\AbstractTest
 }
 
 
-$test = new Session($container);
-$test->run();
+(new Session($container))->run();

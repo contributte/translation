@@ -39,5 +39,4 @@ class Helpers extends Translette\Translation\Tests\AbstractTest
 }
 
 
-$test = new Helpers($container);
-$test->run();
+(new Helpers($container))->run();

@@ -47,5 +47,4 @@ test:
 }
 
 
-$test = new Neon($container);
-$test->run();
+(new Neon($container))->run();

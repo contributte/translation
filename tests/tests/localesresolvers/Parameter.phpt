@@ -67,5 +67,4 @@ class Parameter extends Translette\Translation\Tests\AbstractTest
 }
 
 
-$test = new Parameter($container);
-$test->run();
+(new Parameter($container))->run();

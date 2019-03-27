@@ -55,5 +55,4 @@ class FallbackResolver extends Translette\Translation\Tests\AbstractTest
 }
 
 
-$test = new FallbackResolver($container);
-$test->run();
+(new FallbackResolver($container))->run();

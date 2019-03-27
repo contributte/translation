@@ -57,5 +57,4 @@ class Header extends Translette\Translation\Tests\AbstractTest
 }
 
 
-$test = new Header($container);
-$test->run();
+(new Header($container))->run();
