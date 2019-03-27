@@ -20,6 +20,9 @@ class Session implements ResolverInterface
 {
 	use Nette\SmartObject;
 
+	/** @var string */
+	public static $localeParameter = 'locale';
+
 	/** @var Nette\Http\IResponse */
 	private $httpResponse;
 
@@ -48,7 +51,7 @@ class Session implements ResolverInterface
 	 */
 	public function setLocale(string $locale = null): self
 	{
-		$this->sessionSection->locale = $locale;
+		$this->sessionSection[self::$localeParameter] = $locale;
 		return $this;
 	}
 
@@ -64,14 +67,14 @@ class Session implements ResolverInterface
 			return null;
 		}
 
-		if (!isset($this->sessionSection->locale)) {
+		if (!isset($this->sessionSection[self::$localeParameter])) {
 			return null;
 		}
 
-		if (!in_array(Nette\Utils\Strings::substring($this->sessionSection->locale, 0, 2), array_map(function ($locale) {return Nette\Utils\Strings::substring($locale, 0, 2);}, $translator->availableLocales), true)) {
+		if (!in_array(Nette\Utils\Strings::substring($this->sessionSection[self::$localeParameter], 0, 2), array_map(function ($locale) {return Nette\Utils\Strings::substring($locale, 0, 2);}, $translator->availableLocales), true)) {
 			return null;
 		}
 
-		return $this->sessionSection->locale;
+		return $this->sessionSection[self::$localeParameter];
 	}
 }

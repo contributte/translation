@@ -24,15 +24,13 @@ class Neon extends Symfony\Component\Translation\Loader\ArrayLoader implements S
 	 */
 	public function load($resource, $locale, $domain = 'messages')
 	{
-		if (!stream_is_local($resource)) {
-			throw new Translette\Translation\InvalidArgumentException('This is not a local file "' . $resource . '".');
+		$content = file_get_contents($resource);
+
+		if ($content === false) {
+			throw new Translette\Translation\InvalidArgumentException('Something wrong with resource file "' . $resource . '".');
 		}
 
-		if (!file_exists($resource)) {
-			throw new Translette\Translation\FileNotFoundException('File "' . $resource . '" not found.');
-		}
-
-		$messages = Nette\Neon\Neon::decode(file_get_contents($resource));
+		$messages = Nette\Neon\Neon::decode($content);
 
 		$catalogue = parent::load($messages, $locale, $domain);
 		$catalogue->addResource(new Symfony\Component\Config\Resource\FileResource($resource));

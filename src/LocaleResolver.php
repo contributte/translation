@@ -13,7 +13,7 @@ use Translette;
 
 
 /**
- * @property-read $resolvers
+ * @property-read array $resolvers
  *
  * @author Ales Wita
  * @author Filip Prochazka

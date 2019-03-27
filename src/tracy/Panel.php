@@ -21,7 +21,7 @@ class Panel implements Tracy\IBarPanel
 {
 	use Nette\SmartObject;
 
-	/** @var Translette\Translation\Translator|null */
+	/** @var Translette\Translation\Translator */
 	private $translator;
 
 	/** @var array */
@@ -71,8 +71,8 @@ class Panel implements Tracy\IBarPanel
 
 		$panel[] = '<h1>Translator settings</h1>';
 		$panel[] = '<table style="width: 100%"><tr></th><th>Name</th><th>Value</th></tr>';
-		$panel[] = '<tr><td>Default locale</td><td >' . $this->translator->defaultLocale . '</td></tr>';
-		$panel[] = '<tr><td>Locales whitelist</td><td >' . implode(', ', $this->translator->localesWhitelist) . '</td></tr>';
+		$panel[] = '<tr><td>Default locale</td><td>' . $this->translator->defaultLocale . '</td></tr>';
+		$panel[] = '<tr><td>Locales whitelist</td><td>' . ($this->translator->localesWhitelist !== null ? implode(', ', $this->translator->localesWhitelist) : '&nbsp;') . '</td></tr>';
 		$panel[] = '</table>';
 
 
@@ -109,7 +109,7 @@ class Panel implements Tracy\IBarPanel
 			ksort($this->ignoredResources);
 
 			$panel[] = '<br><br>';
-			$panel[] = '<h1>Ignored resources: ' . $this->ignoredResourcesCount . ', <small>whitelist: ' . implode(', ', array_map('htmlspecialchars', $this->translator->localesWhitelist)) . '</small></h1>';
+			$panel[] = '<h1>Ignored resources: ' . $this->ignoredResourcesCount . ($this->translator->localesWhitelist ? ', <small>whitelist: ' . implode(', ', array_map('htmlspecialchars', $this->translator->localesWhitelist)) . '</small>' : null) . '</h1>';
 			$panel[] = self::createResourcePanelHelper($this->ignoredResources);
 		}
 

@@ -85,7 +85,7 @@ class Macros extends Latte\Macros\MacroSet
 				throw new Latte\CompileException('Expected message prefix, none given');
 			}
 
-			return $writer->write('$_translator = ' . PrefixedTranslator::class . '::register($this, %node.word);');
+			//return $writer->write('$_translator = ' . PrefixedTranslator::class . '::register($this, %node.word);');
 		}
 	}
 

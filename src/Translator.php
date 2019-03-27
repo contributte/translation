@@ -52,14 +52,14 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/** @var array|null */
 	private $localesWhitelist;
 
-	/** @var array|null */
-	private $resourcesLocales;
+	/** @var array */
+	private $resourcesLocales = [];
 
 
 	/**
 	 * @param Translette\Translation\LocaleResolver $localeResolver
 	 * @param Translette\Translation\FallbackResolver $fallbackResolver
-	 * @param $defaultLocale
+	 * @param string $defaultLocale
 	 * @param string|null $cacheDir
 	 * @param bool $debug
 	 */
@@ -175,7 +175,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
-	 * {@inheritdoc}
+	 * @return string|null
 	 */
 	public function getLocale()
 	{
@@ -184,6 +184,15 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		}
 
 		return parent::getLocale();
+	}
+
+
+	/**
+	 * @param string|null $locale
+	 */
+	public function setLocale($locale)
+	{
+		parent::setLocale($locale);
 	}
 
 
