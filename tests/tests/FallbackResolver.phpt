@@ -18,21 +18,8 @@ $container = require __DIR__ . '/../bootstrap.php';
 /**
  * @author Ales Wita
  */
-class FallbackResolver extends Tester\TestCase
+class FallbackResolver extends Translette\Translation\Tests\Test
 {
-	/** @var Nette\DI\Container */
-	private $container;
-
-
-	/**
-	 * @param Nette\DI\Container $container
-	 */
-	public function __construct(Nette\DI\Container $container)
-	{
-		$this->container = $container;
-	}
-
-
 	public function test01(): void
 	{
 		Tester\Assert::same(['cs_CZ'], $this->compute('cs', ['cs', 'cs_CZ']));

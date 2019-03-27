@@ -18,21 +18,8 @@ $container = require __DIR__ . '/../../bootstrap.php';
 /**
  * @author Ales Wita
  */
-class Session extends Tester\TestCase
+class Session extends Translette\Translation\Tests\Test
 {
-	/** @var Nette\DI\Container */
-	private $container;
-
-
-	/**
-	 * @param Nette\DI\Container $container
-	 */
-	public function __construct(Nette\DI\Container $container)
-	{
-		$this->container = $container;
-	}
-
-
 	public function test01(): void
 	{
 		Tester\Assert::null($this->resolve(null, []));

@@ -18,21 +18,8 @@ $container = require __DIR__ . '/../bootstrap.php';
 /**
  * @author Ales Wita
  */
-class Helpers extends Tester\TestCase
+class Helpers extends Translette\Translation\Tests\Test
 {
-	/** @var Nette\DI\Container */
-	private $container;
-
-
-	/**
-	 * @param Nette\DI\Container $container
-	 */
-	public function __construct(Nette\DI\Container $container)
-	{
-		$this->container = $container;
-	}
-
-
 	public function test01(): void
 	{
 		// whitelistRegexp
