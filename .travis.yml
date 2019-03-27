@@ -10,7 +10,7 @@ install:
     - travis_retry composer install --no-interaction --no-progress
 
 script:
-    - vendor/bin/tester tests -s -j 1
+    - vendor/bin/tester tests/tests -s -j 1
 
 after_failure:
     - for i in $(find tests -name \*.expected); do echo "--- $i"; cat $i; echo; echo; done

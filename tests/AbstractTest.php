@@ -15,7 +15,7 @@ use Tester;
 /**
  * @author Ales Wita
  */
-abstract class Test extends Tester\TestCase
+abstract class AbstractTest extends Tester\TestCase
 {
 	/** @var Nette\DI\Container */
 	protected $container;

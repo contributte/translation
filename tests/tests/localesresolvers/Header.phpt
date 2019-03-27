@@ -18,7 +18,7 @@ $container = require __DIR__ . '/../../bootstrap.php';
 /**
  * @author Ales Wita
  */
-class Header extends Translette\Translation\Tests\Test
+class Header extends Translette\Translation\Tests\AbstractTest
 {
 	public function test01(): void
 	{
