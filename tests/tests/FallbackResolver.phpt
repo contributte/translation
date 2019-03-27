@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace Translette\Translation\Tests\Tests;
 
-use Nette;
 use Tester;
 use Translette;
 
