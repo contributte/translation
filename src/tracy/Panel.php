@@ -86,7 +86,7 @@ class Panel implements Tracy\IBarPanel
 				$reflection = new \ReflectionClass($v1);
 				$locale = $v1->resolve($this->translator);
 
-				$panel[] = '<tr><td>' . $counter++ . '.</td><td>' . $reflection->getShortName() . '</td><td>' . ($locale !== null ? $locale : '<i>n/a</i>') . '</td></tr>';
+				$panel[] = '<tr><td>' . $counter++ . '.</td><td title="' . $reflection->getName() . '">' . $reflection->getShortName() . '</td><td>' . ($locale !== null ? $locale : '<i>n/a</i>') . '</td></tr>';
 			}
 
 			$panel[] = '</table>';
