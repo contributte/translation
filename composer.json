@@ -13,8 +13,8 @@
 	"require": {
 		"php": "^7.1",
 		"latte/latte": "^2.4",
-		"nette/application": "^2.4 || ^3.0",
-		"nette/di": "^2.4 || ^3.0",
+		"nette/application": "^2.4 || ^3.0@dev",
+		"nette/di": "^2.4 || ^3.0@dev",
 		"nette/finder": "^2.5",
 		"nette/http": "^2.4 || ^3.0",
 		"nette/neon": "^2.4 || ^3.0",
