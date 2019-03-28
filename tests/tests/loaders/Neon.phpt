@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-namespace Translette\Translation\Tests\Tests;
+namespace Translette\Translation\Tests\Tests\Loaders;
 
 use Tester;
 use Translette;
