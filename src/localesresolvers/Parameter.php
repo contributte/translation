@@ -47,6 +47,7 @@ class Parameter implements ResolverInterface
 	 */
 	public function resolve(Translette\Translation\Translator $translator): ?string
 	{
+		var_dump($this->request);
 		if ($this->request === null) {
 			return null;
 		}
