@@ -41,7 +41,7 @@ class Parameter extends Translette\Translation\Tests\AbstractTest
 		$applicationMock->shouldReceive('getRequests')
 			->once()
 			->withNoArgs()
-			->andReturn([new Nette\Application\Request('presenter', 'GET', ['action' => 'default', Translette\Translation\LocalesResolvers\Parameter::$localeParameter => $locale])]);
+			->andReturn([new Nette\Application\Request('presenter', null, [Translette\Translation\LocalesResolvers\Parameter::$localeParameter => $locale])]);
 
 		$resolver = new Translette\Translation\LocalesResolvers\Parameter($applicationMock);
 		$translatorMock = \Mockery::mock(Translette\Translation\Translator::class);
