@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-namespace Translette\Translation\Tests\Tests;
+namespace Translette\Translation\Tests\Tests\DI;
 
 use Nette;
 use Tester;
