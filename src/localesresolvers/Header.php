@@ -25,10 +25,15 @@ class Header implements ResolverInterface
 
 
 	/**
-	 * @param Nette\Http\Request $httpRequest
+	 * @param Nette\Http\IRequest $httpRequest
+	 * @throws Translette\Translation\InvalidArgumentException
 	 */
-	public function __construct(Nette\Http\Request $httpRequest)
+	public function __construct(Nette\Http\IRequest $httpRequest)
 	{
+		if (!is_a($httpRequest, Nette\Http\Request::class, true)) {
+			throw new Translette\Translation\InvalidArgumentException('Header locale resolver need "Nette\\Http\\Request" or his child for using "detectLanguage" method.');
+		}
+
 		$this->httpRequest = $httpRequest;
 	}
 
