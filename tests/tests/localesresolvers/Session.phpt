@@ -14,6 +14,8 @@ use Translette;
 
 $container = require __DIR__ . '/../../bootstrap.php';
 
+Tester\Environment::bypassFinals();
+
 
 /**
  * @author Ales Wita
