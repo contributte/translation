@@ -27,7 +27,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			'default' => null,
 			'fallback' => ['en_US'],
 		],
-		'resolvers' => [
+		'localeResolvers' => [
 			Translette\Translation\LocalesResolvers\Session::class,
 			Translette\Translation\LocalesResolvers\Parameter::class,
 			Translette\Translation\LocalesResolvers\Header::class,
@@ -64,17 +64,17 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			->setFactory(Translette\Translation\LocaleResolver::class);
 
 
-		// Resolvers
+		// LocaleResolvers
 		$localeResolvers = [];
 
-		foreach ($config['resolvers'] as $v1) {
+		foreach ($config['localeResolvers'] as $v1) {
 			$reflection = new \ReflectionClass($v1);
 
 			if (!$reflection->implementsInterface(Translette\Translation\LocalesResolvers\ResolverInterface::class)) {
 				throw new Translette\Translation\InvalidArgumentException('Resolver must implement interface "' . Translette\Translation\LocalesResolvers\ResolverInterface::class . '".');
 			}
 
-			$localeResolvers[] = $resolver = $builder->addDefinition($this->prefix('resolver' . $reflection->getShortName()))
+			$localeResolvers[] = $resolver = $builder->addDefinition($this->prefix('localeResolver' . $reflection->getShortName()))
 				->setFactory($v1);
 
 			$localeResolver->addSetup('addResolver', [$resolver]);
@@ -167,31 +167,34 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		} catch (Nette\DI\MissingServiceException $e) {
 		}
 
-		foreach ($config['loaders'] as $k1 => $v1) {
-			foreach (Nette\Utils\Finder::find('*.' . $k1)->from($config['dirs']) as $v2) {
-				$match = Nette\Utils\Strings::match($v2->getFilename(), '~^(?P<domain>.*?)\.(?P<locale>[^\.]+)\.(?P<format>[^\.]+)$~');
+		if (count($config['dirs']) > 0) {
+			foreach ($config['loaders'] as $k1 => $v1) {
+				foreach (Nette\Utils\Finder::find('*.' . $k1)->from($config['dirs']) as $v2) {
+					$match = Nette\Utils\Strings::match($v2->getFilename(), '~^(?P<domain>.*?)\.(?P<locale>[^\.]+)\.(?P<format>[^\.]+)$~');
 
-				if (!$match) {
-					continue;
-				}
+					if (!$match) {
+						continue;
+					}
 
-				if ($whitelistRegexp !== null && !preg_match($whitelistRegexp, $match['locale'])) {
+					if ($whitelistRegexp !== null && !preg_match($whitelistRegexp, $match['locale'])) {
+						if (isset($tracyPanel)) {
+							$tracyPanel->addSetup('addIgnoredResource', [$match['format'], $v2->getPathname(), $match['locale'], $match['domain']]);
+						}
+
+						if (!$config['debug']) {
+							continue;// ignore in production mode, there is no need to pass the ignored resources
+						}
+					}
+
+					$translator->addSetup('addResource', [$match['format'], $v2->getPathname(), $match['locale'], $match['domain']]);
+
 					if (isset($tracyPanel)) {
-						$tracyPanel->addSetup('addIgnoredResource', [$match['format'], $v2->getPathname(), $match['locale'], $match['domain']]);
+						$tracyPanel->addSetup('addResource', [$match['format'], $v2->getPathname(), $match['locale'], $match['domain']]);
 					}
-
-					if (!$config['debug']) {
-						continue;// ignore in production mode, there is no need to pass the ignored resources
-					}
-				}
-
-				$translator->addSetup('addResource', [$match['format'], $v2->getPathname(), $match['locale'], $match['domain']]);
-
-				if (isset($tracyPanel)) {
-					$tracyPanel->addSetup('addResource', [$match['format'], $v2->getPathname(), $match['locale'], $match['domain']]);
 				}
 			}
 		}
+
 	}
 
 
