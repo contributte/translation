@@ -209,9 +209,14 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/**
 	 * {@inheritdoc}
 	 */
-	//function translate($message, ...$parameters): string;
 	public function translate($message, $count = null, $parameters = [], $domain = null, $locale = null)
+	// public function translate($message, ...$parameters): string
 	{
+		// $count = array_key_exists(0, $parameters) ? $parameters[0] : null;
+		// $parameters = array_key_exists(1, $parameters) ? $parameters[1] : [];
+		// $domain = array_key_exists(2, $parameters) ? $parameters[2] : null;
+		// $locale = array_key_exists(3, $parameters) ? $parameters[3] : null;
+
 		if (is_array($count)) {// back compatibility for ITranslator
 			$locale = $domain !== null ? (string) $domain : null;
 			$domain = $parameters !== null && !empty($parameters) ? (string) $parameters : null;
