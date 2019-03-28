@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace Translette\Translation;
 
+use Latte;
 use Nette;
 
 
@@ -43,5 +44,17 @@ class Helpers
 		}
 
 		return [$domain, $message];
+	}
+
+
+	/**
+	 * @param Latte\MacroNode $node
+	 * @return bool
+	 */
+	public static function macroWithoutParameters(Latte\MacroNode $node): bool
+	{
+		$result = Nette\Utils\Strings::trim($node->tokenizer->joinUntil(',')) === Nette\Utils\Strings::trim($node->args);
+		$node->tokenizer->reset();
+		return $result;
 	}
 }
