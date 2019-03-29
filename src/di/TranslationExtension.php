@@ -193,7 +193,6 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 				}
 			}
 		}
-
 	}
 
 
