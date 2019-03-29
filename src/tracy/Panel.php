@@ -78,8 +78,8 @@ class Panel implements Tracy\IBarPanel
 		$panel[] = '<h1>Translator settings</h1>';
 		$panel[] = '<table style="width: 100%"><tr></th><th>Name</th><th>Value</th></tr>';
 		$panel[] = '<colgroup><col style="width: 75%"><col style="width: 25%"></colgroup>';
-		$panel[] = '<tr><td>Default locale</td><td>' . $this->translator->defaultLocale . '</td></tr>';
-		$panel[] = '<tr><td>Locales whitelist</td><td>' . ($this->translator->localesWhitelist !== null ? implode(', ', $this->translator->localesWhitelist) : '&nbsp;') . '</td></tr>';
+		$panel[] = '<tr><td>Default locale</td><td>' . htmlspecialchars($this->translator->defaultLocale) . '</td></tr>';
+		$panel[] = '<tr><td>Locales whitelist</td><td>' . ($this->translator->localesWhitelist !== null ? htmlspecialchars(implode(', ', $this->translator->localesWhitelist)) : '&nbsp;') . '</td></tr>';
 		$panel[] = '</table>';
 
 
@@ -92,7 +92,7 @@ class Panel implements Tracy\IBarPanel
 			$panel[] = '<colgroup><col style="width: 75%"><col style="width: 25%"></colgroup>';
 
 			foreach ($this->missingTranslation as $v1) {
-				$panel[] = '<tr><td>' . $v1['id'] . '</td><td>' . $v1['domain'] . '</td></tr>';
+				$panel[] = '<tr><td>' . htmlspecialchars($v1['id']) . '</td><td>' . htmlspecialchars($v1['domain']) . '</td></tr>';
 			}
 
 			$panel[] = '</table>';
@@ -111,7 +111,7 @@ class Panel implements Tracy\IBarPanel
 				$reflection = new \ReflectionClass($v1);
 				$locale = $v1->resolve($this->translator);
 
-				$panel[] = '<tr><td>' . $counter++ . '.</td><td title="' . $reflection->getName() . '">' . $reflection->getShortName() . '</td><td>' . ($locale !== null ? $locale : '<i>n/a</i>') . '</td></tr>';
+				$panel[] = '<tr><td>' . $counter++ . '.</td><td title="' . $reflection->getName() . '">' . $reflection->getShortName() . '</td><td>' . ($locale !== null ? htmlspecialchars($locale) : '<i>n/a</i>') . '</td></tr>';
 			}
 
 			$panel[] = '</table>';
