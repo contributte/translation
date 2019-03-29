@@ -142,26 +142,32 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		$builder = $this->getContainerBuilder();
 		$config = $this->validateConfig($this->defaults, $this->config);
 
+		/** @var Nette\DI\Definitions\ServiceDefinition $translator */
 		$translator = $builder->getDefinition($this->prefix('translator'));
 		$whitelistRegexp = Translette\Translation\Helpers::whitelistRegexp($config['locales']['whitelist']);
 
 		if ($config['debug']) {
+			/** @var Nette\DI\Definitions\ServiceDefinition $tracyPanel */
 			$tracyPanel = $builder->getDefinition($this->prefix('tracyPanel'));
 		}
 
 		$templateFactoryName = $builder->getByType(Nette\Application\UI\ITemplateFactory::class);
 
 		if ($templateFactoryName !== null) {
-			$builder->getDefinition($templateFactoryName)
-				->addSetup('
+			/** @var Nette\DI\Definitions\ServiceDefinition $templateFactory */
+			$templateFactory = $builder->getDefinition($templateFactoryName);
+
+			$templateFactory->addSetup('
 					$service->onCreate[] = function (Nette\\Bridges\\ApplicationLatte\\Template $template): void {
 						$template->setTranslator(?);
 					};', [$translator]);
 		}
 
 		if ($builder->hasDefinition('latte.latteFactory')) {
-			$builder->getDefinition('latte.latteFactory')
-				->getResultDefinition()
+			/** @var Nette\DI\Definitions\FactoryDefinition $latteFactory */
+			$latteFactory = $builder->getDefinition('latte.latteFactory');
+
+			$latteFactory->getResultDefinition()
 				->addSetup('?->onCompile[] = function (Latte\\Engine $engine): void { ?::install($engine->getCompiler()); }', ['@self', new Nette\PhpGenerator\PhpLiteral(Translette\Translation\Latte\Macros::class)])
 				->addSetup('addProvider', ['translator', $builder->getDefinition($this->prefix('translator'))]);
 		}
