@@ -207,7 +207,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 	 */
 	public function afterCompile(Nette\PhpGenerator\ClassType $class): void
 	{
-		$config = $this->validateConfig($this->defaults);
+		$config = $this->validateConfig($this->defaults, $this->config);
 
 		if ($config['debug']) {
 			$initialize = $class->getMethod('initialize');
