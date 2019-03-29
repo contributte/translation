@@ -69,7 +69,7 @@ class Macros extends Latte\Macros\MacroSet
 	public function macroDomain(Latte\MacroNode $node, Latte\PhpWriter $writer)
 	{
 		if ($node->closing) {
-			if ($node->content !== NULL && $node->content !== '') {
+			if ($node->content !== null && $node->content !== '') {
 				return $writer->write('unset($_translatorDomain);');
 			}
 
