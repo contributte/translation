@@ -288,6 +288,12 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 			$domain = $this->domain;
 		}
 
+		if ($this->tracyPanel !== null) {
+			if (!$this->getCatalogue()->has($id, $domain)) {
+				$this->tracyPanel->addMissingTranslation($id, $domain);
+			}
+		}
+
 		return parent::trans($id, $parameters, $domain, $locale);
 	}
 
