@@ -176,7 +176,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		return $this;
 	}
 
-	
+
 	/**
 	 * @return array
 	 */
