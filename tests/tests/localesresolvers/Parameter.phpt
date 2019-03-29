@@ -36,21 +36,15 @@ class Parameter extends Translette\Translation\Tests\AbstractTest
 	 */
 	private function resolve(?string $locale): ?string
 	{
-		$request = new Nette\Application\Request('presenter', null, [Translette\Translation\LocalesResolvers\Parameter::$localeParameter => $locale]);
-
 		$applicationMock = \Mockery::mock(Nette\Application\Application::class);
 
 		$applicationMock->shouldReceive('getRequests')
 			->once()
 			->withNoArgs()
-			->andReturn([$request]);
+			->andReturn([new Nette\Application\Request('presenter', null, [Translette\Translation\LocalesResolvers\Parameter::$localeParameter => $locale])]);
 
 		$resolver = new Translette\Translation\LocalesResolvers\Parameter($applicationMock);
 		$translatorMock = \Mockery::mock(Translette\Translation\Translator::class);
-
-		var_dump($resolver->resolve($translatorMock));
-		var_dump($request);
-		var_dump($request->getParameters());
 
 		return $resolver->resolve($translatorMock);
 	}
