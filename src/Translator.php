@@ -21,6 +21,7 @@ use Translette;
  * @property-read bool $debug
  * @property-read Translette\Translation\Tracy\Panel|null $tracyPanel
  * @property      array|null $localesWhitelist
+ * @property      string|null $domain
  * @property-read array $availableLocales
  * @property      string|null $locale
  *
@@ -52,9 +53,11 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/** @var array|null */
 	private $localesWhitelist;
 
-	/** @var array */
-	private $resourcesLocales = [];
+	/** @var string|null */
+	private $domain;
 
+	/** @var array @internal */
+	private $resourcesLocales = [];
 
 	/**
 	 * @param Translette\Translation\LocaleResolver $localeResolver
@@ -154,6 +157,25 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
+	 * @return string|null
+	 */
+	public function getDomain(): ?string
+	{
+		return $this->domain;
+	}
+
+
+	/**
+	 * @param null|string $string
+	 * @return self
+	 */
+	public function setDomain(?string $string): self
+	{
+		$this->domain = $string;
+		return $this;
+	}
+
+	/**
 	 * @return array
 	 */
 	public function getAvailableLocales(): array
@@ -240,6 +262,22 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		}
 
 		return $this->trans($message, $parameters, $domain, $locale);
+	}
+
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function trans($id, array $parameters = [], $domain = null, $locale = null)
+	{
+		if (is_string($domain) && Nette\Utils\Strings::startsWith($domain, '//')) {
+			$domain = Nette\Utils\Strings::substring($domain, 2);
+
+		} elseif ($this->domain !== null) {
+			$domain = $this->domain;
+		}
+
+		return parent::trans($id, $parameters, $domain, $locale);
 	}
 
 

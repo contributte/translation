@@ -53,10 +53,10 @@ class Macros extends Latte\Macros\MacroSet
 			// return $writer->write('echo %modify(($this->filters->translate)(%node.args))');
 
 			if (Translette\Translation\Helpers::macroWithoutParameters($node)) {
-				return $writer->write('echo %modify(call_user_func($this->filters->translate, (isset($_translatorDomain) ? $_translatorDomain : "") . %node.word))');
+				return $writer->write('echo %modify(call_user_func($this->filters->translate, %node.word))');
 			}
 
-			return $writer->write('echo %modify(call_user_func($this->filters->translate, (isset($_translatorDomain) ? $_translatorDomain : "") . %node.word, %node.args))');
+			return $writer->write('echo %modify(call_user_func($this->filters->translate, %node.word, %node.args))');
 		}
 	}
 
@@ -70,7 +70,7 @@ class Macros extends Latte\Macros\MacroSet
 	{
 		if ($node->closing) {
 			if ($node->content !== null && $node->content !== '') {
-				return $writer->write('unset($_translatorDomain);');
+				return $writer->write('$this->global->translator->domain = null;');
 			}
 
 		} else {
@@ -78,7 +78,7 @@ class Macros extends Latte\Macros\MacroSet
 				throw new Latte\CompileException('Expected message domain, none given.');
 			}
 
-			return $writer->write('$_translatorDomain = %node.word . ".";');
+			return $writer->write('$this->global->translator->domain = %node.word;');
 		}
 	}
 }
