@@ -26,15 +26,14 @@ class Macros extends Latte\Macros\MacroSet
 		$me = new static($compiler);
 
 		$me->addMacro('_', [$me, 'macroTranslate'], [$me, 'macroTranslate']);
+		$me->addMacro('translator', [$me, 'macroDomain'], [$me, 'macroDomain']);
 	}
 
 
 	/**
 	 * https://github.com/nette/latte/blob/master/src/Latte/Macros/CoreMacros.php#L205
 	 *
-	 * @param Latte\MacroNode $node
-	 * @param Latte\PhpWriter $writer
-	 * @return string|null
+	 * {_ ...}
 	 */
 	public function macroTranslate(Latte\MacroNode $node, Latte\PhpWriter $writer)
 	{
@@ -54,10 +53,32 @@ class Macros extends Latte\Macros\MacroSet
 			// return $writer->write('echo %modify(($this->filters->translate)(%node.args))');
 
 			if (Translette\Translation\Helpers::macroWithoutParameters($node)) {
-				return $writer->write(' echo %modify(call_user_func($this->filters->translate, %node.word))');
+				return $writer->write('echo %modify(call_user_func($this->filters->translate, (isset($_translatorDomain) ? $_translatorDomain : "") . %node.word))');
 			}
 
-			return $writer->write('echo %modify(call_user_func($this->filters->translate, %node.word, %node.args))');
+			return $writer->write('echo %modify(call_user_func($this->filters->translate, (isset($_translatorDomain) ? $_translatorDomain : "") . %node.word, %node.args))');
+		}
+	}
+
+
+	/**
+	 * {translate ...}
+	 *
+	 * @throws Latte\CompileException
+	 */
+	public function macroDomain(Latte\MacroNode $node, Latte\PhpWriter $writer)
+	{
+		if ($node->closing) {
+			if ($node->content !== NULL && $node->content !== '') {
+				return $writer->write('unset($_translatorDomain);');
+			}
+
+		} else {
+			if ($node->args === '') {
+				throw new Latte\CompileException('Expected message domain, none given.');
+			}
+
+			return $writer->write('$_translatorDomain = %node.word . ".";');
 		}
 	}
 }
