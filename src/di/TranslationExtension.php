@@ -161,6 +161,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 		try {
 			$builder->getDefinition('latte.latteFactory')
+				->getResultDefinition()
 				->addSetup('?->onCompile[] = function (Latte\\Engine $engine): void { ?::install($engine->getCompiler()); }', ['@self', new Nette\PhpGenerator\PhpLiteral(Translette\Translation\Latte\Macros::class)])
 				->addSetup('addProvider', ['translator', $builder->getDefinition($this->prefix('translator'))]);
 
