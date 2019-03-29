@@ -59,6 +59,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/** @var array @internal */
 	private $resourcesLocales = [];
 
+
 	/**
 	 * @param Translette\Translation\LocaleResolver $localeResolver
 	 * @param Translette\Translation\FallbackResolver $fallbackResolver
@@ -175,6 +176,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		return $this;
 	}
 
+	
 	/**
 	 * @return array
 	 */
