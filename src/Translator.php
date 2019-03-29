@@ -91,6 +91,15 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
+	 * @return Translette\Translation\FallbackResolver
+	 */
+	public function getFallbackResolver(): FallbackResolver
+	{
+		return $this->fallbackResolver;
+	}
+
+
+	/**
 	 * @return string
 	 */
 	public function getDefaultLocale(): string
