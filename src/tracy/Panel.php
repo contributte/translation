@@ -77,6 +77,7 @@ class Panel implements Tracy\IBarPanel
 
 		$panel[] = '<h1>Translator settings</h1>';
 		$panel[] = '<table style="width: 100%"><tr></th><th>Name</th><th>Value</th></tr>';
+		$panel[] = '<colgroup><col style="width: 75%"><col style="width: 25%"></colgroup>';
 		$panel[] = '<tr><td>Default locale</td><td>' . $this->translator->defaultLocale . '</td></tr>';
 		$panel[] = '<tr><td>Locales whitelist</td><td>' . ($this->translator->localesWhitelist !== null ? implode(', ', $this->translator->localesWhitelist) : '&nbsp;') . '</td></tr>';
 		$panel[] = '</table>';
@@ -88,6 +89,7 @@ class Panel implements Tracy\IBarPanel
 			$panel[] = '<h1>Missing translations: ' . $this->missingTranslationCount . '</h1>';
 
 			$panel[] = '<table style="width: 100%"><tr></th><th>ID</th><th>Domain</th></tr>';
+			$panel[] = '<colgroup><col style="width: 75%"><col style="width: 25%"></colgroup>';
 
 			foreach ($this->missingTranslation as $v1) {
 				$panel[] = '<tr><td>' . $v1['id'] . '</td><td>' . $v1['domain'] . '</td></tr>';
@@ -102,6 +104,7 @@ class Panel implements Tracy\IBarPanel
 			$panel[] = '<br><br>';
 			$panel[] = '<h1>Locale resolvers</h1>';
 			$panel[] = '<table style="width: 100%"><tr><th>#</th></th><th>Resolver</th><th>Locale</th></tr>';
+			$panel[] = '<colgroup><col style="width: 5%"><col style="width: 70%"><col style="width: 25%"></colgroup>';
 
 			$counter = 1;
 			foreach ($this->localeResolvers as $v1) {
@@ -147,7 +150,8 @@ class Panel implements Tracy\IBarPanel
 	 */
 	private static function createResourcePanelHelper(array $resources): string
 	{
-		$string = '';
+		$string = '<table style="width: 100%"><tr><th>Locale</th><th>Domain</th><th>File name</th></tr>';
+		$string .= '<colgroup><col style="width: 10%"><col style="width: 10%"><col style="width: 80%"></colgroup>';
 
 		foreach ($resources as $k1 => $v1) {
 			foreach ($v1 as $k2 => $v2) {
@@ -159,7 +163,9 @@ class Panel implements Tracy\IBarPanel
 			}
 		}
 
-		return '<table style="width: 100%"><tr><th>Locale</th><th>Domain</th><th>Resource file name</th></tr>' . $string . '</table>';
+		$string .= '</table>';
+
+		return $string;
 	}
 
 
