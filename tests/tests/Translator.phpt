@@ -79,8 +79,15 @@ class Translator extends Translette\Translation\Tests\AbstractTest
 
 
 		Tester\Assert::same('Hello', $translator->translate('messages.hello'));
+		Tester\Assert::same('Hello', $translator->translate('hello'));
 		Tester\Assert::same('Hello', $translator->translate('//messages.hello'));
+		Tester\Assert::same('Hello', $translator->translate('hello', [], 'messages', 'en'));
+		Tester\Assert::same('Hello', $translator->translate('hello', null, [], 'messages', 'en'));
 		Tester\Assert::same('Hi Ales!', $translator->translate('messages.hi', ['name' => 'Ales']));
+		Tester\Assert::same('Hi Ales!', $translator->translate('hi', ['name' => 'Ales']));
+		Tester\Assert::same('Hi Ales!', $translator->translate('//messages.hi', ['name' => 'Ales']));
+		Tester\Assert::same('Hi Ales!', $translator->translate('hi', ['name' => 'Ales'], 'messages', 'en'));
+		Tester\Assert::same('Hi Ales!', $translator->translate('hi', null, ['name' => 'Ales'], 'messages', 'en'));
 		Tester\Assert::same('There are no apples', $translator->translate('messages.apples', 0));
 		Tester\Assert::same('There are no apples', $translator->translate('messages.apples', ['count' => 0]));
 		Tester\Assert::same('There is one apple', $translator->translate('messages.apples', 1));
