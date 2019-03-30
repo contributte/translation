@@ -10,13 +10,6 @@ The best way to install Translette/Translation is using [Composer](http://getcom
 $ composer require translette/translation
 ```
 
-## TODO
-- log missing translations
-- make ConfigCacheFactory
-- return full string, if translation missing
-
-## Kdyby/Translation BC breaks
-
 ## Documentation
 ```neon
 extensions:
