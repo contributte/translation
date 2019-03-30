@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace Translette\Translation\Tests\Tests;
 
+use Nette;
 use Tester;
 use Translette;
 
@@ -50,6 +51,53 @@ class Translator extends Translette\Translation\Tests\AbstractTest
 		$translator->addResource('neon', __DIR__ . '/file.neon', 'cs_CZ', 'domain');
 
 		Tester\Assert::same(['cs_CZ', 'en_US'], $translator->availableLocales);
+	}
+
+
+	public function test02(): void
+	{
+		$configurator = new Nette\Configurator;
+
+		$configurator->setTempDirectory($this->container->getParameters()['tempDir'])
+			->addConfig([
+				'extensions' => [
+					'translation' => Translette\Translation\DI\TranslationExtension::class,
+				],
+				'translation' => [
+					'debug' => true,
+					'locales' => [
+						'default' => 'en',
+					],
+					'dirs' => [
+						__DIR__ . '/../lang',
+					],
+				],
+			]);
+
+		$container = $configurator->createContainer();
+		$translator = $container->getByType(Nette\Localization\ITranslator::class);
+
+
+		Tester\Assert::same('Hello', $translator->translate('messages.hello'));
+		Tester\Assert::same('Hello', $translator->translate('//messages.hello'));
+		Tester\Assert::same('Hi Ales!', $translator->translate('messages.hi', ['name' => 'Ales']));
+		Tester\Assert::same('There are no apples', $translator->translate('messages.apples', 0));
+		Tester\Assert::same('There are no apples', $translator->translate('messages.apples', ['count' => 0]));
+		Tester\Assert::same('There is one apple', $translator->translate('messages.apples', 1));
+		Tester\Assert::same('There is one apple', $translator->translate('messages.apples', ['count' => 1]));
+		Tester\Assert::same('There are 2 apples', $translator->translate('messages.apples', 2));
+		Tester\Assert::same('There are 2 apples', $translator->translate('messages.apples', ['count' => 2]));
+		Tester\Assert::same('Depth message', $translator->translate('messages.depth.message'));
+		Tester\Assert::same('missing.translation', $translator->translate('messages.missing.translation'));
+
+		$translator->setPrefix('messages');
+
+		Tester\Assert::same('Hello', $translator->translate('hello'));
+		Tester\Assert::same('Hello', $translator->translate('//messages.hello'));
+		Tester\Assert::same('messages.hello', $translator->translate('messages.hello'));
+		Tester\Assert::same('Hi Ales!', $translator->translate('hi', ['name' => 'Ales']));
+		Tester\Assert::same('Hi Ales!', $translator->translate('//messages.hi', ['name' => 'Ales']));
+		Tester\Assert::same('messages.hi', $translator->translate('messages.hi', ['name' => 'Ales']));
 	}
 }
 
