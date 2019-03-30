@@ -171,10 +171,10 @@ class Panel implements Tracy\IBarPanel
 
 	/**
 	 * @param string $id
-	 * @param string $domain
+	 * @param string|null $domain
 	 * @return self
 	 */
-	public function addMissingTranslation($id, $domain): self
+	public function addMissingTranslation(string $id, ?string $domain): self
 	{
 		$this->missingTranslation[] = [
 			'id' => $id,
