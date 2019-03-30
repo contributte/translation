@@ -21,7 +21,7 @@ use Translette;
  * @property-read bool $debug
  * @property-read Translette\Translation\Tracy\Panel|null $tracyPanel
  * @property      array|null $localesWhitelist
- * @property      string|null $domain
+ * @property      string|null $prefix
  * @property-read array $availableLocales
  * @property      string|null $locale
  *
@@ -54,7 +54,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	private $localesWhitelist;
 
 	/** @var string|null */
-	private $domain;
+	private $prefix;
 
 	/** @var array @internal */
 	private $resourcesLocales = [];
@@ -169,9 +169,9 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/**
 	 * @return string|null
 	 */
-	public function getDomain(): ?string
+	public function getPrefix(): ?string
 	{
-		return $this->domain;
+		return $this->prefix;
 	}
 
 
@@ -179,9 +179,9 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	 * @param null|string $string
 	 * @return self
 	 */
-	public function setDomain(?string $string): self
+	public function setPrefix(?string $string): self
 	{
-		$this->domain = $string;
+		$this->prefix = $string;
 		return $this;
 	}
 
@@ -257,6 +257,13 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 			$count = null;
 		}
 
+		if (Nette\Utils\Strings::startsWith($message, '//')) {
+			$message = Nette\Utils\Strings::substring($message, 2);
+
+		} elseif ($this->prefix !== null) {
+			$message = $this->prefix . '.' . $message;
+		}
+
 		if ($domain === null) {
 			[$domain, $message] = Helpers::extractMessage($message);
 		}
@@ -281,13 +288,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	 */
 	public function trans($id, array $parameters = [], $domain = null, $locale = null)
 	{
-		if (is_string($domain) && Nette\Utils\Strings::startsWith($domain, '//')) {
-			$domain = Nette\Utils\Strings::substring($domain, 2);
-
-		} elseif ($this->domain !== null) {
-			$domain = $this->domain;
-		}
-
 		if ($this->tracyPanel !== null) {
 			if (!$this->getCatalogue()->has($id, $domain)) {
 				$this->tracyPanel->addMissingTranslation($id, $domain);

@@ -30,7 +30,7 @@ class Translator extends Translette\Translation\Tests\AbstractTest
 		Tester\Assert::true($translator->debug);
 		Tester\Assert::null($translator->tracyPanel);
 		Tester\Assert::null($translator->localesWhitelist);
-		Tester\Assert::null($translator->domain);
+		Tester\Assert::null($translator->prefix);
 		Tester\Assert::same([], $translator->availableLocales);
 		Tester\Assert::same('en', $translator->locale);
 
@@ -42,9 +42,9 @@ class Translator extends Translette\Translation\Tests\AbstractTest
 
 		Tester\Assert::same(['en', 'cs'], $translator->localesWhitelist);
 
-		$translator->setDomain('domain');
+		$translator->setPrefix('prefix');
 
-		Tester\Assert::same('domain', $translator->domain);
+		Tester\Assert::same('prefix', $translator->prefix);
 
 		$translator->addResource('neon', __DIR__ . '/file.neon', 'en_US', 'domain');
 		$translator->addResource('neon', __DIR__ . '/file.neon', 'cs_CZ', 'domain');

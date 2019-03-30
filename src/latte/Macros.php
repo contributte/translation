@@ -26,7 +26,7 @@ class Macros extends Latte\Macros\MacroSet
 		$me = new static($compiler);
 
 		$me->addMacro('_', [$me, 'macroTranslate'], [$me, 'macroTranslate']);
-		$me->addMacro('translator', [$me, 'macroDomain'], [$me, 'macroDomain']);
+		$me->addMacro('translator', [$me, 'macroPrefix'], [$me, 'macroPrefix']);
 	}
 
 
@@ -66,19 +66,19 @@ class Macros extends Latte\Macros\MacroSet
 	 *
 	 * @throws Latte\CompileException
 	 */
-	public function macroDomain(Latte\MacroNode $node, Latte\PhpWriter $writer)
+	public function macroPrefix(Latte\MacroNode $node, Latte\PhpWriter $writer)
 	{
 		if ($node->closing) {
 			if ($node->content !== null && $node->content !== '') {
-				return $writer->write('$this->global->translator->domain = null;');
+				return $writer->write('$this->global->translator->prefix = null;');
 			}
 
 		} else {
 			if ($node->args === '') {
-				throw new Latte\CompileException('Expected message domain, none given.');
+				throw new Latte\CompileException('Expected message prefix, none given.');
 			}
 
-			return $writer->write('$this->global->translator->domain = %node.word;');
+			return $writer->write('$this->global->translator->prefix = %node.word;');
 		}
 	}
 }
