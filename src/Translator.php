@@ -21,7 +21,9 @@ use Translette;
  * @property-read bool $debug
  * @property-read Translette\Translation\Tracy\Panel|null $tracyPanel
  * @property      array|null $localesWhitelist
- * @property      string|null $prefix
+ * @property      array $prefix
+ * @property-read array $prefixTemp
+ * @property-read string $formattedPrefix
  * @property-read array $availableLocales
  * @property      string|null $locale
  *
@@ -53,8 +55,11 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/** @var array|null */
 	private $localesWhitelist;
 
-	/** @var string|null */
-	private $prefix;
+	/** @var array */
+	private $prefix = [];
+
+	/** @var array @internal */
+	private $prefixTemp = [];
 
 	/** @var array @internal */
 	private $resourcesLocales = [];
@@ -167,22 +172,94 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
-	 * @return string|null
+	 * @return array
 	 */
-	public function getPrefix(): ?string
+	public function getPrefix(): array
 	{
 		return $this->prefix;
 	}
 
 
 	/**
-	 * @param null|string $string
+	 * @param array $array
 	 * @return self
 	 */
-	public function setPrefix(?string $string): self
+	public function setPrefix(array $array): self
 	{
-		$this->prefix = $string;
+		$this->prefixTemp[] = $this->prefix;
+		$this->prefix = $array;
 		return $this;
+	}
+
+
+	/**
+	 * @internal
+	 *
+	 * @return array
+	 */
+	public function getPrefixTemp(): array
+	{
+		$temp = end($this->prefixTemp);
+		array_pop($this->prefixTemp);
+		return $temp !== false ? $temp : [];
+	}
+
+
+	/**
+	 * @param string $string
+	 * @return self
+	 */
+	public function addPrefix(string $string): self
+	{
+		$this->prefix[] = $string;
+		return $this;
+	}
+
+
+	/**
+	 * @param string|null $string
+	 * @return self
+	 * @throws Translette\Translation\InvalidArgumentException
+	 */
+	public function removePrefix(string $string = null): self
+	{
+		if ($string === null) {
+			$key = array_pop($this->prefix);
+
+			if ($key === null) {
+				throw new InvalidArgumentException('Can not remove empty prefix.');
+			}
+
+		} else {
+			$key = array_search($string, array_reverse($this->prefix));
+
+			if ($key === false) {
+				throw new InvalidArgumentException('Unknown "' . $string . '" prefix.');
+			}
+
+			unset($key);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getFormattedPrefix(): string
+	{
+		return implode('.', $this->prefix);
+	}
+
+
+	/**
+	 * @param string $prefix
+	 * @return Translette\Translation\PrefixedTranslator
+	 */
+	public function domain(string $prefix): PrefixedTranslator
+	{
+		return new PrefixedTranslator($this, $prefix);
 	}
 
 
@@ -260,8 +337,8 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		if (Nette\Utils\Strings::startsWith($message, '//')) {
 			$message = Nette\Utils\Strings::substring($message, 2);
 
-		} elseif ($this->prefix !== null) {
-			$message = $this->prefix . '.' . $message;
+		} elseif (count($this->prefix) > 0) {
+			$message = $this->getFormattedPrefix() . '.' . $message;
 		}
 
 		if ($domain === null) {

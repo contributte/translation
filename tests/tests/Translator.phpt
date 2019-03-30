@@ -31,7 +31,8 @@ class Translator extends Translette\Translation\Tests\AbstractTest
 		Tester\Assert::true($translator->debug);
 		Tester\Assert::null($translator->tracyPanel);
 		Tester\Assert::null($translator->localesWhitelist);
-		Tester\Assert::null($translator->prefix);
+		Tester\Assert::same([], $translator->prefix);
+		Tester\Assert::same('', $translator->formattedPrefix);
 		Tester\Assert::same([], $translator->availableLocales);
 		Tester\Assert::same('en', $translator->locale);
 
@@ -43,9 +44,23 @@ class Translator extends Translette\Translation\Tests\AbstractTest
 
 		Tester\Assert::same(['en', 'cs'], $translator->localesWhitelist);
 
-		$translator->setPrefix('prefix');
+		$translator->setPrefix(['prefix']);
 
-		Tester\Assert::same('prefix', $translator->prefix);
+		Tester\Assert::same('prefix', $translator->formattedPrefix);
+
+		$translator->addPrefix('next');
+
+		Tester\Assert::same('prefix.next', $translator->formattedPrefix);
+
+		$translator->removePrefix();
+
+		Tester\Assert::same('prefix', $translator->formattedPrefix);
+
+		$translator->setPrefix([]);
+
+		Tester\Assert::exception(function () use ($translator): void {$translator->removePrefix();}, Translette\Translation\InvalidArgumentException::class, 'Can not remove empty prefix.');
+		Tester\Assert::exception(function () use ($translator): void {$translator->removePrefix('unknown');}, Translette\Translation\InvalidArgumentException::class, 'Unknown "unknown" prefix.');
+
 
 		$translator->addResource('neon', __DIR__ . '/file.neon', 'en_US', 'domain');
 		$translator->addResource('neon', __DIR__ . '/file.neon', 'cs_CZ', 'domain');
@@ -97,7 +112,7 @@ class Translator extends Translette\Translation\Tests\AbstractTest
 		Tester\Assert::same('Depth message', $translator->translate('messages.depth.message'));
 		Tester\Assert::same('missing.translation', $translator->translate('messages.missing.translation'));
 
-		$translator->setPrefix('messages');
+		$translator->addPrefix('messages');
 
 		Tester\Assert::same('Hello', $translator->translate('hello'));
 		Tester\Assert::same('Hello', $translator->translate('//messages.hello'));
@@ -105,6 +120,11 @@ class Translator extends Translette\Translation\Tests\AbstractTest
 		Tester\Assert::same('Hi Ales!', $translator->translate('hi', ['name' => 'Ales']));
 		Tester\Assert::same('Hi Ales!', $translator->translate('//messages.hi', ['name' => 'Ales']));
 		Tester\Assert::same('messages.hi', $translator->translate('messages.hi', ['name' => 'Ales']));
+
+		$translator->removePrefix();
+
+		$prefixedTranslator = $translator->domain('messages');
+		Tester\Assert::same('Hello', $prefixedTranslator->translate('hello'));
 	}
 }
 
