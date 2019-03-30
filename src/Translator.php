@@ -289,6 +289,10 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	public function trans($id, array $parameters = [], $domain = null, $locale = null)
 	{
 		if ($this->tracyPanel !== null) {
+			if ($domain === null) {
+				$domain = 'messages';
+			}
+
 			if (!$this->getCatalogue()->has($id, $domain)) {
 				$this->tracyPanel->addMissingTranslation($id, $domain);
 			}
