@@ -231,7 +231,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 			}
 
 		} else {
-			$key = array_search($string, array_reverse($this->prefix));
+			$key = array_search($string, array_reverse($this->prefix), true);
 
 			if ($key === false) {
 				throw new InvalidArgumentException('Unknown "' . $string . '" prefix.');
