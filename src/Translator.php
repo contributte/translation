@@ -246,14 +246,14 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	public function translate($message, ...$parameters): string // @comment
 	{
 		$count = array_key_exists(0, $parameters) ? $parameters[0] : null; // @comment
-		$parameters = array_key_exists(1, $parameters) ? $parameters[1] : []; // @comment
+		$params = array_key_exists(1, $parameters) ? $parameters[1] : []; // @comment
 		$domain = array_key_exists(2, $parameters) ? $parameters[2] : null; // @comment
 		$locale = array_key_exists(3, $parameters) ? $parameters[3] : null; // @comment
 
 		if (is_array($count)) {// back compatibility for ITranslator
 			$locale = $domain !== null ? (string) $domain : null;
-			$domain = $parameters !== null && !empty($parameters) ? (string) $parameters : null;
-			$parameters = $count;
+			$domain = $params !== null && !empty($params) ? (string) $params : null;
+			$params = $count;
 			$count = null;
 		}
 
@@ -269,17 +269,17 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		}
 
 		$tmp = [];
-		foreach ($parameters as $k1 => $v1) {
+		foreach ($params as $k1 => $v1) {
 			//$tmp['%' . Nette\Utils\Strings::trim($k1, '%') . '%'] = $v1;// need this?
 			$tmp['%' . $k1 . '%'] = $v1;
 		}
-		$parameters = $tmp;
+		$params = $tmp;
 
 		if (Nette\Utils\Validators::isNumericInt($count)) {
-			$parameters += ['%%count%%' => (int) $count];
+			$params += ['%%count%%' => (int) $count];
 		}
 
-		return $this->trans($message, $parameters, $domain, $locale);
+		return $this->trans($message, $params, $domain, $locale);
 	}
 
 
