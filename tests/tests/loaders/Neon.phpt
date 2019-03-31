@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace Translette\Translation\Tests\Tests\Loaders;
 
-use Symfony\Component\Translation\Tests\DependencyInjection\TranslationExtractorPassTest;
 use Tester;
 use Translette;
 
