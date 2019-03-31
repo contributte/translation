@@ -24,7 +24,7 @@ class Neon extends Symfony\Component\Translation\Loader\ArrayLoader implements S
 	 */
 	public function load($resource, $locale, $domain = 'messages')
 	{
-		$content = file_get_contents($resource);
+		$content = @file_get_contents($resource); // @ -> prevent E_WARNING and thrown an exception
 
 		if ($content === false) {
 			throw new Translette\Translation\InvalidArgumentException('Something wrong with resource file "' . $resource . '".');

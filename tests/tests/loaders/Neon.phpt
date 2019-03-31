@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace Translette\Translation\Tests\Tests\Loaders;
 
+use Symfony\Component\Translation\Tests\DependencyInjection\TranslationExtractorPassTest;
 use Tester;
 use Translette;
 
@@ -42,6 +43,12 @@ test:
 		Tester\Assert::same('translate', $catalogue->get('test.for', 'domain'));
 		Tester\Assert::same('missing.translate', $catalogue->get('missing.translate', 'domain'));
 		Tester\Assert::same('missing.translate', $catalogue->get('missing.translate'));
+	}
+
+
+	public function test02(): void
+	{
+		Tester\Assert::exception(function (): void {(new Translette\Translation\Loaders\Neon)->load('unknown_file', 'en');}, Translette\Translation\InvalidArgumentException::class, 'Something wrong with resource file "unknown_file".');
 	}
 }
 
