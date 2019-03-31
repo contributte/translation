@@ -33,6 +33,7 @@ use Translette;
 class Translator extends Symfony\Component\Translation\Translator implements Nette\Localization\ITranslator
 {
 	use Nette\SmartObject;
+	use KdybyTranslationBackCompatibilityTrait;
 
 	/** @var Translette\Translation\LocaleResolver */
 	private $localeResolver;
@@ -257,7 +258,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	 * @param string $prefix
 	 * @return Translette\Translation\PrefixedTranslator
 	 */
-	public function domain(string $prefix): PrefixedTranslator
+	public function createPrefixedTranslator(string $prefix): PrefixedTranslator
 	{
 		return new PrefixedTranslator($this, $prefix);
 	}
