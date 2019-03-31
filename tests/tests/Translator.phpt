@@ -90,6 +90,8 @@ class Translator extends Translette\Translation\Tests\AbstractTest
 			]);
 
 		$container = $configurator->createContainer();
+
+		/** @var Translette\Translation\Translator $translator */
 		$translator = $container->getByType(Nette\Localization\ITranslator::class);
 
 
