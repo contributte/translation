@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace Translette\Translation;
 
-use Symfony;
 use Translette;
 
 
