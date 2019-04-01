@@ -75,36 +75,39 @@ class Panel implements Tracy\IBarPanel
 		$panel = [];
 
 
-		$panel[] = '<h1>Translator settings</h1>';
-		$panel[] = '<table style="width: 100%"><tr></th><th>Name</th><th>Value</th></tr>';
-		$panel[] = '<colgroup><col style="width: 75%"><col style="width: 25%"></colgroup>';
+		$panel[] = '<h1>Missing translations: ' . $this->missingTranslationCount . ', Loaded resources: ' . $this->resourcesCount . '</h1>';
+		$panel[] = '<div class="tracy-inner">';
+
+		$panel[] = '<div class="tracy-inner-container"><h2>Translator settings</h2>';
+		$panel[] = '<table class="tracy-sortable"><colgroup><col style="width: 75%"><col style="width: 25%"></colgroup>';
+		$panel[] = '<tr></th><th>Name</th><th>Value</th></tr>';
 		$panel[] = '<tr><td>Default locale</td><td>' . htmlspecialchars($this->translator->defaultLocale) . '</td></tr>';
 		$panel[] = '<tr><td>Locales whitelist</td><td>' . ($this->translator->localesWhitelist !== null ? htmlspecialchars(implode(', ', $this->translator->localesWhitelist)) : '&nbsp;') . '</td></tr>';
-		$panel[] = '</table>';
+		$panel[] = '</table></div>';
 
 
 		// missing translations
 		if ($this->missingTranslationCount > 0) {
-			$panel[] = '<br><br>';
-			$panel[] = '<h1>Missing translations: ' . $this->missingTranslationCount . '</h1>';
+			$panel[] = '<br>';
+			$panel[] = '<div class="tracy-inner-container"><h2>Missing translations: ' . $this->missingTranslationCount . '</h2>';
 
-			$panel[] = '<table style="width: 100%"><tr></th><th>ID</th><th>Domain</th></tr>';
-			$panel[] = '<colgroup><col style="width: 75%"><col style="width: 25%"></colgroup>';
+			$panel[] = '<table class="tracy-sortable"><colgroup><col style="width: 50%"><col style="width: 25%"></colgroup><col style="width: 25%"></colgroup>';
+			$panel[] = '<tr></th><th>ID</th><th>Domain</th><th>Count</th></tr>';
 
 			foreach ($this->missingTranslation as $v1) {
-				$panel[] = '<tr><td>' . htmlspecialchars($v1['id']) . '</td><td>' . htmlspecialchars($v1['domain']) . '</td></tr>';
+				$panel[] = '<tr><td>' . htmlspecialchars($v1['id']) . '</td><td>' . htmlspecialchars($v1['domain']) . '</td><td>' . $v1['count'] . '</td></tr>';
 			}
 
-			$panel[] = '</table>';
+			$panel[] = '</table></div>';
 		}
 
 
 		// locale resolvers
 		if (count($this->localeResolvers) > 0) {
-			$panel[] = '<br><br>';
-			$panel[] = '<h1>Locale resolvers</h1>';
-			$panel[] = '<table style="width: 100%"><tr><th>#</th></th><th>Resolver</th><th>Locale</th></tr>';
-			$panel[] = '<colgroup><col style="width: 5%"><col style="width: 70%"><col style="width: 25%"></colgroup>';
+			$panel[] = '<br>';
+			$panel[] = '<div class="tracy-inner-container"><h2>Locale resolvers</h2>';
+			$panel[] = '<table class="tracy-sortable"><colgroup><col style="width: 5%"><col style="width: 70%"><col style="width: 25%"></colgroup>';
+			$panel[] = '<tr><th>#</th></th><th>Resolver</th><th>Locale</th></tr>';
 
 			$counter = 1;
 			foreach ($this->localeResolvers as $v1) {
@@ -114,7 +117,7 @@ class Panel implements Tracy\IBarPanel
 				$panel[] = '<tr><td>' . $counter++ . '.</td><td title="' . $reflection->getName() . '">' . $reflection->getShortName() . '</td><td>' . ($locale !== null ? htmlspecialchars($locale) : '<i>n/a</i>') . '</td></tr>';
 			}
 
-			$panel[] = '</table>';
+			$panel[] = '</table></div>';
 		}
 
 
@@ -122,9 +125,10 @@ class Panel implements Tracy\IBarPanel
 		if (count($this->resources) > 0) {
 			ksort($this->resources);
 
-			$panel[] = '<br><br>';
-			$panel[] = '<h1>Loaded resources: ' . $this->resourcesCount . '</h1>';
+			$panel[] = '<br>';
+			$panel[] = '<div class="tracy-inner-container"><h2>Loaded resources: ' . $this->resourcesCount . '</h2>';
 			$panel[] = self::createResourcePanelHelper($this->resources);
+			$panel[] = '</div>';
 		}
 
 
@@ -132,10 +136,13 @@ class Panel implements Tracy\IBarPanel
 		if (count($this->ignoredResources) > 0) {
 			ksort($this->ignoredResources);
 
-			$panel[] = '<br><br>';
-			$panel[] = '<h1>Ignored resources: ' . $this->ignoredResourcesCount . ($this->translator->localesWhitelist ? ', <small>whitelist: ' . implode(', ', array_map('htmlspecialchars', $this->translator->localesWhitelist)) . '</small>' : null) . '</h1>';
+			$panel[] = '<br>';
+			$panel[] = '<h2>Ignored resources: ' . $this->ignoredResourcesCount . ($this->translator->localesWhitelist ? ', <small>whitelist: ' . implode(', ', array_map('htmlspecialchars', $this->translator->localesWhitelist)) . '</small>' : null) . '</h2>';
 			$panel[] = self::createResourcePanelHelper($this->ignoredResources);
 		}
+
+
+		$panel[] = '</div>';
 
 
 		return count($panel) === 0 ? null : implode($panel);
@@ -150,8 +157,8 @@ class Panel implements Tracy\IBarPanel
 	 */
 	private static function createResourcePanelHelper(array $resources): string
 	{
-		$string = '<table style="width: 100%"><tr><th>Locale</th><th>Domain</th><th>File name</th></tr>';
-		$string .= '<colgroup><col style="width: 10%"><col style="width: 10%"><col style="width: 80%"></colgroup>';
+		$string = '<table class="tracy-sortable"><colgroup><col style="width: 10%"><col style="width: 10%"><col style="width: 80%"></colgroup>';
+		$string .= '<tr><th>Locale</th><th>Domain</th><th>File name</th></tr>';
 
 		foreach ($resources as $k1 => $v1) {
 			foreach ($v1 as $k2 => $v2) {
@@ -176,11 +183,18 @@ class Panel implements Tracy\IBarPanel
 	 */
 	public function addMissingTranslation(string $id, ?string $domain): self
 	{
-		$this->missingTranslation[] = [
-			'id' => $id,
-			'domain' => $domain,
-		];
-		$this->missingTranslationCount++;
+		$key = $domain . '.' . $id;
+
+		if (!array_key_exists($key, $this->missingTranslation)) {
+			$this->missingTranslation[$key] = [
+				'id' => $id,
+				'domain' => $domain,
+				'count' => 0,
+			];
+			$this->missingTranslationCount++;
+		}
+
+		$this->missingTranslation[$key]['count']++;
 		return $this;
 	}
 
