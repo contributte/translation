@@ -330,7 +330,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 		if (is_array($count)) {// back compatibility for ITranslator
 			$locale = $domain !== null ? (string) $domain : null;
-			$domain = $params !== null && !empty($params) ? (string) $params : null;
+			$domain = $parameters !== null && !empty($parameters) ? (string) $parameters : null;
 			$params = $count;
 			$count = null;
 		}
