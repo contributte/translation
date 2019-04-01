@@ -371,7 +371,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 				$domain = 'messages';
 			}
 
-			if (!$this->getCatalogue()->has($id, $domain)) {
+			if ($id !== null && !$this->getCatalogue()->has($id, $domain)) {
 				$this->tracyPanel->addMissingTranslation($id, $domain);
 			}
 		}
