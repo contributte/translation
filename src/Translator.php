@@ -320,7 +320,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/**
 	 * {@inheritdoc}
 	 */
-	public function translate($message, $count = null, $parameters = [], $domain = null, $locale = null)// @uncomment
+	public function translate($message, $count = null, $params = [], $domain = null, $locale = null)// @uncomment
 	//public function translate($message, ...$parameters): string // @comment
 	{
 		//$count = array_key_exists(0, $parameters) ? $parameters[0] : null; // @comment
@@ -330,7 +330,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 		if (is_array($count)) {// back compatibility for ITranslator
 			$locale = $domain !== null ? (string) $domain : null;
-			$domain = $parameters !== null && !empty($parameters) ? (string) $parameters : null;
+			$domain = $params !== null && !empty($params) ? (string) $params : null;
 			$params = $count;
 			$count = null;
 		}
