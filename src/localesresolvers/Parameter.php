@@ -23,21 +23,21 @@ class Parameter implements ResolverInterface
 	/** @var string */
 	public static $localeParameter = 'locale';
 
-	/** @var Nette\Application\Request */
+	/** @var Nette\Http\IRequest */
 	private $request;
+
+	/** @var Nette\Routing\Router */
+	private $router;
 
 
 	/**
-	 * @param Nette\Application\Application $application
+	 * @param Nette\Http\IRequest $request
+	 * @param Nette\Routing\Router $router
 	 */
-	public function __construct(Nette\Application\Application $application)
+	public function __construct(Nette\Http\IRequest $request, Nette\Routing\Router $router)
 	{
-		$requests = $application->getRequests();
-		$request = end($requests);
-
-		if ($request !== false) {
-			$this->request = $request;
-		}
+		$this->request = $request;
+		$this->router = $router;
 	}
 
 
@@ -47,11 +47,18 @@ class Parameter implements ResolverInterface
 	 */
 	public function resolve(Translette\Translation\Translator $translator): ?string
 	{
-		if ($this->request === null) {
-			return null;
+		$match = $this->router->match($this->request);
+
+		if ($match !== null && array_key_exists(self::$localeParameter, $match)) {
+			return $match[self::$localeParameter];
 		}
 
-		$params = $this->request->getParameters();
-		return array_key_exists(self::$localeParameter, $params) ? $params[self::$localeParameter] : null;
+		$locale = $this->request->getQuery(self::$localeParameter);
+
+		if ($locale !== '') {
+			return $locale;
+		}
+
+		return null;
 	}
 }
