@@ -62,10 +62,12 @@ class PrefixedTranslator implements Nette\Localization\ITranslator
 	/**
 	 * {@inheritdoc}
 	 */
-	public function translate($message, ...$parameters): string
+	public function translate($message, $count = null, $parameters = [], $domain = null, $locale = null)// @uncomment
+	//public function translate($message, ...$parameters): string
 	{
 		$this->translator->addPrefix($this->prefix);
-		$message = $this->translator->translate($message, ...$parameters);
+		$message = $this->translator->translate($message, $count, $parameters, $domain, $locale);
+		//$message = $this->translator->translate($message, ...$parameters);
 		$this->translator->removePrefix();
 		return $message;
 	}
