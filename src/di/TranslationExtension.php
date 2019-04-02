@@ -119,7 +119,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 				throw new Translette\Translation\InvalidArgumentException('Loader must implement interface "' . Symfony\Component\Translation\Loader\LoaderInterface::class . '".');
 			}
 
-			$loader = $builder->addDefinition($this->prefix('loader.' . $k1))
+			$loader = $builder->addDefinition($this->prefix('loader' . Nette\Utils\Strings::firstUpper($k1)))
 				->setFactory($v1);
 
 			$translator->addSetup('addLoader', [$k1, $loader]);
