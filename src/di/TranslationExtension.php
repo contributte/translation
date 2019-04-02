@@ -29,6 +29,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		],
 		'localeResolvers' => [
 			Translette\Translation\LocalesResolvers\Session::class,
+			Translette\Translation\LocalesResolvers\Router::class,
 			Translette\Translation\LocalesResolvers\Parameter::class,
 			Translette\Translation\LocalesResolvers\Header::class,
 		],

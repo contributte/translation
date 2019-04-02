@@ -14,9 +14,8 @@ use Translette;
 
 /**
  * @author Ales Wita
- * @author Filip Prochazka
  */
-class Parameter implements ResolverInterface
+class Router implements ResolverInterface
 {
 	use Nette\SmartObject;
 
@@ -26,13 +25,18 @@ class Parameter implements ResolverInterface
 	/** @var Nette\Http\IRequest */
 	private $request;
 
+	/** @var Nette\Routing\Router */
+	private $router;
+
 
 	/**
 	 * @param Nette\Http\IRequest $request
+	 * @param Nette\Routing\Router $router
 	 */
-	public function __construct(Nette\Http\IRequest $request)
+	public function __construct(Nette\Http\IRequest $request, Nette\Routing\Router $router)
 	{
 		$this->request = $request;
+		$this->router = $router;
 	}
 
 
@@ -42,6 +46,12 @@ class Parameter implements ResolverInterface
 	 */
 	public function resolve(Translette\Translation\Translator $translator): ?string
 	{
-		return $this->request->getQuery(self::$parameter);
+		$match = $this->router->match($this->request);
+
+		if ($match !== null && array_key_exists(self::$parameter, $match)) {
+			return $match[self::$parameter];
+		}
+
+		return null;
 	}
 }
