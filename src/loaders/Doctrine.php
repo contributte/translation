@@ -16,19 +16,16 @@ use Translette;
 /**
  * @author Ales Wita
  */
-class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implements DbInterface
+class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implements DatabaseInterface
 {
-	/** @var string */
-	public static $columnId = 'id';
-
-	/** @var string */
-	public static $columnLocale = 'locale';
-
-	/** @var string */
-	public static $columnMessage = 'message';
-
-	/** @var string */
-	public static $columnTimestamp = 'timestamp';
+	/** @var array */
+	public $defaults = [
+		'entity' => null,
+		'id' => 'id',
+		'locale' => 'locale',
+		'message' => 'message',
+		'timestamp' => 'timestamp',
+	];
 
 	/** @var \Doctrine\ORM\Decorator\EntityManagerDecorator $em */
 	private $em;
@@ -54,37 +51,23 @@ class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implemen
 			throw new Translette\Translation\InvalidArgumentException('Something wrong with resource file "' . $resource . '".');
 		}
 
-		$configuration = Nette\Neon\Neon::decode($content);
+		$config = Nette\DI\Config\Helpers::merge($this->defaults, Nette\Neon\Neon::decode($content));
 
-		if (!array_key_exists('entity', $configuration)) {
-			$configuration['entity'] = $domain;
-		}
-
-		if (!array_key_exists('id', $configuration)) {
-			$configuration['id'] = self::$columnId;
-		}
-
-		if (!array_key_exists('locale', $configuration)) {
-			$configuration['locale'] = self::$columnLocale;
-		}
-
-		if (!array_key_exists('message', $configuration)) {
-			$configuration['message'] = self::$columnMessage;
-		}
-
-		if (!array_key_exists('timestamp', $configuration)) {
-			$configuration['timestamp'] = self::$columnTimestamp;
+		if ($config['entity'] === null) {
+			$config['entity'] = $domain;
 		}
 
 		$messages = [];
-		$repository = $this->em->getRepository($domain);
+		$repository = $this->em->getRepository($config['entity']);
 
-		foreach ($repository->findBy([$configuration['locale'] => $locale]) as $v1) {
-			$messages[$v1->{$configuration['id']}] = $v1->{$configuration['message']};
+		foreach ($repository->findBy([$config['locale'] => $locale]) as $v1) {
+			// @todo throws exception if id already exists?
+
+			$messages[$v1->{$config['id']}] = $v1->{$config['message']};
 		}
 
-		$catalogue = parent::load($messages, $locale, $domain);
-		$catalogue->addResource(new Symfony\Component\Config\Resource\FileResource($resource)); // @todo
+		$catalogue = parent::load($messages, $locale, $config['entity']);
+		$catalogue->addResource(new Translette\Translation\Resources\Database($resource, $this->getTimestamp($locale, $config, $repository)));
 
 		return $catalogue;
 	}
@@ -92,11 +75,19 @@ class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implemen
 
 	/**
 	 * {@inheritdoc}
-	 *
-	 * @todo
 	 */
-	public function getUpdateTimestamp(string $locale): int
+	public function getTimestamp(...$parameters): int
 	{
+		$locale = $parameters[0];
+		$config = $parameters[1];
+		$repository = $parameters[2];
+
+		$timestamp = $repository->findOneBy([$config['locale'] => $locale], [$config['timestamp'] => 'DESC']);
+
+		if ($timestamp !== null) {
+			return $timestamp->{$config['timestamp']};
+		}
+
 		return 0;
 	}
 }

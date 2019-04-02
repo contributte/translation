@@ -14,11 +14,11 @@ use Symfony;
 /**
  * @author Ales Wita
  */
-interface DbInterface extends Symfony\Component\Translation\Loader\LoaderInterface
+interface DatabaseInterface extends Symfony\Component\Translation\Loader\LoaderInterface
 {
 	/**
-	 * @param string $locale
+	 * @param mixed $parameters
 	 * @return int
 	 */
-	function getUpdateTimestamp(string $locale): int;
+	function getTimestamp(...$parameters): int;
 }
