@@ -11,4 +11,4 @@ $ composer require translette/translation
 ```
 
 ## Documentation
-[Documentation you can find here.](https://github.com/translette/translation/.docs/readme.md)
+[Documentation you can find here.](https://github.com/translette/translation/tree/master/.docs)
