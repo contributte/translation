@@ -21,5 +21,5 @@ interface ResolverInterface
 	 * @param Translette\Translation\Translator $translator
 	 * @return string|null
 	 */
-	public function resolve(Translette\Translation\Translator $translator): ?string;
+	function resolve(Translette\Translation\Translator $translator): ?string;
 }
