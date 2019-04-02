@@ -55,14 +55,14 @@ class BasePresenter extends Nette\Application\UI\Presenter
 		$this->translatorSessionResolver->setLocale($locale);
 		$this->redirect('this');
 	}
-	
-	
+
+
 	public function renderDefault(): void
 	{
 		$this->translator->translate('domain.message');
-		
+
 		$prefixedTranslator = $this->translator->createPrefixedTranslator('domain');
-		
+
 		$prefixedTranslator->translate('message');
 	}
 }
@@ -78,7 +78,7 @@ class BasePresenter extends Nette\Application\UI\Presenter
 
 {translator domain}
 	{_message}
-	
+
 	{_message, $count}
 
 	{_message, [name => "Ales"]}
@@ -94,10 +94,9 @@ messages.en_US.neon
 \______/       \__/
    |            |
  domain     extension
- ```
- 
+```
+
 ```
 prefix:
 	for: "message" # messages.prefix.for
-
 ```
