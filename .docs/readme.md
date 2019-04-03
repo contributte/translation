@@ -6,24 +6,24 @@
 - [Presenter - example](#presenter)
 - [Latte - example](#latte)
 - [Neon - example](#neon)
+- [Database loaders](/database.md)
 
 ## Usage
+Added translation extension.
 ```neon
 extensions:
 	translation: Translette\Translation\DI\TranslationExtension
 ```
 
 ## Configuration
+Basic configuration.
 ```neon
 translation:
 	locales:
 		whitelist: [en, cs, sk]
 		default: en
-	loader:
-		txt: My\Custom\Loader
 	dirs:
 		- %appDir%/lang
-		- %appDir%/admin/lang
 ```
 
 ## Presenter
@@ -83,9 +83,13 @@ class BasePresenter extends Nette\Application\UI\Presenter
 
 	{_message, [name => "Ales"]}
 {/translator}
+
+{var $myMessage = 'domain.message'}
+{$myMessage|translate}
 ```
 
 ## Neon
+File name format.
 ```
         locale
           |
@@ -96,7 +100,8 @@ messages.en_US.neon
  domain     extension
 ```
 
-```
+File content format.
+```neon
 prefix:
 	for: "message" # messages.prefix.for
 ```
