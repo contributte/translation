@@ -16,7 +16,7 @@ use Translette;
 /**
  * @author Ales Wita
  */
-class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implements DatabaseInterface
+class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implements Symfony\Component\Translation\Loader\LoaderInterface
 {
 	/** @var array */
 	public $defaults = [
