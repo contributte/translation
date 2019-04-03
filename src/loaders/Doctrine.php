@@ -81,15 +81,14 @@ class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implemen
 
 
 	/**
-	 * {@inheritdoc}
+	 * @param string $resource
+	 * @param string $locale
+	 * @param array $config
+	 * @param \Doctrine\ORM\EntityRepository $repository
+	 * @return int
 	 */
-	public function getTimestamp(...$parameters): int
+	public function getTimestamp(string $resource, string $locale, array $config, \Doctrine\ORM\EntityRepository $repository): int
 	{
-		$resource = $parameters[0];
-		$locale = $parameters[1];
-		$config = $parameters[2];
-		$repository = $parameters[3];
-
 		$resourceTimestamp = filemtime($resource);
 
 		if ($resourceTimestamp === false) {
@@ -98,7 +97,7 @@ class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implemen
 
 		$entityTimestamp = $repository->findOneBy([$config['locale'] => $locale], [$config['timestamp'] => 'DESC']);
 
-		if ($resourceTimestamp >= $entityTimestamp) {
+		if ($resourceTimestamp >= $entityTimestamp->{$config['timestamp']}) {
 			return $resourceTimestamp;
 		}
 
