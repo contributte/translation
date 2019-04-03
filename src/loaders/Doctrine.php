@@ -19,7 +19,7 @@ use Translette;
 class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implements Symfony\Component\Translation\Loader\LoaderInterface
 {
 	/** @var array */
-	public $defaults = [
+	private $defaults = [
 		'entity' => null,
 		'id' => 'id',
 		'locale' => 'locale',
