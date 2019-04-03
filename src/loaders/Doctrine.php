@@ -19,7 +19,7 @@ use Translette;
 class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implements Symfony\Component\Translation\Loader\LoaderInterface
 {
 	/** @var array */
-	private $defaults = [
+	public $defaults = [
 		'entity' => null,
 		'id' => 'id',
 		'locale' => 'locale',
@@ -101,10 +101,6 @@ class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implemen
 			return $resourceTimestamp;
 		}
 
-		if ($entityTimestamp !== null) {
-			return $entityTimestamp->{$config['timestamp']};
-		}
-
-		return 0;
+		return $entityTimestamp->{$config['timestamp']};
 	}
 }
