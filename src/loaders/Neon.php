@@ -21,6 +21,8 @@ class Neon extends Symfony\Component\Translation\Loader\ArrayLoader implements S
 {
 	/**
 	 * {@inheritdoc}
+	 *
+	 * @throws Translette\Translation\InvalidArgumentException
 	 */
 	public function load($resource, $locale, $domain = 'messages')
 	{
