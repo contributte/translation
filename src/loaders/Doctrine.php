@@ -61,9 +61,14 @@ class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implemen
 		$repository = $this->em->getRepository($config['entity']);
 
 		foreach ($repository->findBy([$config['locale'] => $locale]) as $v1) {
-			// @todo throws exception if id already exists?
+			$id = $v1->{$config['id']};
+			$message = $v1->{$config['message']};
 
-			$messages[$v1->{$config['id']}] = $v1->{$config['message']};
+			if (array_key_exists($id, $messages)) {
+				throw new Translette\Translation\InvalidStateException('Id "' . $id . '" declared twice in "' . $config['entity'] . '" entity/domain.');
+			}
+
+			$messages[$id] = $message;
 		}
 
 		$catalogue = parent::load($messages, $locale, $config['entity']);
