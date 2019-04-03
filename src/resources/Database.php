@@ -49,6 +49,6 @@ class Database implements Symfony\Component\Config\Resource\SelfCheckingResource
 	 */
 	public function isFresh($timestamp)
 	{
-		return $this->timestamp < $timestamp ? true : false;
+		return $this->timestamp <= $timestamp;
 	}
 }
