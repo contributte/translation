@@ -6,7 +6,7 @@
 - [Presenter - example](#presenter)
 - [Latte - example](#latte)
 - [Neon - example](#neon)
-- [Database loaders](/database.md)
+- [Database loaders](https://github.com/translette/translation/blob/master/.docs/database.md)
 
 ## Usage
 Added translation extension.
