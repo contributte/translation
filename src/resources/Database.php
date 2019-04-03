@@ -15,7 +15,7 @@ use Symfony;
 /**
  * @author Ales Wita
  */
-class Database implements Symfony\Component\Config\Resource\SelfCheckingResourceInterface
+class Database implements Symfony\Component\Config\Resource\SelfCheckingResourceInterface, \Serializable
 {
 	/** @var string */
 	private $resource;
@@ -38,7 +38,7 @@ class Database implements Symfony\Component\Config\Resource\SelfCheckingResource
 	/**
 	 * {@inheritdoc}
 	 */
-	public function __toString()
+	public function __toString(): string
 	{
 		return $this->resource;
 	}
@@ -47,8 +47,39 @@ class Database implements Symfony\Component\Config\Resource\SelfCheckingResource
 	/**
 	 * {@inheritdoc}
 	 */
-	public function isFresh($timestamp)
+	public function isFresh($timestamp): bool
 	{
 		return $this->timestamp <= $timestamp;
+	}
+
+
+	/**
+	 * @internal
+	 *
+	 * {@inheritdoc}
+	 */
+	public function serialize()
+	{
+		return serialize($this->resource);
+	}
+
+
+	/**
+	 * @internal
+	 *
+	 * {@inheritdoc}
+	 */
+	public function unserialize($serialized)
+	{
+		$this->resource = unserialize($serialized);
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getResource(): string
+	{
+		return $this->resource;
 	}
 }
