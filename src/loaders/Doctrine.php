@@ -73,7 +73,7 @@ class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implemen
 			$messages[$id] = $message;
 		}
 
-		$catalogue = parent::load($messages, $locale, $config['entity']);
+		$catalogue = parent::load($messages, $locale, $domain);
 		$catalogue->addResource(new Translette\Translation\Resources\Database($resource, $this->getTimestamp($resource, $locale, $config, $repository)));
 
 		return $catalogue;
