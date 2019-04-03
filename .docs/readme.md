@@ -27,6 +27,7 @@ translation:
 ```
 
 ## Presenter
+How to use in backend.
 ```php
 <?php
 
@@ -69,6 +70,7 @@ class BasePresenter extends Nette\Application\UI\Presenter
 ```
 
 ## Latte
+How to use in frontend.
 ```latte
 {_domain.message}
 
