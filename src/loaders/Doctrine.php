@@ -97,7 +97,7 @@ class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implemen
 
 		$entityTimestamp = $repository->findOneBy([$config['locale'] => $locale], [$config['timestamp'] => 'DESC']);
 
-		if ($resourceTimestamp >= $entityTimestamp->{$config['timestamp']}) {
+		if ($entityTimestamp === null || $resourceTimestamp >= $entityTimestamp->{$config['timestamp']}) {
 			return $resourceTimestamp;
 		}
 
