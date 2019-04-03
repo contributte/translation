@@ -74,7 +74,7 @@ class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implemen
 		}
 
 		$catalogue = parent::load($messages, $locale, $config['entity']);
-		$catalogue->addResource(new Translette\Translation\Resources\Database($resource, $this->getTimestamp($locale, $config, $repository)));
+		$catalogue->addResource(new Translette\Translation\Resources\Database($resource, $this->getTimestamp($resource, $locale, $config, $repository)));
 
 		return $catalogue;
 	}
@@ -85,14 +85,25 @@ class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implemen
 	 */
 	public function getTimestamp(...$parameters): int
 	{
-		$locale = $parameters[0];
-		$config = $parameters[1];
-		$repository = $parameters[2];
+		$resource = $parameters[0];
+		$locale = $parameters[1];
+		$config = $parameters[2];
+		$repository = $parameters[3];
 
-		$timestamp = $repository->findOneBy([$config['locale'] => $locale], [$config['timestamp'] => 'DESC']);
+		$resourceTimestamp = filemtime($resource);
 
-		if ($timestamp !== null) {
-			return $timestamp->{$config['timestamp']};
+		if ($resourceTimestamp === false) {
+			$resourceTimestamp = 0;
+		}
+
+		$entityTimestamp = $repository->findOneBy([$config['locale'] => $locale], [$config['timestamp'] => 'DESC']);
+
+		if ($resourceTimestamp >= $entityTimestamp) {
+			return $resourceTimestamp;
+		}
+
+		if ($entityTimestamp !== null) {
+			return $entityTimestamp->{$config['timestamp']};
 		}
 
 		return 0;
