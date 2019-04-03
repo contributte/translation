@@ -42,6 +42,8 @@ class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implemen
 
 	/**
 	 * {@inheritdoc}
+	 *
+	 * @throws Translette\Translation\InvalidArgumentException|Translette\Translation\InvalidStateException
 	 */
 	public function load($resource, $locale, $domain = 'messages')
 	{
