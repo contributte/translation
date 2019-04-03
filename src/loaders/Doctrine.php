@@ -53,7 +53,7 @@ class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implemen
 			throw new Translette\Translation\InvalidArgumentException('Something wrong with resource file "' . $resource . '".');
 		}
 
-		$config = Nette\DI\Config\Helpers::merge($this->defaults, Nette\Neon\Neon::decode($content));
+		$config = Nette\DI\Config\Helpers::merge(Nette\Neon\Neon::decode($content), $this->defaults);
 
 		if ($config['entity'] === null) {
 			$config['entity'] = $domain;
