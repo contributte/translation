@@ -31,3 +31,11 @@ class InvalidArgumentException extends Exception
 class FileNotFoundException extends Exception
 {
 }
+
+
+/**
+ * @author Ales Wita
+ */
+class InvalidStateException extends Exception
+{
+}
