@@ -59,6 +59,8 @@ class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implemen
 		$config = $processor->process($schema, Nette\Neon\Neon::decode($content));
 
 		$messages = [];
+
+		/** @var \Doctrine\ORM\EntityRepository $repository */
 		$repository = $this->em->getRepository($config->entity);
 
 		foreach ($repository->findBy([$config->locale => $locale]) as $v1) {
