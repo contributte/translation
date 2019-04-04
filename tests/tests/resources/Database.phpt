@@ -25,7 +25,7 @@ class Database extends Translette\Translation\Tests\AbstractTest
 
 		Tester\Assert::same('resource', $resource->__toString());
 		Tester\Assert::true($resource->isFresh(11));
-		Tester\Assert::false($resource->isFresh(10));
+		Tester\Assert::true($resource->isFresh(10));
 		Tester\Assert::false($resource->isFresh(9));
 	}
 }
