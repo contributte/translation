@@ -16,6 +16,8 @@ use Translette;
 
 
 /**
+ * @property      \stdClass $config
+ *
  * @author Ales Wita
  * @author Filip Prochazka
  */
