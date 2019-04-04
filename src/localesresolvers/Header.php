@@ -44,6 +44,7 @@ class Header implements ResolverInterface
 	 */
 	public function resolve(Translette\Translation\Translator $translator): ?string
 	{
+		/** @var string[] $langs */
 		$langs = [];
 
 		foreach ($translator->availableLocales as $v1) {
