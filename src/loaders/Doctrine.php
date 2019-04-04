@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace Translette\Translation\Loaders;
 
 use Nette;
+use Nette\Schema\Expect;
 use Symfony;
 use Translette;
 
@@ -18,15 +19,6 @@ use Translette;
  */
 class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implements Symfony\Component\Translation\Loader\LoaderInterface
 {
-	/** @var array */
-	public $defaults = [
-		'entity' => null,
-		'id' => 'id',
-		'locale' => 'locale',
-		'message' => 'message',
-		'timestamp' => 'timestamp',
-	];
-
 	/** @var \Doctrine\ORM\Decorator\EntityManagerDecorator $em */
 	private $em;
 
@@ -53,21 +45,28 @@ class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implemen
 			throw new Translette\Translation\InvalidArgumentException('Something wrong with resource file "' . $resource . '".');
 		}
 
-		$config = Nette\DI\Config\Helpers::merge(Nette\Neon\Neon::decode($content), $this->defaults);
+		$schema = Expect::structure([
+			'entity' => Expect::string($domain),
+			'id' => Expect::string('id'),
+			'locale' => Expect::string('locale'),
+			'message' => Expect::string('message'),
+			'timestamp' => Expect::string('timestamp'),
+		]);
 
-		if ($config['entity'] === null) {
-			$config['entity'] = $domain;
-		}
+		$processor = new Nette\Schema\Processor;
+
+		/** @var \stdClass $config */
+		$config = $processor->process($schema, Nette\Neon\Neon::decode($content));
 
 		$messages = [];
-		$repository = $this->em->getRepository($config['entity']);
+		$repository = $this->em->getRepository($config->entity);
 
-		foreach ($repository->findBy([$config['locale'] => $locale]) as $v1) {
-			$id = $v1->{$config['id']};
-			$message = $v1->{$config['message']};
+		foreach ($repository->findBy([$config->locale => $locale]) as $v1) {
+			$id = $v1->{$config->id};
+			$message = $v1->{$config->message};
 
 			if (array_key_exists($id, $messages)) {
-				throw new Translette\Translation\InvalidStateException('Id "' . $id . '" declared twice in "' . $config['entity'] . '" entity/domain.');
+				throw new Translette\Translation\InvalidStateException('Id "' . $id . '" declared twice in "' . $config->entity . '" entity/domain.');
 			}
 
 			$messages[$id] = $message;
@@ -83,11 +82,11 @@ class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implemen
 	/**
 	 * @param string $resource
 	 * @param string $locale
-	 * @param array $config
+	 * @param \stdClass $config
 	 * @param \Doctrine\ORM\EntityRepository $repository
 	 * @return int
 	 */
-	public function getTimestamp(string $resource, string $locale, array $config, \Doctrine\ORM\EntityRepository $repository): int
+	public function getTimestamp(string $resource, string $locale, \stdClass $config, \Doctrine\ORM\EntityRepository $repository): int
 	{
 		$resourceTimestamp = filemtime($resource);
 
@@ -95,12 +94,12 @@ class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implemen
 			$resourceTimestamp = 0;
 		}
 
-		$entityTimestamp = $repository->findOneBy([$config['locale'] => $locale], [$config['timestamp'] => 'DESC']);
+		$entityTimestamp = $repository->findOneBy([$config->locale => $locale], [$config->timestamp => 'DESC']);
 
-		if ($entityTimestamp === null || $resourceTimestamp >= $entityTimestamp->{$config['timestamp']}) {
+		if ($entityTimestamp === null || $resourceTimestamp >= $entityTimestamp->{$config->timestamp}) {
 			return $resourceTimestamp;
 		}
 
-		return $entityTimestamp->{$config['timestamp']};
+		return $entityTimestamp->{$config->timestamp};
 	}
 }
