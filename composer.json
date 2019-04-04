@@ -26,6 +26,7 @@
 		"nette/bootstrap": "^3.0",
 		"nette/robot-loader": " ^3.0",
 		"nette/tester": "^2.2",
+		"doctrine/orm": "^2.6",
 		"tracy/tracy": "^2.6",
 		"mockery/mockery": "^1.2"
 	},
