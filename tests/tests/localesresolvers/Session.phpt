@@ -14,8 +14,6 @@ use Translette;
 
 $container = require __DIR__ . '/../../bootstrap.php';
 
-Tester\Environment::bypassFinals();
-
 
 /**
  * @author Ales Wita
@@ -41,7 +39,7 @@ class Session extends Translette\Translation\Tests\AbstractTest
 	 */
 	private function resolve(?string $locale, array $availableLocales): ?string
 	{
-		$responseMock = \Mockery::mock(Nette\Http\Response::class);
+		$responseMock = \Mockery::mock(Nette\Http\IResponse::class);
 		$sessionMock = \Mockery::mock(Nette\Http\Session::class);
 		$sessionSection = new Nette\Http\SessionSection($sessionMock, Translette\Translation\LocalesResolvers\Session::class);
 
