@@ -8,9 +8,9 @@ declare(strict_types=1);
 
 namespace Contributte\Translation\Tests\Tests\DI;
 
+use Contributte;
 use Nette;
 use Tester;
-use Contributte;
 
 $container = require __DIR__ . '/../../bootstrap.php';
 

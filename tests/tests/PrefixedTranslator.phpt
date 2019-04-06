@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace Contributte\Translation\Tests\Tests;
 
-use Tester;
 use Contributte;
+use Tester;
 
 $container = require __DIR__ . '/../bootstrap.php';
 

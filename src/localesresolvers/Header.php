@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace Contributte\Translation\LocalesResolvers;
 
-use Nette;
 use Contributte;
+use Nette;
 
 
 /**

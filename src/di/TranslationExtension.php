@@ -8,11 +8,11 @@ declare(strict_types=1);
 
 namespace Contributte\Translation\DI;
 
+use Contributte;
 use Nette;
 use Nette\Schema\Expect;
 use Symfony;
 use Tracy;
-use Contributte;
 
 
 /**

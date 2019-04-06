@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace Contributte\Translation\Latte;
 
-use Latte;
 use Contributte;
+use Latte;
 
 
 /**

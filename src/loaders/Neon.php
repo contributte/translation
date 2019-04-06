@@ -8,9 +8,9 @@ declare(strict_types=1);
 
 namespace Contributte\Translation\Loaders;
 
+use Contributte;
 use Nette;
 use Symfony;
-use Contributte;
 
 
 /**

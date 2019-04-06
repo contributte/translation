@@ -8,9 +8,9 @@ declare(strict_types=1);
 
 namespace Contributte\Translation\Tracy;
 
+use Contributte;
 use Nette;
 use Tracy;
-use Contributte;
 
 
 /**

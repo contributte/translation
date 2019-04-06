@@ -8,10 +8,10 @@ declare(strict_types=1);
 
 namespace Contributte\Translation\Loaders;
 
+use Contributte;
 use Nette;
 use Nette\Schema\Expect;
 use Symfony;
-use Contributte;
 
 
 /**
