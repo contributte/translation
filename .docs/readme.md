@@ -6,13 +6,13 @@
 - [Presenter - example](#presenter)
 - [Latte - example](#latte)
 - [Neon - example](#neon)
-- [Database loaders](https://github.com/translette/translation/blob/master/.docs/database.md)
+- [Database loaders](https://github.com/contributte/translation/blob/master/.docs/database.md)
 
 ## Usage
 Added translation extension.
 ```neon
 extensions:
-	translation: Translette\Translation\DI\TranslationExtension
+	translation: Contributte\Translation\DI\TranslationExtension
 ```
 
 ## Configuration
@@ -36,7 +36,7 @@ declare(strict_types=1);
 namespace App;
 
 use Nette;
-use Translette;
+use Contributte;
 
 
 class BasePresenter extends Nette\Application\UI\Presenter
@@ -44,7 +44,7 @@ class BasePresenter extends Nette\Application\UI\Presenter
 	/** @var Nette\Localization\ITranslator @inject */
 	public $translator;
 
-	/** @var Translette\Translation\LocalesResolvers\Session @inject */
+	/** @var Contributte\Translation\LocalesResolvers\Session @inject */
 	public $translatorSessionResolver;
 
 

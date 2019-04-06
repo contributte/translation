@@ -1,12 +1,12 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation\Resources;
+namespace Contributte\Translation\Resources;
 
 use Symfony;
 

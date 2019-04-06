@@ -1,15 +1,15 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation\Tests\Tests;
+namespace Contributte\Translation\Tests\Tests;
 
 use Tester;
-use Translette;
+use Contributte;
 
 $container = require __DIR__ . '/../bootstrap.php';
 
@@ -17,7 +17,7 @@ $container = require __DIR__ . '/../bootstrap.php';
 /**
  * @author Ales Wita
  */
-class FallbackResolver extends Translette\Translation\Tests\AbstractTest
+class FallbackResolver extends Contributte\Translation\Tests\AbstractTest
 {
 	public function test01(): void
 	{
@@ -38,14 +38,14 @@ class FallbackResolver extends Translette\Translation\Tests\AbstractTest
 	 */
 	private function compute(?string $locale, array $fallbackLocales): array
 	{
-		$translatorMock = \Mockery::mock(Translette\Translation\Translator::class);
+		$translatorMock = \Mockery::mock(Contributte\Translation\Translator::class);
 
 		$translatorMock->shouldReceive('getAvailableLocales')
 			->once()
 			->withNoArgs()
 			->andReturn($fallbackLocales);
 
-		$resolver = new Translette\Translation\FallbackResolver;
+		$resolver = new Contributte\Translation\FallbackResolver;
 
 		$resolver->setFallbackLocales($fallbackLocales);
 

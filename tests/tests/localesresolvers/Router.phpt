@@ -1,16 +1,16 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation\Tests\Tests\LocalesResolvers;
+namespace Contributte\Translation\Tests\Tests\LocalesResolvers;
 
 use Nette;
 use Tester;
-use Translette;
+use Contributte;
 
 $container = require __DIR__ . '/../../bootstrap.php';
 
@@ -18,7 +18,7 @@ $container = require __DIR__ . '/../../bootstrap.php';
 /**
  * @author Ales Wita
  */
-class Router extends Translette\Translation\Tests\AbstractTest
+class Router extends Contributte\Translation\Tests\AbstractTest
 {
 	public function test01(): void
 	{
@@ -43,10 +43,10 @@ class Router extends Translette\Translation\Tests\AbstractTest
 		$routeListMock->shouldReceive('match')
 			->withArgs([$request])
 			->once()
-			->andReturn([Translette\Translation\LocalesResolvers\Parameter::$parameter => $locale]);
+			->andReturn([Contributte\Translation\LocalesResolvers\Parameter::$parameter => $locale]);
 
-		$resolver = new Translette\Translation\LocalesResolvers\Router($request, $routeListMock);
-		$translatorMock = \Mockery::mock(Translette\Translation\Translator::class);
+		$resolver = new Contributte\Translation\LocalesResolvers\Router($request, $routeListMock);
+		$translatorMock = \Mockery::mock(Contributte\Translation\Translator::class);
 
 		return $resolver->resolve($translatorMock);
 	}

@@ -1,19 +1,19 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation;
+namespace Contributte\Translation;
 
 use Nette;
-use Translette;
+use Contributte;
 
 
 /**
- * @property-read Translette\Translation\Translator $translator
+ * @property-read Contributte\Translation\Translator $translator
  * @property-read string $prefix
  *
  * @author Ales Wita
@@ -23,7 +23,7 @@ class PrefixedTranslator implements Nette\Localization\ITranslator
 {
 	use Nette\SmartObject;
 
-	/** @var Translette\Translation\Translator */
+	/** @var Contributte\Translation\Translator */
 	private $translator;
 
 	/** @var string */
@@ -31,7 +31,7 @@ class PrefixedTranslator implements Nette\Localization\ITranslator
 
 
 	/**
-	 * @param Translette\Translation\Translator $translator
+	 * @param Contributte\Translation\Translator $translator
 	 * @param string $prefix
 	 */
 	public function __construct(Translator $translator, string $prefix)
@@ -42,7 +42,7 @@ class PrefixedTranslator implements Nette\Localization\ITranslator
 
 
 	/**
-	 * @return Translette\Translation\Translator
+	 * @return Contributte\Translation\Translator
 	 */
 	public function getTranslator(): Translator
 	{

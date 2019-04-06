@@ -1,15 +1,15 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation;
+namespace Contributte\Translation;
 
 use Nette;
-use Translette;
+use Contributte;
 
 
 /**
@@ -36,7 +36,7 @@ class FallbackResolver
 
 
 	/**
-	 * @param Translette\Translation\Translator $translator
+	 * @param Contributte\Translation\Translator $translator
 	 * @param string $locale
 	 * @return array
 	 */

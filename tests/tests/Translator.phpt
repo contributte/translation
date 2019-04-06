@@ -1,16 +1,16 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation\Tests\Tests;
+namespace Contributte\Translation\Tests\Tests;
 
 use Nette;
 use Tester;
-use Translette;
+use Contributte;
 
 $container = require __DIR__ . '/../bootstrap.php';
 
@@ -18,14 +18,14 @@ $container = require __DIR__ . '/../bootstrap.php';
 /**
  * @author Ales Wita
  */
-class Translator extends Translette\Translation\Tests\AbstractTest
+class Translator extends Contributte\Translation\Tests\AbstractTest
 {
 	public function test01(): void
 	{
-		$translator = new Translette\Translation\Translator(new Translette\Translation\LocaleResolver, new Translette\Translation\FallbackResolver, 'en', __DIR__ . '/cacheDir', true);
+		$translator = new Contributte\Translation\Translator(new Contributte\Translation\LocaleResolver, new Contributte\Translation\FallbackResolver, 'en', __DIR__ . '/cacheDir', true);
 
-		Tester\Assert::true($translator->localeResolver instanceof Translette\Translation\LocaleResolver);
-		Tester\Assert::true($translator->fallbackResolver instanceof Translette\Translation\FallbackResolver);
+		Tester\Assert::true($translator->localeResolver instanceof Contributte\Translation\LocaleResolver);
+		Tester\Assert::true($translator->fallbackResolver instanceof Contributte\Translation\FallbackResolver);
 		Tester\Assert::same('en', $translator->defaultLocale);
 		Tester\Assert::same(__DIR__ . '/cacheDir', $translator->cacheDir);
 		Tester\Assert::true($translator->debug);
@@ -36,9 +36,9 @@ class Translator extends Translette\Translation\Tests\AbstractTest
 		Tester\Assert::same([], $translator->availableLocales);
 		Tester\Assert::same('en', $translator->locale);
 
-		new Translette\Translation\Tracy\Panel($translator);
+		new Contributte\Translation\Tracy\Panel($translator);
 
-		Tester\Assert::true($translator->tracyPanel instanceof Translette\Translation\Tracy\Panel);
+		Tester\Assert::true($translator->tracyPanel instanceof Contributte\Translation\Tracy\Panel);
 
 		$translator->setLocalesWhitelist(['en', 'cs']);
 
@@ -58,8 +58,8 @@ class Translator extends Translette\Translation\Tests\AbstractTest
 
 		$translator->setPrefix([]);
 
-		Tester\Assert::exception(function () use ($translator): void {$translator->removePrefix();}, Translette\Translation\InvalidArgumentException::class, 'Can not remove empty prefix.');
-		Tester\Assert::exception(function () use ($translator): void {$translator->removePrefix('unknown');}, Translette\Translation\InvalidArgumentException::class, 'Unknown "unknown" prefix.');
+		Tester\Assert::exception(function () use ($translator): void {$translator->removePrefix();}, Contributte\Translation\InvalidArgumentException::class, 'Can not remove empty prefix.');
+		Tester\Assert::exception(function () use ($translator): void {$translator->removePrefix('unknown');}, Contributte\Translation\InvalidArgumentException::class, 'Unknown "unknown" prefix.');
 
 
 		$translator->addResource('neon', __DIR__ . '/file.neon', 'en_US', 'domain');
@@ -76,7 +76,7 @@ class Translator extends Translette\Translation\Tests\AbstractTest
 		$configurator->setTempDirectory($this->container->getParameters()['tempDir'])
 			->addConfig([
 				'extensions' => [
-					'translation' => Translette\Translation\DI\TranslationExtension::class,
+					'translation' => Contributte\Translation\DI\TranslationExtension::class,
 				],
 				'translation' => [
 					'debug' => true,
@@ -91,7 +91,7 @@ class Translator extends Translette\Translation\Tests\AbstractTest
 
 		$container = $configurator->createContainer();
 
-		/** @var Translette\Translation\Translator $translator */
+		/** @var Contributte\Translation\Translator $translator */
 		$translator = $container->getByType(Nette\Localization\ITranslator::class);
 
 

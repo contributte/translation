@@ -1,15 +1,15 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation\LocalesResolvers;
+namespace Contributte\Translation\LocalesResolvers;
 
 use Nette;
-use Translette;
+use Contributte;
 
 
 /**
@@ -57,10 +57,10 @@ class Session implements ResolverInterface
 
 
 	/**
-	 * @param Translette\Translation\Translator $translator
+	 * @param Contributte\Translation\Translator $translator
 	 * @return string|null
 	 */
-	public function resolve(Translette\Translation\Translator $translator): ?string
+	public function resolve(Contributte\Translation\Translator $translator): ?string
 	{
 		if (!$this->session->isStarted() && $this->httpResponse->isSent()) {
 			trigger_error('The advice of session locale resolver is required but the session has not been started and headers had been already sent. Either start your sessions earlier or disabled the SessionResolver.', E_USER_WARNING);

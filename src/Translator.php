@@ -1,25 +1,25 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation;
+namespace Contributte\Translation;
 
 use Nette;
 use Symfony;
-use Translette;
+use Contributte;
 
 
 /**
- * @property-read Translette\Translation\LocaleResolver $localeResolver
- * @property-read Translette\Translation\FallbackResolver $fallbackResolver
+ * @property-read Contributte\Translation\LocaleResolver $localeResolver
+ * @property-read Contributte\Translation\FallbackResolver $fallbackResolver
  * @property-read string $defaultLocale
  * @property-read string|null $cacheDir
  * @property-read bool $debug
- * @property-read Translette\Translation\Tracy\Panel|null $tracyPanel
+ * @property-read Contributte\Translation\Tracy\Panel|null $tracyPanel
  * @property      array|null $localesWhitelist
  * @property      array $prefix
  * @property-read array $prefixTemp
@@ -35,10 +35,10 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	use Nette\SmartObject;
 	use KdybyTranslationBackCompatibilityTrait;
 
-	/** @var Translette\Translation\LocaleResolver */
+	/** @var Contributte\Translation\LocaleResolver */
 	private $localeResolver;
 
-	/** @var Translette\Translation\FallbackResolver */
+	/** @var Contributte\Translation\FallbackResolver */
 	private $fallbackResolver;
 
 	/** @var string */
@@ -50,7 +50,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/** @var bool */
 	private $debug;
 
-	/** @var Translette\Translation\Tracy\Panel|null */
+	/** @var Contributte\Translation\Tracy\Panel|null */
 	private $tracyPanel;
 
 	/** @var array|null */
@@ -67,8 +67,8 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
-	 * @param Translette\Translation\LocaleResolver $localeResolver
-	 * @param Translette\Translation\FallbackResolver $fallbackResolver
+	 * @param Contributte\Translation\LocaleResolver $localeResolver
+	 * @param Contributte\Translation\FallbackResolver $fallbackResolver
 	 * @param string $defaultLocale
 	 * @param string|null $cacheDir
 	 * @param bool $debug
@@ -88,7 +88,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
-	 * @return Translette\Translation\LocaleResolver
+	 * @return Contributte\Translation\LocaleResolver
 	 */
 	public function getLocaleResolver(): LocaleResolver
 	{
@@ -97,7 +97,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
-	 * @return Translette\Translation\FallbackResolver
+	 * @return Contributte\Translation\FallbackResolver
 	 */
 	public function getFallbackResolver(): FallbackResolver
 	{
@@ -220,7 +220,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/**
 	 * @param string|null $string
 	 * @return self
-	 * @throws Translette\Translation\InvalidArgumentException
+	 * @throws Contributte\Translation\InvalidArgumentException
 	 */
 	public function removePrefix(string $string = null): self
 	{
@@ -256,7 +256,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 	/**
 	 * @param string $prefix
-	 * @return Translette\Translation\PrefixedTranslator
+	 * @return Contributte\Translation\PrefixedTranslator
 	 */
 	public function createPrefixedTranslator(string $prefix): PrefixedTranslator
 	{

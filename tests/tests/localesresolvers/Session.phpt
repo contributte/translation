@@ -1,16 +1,16 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation\Tests\Tests\LocalesResolvers;
+namespace Contributte\Translation\Tests\Tests\LocalesResolvers;
 
 use Nette;
 use Tester;
-use Translette;
+use Contributte;
 
 $container = require __DIR__ . '/../../bootstrap.php';
 
@@ -18,7 +18,7 @@ $container = require __DIR__ . '/../../bootstrap.php';
 /**
  * @author Ales Wita
  */
-class Session extends Translette\Translation\Tests\AbstractTest
+class Session extends Contributte\Translation\Tests\AbstractTest
 {
 	public function test01(): void
 	{
@@ -41,15 +41,15 @@ class Session extends Translette\Translation\Tests\AbstractTest
 	{
 		$responseMock = \Mockery::mock(Nette\Http\IResponse::class);
 		$sessionMock = \Mockery::mock(Nette\Http\Session::class);
-		$sessionSection = new Nette\Http\SessionSection($sessionMock, Translette\Translation\LocalesResolvers\Session::class);
+		$sessionSection = new Nette\Http\SessionSection($sessionMock, Contributte\Translation\LocalesResolvers\Session::class);
 
 		$sessionMock->shouldReceive('getSection')
 			->once()
-			->withArgs([Translette\Translation\LocalesResolvers\Session::class])
+			->withArgs([Contributte\Translation\LocalesResolvers\Session::class])
 			->andReturn($sessionSection);
 
-		$resolver = new Translette\Translation\LocalesResolvers\Session($responseMock, $sessionMock);
-		$translatorMock = \Mockery::mock(Translette\Translation\Translator::class);
+		$resolver = new Contributte\Translation\LocalesResolvers\Session($responseMock, $sessionMock);
+		$translatorMock = \Mockery::mock(Contributte\Translation\Translator::class);
 
 		$translatorMock->shouldReceive('getAvailableLocales')
 			->once()

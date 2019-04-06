@@ -1,15 +1,15 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation;
+namespace Contributte\Translation;
 
 use Nette;
-use Translette;
+use Contributte;
 
 
 /**
@@ -36,7 +36,7 @@ class LocaleResolver
 
 
 	/**
-	 * @param Translette\Translation\LocalesResolvers\ResolverInterface $resolver
+	 * @param Contributte\Translation\LocalesResolvers\ResolverInterface $resolver
 	 * @return self
 	 */
 	public function addResolver(LocalesResolvers\ResolverInterface $resolver): self
@@ -47,12 +47,12 @@ class LocaleResolver
 
 
 	/**
-	 * @param Translette\Translation\Translator $translator
+	 * @param Contributte\Translation\Translator $translator
 	 * @return string
 	 */
 	public function resolve(Translator $translator): string
 	{
-		/** @var Translette\Translation\LocalesResolvers\ResolverInterface $v1 */
+		/** @var Contributte\Translation\LocalesResolvers\ResolverInterface $v1 */
 		foreach ($this->resolvers as $v1) {
 			$locale = $v1->resolve($translator);
 

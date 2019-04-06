@@ -1,16 +1,16 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation\Tests\Tests\LocalesResolvers;
+namespace Contributte\Translation\Tests\Tests\LocalesResolvers;
 
 use Nette;
 use Tester;
-use Translette;
+use Contributte;
 
 $container = require __DIR__ . '/../../bootstrap.php';
 
@@ -18,7 +18,7 @@ $container = require __DIR__ . '/../../bootstrap.php';
 /**
  * @author Ales Wita
  */
-class Parameter extends Translette\Translation\Tests\AbstractTest
+class Parameter extends Contributte\Translation\Tests\AbstractTest
 {
 	public function test01(): void
 	{
@@ -36,10 +36,10 @@ class Parameter extends Translette\Translation\Tests\AbstractTest
 	 */
 	private function resolve(?string $locale): ?string
 	{
-		$request = new Nette\Http\Request(new Nette\Http\UrlScript('https://www.example.com/?' . Translette\Translation\LocalesResolvers\Parameter::$parameter . '=' . $locale));
+		$request = new Nette\Http\Request(new Nette\Http\UrlScript('https://www.example.com/?' . Contributte\Translation\LocalesResolvers\Parameter::$parameter . '=' . $locale));
 
-		$resolver = new Translette\Translation\LocalesResolvers\Parameter($request);
-		$translatorMock = \Mockery::mock(Translette\Translation\Translator::class);
+		$resolver = new Contributte\Translation\LocalesResolvers\Parameter($request);
+		$translatorMock = \Mockery::mock(Contributte\Translation\Translator::class);
 
 		return $resolver->resolve($translatorMock);
 	}
@@ -49,8 +49,8 @@ class Parameter extends Translette\Translation\Tests\AbstractTest
 	{
 		$request = new Nette\Http\Request(new Nette\Http\UrlScript('https://www.example.com'));
 
-		$resolver = new Translette\Translation\LocalesResolvers\Parameter($request);
-		$translatorMock = \Mockery::mock(Translette\Translation\Translator::class);
+		$resolver = new Contributte\Translation\LocalesResolvers\Parameter($request);
+		$translatorMock = \Mockery::mock(Contributte\Translation\Translator::class);
 
 		Tester\Assert::null($resolver->resolve($translatorMock));
 	}

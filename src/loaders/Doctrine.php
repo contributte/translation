@@ -1,17 +1,17 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation\Loaders;
+namespace Contributte\Translation\Loaders;
 
 use Nette;
 use Nette\Schema\Expect;
 use Symfony;
-use Translette;
+use Contributte;
 
 
 /**
@@ -35,14 +35,14 @@ class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implemen
 	/**
 	 * {@inheritdoc}
 	 *
-	 * @throws Translette\Translation\InvalidArgumentException|Translette\Translation\InvalidStateException
+	 * @throws Contributte\Translation\InvalidArgumentException|Contributte\Translation\InvalidStateException
 	 */
 	public function load($resource, $locale, $domain = 'messages')
 	{
 		$content = @file_get_contents($resource); // @ -> prevent E_WARNING and thrown an exception
 
 		if ($content === false) {
-			throw new Translette\Translation\InvalidArgumentException('Something wrong with resource file "' . $resource . '".');
+			throw new Contributte\Translation\InvalidArgumentException('Something wrong with resource file "' . $resource . '".');
 		}
 
 		$schema = Expect::structure([
@@ -68,14 +68,14 @@ class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implemen
 			$message = $v1->{$config->message};
 
 			if (array_key_exists($id, $messages)) {
-				throw new Translette\Translation\InvalidStateException('Id "' . $id . '" declared twice in "' . $config->entity . '" entity/domain.');
+				throw new Contributte\Translation\InvalidStateException('Id "' . $id . '" declared twice in "' . $config->entity . '" entity/domain.');
 			}
 
 			$messages[$id] = $message;
 		}
 
 		$catalogue = parent::load($messages, $locale, $domain);
-		$catalogue->addResource(new Translette\Translation\Resources\Database($resource, $this->getTimestamp($resource, $locale, $config, $repository)));
+		$catalogue->addResource(new Contributte\Translation\Resources\Database($resource, $this->getTimestamp($resource, $locale, $config, $repository)));
 
 		return $catalogue;
 	}

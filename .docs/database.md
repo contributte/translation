@@ -20,7 +20,7 @@ Added loader to translation configuration.
 ```neon
 translation:
 	loaders:
-		doctrine: Translette\Translation\Loaders\Doctrine
+		doctrine: Contributte\Translation\Loaders\Doctrine
 ```
 
 Entity example.

@@ -1,14 +1,14 @@
-# Translette/Translation
+# Contributte/Translation
 Symfony/Translation integration for [Nette Framework](https://nette.org).
 
-[![Build Status](https://travis-ci.org/translette/translation.svg?branch=master)](https://travis-ci.org/translette/translation)
-[![Coverage Status](https://coveralls.io/repos/github/translette/translation/badge.svg?branch=master)](https://coveralls.io/github/translette/translation?branch=master)
+[![Build Status](https://travis-ci.org/contributte/translation.svg?branch=master)](https://travis-ci.org/contributte/translation)
+[![Coverage Status](https://coveralls.io/repos/github/contributte/translation/badge.svg?branch=master)](https://coveralls.io/github/contributte/translation?branch=master)
 
 ## Installation
-The best way to install Translette/Translation is using [Composer](http://getcomposer.org/):
+The best way to install Contributte/Translation is using [Composer](http://getcomposer.org/):
 ```sh
-$ composer require translette/translation
+$ composer require contributte/translation
 ```
 
 ## Documentation
-[Documentation you can find here.](https://github.com/translette/translation/tree/master/.docs)
+[Documentation you can find here.](https://github.com/contributte/translation/tree/master/.docs)
