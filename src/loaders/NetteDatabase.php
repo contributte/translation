@@ -60,7 +60,7 @@ class NetteDatabase extends Symfony\Component\Translation\Loader\ArrayLoader imp
 
 		$messages = [];
 
-		foreach ($this->connection->query('SELECT ? AS `id`, ? AS `locale`, ? AS `message`, ? AS `timestamp` FROM ? WHERE ?', $this->connection::literal($config->id), $this->connection::literal($config->locale), $this->connection::literal($config->message), $this->connection::literal($config->timestamp), $this->connection::literal($config->table), $this->connection::literal('?', [$config->locale => $locale]))->fetchAll() as $v1) {
+		foreach ($this->connection->query('SELECT ? AS `id`, ? AS `locale`, ? AS `message` FROM ? WHERE ?', $this->connection::literal($config->id), $this->connection::literal($config->locale), $this->connection::literal($config->message), $this->connection::literal($config->table), $this->connection::literal('?', [$config->locale => $locale]))->fetchAll() as $v1) {
 			if (array_key_exists($v1->id, $messages)) {
 				throw new Contributte\Translation\InvalidStateException('Id "' . $v1->id . '" declared twice in "' . $config->table . '" table/domain.');
 			}
