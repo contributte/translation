@@ -77,7 +77,7 @@ class NetteDatabase extends Contributte\Translation\Tests\AbstractTest
 
 		$connectionMock->shouldReceive('literal')
 			->once()
-			->withArgs( ['?', [$columnLocale => $locale]]);
+			->withArgs(['?', [$columnLocale => $locale]]);
 
 		$connectionMock->shouldReceive('query')
 			->once()
