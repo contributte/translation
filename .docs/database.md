@@ -1,19 +1,19 @@
 # Database loaders
-Package included database loader for **[Doctrine 2](https://www.doctrine-project.org/)**.
+Package included database loader for **[Doctrine 2](https://www.doctrine-project.org/)** and **[Nette Database 3](https://doc.nette.org/cs/3.0/database)**.
 
 ## Content
 - [Doctrine - how to configure](#doctrine)
+- [Nette Database - how to configure](#doctrine)
 - [Bugs - known bugs](#bugs)
 
 ## Doctrine
-You must create a file with specific format in scanned dirs like as **MyEntity.en_US.doctrine**. All parameters are optional, but file must be created.
+You must create a file with specific format in scanned dirs like as **messages.en_US.doctrine**. All parameters are optional, but file must be created.
 
 ```neon
-entity: App\Entity\Translations # if you specify entity key, MyEntity from file name will be ignored
+table: "My\Entity" # if you specify entity key, "messages" from file name will be ignored
 id: "id" # id column name, default is "id"
 locale: "locale" # locale column name, default is "locale"
 message: "message" # message column name, default is "message"
-timestamp: "timestamp" # timestamp column name, default is "timestamp"
 ```
 
 Added loader to translation configuration.
@@ -40,12 +40,11 @@ use Nette;
  * @property-read string $id
  * @property-read string $locale
  * @property-read string $message
- * @property-read int $timestamp
  *
  * @ORM\Entity
- * @ORM\Table(name="translations")
+ * @ORM\Table(name="messages")
  */
-class Translations
+class Messages
 {
 	use Nette\SmartObject;
 
@@ -78,13 +77,6 @@ class Translations
 	 * @ORM\Column(type="string", nullable=false)
 	 */
 	private $message;
-
-	/**
-	 * @var int
-	 *
-	 * @ORM\Column(type="integer", nullable=false)
-	 */
-	private $timestamp;
 
 
 	/**
@@ -121,17 +113,25 @@ class Translations
 	{
 		return $this->message;
 	}
-
-
-	/**
-	 * @return int
-	 */
-	public function getTimestamp(): int
-	{
-		return $this->timestamp;
-	}
 }
 ```
 
+## Nette Database
+You must create a file with specific format in scanned dirs like as **messages.en_US.nettedatabase**. All parameters are optional, but file must be created.
+
+```neon
+table: "my_table" # if you specify table key, "messages" from file name will be ignored
+id: "id" # id column name, default is "id"
+locale: "locale" # locale column name, default is "locale"
+message: "message" # message column name, default is "message"
+```
+
+Added loader to translation configuration.
+```neon
+translation:
+	loaders:
+		nettedatabase: Contributte\Translation\Loaders\NetteDatabase
+```
+
 ## Bugs
-- refreshing cache, if you something change in database or in configuration file
+- refreshing cache, if you something change in database
