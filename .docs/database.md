@@ -3,7 +3,7 @@ Package included database loader for **[Doctrine 2](https://www.doctrine-project
 
 ## Content
 - [Doctrine - how to configure](#doctrine)
-- [Nette Database - how to configure](#doctrine)
+- [Nette Database - how to configure](#nette-database)
 - [Bugs - known bugs](#bugs)
 
 ## Doctrine
