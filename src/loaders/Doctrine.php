@@ -19,6 +19,14 @@ use Symfony;
  */
 class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implements Symfony\Component\Translation\Loader\LoaderInterface
 {
+	/** @var array */
+	public static $defaults = [
+		'table' => 'messages',
+		'id' => 'id',
+		'locale' => 'locale',
+		'message' => 'message',
+	];
+
 	/** @var \Doctrine\ORM\Decorator\EntityManagerDecorator $em */
 	private $em;
 
@@ -45,63 +53,44 @@ class Doctrine extends Symfony\Component\Translation\Loader\ArrayLoader implemen
 			throw new Contributte\Translation\InvalidArgumentException('Something wrong with resource file "' . $resource . '".');
 		}
 
-		$schema = Expect::structure([
-			'entity' => Expect::string($domain),
-			'id' => Expect::string('id'),
-			'locale' => Expect::string('locale'),
-			'message' => Expect::string('message'),
-			'timestamp' => Expect::string('timestamp'),
-		]);
-
 		$processor = new Nette\Schema\Processor;
-
 		/** @var \stdClass $config */
-		$config = $processor->process($schema, Nette\Neon\Neon::decode($content));
+		$config = $processor->process(self::getSchema(['table' => $domain]), Nette\Neon\Neon::decode($content));
+
 
 		$messages = [];
 
-		/** @var \Doctrine\ORM\EntityRepository $repository */
-		$repository = $this->em->getRepository($config->entity);
-
-		foreach ($repository->findBy([$config->locale => $locale]) as $v1) {
+		foreach ($this->em->getRepository($config->table)->findBy([$config->locale => $locale]) as $v1) {
 			$id = $v1->{$config->id};
 			$message = $v1->{$config->message};
 
 			if (array_key_exists($id, $messages)) {
-				throw new Contributte\Translation\InvalidStateException('Id "' . $id . '" declared twice in "' . $config->entity . '" entity/domain.');
+				throw new Contributte\Translation\InvalidStateException('Id "' . $id . '" declared twice in "' . $config->table . '" table/domain.');
 			}
 
 			$messages[$id] = $message;
 		}
 
 		$catalogue = parent::load($messages, $locale, $domain);
-		$catalogue->addResource(new Contributte\Translation\Resources\Database($resource, $this->getTimestamp($resource, $locale, $config, $repository)));
+		$catalogue->addResource(new Symfony\Component\Config\Resource\FileResource($resource));
 
 		return $catalogue;
 	}
 
 
 	/**
-	 * @param string $resource
-	 * @param string $locale
-	 * @param \stdClass $config
-	 * @param \Doctrine\ORM\EntityRepository $repository
-	 * @return int
+	 * @internal
+	 *
+	 * @param array $defaults
+	 * @return Nette\Schema\Elements\Structure
 	 */
-	public function getTimestamp(string $resource, string $locale, \stdClass $config, \Doctrine\ORM\EntityRepository $repository): int
+	private static function getSchema(array $defaults = []): Nette\Schema\Elements\Structure
 	{
-		$resourceTimestamp = filemtime($resource);
-
-		if ($resourceTimestamp === false) {
-			$resourceTimestamp = 0;
-		}
-
-		$entityTimestamp = $repository->findOneBy([$config->locale => $locale], [$config->timestamp => 'DESC']);
-
-		if ($entityTimestamp === null || $resourceTimestamp >= $entityTimestamp->{$config->timestamp}) {
-			return $resourceTimestamp;
-		}
-
-		return $entityTimestamp->{$config->timestamp};
+		return Expect::structure([
+			'table' => Expect::string(array_key_exists('table', $defaults) ? $defaults['table'] : self::$defaults['table']),
+			'id' => Expect::string(array_key_exists('id', $defaults) ? $defaults['id'] : self::$defaults['id']),
+			'locale' => Expect::string(array_key_exists('locale', $defaults) ? $defaults['locale'] : self::$defaults['locale']),
+			'message' => Expect::string(array_key_exists('message', $defaults) ? $defaults['message'] : self::$defaults['message']),
+		]);
 	}
 }
