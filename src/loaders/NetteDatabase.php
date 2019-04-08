@@ -60,12 +60,12 @@ class NetteDatabase extends Symfony\Component\Translation\Loader\ArrayLoader imp
 
 		$messages = [];
 
-		foreach ($this->connection->query('SELECT ? AS `id`, ? AS `locale`, ? AS `message` FROM ? WHERE ?', $this->connection::literal($config->id), $this->connection::literal($config->locale), $this->connection::literal($config->message), $this->connection::literal($config->table), $this->connection::literal('?', [$config->locale => $locale]))->fetchAll() as $v1) {
-			if (array_key_exists($v1->id, $messages)) {
-				throw new Contributte\Translation\InvalidStateException('Id "' . $v1->id . '" declared twice in "' . $config->table . '" table/domain.');
+		foreach ($this->connection->query('SELECT ? AS `id`, ? AS `locale`, ? AS `message` FROM ? WHERE ?', Nette\Database\Connection::literal($config->id), Nette\Database\Connection::literal($config->locale), Nette\Database\Connection::literal($config->message), Nette\Database\Connection::literal($config->table), Nette\Database\Connection::literal('?', [$config->locale => $locale]))->fetchAll() as $v1) {
+			if (array_key_exists($v1['id'], $messages)) {
+				throw new Contributte\Translation\InvalidStateException('Id "' . $v1['id'] . '" declared twice in "' . $config->table . '" table/domain.');
 			}
 
-			$messages[$v1->id] = $v1->message;
+			$messages[$v1['id']] = $v1['message'];
 		}
 
 		$catalogue = parent::load($messages, $locale, $domain);
