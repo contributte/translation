@@ -10,23 +10,14 @@ namespace Contributte\Translation\Loaders;
 
 use Contributte;
 use Nette;
-use Nette\Schema\Expect;
 use Symfony;
 
 
 /**
  * @author Ales Wita
  */
-class NetteDatabase extends Symfony\Component\Translation\Loader\ArrayLoader implements Symfony\Component\Translation\Loader\LoaderInterface
+class NetteDatabase extends DatabaseAbstract implements Symfony\Component\Translation\Loader\LoaderInterface
 {
-	/** @var array */
-	public static $defaults = [
-		'table' => 'messages',
-		'id' => 'id',
-		'locale' => 'locale',
-		'message' => 'message',
-	];
-
 	/** @var Nette\Database\Connection */
 	private $connection;
 
@@ -41,23 +32,15 @@ class NetteDatabase extends Symfony\Component\Translation\Loader\ArrayLoader imp
 
 
 	/**
-	 * {@inheritdoc}
-	 *
-	 * @throws Contributte\Translation\InvalidArgumentException|Contributte\Translation\InvalidStateException
+	 * @param \stdClass $config
+	 * @param string $resource
+	 * @param string $locale
+	 * @param string $domain
+	 * @return array
+	 * @throws Contributte\Translation\InvalidStateException
 	 */
-	public function load($resource, $locale, $domain = 'messages')
+	protected function getMessages(\stdClass $config, string $resource, string $locale, string $domain): array
 	{
-		$content = @file_get_contents($resource); // @ -> prevent E_WARNING and thrown an exception
-
-		if ($content === false) {
-			throw new Contributte\Translation\InvalidArgumentException('Something wrong with resource file "' . $resource . '".');
-		}
-
-		$processor = new Nette\Schema\Processor;
-		/** @var \stdClass $config */
-		$config = $processor->process(self::getSchema(['table' => $domain]), Nette\Neon\Neon::decode($content));
-
-
 		$messages = [];
 
 		foreach ($this->connection->query('SELECT ? AS `id`, ? AS `locale`, ? AS `message` FROM ? WHERE ?', Nette\Database\Connection::literal($config->id), Nette\Database\Connection::literal($config->locale), Nette\Database\Connection::literal($config->message), Nette\Database\Connection::literal($config->table), Nette\Database\Connection::literal('?', [$config->locale => $locale]))->fetchAll() as $v1) {
@@ -68,26 +51,6 @@ class NetteDatabase extends Symfony\Component\Translation\Loader\ArrayLoader imp
 			$messages[$v1['id']] = $v1['message'];
 		}
 
-		$catalogue = parent::load($messages, $locale, $domain);
-		$catalogue->addResource(new Symfony\Component\Config\Resource\FileResource($resource));
-
-		return $catalogue;
-	}
-
-
-	/**
-	 * @internal
-	 *
-	 * @param array $defaults
-	 * @return Nette\Schema\Elements\Structure
-	 */
-	private static function getSchema(array $defaults = []): Nette\Schema\Elements\Structure
-	{
-		return Expect::structure([
-			'table' => Expect::string(array_key_exists('table', $defaults) ? $defaults['table'] : self::$defaults['table']),
-			'id' => Expect::string(array_key_exists('id', $defaults) ? $defaults['id'] : self::$defaults['id']),
-			'locale' => Expect::string(array_key_exists('locale', $defaults) ? $defaults['locale'] : self::$defaults['locale']),
-			'message' => Expect::string(array_key_exists('message', $defaults) ? $defaults['message'] : self::$defaults['message']),
-		]);
+		return $messages;
 	}
 }
