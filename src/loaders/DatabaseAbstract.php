@@ -85,5 +85,5 @@ abstract class DatabaseAbstract extends Symfony\Component\Translation\Loader\Arr
 	 * @param string $domain
 	 * @return array
 	 */
-	protected abstract function getMessages(\stdClass $config, string $resource, string $locale, string $domain): array;
+	abstract protected function getMessages(\stdClass $config, string $resource, string $locale, string $domain): array;
 }
