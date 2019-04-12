@@ -36,7 +36,7 @@ use Nette;
 
 
 /**
- * @property-read int $translationId
+ * @property-read int $messageId
  * @property-read string $id
  * @property-read string $locale
  * @property-read string $message
@@ -55,7 +55,7 @@ class Messages
 	 * @ORM\Column(type="integer", nullable=false)
 	 * @ORM\GeneratedValue
 	 */
-	private $translationId;
+	private $messageId;
 
 	/**
 	 * @var string
@@ -82,9 +82,9 @@ class Messages
 	/**
 	 * @return int
 	 */
-	public function getTranslationId(): int
+	public function getMessageId(): int
 	{
-		return $this->translationId;
+		return $this->messageId;
 	}
 
 
@@ -131,6 +131,18 @@ Added loader to translation configuration.
 translation:
 	loaders:
 		nettedatabase: Contributte\Translation\Loaders\NetteDatabase
+```
+
+DB table example.
+```sql
+CREATE TABLE `messages` (
+	`id` varchar(191) NOT NULL,
+	`locale` char(5) NOT NULL,
+	`message` varchar(191) NOT NULL,
+	UNIQUE KEY `id` (`id`),
+	KEY `locale` (`locale`),
+	KEY `message` (`message`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
 ## Bugs
