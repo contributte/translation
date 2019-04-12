@@ -4,7 +4,6 @@ Package included database loader for **[Doctrine 2](https://www.doctrine-project
 ## Content
 - [Doctrine - how to configure](#doctrine)
 - [Nette Database - how to configure](#nette-database)
-- [Bugs - known bugs](#bugs)
 
 ## Doctrine
 You must create a file with specific format in scanned dirs like as **messages.en_US.doctrine**. All parameters are optional, but file must be created.
@@ -144,6 +143,3 @@ CREATE TABLE `messages` (
 	KEY `message` (`message`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
-
-## Bugs
-- refreshing cache, if you something change in database
