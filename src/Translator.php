@@ -133,7 +133,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
-	 * @return Tracy\Panel|null
+	 * @return Contributte\Translation\Tracy\Panel|null
 	 */
 	public function getTracyPanel(): ?Tracy\Panel
 	{
@@ -142,7 +142,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
-	 * @param Tracy\Panel|null $tracyPanel
+	 * @param Contributte\Translation\Tracy\Panel|null $tracyPanel
 	 * @return self
 	 */
 	public function setTracyPanel(?Tracy\Panel $tracyPanel): self
