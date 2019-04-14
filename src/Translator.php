@@ -265,7 +265,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
-	 * @return array
+	 * @return string[]
 	 */
 	public function getAvailableLocales(): array
 	{
