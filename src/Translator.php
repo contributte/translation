@@ -24,7 +24,7 @@ use Symfony;
  * @property      array $prefix
  * @property-read array $prefixTemp
  * @property-read string $formattedPrefix
- * @property-read array $availableLocales
+ * @property-read string[] $availableLocales
  * @property      string|null $locale
  *
  * @author Ales Wita
