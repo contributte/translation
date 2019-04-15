@@ -286,7 +286,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
-	 * @return string|null
+	 * {@inheritdoc}
 	 */
 	public function getLocale()
 	{
@@ -299,7 +299,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
-	 * @param string|null $locale
+	 * {@inheritdoc}
 	 */
 	public function setLocale($locale)
 	{
