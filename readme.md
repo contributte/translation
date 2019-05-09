@@ -1,35 +1,34 @@
 # Translation
-
 Symfony/Translation integration for [Nette Framework](https://nette.org).
 
 -----
 
 [![Build Status](https://travis-ci.org/contributte/translation.svg?branch=master)](https://travis-ci.org/contributte/translation)
 [![Coverage Status](https://coveralls.io/repos/github/contributte/translation/badge.svg?branch=master)](https://coveralls.io/github/contributte/translation?branch=master)
+[![Licence](https://img.shields.io/packagist/l/contributte/translation.svg?style=flat-square)](https://packagist.org/packages/contributte/translation)
+[![Downloads this Month](https://img.shields.io/packagist/dm/contributte/translation.svg?style=flat-square)](https://packagist.org/packages/contributte/translation)
+[![Downloads total](https://img.shields.io/packagist/dt/contributte/translation.svg?style=flat-square)](https://packagist.org/packages/contributte/translation)
+[![Latest stable](https://img.shields.io/packagist/v/contributte/translation.svg?style=flat-square)](https://packagist.org/packages/contributte/translation)
+[![PHPStan](https://img.shields.io/badge/PHPStan-enabled-brightgreen.svg?style=flat-square)](https://github.com/phpstan/phpstan)
 
 ## Discussion / Help
-
 [![Join the chat](https://img.shields.io/gitter/room/contributte/contributte.svg?style=flat-square)](http://bit.ly/ctteg)
 
 ## Installation
-
 ```sh
 composer require contributte/translation
 ```
 
 ## Versions
-
 | State       | Version   | Branch   | PHP      |
 |-------------|-----------|----------|----------|
 | development | `^0.2.0`  | `master` | `>= 7.1` |
 | stable      | `^0.1.0`  | `master` | `>= 7.1` |
 
 ## Prolog
-
 Easy and clearly translations for your multi-language applications.
 
 ## Maintainers
-
 <table>
 	<tbody>
 		<tr>
