@@ -20,10 +20,10 @@ composer require contributte/translation
 ```
 
 ## Versions
-| State       | Version   | Branch   | PHP      |
-|-------------|-----------|----------|----------|
-| development | `^0.2.0`  | `master` | `>= 7.1` |
-| stable      | `^0.1.0`  | `master` | `>= 7.1` |
+| State       | Version   | Branch   | PHP    |
+|-------------|-----------|----------|--------|
+| development | `^0.3.0`  | `master` | `^7.1` |
+| stable      | `^0.2.0`  | `master` | `^7.1` |
 
 ## Prolog
 Easy and clearly translations for your multi-language applications.
