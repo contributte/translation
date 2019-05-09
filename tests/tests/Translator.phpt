@@ -107,10 +107,26 @@ class Translator extends Contributte\Translation\Tests\AbstractTest
 		Tester\Assert::same('Hi Ales!', $translator->translate('hi', null, ['name' => 'Ales'], 'messages', 'en'));
 		Tester\Assert::same('There are no apples', $translator->translate('messages.apples', 0));
 		Tester\Assert::same('There are no apples', $translator->translate('messages.apples', ['count' => 0]));
+		Tester\Assert::same('There are no apples', $translator->translate('messages.apples', 0.0));
+		Tester\Assert::same('There are no apples', $translator->translate('messages.apples', ['count' => 0.0]));
 		Tester\Assert::same('There is one apple', $translator->translate('messages.apples', 1));
 		Tester\Assert::same('There is one apple', $translator->translate('messages.apples', ['count' => 1]));
+		Tester\Assert::same('There is one apple', $translator->translate('messages.apples', 1.0));
+		Tester\Assert::same('There is one apple', $translator->translate('messages.apples', ['count' => 1.0]));
+		Tester\Assert::same('There are 1.9 apples', $translator->translate('messages.apples', 1.9));
+		Tester\Assert::same('There are 1.9 apples', $translator->translate('messages.apples', ['count' => 1.9]));
 		Tester\Assert::same('There are 2 apples', $translator->translate('messages.apples', 2));
 		Tester\Assert::same('There are 2 apples', $translator->translate('messages.apples', ['count' => 2]));
+		Tester\Assert::same('There are 2 apples', $translator->translate('messages.apples', 2.0));
+		Tester\Assert::same('There are 2 apples', $translator->translate('messages.apples', ['count' => 2.0]));
+		Tester\Assert::same('There are 2.9 apples', $translator->translate('messages.apples', 2.9));
+		Tester\Assert::same('There are 2.9 apples', $translator->translate('messages.apples', ['count' => 2.9]));
+		Tester\Assert::same('There are 5.5 apples', $translator->translate('messages.apples', 5.5));
+		Tester\Assert::same('There are 5.5 apples', $translator->translate('messages.apples', ['count' => 5.5]));
+		Tester\Assert::same('There are 5.5 apples', $translator->translate('messages.apples', 5.5));
+		Tester\Assert::same('There are 5.5 apples', $translator->translate('messages.apples', ['count' => 5.5]));
+		Tester\Assert::same('There are 5.9 apples', $translator->translate('messages.apples', 5.9));
+		Tester\Assert::same('There are 5.9 apples', $translator->translate('messages.apples', ['count' => 5.9]));
 		Tester\Assert::same('Depth message', $translator->translate('messages.depth.message'));
 		Tester\Assert::same('missing.translation', $translator->translate('messages.missing.translation'));
 

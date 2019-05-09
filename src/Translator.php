@@ -351,8 +351,8 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		}
 		$params = $tmp;
 
-		if (Nette\Utils\Validators::isNumericInt($count)) {
-			$params += ['%count%' => (int) $count];
+		if (Nette\Utils\Validators::isNumeric($count)) {
+			$params += ['%count%' => $count];
 		}
 
 		return $this->trans($message, $params, $domain, $locale);
