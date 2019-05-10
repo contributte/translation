@@ -10,6 +10,7 @@ namespace Contributte\Translation\Tests\Tests;
 
 use Contributte;
 use Nette;
+use Nette\Forms\Form;
 use Tester;
 
 $container = require __DIR__ . '/../bootstrap.php';
@@ -143,6 +144,40 @@ class Translator extends Contributte\Translation\Tests\AbstractTest
 
 		$prefixedTranslator = $translator->domain('messages');
 		Tester\Assert::same('Hello', $prefixedTranslator->translate('hello'));
+	}
+
+
+	public function testForm(): void
+	{
+		$configurator = new Nette\Configurator;
+
+		$configurator->setTempDirectory($this->container->getParameters()['tempDir'])
+			->addConfig([
+				'extensions' => [
+					'translation' => Contributte\Translation\DI\TranslationExtension::class,
+				],
+				'translation' => [
+					'debug' => true,
+					'locales' => [
+						'default' => 'en',
+					],
+					'dirs' => [
+						__DIR__ . '/../lang',
+					],
+				],
+			]);
+
+		$container = $configurator->createContainer();
+
+		/** @var Contributte\Translation\Translator $translator */
+		$translator = $container->getByType(Nette\Localization\ITranslator::class);
+
+		$form = new Form;
+		$form->setTranslator($translator);
+		$form->addText('name');
+		$form->addText('age', 'messages.depth.message');
+
+		Tester\Assert::contains('Depth message', (string) $form);
 	}
 }
 
