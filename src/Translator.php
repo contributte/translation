@@ -329,7 +329,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 			$count = null;
 		}
 
-		if (Nette\Utils\Strings::startsWith($message, '//')) {
+		if (is_string($message) && Nette\Utils\Strings::startsWith($message, '//')) {
 			$message = Nette\Utils\Strings::substring($message, 2);
 
 		} elseif (count($this->prefix) > 0) {
