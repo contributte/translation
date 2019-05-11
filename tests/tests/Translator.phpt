@@ -95,6 +95,8 @@ class Translator extends Contributte\Translation\Tests\AbstractTest
 		$translator = $container->getByType(Nette\Localization\ITranslator::class);
 
 
+		Tester\Assert::same('', $translator->translate(null));
+		Tester\Assert::same('null', $translator->translate(null, [], 'null'));
 		Tester\Assert::same('Hello', $translator->translate('messages.hello'));
 		Tester\Assert::same('Hello', $translator->translate('hello'));
 		Tester\Assert::same('Hello', $translator->translate('//messages.hello'));
