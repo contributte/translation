@@ -322,6 +322,11 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	 */
 	public function translate($message, ...$parameters): string
 	{
+		if ($message instanceof Message) {
+			$parameters = $message->parameters;
+			$message = $message->message;
+		}
+
 		$count = array_key_exists(0, $parameters) ? $parameters[0] : null;
 		$params = array_key_exists(1, $parameters) ? $parameters[1] : [];
 		$domain = array_key_exists(2, $parameters) ? $parameters[2] : null;
