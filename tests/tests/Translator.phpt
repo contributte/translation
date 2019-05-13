@@ -97,6 +97,7 @@ class Translator extends Contributte\Translation\Tests\AbstractTest
 
 		Tester\Assert::same('', $translator->translate(null));
 		Tester\Assert::same('null', $translator->translate(null, [], 'null'));
+		Tester\Assert::same('Not translate!', $translator->translate(new Contributte\Translation\NotTranslate('Not translate!')));
 		Tester\Assert::same('Hello', $translator->translate('messages.hello'));
 		Tester\Assert::same('Hello', $translator->translate(new Contributte\Translation\Message('messages.hello')));
 		Tester\Assert::same('Hello', $translator->translate('hello'));
