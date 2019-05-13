@@ -21,6 +21,7 @@ use Symfony;
  * @property-read bool $debug
  * @property-read Contributte\Translation\Tracy\Panel|null $tracyPanel
  * @property      array|null $localesWhitelist
+ * @property-read array $objectsWrappers
  * @property      array $prefix
  * @property-read array $prefixTemp
  * @property-read string $formattedPrefix
@@ -55,6 +56,9 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 	/** @var array|null */
 	private $localesWhitelist;
+
+	/** @var array */
+	private $objectsWrappers = [];
 
 	/** @var array */
 	private $prefix = [];
@@ -168,6 +172,27 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	public function setLocalesWhitelist(?array $whitelist): self
 	{
 		$this->localesWhitelist = $whitelist;
+		return $this;
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getObjectsWrappers(): array
+	{
+		return $this->objectsWrappers;
+	}
+
+
+	/**
+	 * @param string $object
+	 * @param string $wrapper
+	 * @return self
+	 */
+	public function addObjectWrapper(string $object, string $wrapper): self
+	{
+		$this->objectsWrappers[$object] = $wrapper;
 		return $this;
 	}
 
@@ -334,6 +359,16 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 			$count = null;
 		}
 
+		if (is_object($message)) {
+			$class = get_class($message);
+
+			if (array_key_exists($class, $this->objectsWrappers)) {
+				/** @var Contributte\Translation\ObjectsWrappers\ObjectWrapperInterface $wrapper */
+				$wrapper = new $this->objectsWrappers[$class]($message);
+				$message = $wrapper->getMessage();
+			}
+		}
+
 		if (is_string($message) && Nette\Utils\Strings::startsWith($message, '//')) {
 			$message = Nette\Utils\Strings::substring($message, 2);
 
@@ -355,7 +390,13 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 			$params += ['%count%' => $count];
 		}
 
-		return $this->trans($message, $params, $domain, $locale);
+		$trans = $this->trans($message, $params, $domain, $locale);
+
+		if (isset($wrapper)) {
+			$wrapper->setMessage($trans);
+		}
+
+		return $trans;
 	}
 
 

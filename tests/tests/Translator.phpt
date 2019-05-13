@@ -31,6 +31,7 @@ class Translator extends Contributte\Translation\Tests\AbstractTest
 		Tester\Assert::true($translator->debug);
 		Tester\Assert::null($translator->tracyPanel);
 		Tester\Assert::null($translator->localesWhitelist);
+		Tester\Assert::same([], $translator->objectsWrappers);
 		Tester\Assert::same([], $translator->prefix);
 		Tester\Assert::same('', $translator->formattedPrefix);
 		Tester\Assert::same([], $translator->availableLocales);
@@ -145,6 +146,10 @@ class Translator extends Contributte\Translation\Tests\AbstractTest
 
 		$prefixedTranslator = $translator->domain('messages');
 		Tester\Assert::same('Hello', $prefixedTranslator->translate('hello'));
+
+		$el = Nette\Utils\Html::el()->setText('hello');
+		Tester\Assert::same('Hello', $translator->translate($el));
+		Tester\Assert::same('Hello', $el->getText());
 	}
 }
 

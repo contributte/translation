@@ -47,6 +47,9 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			'loaders' => Expect::array()->default([
 				'neon' => Contributte\Translation\Loaders\Neon::class,
 			]),
+			'objectsWrappers' => Expect::array()->default([
+				Nette\Utils\Html::class => Contributte\Translation\ObjectsWrappers\Html::class,
+			]),
 			'dirs' => Expect::array()->default([]),
 			'cache' => Expect::structure([
 				'dir' => Expect::string($builder->parameters['tempDir'] . '/cache/translation'),
@@ -126,6 +129,18 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 				->setFactory($v1);
 
 			$translator->addSetup('addLoader', [$k1, $loader]);
+		}
+
+
+		// ObjectsWrappers
+		foreach ($this->config->objectsWrappers as $k1 => $v1) {
+			$reflection = new \ReflectionClass($v1);
+
+			if (!$reflection->implementsInterface(Contributte\Translation\ObjectsWrappers\ObjectWrapperInterface::class)) {
+				throw new Contributte\Translation\InvalidArgumentException('Object wrapper must implement interface "' . Contributte\Translation\ObjectsWrappers\ObjectWrapperInterface::class . '".');
+			}
+
+			$translator->addSetup('addObjectWrapper', [$k1, $v1]);
 		}
 
 
