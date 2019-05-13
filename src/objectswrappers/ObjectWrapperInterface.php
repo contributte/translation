@@ -19,6 +19,7 @@ interface ObjectWrapperInterface
 	 */
 	function getMessage(): ?string;
 
+
 	/**
 	 * @param string $string
 	 */
