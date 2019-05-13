@@ -69,6 +69,7 @@ class Panel implements Tracy\IBarPanel
 
 	/**
 	 * @return string|null
+	 * @throws \ReflectionException
 	 */
 	public function getPanel(): ?string
 	{

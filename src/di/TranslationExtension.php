@@ -56,6 +56,9 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 	}
 
 
+	/**
+	 * @throws Contributte\Translation\InvalidArgumentException|\ReflectionException
+	 */
 	public function loadConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
