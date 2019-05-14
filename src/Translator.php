@@ -331,7 +331,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		}
 
 		//if (!is_string($message)) {
-		//	throw new InvalidArgumentException('Message must be string, ' . gettype($message) . ' given.');
+			//throw new InvalidArgumentException('Message must be string, ' . gettype($message) . ' given.');
 		//}
 
 		$count = array_key_exists(0, $parameters) ? $parameters[0] : null;
