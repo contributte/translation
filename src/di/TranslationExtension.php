@@ -175,6 +175,11 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 				->addSetup('addProvider', ['translator', $builder->getDefinition($this->prefix('translator'))]);
 		}
 
+		/** @var Contributte\Translation\DI\TranslationProviderInterface $v1 */
+		foreach ($this->compiler->getExtensions(TranslationProviderInterface::class) as $v1) {
+			$this->config->dirs = array_merge($this->config->dirs, $v1->getTranslationResources());
+		}
+
 		if (count($this->config->dirs) > 0) {
 			foreach ($this->config->loaders as $k1 => $v1) {
 				foreach (Nette\Utils\Finder::find('*.' . $k1)->from($this->config->dirs) as $v2) {
