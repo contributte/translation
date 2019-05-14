@@ -21,7 +21,7 @@ class NotTranslate extends Contributte\Translation\Tests\AbstractTest
 {
 	public function test01(): void
 	{
-		$message = new Contributte\Translation\Wrappers\Message('message');
+		$message = new Contributte\Translation\Wrappers\NotTranslate('message');
 
 		Tester\Assert::same('message', $message->message);
 
