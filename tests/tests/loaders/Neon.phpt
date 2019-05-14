@@ -34,6 +34,7 @@ test:
 		Tester\Assert::same('translate', $catalogue->get('test.for'));
 		Tester\Assert::same('missing.translate', $catalogue->get('missing.translate'));
 		Tester\Assert::same('missing.translate', $catalogue->get('missing.translate', 'domain'));
+		Tester\Assert::same(['messages' => ['test.for' => 'translate']], $catalogue->all());
 
 
 		$catalogue = (new Contributte\Translation\Loaders\Neon)->load($file, 'cs', 'domain');
@@ -42,6 +43,13 @@ test:
 		Tester\Assert::same('translate', $catalogue->get('test.for', 'domain'));
 		Tester\Assert::same('missing.translate', $catalogue->get('missing.translate', 'domain'));
 		Tester\Assert::same('missing.translate', $catalogue->get('missing.translate'));
+		Tester\Assert::same(['domain' => ['test.for' => 'translate']], $catalogue->all());
+
+
+		$catalogue = (new Contributte\Translation\Loaders\Neon)->load(Tester\FileMock::create(''), 'en');
+		Tester\Assert::same('en', $catalogue->getLocale());
+		Tester\Assert::same(['messages'], $catalogue->getDomains());
+		Tester\Assert::same(['messages' => []], $catalogue->all());
 	}
 
 
