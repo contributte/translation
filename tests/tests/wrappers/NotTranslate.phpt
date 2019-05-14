@@ -6,12 +6,12 @@
 
 declare(strict_types=1);
 
-namespace Contributte\Translation\Tests\Tests;
+namespace Contributte\Translation\Tests\Tests\Wrappers;
 
 use Contributte;
 use Tester;
 
-$container = require __DIR__ . '/../bootstrap.php';
+$container = require __DIR__ . '/../../bootstrap.php';
 
 
 /**
@@ -21,7 +21,7 @@ class NotTranslate extends Contributte\Translation\Tests\AbstractTest
 {
 	public function test01(): void
 	{
-		$message = new Contributte\Translation\Message('message');
+		$message = new Contributte\Translation\Wrappers\Message('message');
 
 		Tester\Assert::same('message', $message->message);
 

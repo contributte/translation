@@ -322,13 +322,17 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	 */
 	public function translate($message, ...$parameters): string
 	{
-		if ($message instanceof NotTranslate) {
+		if ($message instanceof Wrappers\NotTranslate) {
 			return $message->message;
 
-		} elseif ($message instanceof Message) {
+		} elseif ($message instanceof Wrappers\Message) {
 			$parameters = $message->parameters;
 			$message = $message->message;
 		}
+
+		//if (!is_string($message)) {
+		//	throw new InvalidArgumentException('Message must be string, ' . gettype($message) . ' given.');
+		//}
 
 		$count = array_key_exists(0, $parameters) ? $parameters[0] : null;
 		$params = array_key_exists(1, $parameters) ? $parameters[1] : [];

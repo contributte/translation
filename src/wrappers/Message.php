@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-namespace Contributte\Translation;
+namespace Contributte\Translation\Wrappers;
 
 use Nette;
 
