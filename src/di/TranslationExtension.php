@@ -177,7 +177,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 		/** @var Contributte\Translation\DI\TranslationProviderInterface $v1 */
 		foreach ($this->compiler->getExtensions(TranslationProviderInterface::class) as $v1) {
-			$this->config->dirs = array_merge($this->config->dirs, $v1->getTranslationResources());
+			$this->config->dirs = array_merge($v1->getTranslationResources(), $this->config->dirs);
 		}
 
 		if (count($this->config->dirs) > 0) {
