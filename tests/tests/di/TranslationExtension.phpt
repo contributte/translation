@@ -37,8 +37,7 @@ class TranslationExtension extends Contributte\Translation\Tests\AbstractTest
 
 			$loader->load(function (Nette\DI\Compiler $compiler): void {
 				$compiler->addExtension('translation', new Contributte\Translation\DI\TranslationExtension);
-				$compiler->addExtension('translationProvider', new class extends Nette\DI\CompilerExtension implements Contributte\Translation\DI\TranslationProviderInterface
-				{
+				$compiler->addExtension('translationProvider', new class extends Nette\DI\CompilerExtension implements Contributte\Translation\DI\TranslationProviderInterface {
 					public function getTranslationResources(): array
 					{
 						return [__DIR__ . '/__translation_provider_dir__'];
