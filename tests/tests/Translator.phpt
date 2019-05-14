@@ -95,8 +95,10 @@ class Translator extends Contributte\Translation\Tests\AbstractTest
 		$translator = $container->getByType(Nette\Localization\ITranslator::class);
 
 
+		Tester\Assert::throws(function () use ($translator): void {$translator->translate(new \stdClass);}, Contributte\Translation\InvalidArgumentException::class, 'Message must be string, object given.');
 		Tester\Assert::same('', $translator->translate(null));
-		Tester\Assert::same('null', $translator->translate(null, [], 'null'));
+		Tester\Assert::same('0', $translator->translate(0));
+		Tester\Assert::same('1', $translator->translate(1));
 		Tester\Assert::same('Not translate!', $translator->translate(new Contributte\Translation\Wrappers\NotTranslate('Not translate!')));
 		Tester\Assert::same('Hello', $translator->translate('messages.hello'));
 		Tester\Assert::same('Hello', $translator->translate(new Contributte\Translation\Wrappers\Message('messages.hello')));
@@ -142,6 +144,9 @@ class Translator extends Contributte\Translation\Tests\AbstractTest
 		Tester\Assert::same('There are 5.9 apples', $translator->translate('messages.apples', ['count' => 5.9]));
 		Tester\Assert::same('Depth message', $translator->translate('messages.depth.message'));
 		Tester\Assert::same('missing.translation', $translator->translate('messages.missing.translation'));
+		Tester\Assert::same('Empty string key', $translator->translate('messages.'));
+		Tester\Assert::same('emptyDomain', $translator->translate('.emptyDomain'));
+		Tester\Assert::same('messages.some broken message', $translator->translate('messages.some broken message'));
 
 		$translator->addPrefix('messages');
 

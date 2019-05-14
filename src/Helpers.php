@@ -31,12 +31,12 @@ class Helpers
 
 
 	/**
-	 * @param string|null $message
+	 * @param string $message
 	 * @return array
 	 */
-	public static function extractMessage(?string $message): array
+	public static function extractMessage(string $message): array
 	{
-		if ($message !== null && strpos($message, '.') !== false && strpos($message, ' ') === false) {
+		if (strpos($message, '.') !== false && strpos($message, ' ') === false) {
 			[$domain, $message] = explode('.', $message, 2);
 
 		} else {

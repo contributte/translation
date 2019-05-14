@@ -322,17 +322,23 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	 */
 	public function translate($message, ...$parameters): string
 	{
-		if ($message instanceof Wrappers\NotTranslate) {
+		if ($message === null) {
+			return '';
+
+		} elseif ($message instanceof Wrappers\NotTranslate) {
 			return $message->message;
 
 		} elseif ($message instanceof Wrappers\Message) {
 			$parameters = $message->parameters;
 			$message = $message->message;
+
+		} elseif (is_int($message)) {// float type can be confused for dot inside
+			$message = (string) $message;
 		}
 
-		//if (!is_string($message)) {
-			//throw new InvalidArgumentException('Message must be string, ' . gettype($message) . ' given.');
-		//}
+		if (!is_string($message)) {
+			throw new InvalidArgumentException('Message must be string, ' . gettype($message) . ' given.');
+		}
 
 		$count = array_key_exists(0, $parameters) ? $parameters[0] : null;
 		$params = array_key_exists(1, $parameters) ? $parameters[1] : [];
@@ -346,7 +352,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 			$count = null;
 		}
 
-		if (is_string($message) && Nette\Utils\Strings::startsWith($message, '//')) {
+		if (Nette\Utils\Strings::startsWith($message, '//')) {
 			$message = Nette\Utils\Strings::substring($message, 2);
 
 		} elseif (count($this->prefix) > 0) {

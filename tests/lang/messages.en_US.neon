@@ -3,3 +3,4 @@ hi: "Hi %name%!"
 apples: "{0} There are no apples|{1} There is one apple|]1,Inf[ There are %count% apples"
 depth:
 	message: "Depth message"
+"": "Empty string key"
