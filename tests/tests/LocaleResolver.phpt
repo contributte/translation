@@ -1,15 +1,15 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation\Tests\Tests;
+namespace Contributte\Translation\Tests\Tests;
 
+use Contributte;
 use Tester;
-use Translette;
 
 $container = require __DIR__ . '/../bootstrap.php';
 
@@ -17,12 +17,12 @@ $container = require __DIR__ . '/../bootstrap.php';
 /**
  * @author Ales Wita
  */
-class LocaleResolver extends Translette\Translation\Tests\AbstractTest
+class LocaleResolver extends Contributte\Translation\Tests\AbstractTest
 {
 	public function test01(): void
 	{
-		$resolverMock = \Mockery::mock(Translette\Translation\LocalesResolvers\Parameter::class);
-		$localeResolver = new Translette\Translation\LocaleResolver;
+		$resolverMock = \Mockery::mock(Contributte\Translation\LocalesResolvers\Parameter::class);
+		$localeResolver = new Contributte\Translation\LocaleResolver;
 
 		$localeResolver->addResolver($resolverMock);
 
