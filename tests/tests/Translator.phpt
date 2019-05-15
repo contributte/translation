@@ -94,8 +94,6 @@ class Translator extends Contributte\Translation\Tests\AbstractTest
 		/** @var Contributte\Translation\Translator $translator */
 		$translator = $container->getByType(Nette\Localization\ITranslator::class);
 
-		Tester\Assert::same('Hello', $translator->translate(new Contributte\Translation\Wrappers\Message('hello', [], 'messages', 'en')));
-
 		Tester\Assert::throws(function () use ($translator): void {$translator->translate(new \stdClass);}, Contributte\Translation\InvalidArgumentException::class, 'Message must be string, object given.');
 		Tester\Assert::same('', $translator->translate(null));
 		Tester\Assert::same('0', $translator->translate(0));
