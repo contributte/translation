@@ -1,14 +1,14 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation;
+namespace Contributte\Translation;
 
-use Translette;
+use Contributte;
 
 
 /**
@@ -22,7 +22,7 @@ trait KdybyTranslationBackCompatibilityTrait
 	 * @deprecated
 	 *
 	 * @param string $prefix
-	 * @return Translette\Translation\PrefixedTranslator
+	 * @return Contributte\Translation\PrefixedTranslator
 	 */
 	public function domain(string $prefix): PrefixedTranslator
 	{
