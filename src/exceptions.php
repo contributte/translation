@@ -1,12 +1,12 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation;
+namespace Contributte\Translation;
 
 
 /**
@@ -29,5 +29,13 @@ class InvalidArgumentException extends Exception
  * @author Ales Wita
  */
 class FileNotFoundException extends Exception
+{
+}
+
+
+/**
+ * @author Ales Wita
+ */
+class InvalidStateException extends Exception
 {
 }
