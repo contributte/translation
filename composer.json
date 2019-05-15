@@ -1,10 +1,10 @@
 {
-	"name": "translette/translation",
+	"name": "contributte/translation",
 	"description": "Symfony/Translation integration for Nette Framework.",
 	"type": "library",
 	"keywords": ["symfony", "nette", "translation"],
 	"license": "MIT",
-	"homepage": "https://github.com/translette/translation",
+	"homepage": "https://github.com/contributte/translation",
 	"authors": [
 		{
 			"name": "Ales Wita"
