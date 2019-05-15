@@ -6,11 +6,12 @@
 
 declare(strict_types=1);
 
-namespace Translette\Translation\DI;
+namespace Contributte\Translation\DI;
 
 use Nette;
 use Symfony;
-use Translette;
+use Contributte;
+use Tracy;
 
 
 /**
@@ -21,29 +22,33 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 {
 	/** @var array */
 	public $defaults = [
-		'debug' => null, // null is auto detect
+		'debug' => null,// null is auto detect
+		'debugger' => null,// null is auto detect
 		'locales' => [
 			'whitelist' => null,
 			'default' => null,
 			'fallback' => ['en_US'],
 		],
 		'localeResolvers' => [
-			Translette\Translation\LocalesResolvers\Session::class,
-			Translette\Translation\LocalesResolvers\Parameter::class,
-			Translette\Translation\LocalesResolvers\Header::class,
+			Contributte\Translation\LocalesResolvers\Session::class,
+			//Contributte\Translation\LocalesResolvers\Router::class,
+			Contributte\Translation\LocalesResolvers\Parameter::class,
+			Contributte\Translation\LocalesResolvers\Header::class,
 		],
 		'loaders' => [
-			'neon' => Translette\Translation\Loaders\Neon::class,
+			'neon' => Contributte\Translation\Loaders\Neon::class,
 		],
 		'dirs' => [],
 		'cache' => [
-			'dir' => null, // null is auto detect
-			'namespace' => 'translette',
+			'dir' => null,// null is auto detect
 			'factory' => Symfony\Component\Config\ConfigCacheFactory::class,
 		],
 	];
 
 
+	/**
+	 * @throws Contributte\Translation\InvalidArgumentException|\ReflectionException
+	 */
 	public function loadConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
@@ -51,17 +56,20 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 		if ($config['debug'] === null) {
 			$this->defaults['debug'] = $config['debug'] = $builder->parameters['debugMode'];
-			//$this->defaults['debug'] = $config['debug'] = false;
+		}
+
+		if ($config['debugger'] === null) {
+			$this->defaults['debugger'] = $config['debugger'] = interface_exists(Tracy\IBarPanel::class);
 		}
 
 		if ($config['cache']['dir'] === null) {
-			$this->defaults['cache']['dir'] = $config['cache']['dir'] = $builder->parameters['tempDir'] . '/' . $config['cache']['namespace'];
+			$this->defaults['cache']['dir'] = $config['cache']['dir'] = $builder->parameters['tempDir'] . '/cache/translation';
 		}
 
 
 		// LocaleResolver
 		$localeResolver = $builder->addDefinition($this->prefix('localeResolver'))
-			->setFactory(Translette\Translation\LocaleResolver::class);
+			->setFactory(Contributte\Translation\LocaleResolver::class);
 
 
 		// LocaleResolvers
@@ -70,8 +78,8 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		foreach ($config['localeResolvers'] as $v1) {
 			$reflection = new \ReflectionClass($v1);
 
-			if (!$reflection->implementsInterface(Translette\Translation\LocalesResolvers\ResolverInterface::class)) {
-				throw new Translette\Translation\InvalidArgumentException('Resolver must implement interface "' . Translette\Translation\LocalesResolvers\ResolverInterface::class . '".');
+			if (!$reflection->implementsInterface(Contributte\Translation\LocalesResolvers\ResolverInterface::class)) {
+				throw new Contributte\Translation\InvalidArgumentException('Resolver must implement interface "' . Contributte\Translation\LocalesResolvers\ResolverInterface::class . '".');
 			}
 
 			$localeResolvers[] = $resolver = $builder->addDefinition($this->prefix('localeResolver' . $reflection->getShortName()))
@@ -83,14 +91,14 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 		// FallbackResolver
 		$builder->addDefinition($this->prefix('fallbackResolver'))
-			->setFactory(Translette\Translation\FallbackResolver::class);
+			->setFactory(Contributte\Translation\FallbackResolver::class);
 
 
 		// ConfigCacheFactory
 		$reflection = new \ReflectionClass($config['cache']['factory']);
 
 		if (!$reflection->implementsInterface(Symfony\Component\Config\ConfigCacheFactoryInterface::class)) {
-			throw new Translette\Translation\InvalidArgumentException('Cache factory must implement interface "' . Symfony\Component\Config\ConfigCacheFactoryInterface::class . '".');
+			throw new Contributte\Translation\InvalidArgumentException('Cache factory must implement interface "' . Symfony\Component\Config\ConfigCacheFactoryInterface::class . '".');
 		}
 
 		$configCacheFactory = $builder->addDefinition($this->prefix('configCacheFactory'))
@@ -99,12 +107,12 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 		// Translator
 		if ($config['locales']['default'] === null) {
-			throw new Translette\Translation\InvalidArgumentException('Default locale must be set.');
+			throw new Contributte\Translation\InvalidArgumentException('Default locale must be set.');
 		}
 
 		$translator = $builder->addDefinition($this->prefix('translator'))
 			->setType(Nette\Localization\ITranslator::class)
-			->setFactory(Translette\Translation\Translator::class, ['defaultLocale' => $config['locales']['default'], 'cacheDir' => $config['cache']['dir'], 'debug' => $config['debug']])
+			->setFactory(Contributte\Translation\Translator::class, ['defaultLocale' => $config['locales']['default'], 'cacheDir' => $config['cache']['dir'], 'debug' => $config['debug']])
 			->addSetup('setLocalesWhitelist', [$config['locales']['whitelist']])
 			->addSetup('setConfigCacheFactory', [$configCacheFactory])
 			->addSetup('setFallbackLocales', [$config['locales']['fallback']]);
@@ -115,10 +123,10 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			$reflection = new \ReflectionClass($v1);
 
 			if (!$reflection->implementsInterface(Symfony\Component\Translation\Loader\LoaderInterface::class)) {
-				throw new Translette\Translation\InvalidArgumentException('Loader must implement interface "' . Symfony\Component\Translation\Loader\LoaderInterface::class . '".');
+				throw new Contributte\Translation\InvalidArgumentException('Loader must implement interface "' . Symfony\Component\Translation\Loader\LoaderInterface::class . '".');
 			}
 
-			$loader = $builder->addDefinition($this->prefix('loader.' . $k1))
+			$loader = $builder->addDefinition($this->prefix('loader' . Nette\Utils\Strings::firstUpper($k1)))
 				->setFactory($v1);
 
 			$translator->addSetup('addLoader', [$k1, $loader]);
@@ -126,9 +134,9 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 
 		// Tracy\Panel
-		if ($config['debug']) {
+		if ($config['debug'] && $config['debugger']) {
 			$tracyPanel = $builder->addDefinition($this->prefix('tracyPanel'))
-				->setFactory(Translette\Translation\Tracy\Panel::class, [$translator]);
+				->setFactory(Contributte\Translation\Tracy\Panel::class, [$translator]);
 
 			foreach ($localeResolvers as $v1) {
 				$tracyPanel->addSetup('addLocaleResolver', [$v1]);
@@ -142,19 +150,19 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		$builder = $this->getContainerBuilder();
 		$config = $this->validateConfig($this->defaults, $this->config);
 
-		/** @var Nette\DI\Definitions\ServiceDefinition $translator */
+		/** @var Nette\DI\ServiceDefinition $translator */
 		$translator = $builder->getDefinition($this->prefix('translator'));
-		$whitelistRegexp = Translette\Translation\Helpers::whitelistRegexp($config['locales']['whitelist']);
+		$whitelistRegexp = Contributte\Translation\Helpers::whitelistRegexp($config['locales']['whitelist']);
 
-		if ($config['debug']) {
-			/** @var Nette\DI\Definitions\ServiceDefinition $tracyPanel */
+		if ($config['debug'] && $config['debugger']) {
+			/** @var Nette\DI\ServiceDefinition $tracyPanel */
 			$tracyPanel = $builder->getDefinition($this->prefix('tracyPanel'));
 		}
 
 		$templateFactoryName = $builder->getByType(Nette\Application\UI\ITemplateFactory::class);
 
 		if ($templateFactoryName !== null) {
-			/** @var Nette\DI\Definitions\ServiceDefinition $templateFactory */
+			/** @var Nette\DI\ServiceDefinition $templateFactory */
 			$templateFactory = $builder->getDefinition($templateFactoryName);
 
 			$templateFactory->addSetup('
@@ -164,12 +172,16 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		}
 
 		if ($builder->hasDefinition('latte.latteFactory')) {
-			///** @var Nette\DI\Definitions\FactoryDefinition $latteFactory */
+			/** @var Nette\DI\ServiceDefinition $latteFactory */
 			$latteFactory = $builder->getDefinition('latte.latteFactory');
 
-			$latteFactory//->getResultDefinition()
-				->addSetup('?->onCompile[] = function (Latte\\Engine $engine): void { ?::install($engine->getCompiler()); }', ['@self', new Nette\PhpGenerator\PhpLiteral(Translette\Translation\Latte\Macros::class)])
+			$latteFactory->addSetup('?->onCompile[] = function (Latte\\Engine $engine): void { ?::install($engine->getCompiler()); }', ['@self', new Nette\PhpGenerator\PhpLiteral(Contributte\Translation\Latte\Macros::class)])
 				->addSetup('addProvider', ['translator', $builder->getDefinition($this->prefix('translator'))]);
+		}
+
+		/** @var Contributte\Translation\DI\TranslationProviderInterface $v1 */
+		foreach ($this->compiler->getExtensions(TranslationProviderInterface::class) as $v1) {
+			$config['dirs'] = array_merge($v1->getTranslationResources(), $config['dirs']);
 		}
 
 		if (count($config['dirs']) > 0) {
@@ -209,7 +221,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 	{
 		$config = $this->validateConfig($this->defaults, $this->config);
 
-		if ($config['debug']) {
+		if ($config['debug'] && $config['debugger']) {
 			$initialize = $class->getMethod('initialize');
 			$initialize->addBody('$this->getService(?)->addPanel($this->getService(?));', ['tracy.bar', $this->prefix('tracyPanel')]);
 		}
