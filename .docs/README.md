@@ -7,6 +7,7 @@
 - [Latte - example](#latte)
 - [Neon - example](#neon)
 - [Database loaders](#database-loaders)
+- [Features](#features)
 
 ## Usage
 Added translation extension.
@@ -26,8 +27,8 @@ translation:
 		- %appDir%/lang
 ```
 
-## Presenter
-How to use in backend.
+## Presenter or model
+How to use on backend.
 ```php
 <?php
 
@@ -68,9 +69,34 @@ class BasePresenter extends Nette\Application\UI\Presenter
 	}
 }
 ```
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Model;
+
+use Nette;
+
+
+class Model
+{
+	/** @var Nette\Localization\ITranslator */
+	public $translator;
+
+
+	/**
+	 * @param Nette\Localization\ITranslator $translator
+	 */
+	public function __construct(Nette\Localization\ITranslator $translator)
+	{
+		$this->translator = $translator;
+	}
+}
+```
 
 ## Latte
-How to use in frontend.
+How to use on frontend.
 ```latte
 {_domain.message}
 
@@ -109,7 +135,7 @@ prefix:
 ```
 
 ## Database loaders
-Package included database loader for **[Doctrine 2](https://www.doctrine-project.org/)** and **[Nette Database 3](https://doc.nette.org/cs/3.0/database)**.
+Package included database loaders for **[Doctrine 2](https://www.doctrine-project.org/)** and **[Nette Database 3](https://doc.nette.org/cs/3.0/database)**.
 
 ### Doctrine
 You must create a file with specific format in scanned dirs like as **messages.en_US.doctrine**. All parameters are optional, but file must be created.
@@ -196,4 +222,22 @@ CREATE TABLE `messages` (
 	KEY `locale` (`locale`),
 	KEY `message` (`message`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
+## Features
+### Wrappers
+Possibility passing pluralization to components without pre-translation and avoiding double translation.
+```php
+$form = new Nette\Application\UI\Form;
+
+$form->addText('mail, 'form.mail.label')
+	->setOption('description', new Contributte\Translation\Wrappers\Message('form.mail.description', [...]);
+```
+Or pass the not translatable texts.
+```php
+$form->addSelect('country, 'form.country.label')
+	->setItems([
+		new Contributte\Translation\Wrappers\NotTranslate('Czech republic'),
+		new Contributte\Translation\Wrappers\NotTranslate('Slovak republic'),
+	]);
 ```
