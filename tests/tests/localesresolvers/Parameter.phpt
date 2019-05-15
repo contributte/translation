@@ -1,29 +1,28 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation\Tests\Tests\LocalesResolvers;
+namespace Contributte\Translation\Tests\Tests\LocalesResolvers;
 
+use Contributte;
 use Nette;
 use Tester;
-use Translette;
 
 $container = require __DIR__ . '/../../bootstrap.php';
 
-Tester\Environment::bypassFinals();
 
 /**
  * @author Ales Wita
  */
-class Parameter extends Translette\Translation\Tests\AbstractTest
+class Parameter extends Contributte\Translation\Tests\AbstractTest
 {
 	public function test01(): void
 	{
-		Tester\Assert::null($this->resolve(null));
+		Tester\Assert::same('', $this->resolve(''));
 		Tester\Assert::same('en', $this->resolve('en'));
 		Tester\Assert::same('cs', $this->resolve('cs'));
 	}
@@ -37,15 +36,10 @@ class Parameter extends Translette\Translation\Tests\AbstractTest
 	 */
 	private function resolve(?string $locale): ?string
 	{
-		$applicationMock = \Mockery::mock(Nette\Application\Application::class);
+		$request = new Nette\Http\Request(new Nette\Http\UrlScript('https://www.example.com/?' . Contributte\Translation\LocalesResolvers\Parameter::$parameter . '=' . $locale));
 
-		$applicationMock->shouldReceive('getRequests')
-			->once()
-			->withNoArgs()
-			->andReturn([new Nette\Application\Request('presenter', null, [Translette\Translation\LocalesResolvers\Parameter::$localeParameter => $locale])]);
-
-		$resolver = new Translette\Translation\LocalesResolvers\Parameter($applicationMock);
-		$translatorMock = \Mockery::mock(Translette\Translation\Translator::class);
+		$resolver = new Contributte\Translation\LocalesResolvers\Parameter($request);
+		$translatorMock = \Mockery::mock(Contributte\Translation\Translator::class);
 
 		return $resolver->resolve($translatorMock);
 	}
@@ -53,15 +47,10 @@ class Parameter extends Translette\Translation\Tests\AbstractTest
 
 	public function test02(): void
 	{
-		$applicationMock = \Mockery::mock(Nette\Application\Application::class);
+		$request = new Nette\Http\Request(new Nette\Http\UrlScript('https://www.example.com'));
 
-		$applicationMock->shouldReceive('getRequests')
-			->once()
-			->withNoArgs()
-			->andReturn([null]);
-
-		$resolver = new Translette\Translation\LocalesResolvers\Parameter($applicationMock);
-		$translatorMock = \Mockery::mock(Translette\Translation\Translator::class);
+		$resolver = new Contributte\Translation\LocalesResolvers\Parameter($request);
+		$translatorMock = \Mockery::mock(Contributte\Translation\Translator::class);
 
 		Tester\Assert::null($resolver->resolve($translatorMock));
 	}
