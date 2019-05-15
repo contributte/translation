@@ -1,16 +1,16 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation\Loaders;
+namespace Contributte\Translation\Loaders;
 
+use Contributte;
 use Nette;
 use Symfony;
-use Translette;
 
 
 /**
@@ -21,18 +21,20 @@ class Neon extends Symfony\Component\Translation\Loader\ArrayLoader implements S
 {
 	/**
 	 * {@inheritdoc}
+	 *
+	 * @throws Contributte\Translation\InvalidArgumentException
 	 */
 	public function load($resource, $locale, $domain = 'messages')
 	{
 		$content = @file_get_contents($resource); // @ -> prevent E_WARNING and thrown an exception
 
 		if ($content === false) {
-			throw new Translette\Translation\InvalidArgumentException('Something wrong with resource file "' . $resource . '".');
+			throw new Contributte\Translation\InvalidArgumentException('Something wrong with resource file "' . $resource . '".');
 		}
 
 		$messages = Nette\Neon\Neon::decode($content);
 
-		$catalogue = parent::load($messages, $locale, $domain);
+		$catalogue = parent::load($messages !== null ? $messages : [], $locale, $domain);
 		$catalogue->addResource(new Symfony\Component\Config\Resource\FileResource($resource));
 
 		return $catalogue;
