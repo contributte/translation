@@ -1,16 +1,16 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
 namespace Contributte\Translation\DI;
 
+use Contributte;
 use Nette;
 use Symfony;
-use Contributte;
 use Tracy;
 
 
