@@ -1,12 +1,12 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation\Tests;
+namespace Contributte\Translation\Tests;
 
 use Nette;
 use Tester;
