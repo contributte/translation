@@ -1,15 +1,15 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation\LocalesResolvers;
+namespace Contributte\Translation\LocalesResolvers;
 
+use Contributte;
 use Nette;
-use Translette;
 
 
 /**
@@ -26,12 +26,12 @@ class Header implements ResolverInterface
 
 	/**
 	 * @param Nette\Http\IRequest $httpRequest
-	 * @throws Translette\Translation\InvalidArgumentException
+	 * @throws Contributte\Translation\InvalidArgumentException
 	 */
 	public function __construct(Nette\Http\IRequest $httpRequest)
 	{
 		if (!is_a($httpRequest, Nette\Http\Request::class, true)) {
-			throw new Translette\Translation\InvalidArgumentException('Header locale resolver need "Nette\\Http\\Request" or his child for using "detectLanguage" method.');
+			throw new Contributte\Translation\InvalidArgumentException('Header locale resolver need "Nette\\Http\\Request" or his child for using "detectLanguage" method.');
 		}
 
 		$this->httpRequest = $httpRequest;
@@ -39,11 +39,12 @@ class Header implements ResolverInterface
 
 
 	/**
-	 * @param Translette\Translation\Translator $translator
+	 * @param Contributte\Translation\Translator $translator
 	 * @return string|null
 	 */
-	public function resolve(Translette\Translation\Translator $translator): ?string
+	public function resolve(Contributte\Translation\Translator $translator): ?string
 	{
+		/** @var string[] $langs */
 		$langs = [];
 
 		foreach ($translator->availableLocales as $v1) {
