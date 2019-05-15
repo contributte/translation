@@ -328,10 +328,11 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		} elseif ($message instanceof Wrappers\NotTranslate) {
 			return $message->message;
 
-		} elseif ($message instanceof Wrappers\Message) {var_dump($message);
+		} elseif ($message instanceof Wrappers\Message) {
 			$locale = $message->locale;
 			$domain = $message->domain;
 			$params = $message->params;
+			$count = $message->count;
 			$message = $message->message;
 
 		} elseif (is_int($message)) {// float type can be confused for dot inside
