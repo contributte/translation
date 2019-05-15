@@ -1,12 +1,12 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation;
+namespace Contributte\Translation;
 
 use Latte;
 use Nette;
@@ -31,12 +31,12 @@ class Helpers
 
 
 	/**
-	 * @param string|null $message
+	 * @param string $message
 	 * @return array
 	 */
-	public static function extractMessage(?string $message): array
+	public static function extractMessage(string $message): array
 	{
-		if ($message !== null && strpos($message, '.') !== false && strpos($message, ' ') === false) {
+		if (strpos($message, '.') !== false && strpos($message, ' ') === false) {
 			[$domain, $message] = explode('.', $message, 2);
 
 		} else {
