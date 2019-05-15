@@ -1,30 +1,30 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation;
+namespace Contributte\Translation;
 
+use Contributte;
 use Nette;
 use Symfony;
-use Translette;
 
 
 /**
- * @property-read Translette\Translation\LocaleResolver $localeResolver
- * @property-read Translette\Translation\FallbackResolver $fallbackResolver
+ * @property-read Contributte\Translation\LocaleResolver $localeResolver
+ * @property-read Contributte\Translation\FallbackResolver $fallbackResolver
  * @property-read string $defaultLocale
  * @property-read string|null $cacheDir
  * @property-read bool $debug
- * @property-read Translette\Translation\Tracy\Panel|null $tracyPanel
+ * @property-read Contributte\Translation\Tracy\Panel|null $tracyPanel
  * @property      array|null $localesWhitelist
  * @property      array $prefix
  * @property-read array $prefixTemp
  * @property-read string $formattedPrefix
- * @property-read array $availableLocales
+ * @property-read string[] $availableLocales
  * @property      string|null $locale
  *
  * @author Ales Wita
@@ -35,10 +35,10 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	use Nette\SmartObject;
 	use KdybyTranslationBackCompatibilityTrait;
 
-	/** @var Translette\Translation\LocaleResolver */
+	/** @var Contributte\Translation\LocaleResolver */
 	private $localeResolver;
 
-	/** @var Translette\Translation\FallbackResolver */
+	/** @var Contributte\Translation\FallbackResolver */
 	private $fallbackResolver;
 
 	/** @var string */
@@ -50,7 +50,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/** @var bool */
 	private $debug;
 
-	/** @var Translette\Translation\Tracy\Panel|null */
+	/** @var Contributte\Translation\Tracy\Panel|null */
 	private $tracyPanel;
 
 	/** @var array|null */
@@ -67,8 +67,8 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
-	 * @param Translette\Translation\LocaleResolver $localeResolver
-	 * @param Translette\Translation\FallbackResolver $fallbackResolver
+	 * @param Contributte\Translation\LocaleResolver $localeResolver
+	 * @param Contributte\Translation\FallbackResolver $fallbackResolver
 	 * @param string $defaultLocale
 	 * @param string|null $cacheDir
 	 * @param bool $debug
@@ -88,7 +88,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
-	 * @return Translette\Translation\LocaleResolver
+	 * @return Contributte\Translation\LocaleResolver
 	 */
 	public function getLocaleResolver(): LocaleResolver
 	{
@@ -97,7 +97,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
-	 * @return Translette\Translation\FallbackResolver
+	 * @return Contributte\Translation\FallbackResolver
 	 */
 	public function getFallbackResolver(): FallbackResolver
 	{
@@ -133,7 +133,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
-	 * @return Tracy\Panel|null
+	 * @return Contributte\Translation\Tracy\Panel|null
 	 */
 	public function getTracyPanel(): ?Tracy\Panel
 	{
@@ -142,7 +142,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
-	 * @param Tracy\Panel|null $tracyPanel
+	 * @param Contributte\Translation\Tracy\Panel|null $tracyPanel
 	 * @return self
 	 */
 	public function setTracyPanel(?Tracy\Panel $tracyPanel): self
@@ -220,7 +220,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/**
 	 * @param string|null $string
 	 * @return self
-	 * @throws Translette\Translation\InvalidArgumentException
+	 * @throws Contributte\Translation\InvalidArgumentException
 	 */
 	public function removePrefix(string $string = null): self
 	{
@@ -256,7 +256,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 	/**
 	 * @param string $prefix
-	 * @return Translette\Translation\PrefixedTranslator
+	 * @return Contributte\Translation\PrefixedTranslator
 	 */
 	public function createPrefixedTranslator(string $prefix): PrefixedTranslator
 	{
@@ -265,7 +265,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
-	 * @return array
+	 * @return string[]
 	 */
 	public function getAvailableLocales(): array
 	{
@@ -286,7 +286,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
-	 * @return string|null
+	 * {@inheritdoc}
 	 */
 	public function getLocale()
 	{
@@ -299,7 +299,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 
 	/**
-	 * @param string|null $locale
+	 * {@inheritdoc}
 	 */
 	public function setLocale($locale)
 	{
@@ -322,6 +322,26 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	 */
 	public function translate($message, $count = null, $params = [], $domain = null, $locale = null)
 	{
+		if ($message === null) {
+			return '';
+
+		} elseif ($message instanceof Wrappers\NotTranslate) {
+			return $message->message;
+
+		} elseif ($message instanceof Wrappers\Message) {var_dump($message);
+			$locale = $message->locale;
+			$domain = $message->domain;
+			$params = $message->params;
+			$message = $message->message;
+
+		} elseif (is_int($message)) {// float type can be confused for dot inside
+			$message = (string) $message;
+		}
+
+		if (!is_string($message)) {
+			throw new InvalidArgumentException('Message must be string, ' . gettype($message) . ' given.');
+		}
+
 		if (is_array($count)) {
 			$locale = $domain !== null ? (string) $domain : null;
 			$domain = $params !== null && !empty($params) ? (string) $params : null;
@@ -329,7 +349,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 			$count = null;
 		}
 
-		if (is_string($message) && Nette\Utils\Strings::startsWith($message, '//')) {
+		if (Nette\Utils\Strings::startsWith($message, '//')) {
 			$message = Nette\Utils\Strings::substring($message, 2);
 
 		} elseif (count($this->prefix) > 0) {
