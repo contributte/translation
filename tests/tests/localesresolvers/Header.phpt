@@ -2,6 +2,8 @@
 
 /**
  * This file is part of the Contributte/Translation
+ *
+ * @skip
  */
 
 declare(strict_types=1);
