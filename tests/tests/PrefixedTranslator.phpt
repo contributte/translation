@@ -1,15 +1,15 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation\Tests\Tests;
+namespace Contributte\Translation\Tests\Tests;
 
+use Contributte;
 use Tester;
-use Translette;
 
 $container = require __DIR__ . '/../bootstrap.php';
 
@@ -17,14 +17,14 @@ $container = require __DIR__ . '/../bootstrap.php';
 /**
  * @author Ales Wita
  */
-class PrefixedTranslator extends Translette\Translation\Tests\AbstractTest
+class PrefixedTranslator extends Contributte\Translation\Tests\AbstractTest
 {
 	public function test01(): void
 	{
-		$translator = \Mockery::mock(Translette\Translation\Translator::class);
-		$prefixedTranslator = new Translette\Translation\PrefixedTranslator($translator, 'prefix');
+		$translator = \Mockery::mock(Contributte\Translation\Translator::class);
+		$prefixedTranslator = new Contributte\Translation\PrefixedTranslator($translator, 'prefix');
 
-		Tester\Assert::true($prefixedTranslator->translator instanceof Translette\Translation\Translator);
+		Tester\Assert::true($prefixedTranslator->translator instanceof Contributte\Translation\Translator);
 		Tester\Assert::same('prefix', $prefixedTranslator->prefix);
 	}
 }
