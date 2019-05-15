@@ -1,15 +1,15 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation\LocalesResolvers;
+namespace Contributte\Translation\LocalesResolvers;
 
+use Contributte;
 use Nette;
-use Translette;
 
 
 /**
@@ -21,7 +21,7 @@ class Session implements ResolverInterface
 	use Nette\SmartObject;
 
 	/** @var string */
-	public static $localeParameter = 'locale';
+	public static $parameter = 'locale';
 
 	/** @var Nette\Http\IResponse */
 	private $httpResponse;
@@ -51,30 +51,30 @@ class Session implements ResolverInterface
 	 */
 	public function setLocale(string $locale = null): self
 	{
-		$this->sessionSection[self::$localeParameter] = $locale;
+		$this->sessionSection[self::$parameter] = $locale;
 		return $this;
 	}
 
 
 	/**
-	 * @param Translette\Translation\Translator $translator
+	 * @param Contributte\Translation\Translator $translator
 	 * @return string|null
 	 */
-	public function resolve(Translette\Translation\Translator $translator): ?string
+	public function resolve(Contributte\Translation\Translator $translator): ?string
 	{
 		if (!$this->session->isStarted() && $this->httpResponse->isSent()) {
 			trigger_error('The advice of session locale resolver is required but the session has not been started and headers had been already sent. Either start your sessions earlier or disabled the SessionResolver.', E_USER_WARNING);
 			return null;
 		}
 
-		if (!isset($this->sessionSection[self::$localeParameter])) {
+		if (!isset($this->sessionSection[self::$parameter])) {
 			return null;
 		}
 
-		if (!in_array(Nette\Utils\Strings::substring($this->sessionSection[self::$localeParameter], 0, 2), array_map(function ($locale) {return Nette\Utils\Strings::substring($locale, 0, 2);}, $translator->availableLocales), true)) {
+		if (!in_array(Nette\Utils\Strings::substring($this->sessionSection[self::$parameter], 0, 2), array_map(function ($locale) {return Nette\Utils\Strings::substring($locale, 0, 2);}, $translator->availableLocales), true)) {
 			return null;
 		}
 
-		return $this->sessionSection[self::$localeParameter];
+		return $this->sessionSection[self::$parameter];
 	}
 }
