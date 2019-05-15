@@ -1,15 +1,15 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation\LocalesResolvers;
+namespace Contributte\Translation\LocalesResolvers;
 
+use Contributte;
 use Nette;
-use Translette;
 
 
 /**
@@ -21,37 +21,27 @@ class Parameter implements ResolverInterface
 	use Nette\SmartObject;
 
 	/** @var string */
-	public static $localeParameter = 'locale';
+	public static $parameter = 'locale';
 
-	/** @var Nette\Application\Request */
+	/** @var Nette\Http\IRequest */
 	private $request;
 
 
 	/**
-	 * @param Nette\Application\Application $application
+	 * @param Nette\Http\IRequest $request
 	 */
-	public function __construct(Nette\Application\Application $application)
+	public function __construct(Nette\Http\IRequest $request)
 	{
-		$requests = $application->getRequests();
-		$request = end($requests);
-
-		if ($request !== false) {
-			$this->request = $request;
-		}
+		$this->request = $request;
 	}
 
 
 	/**
-	 * @param Translette\Translation\Translator $translator
+	 * @param Contributte\Translation\Translator $translator
 	 * @return string|null
 	 */
-	public function resolve(Translette\Translation\Translator $translator): ?string
+	public function resolve(Contributte\Translation\Translator $translator): ?string
 	{
-		if ($this->request === null) {
-			return null;
-		}
-
-		$params = $this->request->getParameters();
-		return array_key_exists(self::$localeParameter, $params) ? $params[self::$localeParameter] : null;
+		return $this->request->getQuery(self::$parameter);
 	}
 }
