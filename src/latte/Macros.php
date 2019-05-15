@@ -1,15 +1,15 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation\Latte;
+namespace Contributte\Translation\Latte;
 
+use Contributte;
 use Latte;
-use Translette;
 
 
 /**
@@ -52,7 +52,7 @@ class Macros extends Latte\Macros\MacroSet
 		} elseif ($node->empty = ($node->args !== '')) {
 			// return $writer->write('echo %modify(($this->filters->translate)(%node.args))');
 
-			if (Translette\Translation\Helpers::macroWithoutParameters($node)) {
+			if (Contributte\Translation\Helpers::macroWithoutParameters($node)) {
 				return $writer->write('echo %modify(call_user_func($this->filters->translate, %node.word))');
 			}
 
