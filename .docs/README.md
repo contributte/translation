@@ -82,7 +82,7 @@ use Nette;
 class Model
 {
 	/** @var Nette\Localization\ITranslator */
-	public $translator;
+	private $translator;
 
 
 	/**
