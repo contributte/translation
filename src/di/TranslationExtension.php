@@ -22,8 +22,8 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 {
 	/** @var array */
 	public $defaults = [
-		'debug' => null,// null is auto detect
-		'debugger' => null,// null is auto detect
+		'debug' => null, // null is auto detect
+		'debugger' => null, // null is auto detect
 		'locales' => [
 			'whitelist' => null,
 			'default' => null,
@@ -40,7 +40,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		],
 		'dirs' => [],
 		'cache' => [
-			'dir' => null,// null is auto detect
+			'dir' => null, // null is auto detect
 			'factory' => Symfony\Component\Config\ConfigCacheFactory::class,
 		],
 	];
