@@ -1,16 +1,16 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation\Tracy;
+namespace Contributte\Translation\Tracy;
 
+use Contributte;
 use Nette;
 use Tracy;
-use Translette;
 
 
 /**
@@ -21,7 +21,7 @@ class Panel implements Tracy\IBarPanel
 {
 	use Nette\SmartObject;
 
-	/** @var Translette\Translation\Translator */
+	/** @var Contributte\Translation\Translator */
 	private $translator;
 
 	/** @var array */
@@ -47,9 +47,9 @@ class Panel implements Tracy\IBarPanel
 
 
 	/**
-	 * @param Translette\Translation\Translator $translator
+	 * @param Contributte\Translation\Translator $translator
 	 */
-	public function __construct(Translette\Translation\Translator $translator)
+	public function __construct(Contributte\Translation\Translator $translator)
 	{
 		$this->translator = $translator;
 		$translator->setTracyPanel($this);
@@ -69,6 +69,7 @@ class Panel implements Tracy\IBarPanel
 
 	/**
 	 * @return string|null
+	 * @throws \ReflectionException
 	 */
 	public function getPanel(): ?string
 	{
@@ -200,10 +201,10 @@ class Panel implements Tracy\IBarPanel
 
 
 	/**
-	 * @param Translette\Translation\LocalesResolvers\ResolverInterface $resolver
+	 * @param Contributte\Translation\LocalesResolvers\ResolverInterface $resolver
 	 * @return self
 	 */
-	public function addLocaleResolver(Translette\Translation\LocalesResolvers\ResolverInterface $resolver): self
+	public function addLocaleResolver(Contributte\Translation\LocalesResolvers\ResolverInterface $resolver): self
 	{
 		$this->localeResolvers[] = $resolver;
 		return $this;
