@@ -1,14 +1,14 @@
 <?php
 
 /**
- * This file is part of the Translette/Translation
+ * This file is part of the Contributte/Translation
  */
 
 declare(strict_types=1);
 
-namespace Translette\Translation\LocalesResolvers;
+namespace Contributte\Translation\LocalesResolvers;
 
-use Translette;
+use Contributte;
 
 
 /**
@@ -18,8 +18,8 @@ use Translette;
 interface ResolverInterface
 {
 	/**
-	 * @param Translette\Translation\Translator $translator
+	 * @param Contributte\Translation\Translator $translator
 	 * @return string|null
 	 */
-	public function resolve(Translette\Translation\Translator $translator): ?string;
+	public function resolve(Contributte\Translation\Translator $translator): ?string;
 }
