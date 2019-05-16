@@ -70,7 +70,7 @@ class Macros extends Latte\Macros\MacroSet
 	{
 		if ($node->closing) {
 			if ($node->content !== null && $node->content !== '') {
-				return $writer->write('$this->global->translator->prefix = $this->global->translator->prefixTemp;');
+				return $writer->write('$this->global->translator->removePrefix();');
 			}
 
 		} else {
@@ -78,7 +78,7 @@ class Macros extends Latte\Macros\MacroSet
 				throw new Latte\CompileException('Expected message prefix, none given.');
 			}
 
-			return $writer->write('$this->global->translator->prefix = [%node.word];');
+			return $writer->write('$this->global->translator->addPrefix(%node.word);');
 		}
 	}
 }
