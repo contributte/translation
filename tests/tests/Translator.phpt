@@ -190,6 +190,7 @@ class Translator extends Contributte\Translation\Tests\AbstractTest
 			Tester\Assert::same('Depth message', $template->renderToString(Tester\FileMock::create('{_messages.depth.message}')));
 			Tester\Assert::same('Depth message', $template->renderToString(Tester\FileMock::create('{translator messages}{_depth.message}{/translator}')));
 			Tester\Assert::same('Depth message', $template->renderToString(Tester\FileMock::create('{translator messages}{translator depth}{_message}{/translator}{/translator}')));
+			Tester\Assert::exception(function () use ($template): void {$template->renderToString(Tester\FileMock::create('{translator}{_depth.message}{/translator}'));}, \Latte\CompileException::class);
 
 			Tester\Assert::same('missing.translation', $template->renderToString(Tester\FileMock::create('{_messages.missing.translation}')));
 			Tester\Assert::same('missing.translation', $template->renderToString(Tester\FileMock::create('{php $message = "messages.missing.translation"}{$message|translate}')));
