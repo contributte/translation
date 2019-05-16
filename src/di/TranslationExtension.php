@@ -34,7 +34,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			'debug' => Expect::bool($builder->parameters['debugMode']),
 			'debugger' => Expect::bool(interface_exists(Tracy\IBarPanel::class)),
 			'locales' => Expect::structure([
-				'whitelist' => Expect::array()->default(null),
+				'whitelist' => Expect::array()->default(null), // @todo unique check?
 				'default' => Expect::string(null),
 				'fallback' => Expect::array()->default(['en_US']),
 			]),
