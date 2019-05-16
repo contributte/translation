@@ -25,7 +25,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		'debug' => null, // null is auto detect
 		'debugger' => null, // null is auto detect
 		'locales' => [
-			'whitelist' => null,
+			'whitelist' => null, // @todo unique check?
 			'default' => null,
 			'fallback' => ['en_US'],
 		],
