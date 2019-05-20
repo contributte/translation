@@ -30,9 +30,7 @@ translation:
 ## Presenter or model
 How to use on backend.
 ```php
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App;
 
@@ -42,22 +40,18 @@ use Contributte;
 
 class BasePresenter extends Nette\Application\UI\Presenter
 {
+	
 	/** @var Nette\Localization\ITranslator @inject */
 	public $translator;
 
 	/** @var Contributte\Translation\LocalesResolvers\Session @inject */
 	public $translatorSessionResolver;
 
-
-	/**
-	 * @param string $locale
-	 */
 	public function handleChangeLocale(string $locale): void
 	{
 		$this->translatorSessionResolver->setLocale($locale);
 		$this->redirect('this');
 	}
-
 
 	public function renderDefault(): void
 	{
@@ -67,31 +61,27 @@ class BasePresenter extends Nette\Application\UI\Presenter
 
 		$prefixedTranslator->translate('message');
 	}
+	
 }
 ```
 ```php
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Model;
 
 use Nette;
 
-
 class Model
 {
+	
 	/** @var Nette\Localization\ITranslator */
 	private $translator;
 
-
-	/**
-	 * @param Nette\Localization\ITranslator $translator
-	 */
 	public function __construct(Nette\Localization\ITranslator $translator)
 	{
 		$this->translator = $translator;
 	}
+	
 }
 ```
 
@@ -156,14 +146,11 @@ translation:
 
 Entity example.
 ```php
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 
 /**
  * @ORM\Entity
@@ -171,6 +158,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Messages
 {
+	
 	/**
 	 * @ORM\Id
 	 * @ORM\Column(type="integer", nullable=false)
@@ -192,6 +180,7 @@ class Messages
 	 * @ORM\Column(type="string", nullable=false)
 	 */
 	public $message;
+	
 }
 ```
 

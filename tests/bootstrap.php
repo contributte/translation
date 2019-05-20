@@ -1,10 +1,11 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 /**
  * This file is part of the Contributte/Translation
  */
 
 require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/AbstractTest.php';
 //require __DIR__ . '/../../vendor/autoload.php';
 
 Tester\Environment::setup();

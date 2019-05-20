@@ -1,17 +1,12 @@
-<?php declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 /**
  * This file is part of the Contributte/Translation
  */
 
-namespace Contributte\Translation\Tests\Tests\Loaders;
-
-use Contributte;
-use Tester;
-
 $container = require __DIR__ . '/../../bootstrap.php';
 
-class Neon extends Contributte\Translation\Tests\AbstractTest
+class Neon extends AbstractTest
 {
 
 	public function test01(): void
