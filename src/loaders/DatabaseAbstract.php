@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 namespace Contributte\Translation\Loaders;
 
@@ -13,12 +11,9 @@ use Nette;
 use Nette\Schema\Expect;
 use Symfony;
 
-
-/**
- * @author Ales Wita
- */
 abstract class DatabaseAbstract extends Symfony\Component\Translation\Loader\ArrayLoader implements Symfony\Component\Translation\Loader\LoaderInterface
 {
+
 	/** @var array */
 	public static $defaults = [
 		'table' => 'messages',
@@ -26,7 +21,6 @@ abstract class DatabaseAbstract extends Symfony\Component\Translation\Loader\Arr
 		'locale' => 'locale',
 		'message' => 'message',
 	];
-
 
 	/**
 	 * {@inheritdoc}
@@ -60,12 +54,8 @@ abstract class DatabaseAbstract extends Symfony\Component\Translation\Loader\Arr
 		return $catalogue;
 	}
 
-
 	/**
 	 * @internal
-	 *
-	 * @param array $defaults
-	 * @return Nette\Schema\Elements\Structure
 	 */
 	private function getSchema(array $defaults = []): Nette\Schema\Elements\Structure
 	{
@@ -77,13 +67,6 @@ abstract class DatabaseAbstract extends Symfony\Component\Translation\Loader\Arr
 		]);
 	}
 
-
-	/**
-	 * @param \stdClass $config
-	 * @param string $resource
-	 * @param string $locale
-	 * @param string $domain
-	 * @return array
-	 */
 	abstract protected function getMessages(\stdClass $config, string $resource, string $locale, string $domain): array;
+
 }

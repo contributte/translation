@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 namespace Contributte\Translation\Loaders;
 
@@ -12,13 +10,9 @@ use Contributte;
 use Nette;
 use Symfony;
 
-
-/**
- * @author Ales Wita
- * @author Filip Prochazka
- */
 class Neon extends Symfony\Component\Translation\Loader\ArrayLoader implements Symfony\Component\Translation\Loader\LoaderInterface
 {
+
 	/**
 	 * {@inheritdoc}
 	 *
@@ -39,4 +33,5 @@ class Neon extends Symfony\Component\Translation\Loader\ArrayLoader implements S
 
 		return $catalogue;
 	}
+
 }

@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 namespace Contributte\Translation\Tests\Tests;
 
@@ -13,12 +11,9 @@ use Tester;
 
 $container = require __DIR__ . '/../bootstrap.php';
 
-
-/**
- * @author Ales Wita
- */
 class Helpers extends Contributte\Translation\Tests\AbstractTest
 {
+
 	public function test01(): void
 	{
 		// whitelistRegexp
@@ -36,6 +31,7 @@ class Helpers extends Contributte\Translation\Tests\AbstractTest
 		Tester\Assert::same(['domain', ''], Contributte\Translation\Helpers::extractMessage('domain.'));
 		Tester\Assert::same(['', 'message'], Contributte\Translation\Helpers::extractMessage('.message'));
 	}
+
 }
 
 

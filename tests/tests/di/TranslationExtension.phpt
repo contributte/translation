@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 namespace Contributte\Translation\Tests\Tests\DI;
 
@@ -14,12 +12,9 @@ use Tester;
 
 $container = require __DIR__ . '/../../bootstrap.php';
 
-
-/**
- * @author Ales Wita
- */
 class TranslationExtension extends Contributte\Translation\Tests\AbstractTest
 {
+
 	public function test01(): void
 	{
 		Tester\Assert::exception(function (): void {$this->createContainer(['localeResolvers' => ['\\stdClass']]);}, Contributte\Translation\InvalidArgumentException::class, 'Resolver must implement interface "Contributte\\Translation\\LocalesResolvers\\ResolverInterface".');
@@ -28,7 +23,6 @@ class TranslationExtension extends Contributte\Translation\Tests\AbstractTest
 		Tester\Assert::exception(function (): void {$this->createContainer(['locales' => ['default' => 'en'], 'loaders' => ['\\stdClass']]);}, Contributte\Translation\InvalidArgumentException::class, 'Loader must implement interface "Symfony\Component\Translation\Loader\LoaderInterface".');
 		Tester\Assert::exception(function (): void {$this->createContainer(['locales' => ['default' => 'en'], 'dirs' => [__DIR__ . '/__no_exists__']]);}, \UnexpectedValueException::class);
 	}
-
 
 	public function test02(): void
 	{
@@ -51,11 +45,8 @@ class TranslationExtension extends Contributte\Translation\Tests\AbstractTest
 		}
 	}
 
-
 	/**
 	 * @internal
-	 *
-	 * @param array $config
 	 */
 	private function createContainer(array $config)
 	{
@@ -68,6 +59,7 @@ class TranslationExtension extends Contributte\Translation\Tests\AbstractTest
 
 		return new $class;
 	}
+
 }
 
 

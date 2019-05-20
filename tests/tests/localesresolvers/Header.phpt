@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 namespace Contributte\Translation\Tests\Tests\LocalesResolvers;
 
@@ -14,12 +12,9 @@ use Tester;
 
 $container = require __DIR__ . '/../../bootstrap.php';
 
-
-/**
- * @author Ales Wita
- */
 class Header extends Contributte\Translation\Tests\AbstractTest
 {
+
 	public function test01(): void
 	{
 		Tester\Assert::null($this->resolve(null, ['foo']));
@@ -33,13 +28,8 @@ class Header extends Contributte\Translation\Tests\AbstractTest
 		Tester\Assert::same('en-us', $this->resolve('da, en_us', ['en', 'en-us']));
 	}
 
-
 	/**
 	 * @internal
-	 *
-	 * @param string|null $locale
-	 * @param array $availableLocales
-	 * @return string|null
 	 */
 	private function resolve(?string $locale, array $availableLocales): ?string
 	{
@@ -54,6 +44,7 @@ class Header extends Contributte\Translation\Tests\AbstractTest
 
 		return $resolver->resolve($translatorMock);
 	}
+
 }
 
 

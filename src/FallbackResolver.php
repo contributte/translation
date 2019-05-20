@@ -1,45 +1,30 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 namespace Contributte\Translation;
 
 use Contributte;
 use Nette;
 
-
 /**
  * @property      array $fallbackLocales
- *
- * @author Ales Wita
- * @author Filip Prochazka
  */
 class FallbackResolver
 {
+
 	use Nette\SmartObject;
 
 	/** @var array */
 	private $fallbackLocales = [];
 
-
-	/**
-	 * @param array $array
-	 */
 	public function setFallbackLocales(array $array)
 	{
 		$this->fallbackLocales = $array;
 	}
 
-
-	/**
-	 * @param Contributte\Translation\Translator $translator
-	 * @param string $locale
-	 * @return array
-	 */
 	public function compute(Translator $translator, string $locale): array
 	{
 		$locales = [];
@@ -69,4 +54,5 @@ class FallbackResolver
 
 		return array_values(array_unique($locales));
 	}
+
 }

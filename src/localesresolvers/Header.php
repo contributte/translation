@@ -1,31 +1,23 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 namespace Contributte\Translation\LocalesResolvers;
 
 use Contributte;
 use Nette;
 
-
-/**
- * @author Ales Wita
- * @author Filip Prochazka
- */
 class Header implements ResolverInterface
 {
+
 	use Nette\SmartObject;
 
 	/** @var Nette\Http\Request */
 	private $httpRequest;
 
-
 	/**
-	 * @param Nette\Http\IRequest $httpRequest
 	 * @throws Contributte\Translation\InvalidArgumentException
 	 */
 	public function __construct(Nette\Http\IRequest $httpRequest)
@@ -37,11 +29,6 @@ class Header implements ResolverInterface
 		$this->httpRequest = $httpRequest;
 	}
 
-
-	/**
-	 * @param Contributte\Translation\Translator $translator
-	 * @return string|null
-	 */
 	public function resolve(Contributte\Translation\Translator $translator): ?string
 	{
 		/** @var string[] $langs */
@@ -61,4 +48,5 @@ class Header implements ResolverInterface
 
 		return $this->httpRequest->detectLanguage($langs);
 	}
+
 }

@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 namespace Contributte\Translation\Tests\Tests\LocalesResolvers;
 
@@ -14,12 +12,9 @@ use Tester;
 
 $container = require __DIR__ . '/../../bootstrap.php';
 
-
-/**
- * @author Ales Wita
- */
 class Parameter extends Contributte\Translation\Tests\AbstractTest
 {
+
 	public function test01(): void
 	{
 		Tester\Assert::same('', $this->resolve(''));
@@ -27,12 +22,8 @@ class Parameter extends Contributte\Translation\Tests\AbstractTest
 		Tester\Assert::same('cs', $this->resolve('cs'));
 	}
 
-
 	/**
 	 * @internal
-	 *
-	 * @param string|null $locale
-	 * @return string|null
 	 */
 	private function resolve(?string $locale): ?string
 	{
@@ -44,7 +35,6 @@ class Parameter extends Contributte\Translation\Tests\AbstractTest
 		return $resolver->resolve($translatorMock);
 	}
 
-
 	public function test02(): void
 	{
 		$request = new Nette\Http\Request(new Nette\Http\UrlScript('https://www.example.com'));
@@ -54,6 +44,7 @@ class Parameter extends Contributte\Translation\Tests\AbstractTest
 
 		Tester\Assert::null($resolver->resolve($translatorMock));
 	}
+
 }
 
 

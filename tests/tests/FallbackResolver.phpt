@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 namespace Contributte\Translation\Tests\Tests;
 
@@ -13,12 +11,9 @@ use Tester;
 
 $container = require __DIR__ . '/../bootstrap.php';
 
-
-/**
- * @author Ales Wita
- */
 class FallbackResolver extends Contributte\Translation\Tests\AbstractTest
 {
+
 	public function test01(): void
 	{
 		Tester\Assert::same(['cs_CZ'], $this->compute('cs', ['cs', 'cs_CZ']));
@@ -28,13 +23,8 @@ class FallbackResolver extends Contributte\Translation\Tests\AbstractTest
 		Tester\Assert::same(['cs', 'cs_CZ', 'en', 'en_US'], $this->compute('sk', ['cs', 'cs_CZ', 'en', 'en_US']));
 	}
 
-
 	/**
 	 * @internal
-	 *
-	 * @param string $locale
-	 * @param array $fallbackLocales
-	 * @return array
 	 */
 	private function compute(?string $locale, array $fallbackLocales): array
 	{
@@ -51,6 +41,7 @@ class FallbackResolver extends Contributte\Translation\Tests\AbstractTest
 
 		return $resolver->compute($translatorMock, $locale);
 	}
+
 }
 
 

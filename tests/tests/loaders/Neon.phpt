@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 namespace Contributte\Translation\Tests\Tests\Loaders;
 
@@ -13,12 +11,9 @@ use Tester;
 
 $container = require __DIR__ . '/../../bootstrap.php';
 
-
-/**
- * @author Ales Wita
- */
 class Neon extends Contributte\Translation\Tests\AbstractTest
 {
+
 	public function test01(): void
 	{
 		$file = Tester\FileMock::create('
@@ -52,11 +47,11 @@ test:
 		Tester\Assert::same(['messages' => []], $catalogue->all());
 	}
 
-
 	public function test02(): void
 	{
 		Tester\Assert::exception(function (): void {(new Contributte\Translation\Loaders\Neon)->load('unknown_file', 'en');}, Contributte\Translation\InvalidArgumentException::class, 'Something wrong with resource file "unknown_file".');
 	}
+
 }
 
 

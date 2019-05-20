@@ -1,17 +1,14 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 namespace Contributte\Translation;
 
 use Contributte;
 use Nette;
 use Symfony;
-
 
 /**
  * @property-read Contributte\Translation\LocaleResolver $localeResolver
@@ -26,12 +23,10 @@ use Symfony;
  * @property-read string $formattedPrefix
  * @property-read string[] $availableLocales
  * @property      string|null $locale
- *
- * @author Ales Wita
- * @author Filip Prochazka
  */
 class Translator extends Symfony\Component\Translation\Translator implements Nette\Localization\ITranslator
 {
+
 	use Nette\SmartObject;
 	use KdybyTranslationBackCompatibilityTrait;
 
@@ -65,14 +60,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/** @var array @internal */
 	private $resourcesLocales = [];
 
-
-	/**
-	 * @param Contributte\Translation\LocaleResolver $localeResolver
-	 * @param Contributte\Translation\FallbackResolver $fallbackResolver
-	 * @param string $defaultLocale
-	 * @param string|null $cacheDir
-	 * @param bool $debug
-	 */
 	public function __construct(LocaleResolver $localeResolver, FallbackResolver $fallbackResolver, string $defaultLocale, string $cacheDir = null, bool $debug = false)
 	{
 		$this->localeResolver = $localeResolver;
@@ -86,105 +73,58 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		$this->setLocale(null);
 	}
 
-
-	/**
-	 * @return Contributte\Translation\LocaleResolver
-	 */
 	public function getLocaleResolver(): LocaleResolver
 	{
 		return $this->localeResolver;
 	}
 
-
-	/**
-	 * @return Contributte\Translation\FallbackResolver
-	 */
 	public function getFallbackResolver(): FallbackResolver
 	{
 		return $this->fallbackResolver;
 	}
 
-
-	/**
-	 * @return string
-	 */
 	public function getDefaultLocale(): string
 	{
 		return $this->defaultLocale;
 	}
 
-
-	/**
-	 * @return string|null
-	 */
 	public function getCacheDir(): ?string
 	{
 		return $this->cacheDir;
 	}
 
-
-	/**
-	 * @return bool
-	 */
 	public function getDebug(): bool
 	{
 		return $this->debug;
 	}
 
-
-	/**
-	 * @return Contributte\Translation\Tracy\Panel|null
-	 */
 	public function getTracyPanel(): ?Tracy\Panel
 	{
 		return $this->tracyPanel;
 	}
 
-
-	/**
-	 * @param Contributte\Translation\Tracy\Panel|null $tracyPanel
-	 * @return self
-	 */
 	public function setTracyPanel(?Tracy\Panel $tracyPanel): self
 	{
 		$this->tracyPanel = $tracyPanel;
 		return $this;
 	}
 
-
-	/**
-	 * @return array|null
-	 */
 	public function getLocalesWhitelist(): ?array
 	{
 		return $this->localesWhitelist;
 	}
 
-
-	/**
-	 * @param array|null $whitelist
-	 * @return self
-	 */
 	public function setLocalesWhitelist(?array $whitelist): self
 	{
 		$this->localesWhitelist = $whitelist;
 		return $this;
 	}
 
-
-	/**
-	 * @return array
-	 */
 	public function getPrefix(): array
 	{
 		return $this->prefix;
 	}
 
-
-	/**
-	 * @param array $array
-	 * @return self
-	 */
 	public function setPrefix(array $array): self
 	{
 		$this->prefixTemp[] = $this->prefix;
@@ -192,11 +132,8 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		return $this;
 	}
 
-
 	/**
 	 * @internal
-	 *
-	 * @return array
 	 */
 	public function getPrefixTemp(): array
 	{
@@ -205,21 +142,13 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		return $temp !== false ? $temp : [];
 	}
 
-
-	/**
-	 * @param string $string
-	 * @return self
-	 */
 	public function addPrefix(string $string): self
 	{
 		$this->prefix[] = $string;
 		return $this;
 	}
 
-
 	/**
-	 * @param string|null $string
-	 * @return self
 	 * @throws Contributte\Translation\InvalidArgumentException
 	 */
 	public function removePrefix(string $string = null): self
@@ -244,25 +173,15 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		return $this;
 	}
 
-
-	/**
-	 * @return string
-	 */
 	public function getFormattedPrefix(): string
 	{
 		return implode('.', $this->prefix);
 	}
 
-
-	/**
-	 * @param string $prefix
-	 * @return Contributte\Translation\PrefixedTranslator
-	 */
 	public function createPrefixedTranslator(string $prefix): PrefixedTranslator
 	{
 		return new PrefixedTranslator($this, $prefix);
 	}
-
 
 	/**
 	 * @return string[]
@@ -274,7 +193,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		return $locales;
 	}
 
-
 	/**
 	 * {@inheritdoc}
 	 */
@@ -283,7 +201,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		parent::addResource($format, $resource, $locale, $domain);
 		$this->resourcesLocales[$locale] = true;
 	}
-
 
 	/**
 	 * {@inheritdoc}
@@ -297,7 +214,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		return parent::getLocale();
 	}
 
-
 	/**
 	 * {@inheritdoc}
 	 */
@@ -305,7 +221,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	{
 		parent::setLocale($locale);
 	}
-
 
 	/**
 	 * {@inheritdoc}
@@ -315,7 +230,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		parent::setFallbackLocales($locales);
 		$this->fallbackResolver->setFallbackLocales($locales);
 	}
-
 
 	/**
 	 * {@inheritdoc}
@@ -376,7 +290,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		return $this->trans($message, $params, $domain, $locale);
 	}
 
-
 	/**
 	 * {@inheritdoc}
 	 */
@@ -395,7 +308,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		return parent::trans($id, $parameters, $domain, $locale);
 	}
 
-
 	/**
 	 * {@inheritdoc}
 	 */
@@ -403,4 +315,5 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	{
 		return $this->fallbackResolver->compute($this, $locale);
 	}
+
 }

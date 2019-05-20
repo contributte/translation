@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 namespace Contributte\Translation\Loaders;
 
@@ -12,31 +10,18 @@ use Contributte;
 use Nette;
 use Symfony;
 
-
-/**
- * @author Ales Wita
- */
 class NetteDatabase extends DatabaseAbstract implements Symfony\Component\Translation\Loader\LoaderInterface
 {
+
 	/** @var Nette\Database\Connection */
 	private $connection;
 
-
-	/**
-	 * @param Nette\Database\Connection $connection
-	 */
 	public function __construct(Nette\Database\Connection $connection)
 	{
 		$this->connection = $connection;
 	}
 
-
 	/**
-	 * @param \stdClass $config
-	 * @param string $resource
-	 * @param string $locale
-	 * @param string $domain
-	 * @return array
 	 * @throws Contributte\Translation\InvalidStateException
 	 */
 	protected function getMessages(\stdClass $config, string $resource, string $locale, string $domain): array
@@ -53,4 +38,5 @@ class NetteDatabase extends DatabaseAbstract implements Symfony\Component\Transl
 
 		return $messages;
 	}
+
 }

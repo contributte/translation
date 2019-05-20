@@ -1,23 +1,17 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 namespace Contributte\Translation\LocalesResolvers;
 
 use Contributte;
 use Nette;
 
-
-/**
- * @author Ales Wita
- * @author Filip Prochazka
- */
 class Session implements ResolverInterface
 {
+
 	use Nette\SmartObject;
 
 	/** @var string */
@@ -32,11 +26,6 @@ class Session implements ResolverInterface
 	/** @var Nette\Http\SessionSection */
 	private $sessionSection;
 
-
-	/**
-	 * @param Nette\Http\IResponse $httpResponse
-	 * @param Nette\Http\Session $session
-	 */
 	public function __construct(Nette\Http\IResponse $httpResponse, Nette\Http\Session $session)
 	{
 		$this->httpResponse = $httpResponse;
@@ -44,22 +33,12 @@ class Session implements ResolverInterface
 		$this->sessionSection = $session->getSection(get_class($this));
 	}
 
-
-	/**
-	 * @param string $locale
-	 * @return self
-	 */
 	public function setLocale(string $locale = null): self
 	{
 		$this->sessionSection[self::$parameter] = $locale;
 		return $this;
 	}
 
-
-	/**
-	 * @param Contributte\Translation\Translator $translator
-	 * @return string|null
-	 */
 	public function resolve(Contributte\Translation\Translator $translator): ?string
 	{
 		if (!$this->session->isStarted() && $this->httpResponse->isSent()) {
@@ -77,4 +56,5 @@ class Session implements ResolverInterface
 
 		return $this->sessionSection[self::$parameter];
 	}
+
 }

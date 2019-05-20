@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 namespace Contributte\Translation\Tests\Tests\Loaders;
 
@@ -14,12 +12,9 @@ use Tester;
 
 $container = require __DIR__ . '/../../bootstrap.php';
 
-
-/**
- * @author Ales Wita
- */
 class Doctrine extends Contributte\Translation\Tests\AbstractTest
 {
+
 	public function test01(): void
 	{
 		Tester\Assert::true($this->createCatalogue(Tester\FileMock::create(), 'en_US', 'messages', 'id', 'locale', 'message') instanceof Symfony\Component\Translation\MessageCatalogue);
@@ -39,18 +34,8 @@ class Doctrine extends Contributte\Translation\Tests\AbstractTest
 		Tester\Assert::same('Hi', $catalogue->get('hi', 'messages'));
 	}
 
-
 	/**
 	 * @internal
-	 *
-	 * @param string $file
-	 * @param string $locale
-	 * @param string $table
-	 * @param string $columnId
-	 * @param string $columnLocale
-	 * @param string $columnMessage
-	 * @param array $data
-	 * @return Symfony\Component\Translation\MessageCatalogue
 	 */
 	private function createCatalogue(string $file, string $locale, string $table, string $columnId, string $columnLocale, string $columnMessage, array $data = []): Symfony\Component\Translation\MessageCatalogue
 	{
@@ -71,6 +56,7 @@ class Doctrine extends Contributte\Translation\Tests\AbstractTest
 
 		return $loader->load($file, $locale, $table);
 	}
+
 }
 
 

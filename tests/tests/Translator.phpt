@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 namespace Contributte\Translation\Tests\Tests;
 
@@ -14,12 +12,9 @@ use Tester;
 
 $container = require __DIR__ . '/../bootstrap.php';
 
-
-/**
- * @author Ales Wita
- */
 class Translator extends Contributte\Translation\Tests\AbstractTest
 {
+
 	public function test01(): void
 	{
 		$translator = new Contributte\Translation\Translator(new Contributte\Translation\LocaleResolver, new Contributte\Translation\FallbackResolver, 'en', __DIR__ . '/cacheDir', true);
@@ -67,7 +62,6 @@ class Translator extends Contributte\Translation\Tests\AbstractTest
 
 		Tester\Assert::same(['cs_CZ', 'en_US'], $translator->availableLocales);
 	}
-
 
 	public function test02(): void
 	{
@@ -145,7 +139,6 @@ class Translator extends Contributte\Translation\Tests\AbstractTest
 		Tester\Assert::same('Hello', $prefixedTranslator->translate('hello'));
 	}
 
-
 	public function test03(): void
 	{
 		$container = $this->createContainer();
@@ -201,11 +194,8 @@ class Translator extends Contributte\Translation\Tests\AbstractTest
 		$template->createTemplate();
 	}
 
-
 	/**
 	 * @internal
-	 *
-	 * @return Nette\DI\Container
 	 */
 	private function createContainer(): Nette\DI\Container
 	{
@@ -229,6 +219,7 @@ class Translator extends Contributte\Translation\Tests\AbstractTest
 
 		return $configurator->createContainer();
 	}
+
 }
 
 

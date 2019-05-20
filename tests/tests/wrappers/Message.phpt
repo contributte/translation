@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 namespace Contributte\Translation\Tests\Tests\Wrappers;
 
@@ -13,12 +11,9 @@ use Tester;
 
 $container = require __DIR__ . '/../../bootstrap.php';
 
-
-/**
- * @author Ales Wita
- */
 class Message extends Contributte\Translation\Tests\AbstractTest
 {
+
 	public function test01(): void
 	{
 		$message = new Contributte\Translation\Wrappers\Message('message', [], 'domain', 'locale');
@@ -33,7 +28,6 @@ class Message extends Contributte\Translation\Tests\AbstractTest
 		Tester\Assert::same([], $message->parameters);
 	}
 
-
 	public function test02(): void
 	{
 		$message = new Contributte\Translation\Wrappers\Message('message');
@@ -41,6 +35,7 @@ class Message extends Contributte\Translation\Tests\AbstractTest
 		Tester\Assert::same('message', $message->message);
 		Tester\Assert::same([], $message->parameters);
 	}
+
 }
 
 

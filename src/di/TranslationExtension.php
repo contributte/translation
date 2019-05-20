@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 namespace Contributte\Translation\DI;
 
@@ -14,18 +12,12 @@ use Nette\Schema\Expect;
 use Symfony;
 use Tracy;
 
-
 /**
  * @property      \stdClass $config
- *
- * @author Ales Wita
- * @author Filip Prochazka
  */
 class TranslationExtension extends Nette\DI\CompilerExtension
 {
-	/**
-	 * @return Nette\Schema\Schema
-	 */
+
 	public function getConfigSchema(): Nette\Schema\Schema
 	{
 		$builder = $this->getContainerBuilder();
@@ -54,7 +46,6 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			]),
 		]);
 	}
-
 
 	/**
 	 * @throws Contributte\Translation\InvalidArgumentException|\ReflectionException
@@ -140,7 +131,6 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		}
 	}
 
-
 	public function beforeCompile(): void
 	{
 		$builder = $this->getContainerBuilder();
@@ -209,10 +199,6 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		}
 	}
 
-
-	/**
-	 * @param Nette\PhpGenerator\ClassType $class
-	 */
 	public function afterCompile(Nette\PhpGenerator\ClassType $class): void
 	{
 		if ($this->config->debug && $this->config->debugger) {
@@ -220,4 +206,5 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			$initialize->addBody('$this->getService(?)->addPanel($this->getService(?));', ['tracy.bar', $this->prefix('tracyPanel')]);
 		}
 	}
+
 }

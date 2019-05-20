@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 namespace Contributte\Translation\Tracy;
 
@@ -12,13 +10,9 @@ use Contributte;
 use Nette;
 use Tracy;
 
-
-/**
- * @author Ales Wita
- * @author Filip Prochazka
- */
 class Panel implements Tracy\IBarPanel
 {
+
 	use Nette\SmartObject;
 
 	/** @var Contributte\Translation\Translator */
@@ -45,20 +39,12 @@ class Panel implements Tracy\IBarPanel
 	/** @var int */
 	private $ignoredResourcesCount = 0;
 
-
-	/**
-	 * @param Contributte\Translation\Translator $translator
-	 */
 	public function __construct(Contributte\Translation\Translator $translator)
 	{
 		$this->translator = $translator;
 		$translator->setTracyPanel($this);
 	}
 
-
-	/**
-	 * @return string|null
-	 */
 	public function getTab(): ?string
 	{
 		// https://www.flaticon.com/free-icon/book_1017764
@@ -66,9 +52,7 @@ class Panel implements Tracy\IBarPanel
 		return '<span title="Translete/Translation">' . $icon . ($this->translator->locale !== null ? ' <strong>' . $this->translator->locale . '</strong>' : null) . ($this->missingTranslationCount > 0 ? ' (' . $this->missingTranslationCount . ' errors)' : null) . '</span>';
 	}
 
-
 	/**
-	 * @return string|null
 	 * @throws \ReflectionException
 	 */
 	public function getPanel(): ?string
@@ -121,7 +105,6 @@ class Panel implements Tracy\IBarPanel
 			$panel[] = '</table></div>';
 		}
 
-
 		// resources
 		if (count($this->resources) > 0) {
 			ksort($this->resources);
@@ -149,12 +132,8 @@ class Panel implements Tracy\IBarPanel
 		return count($panel) === 0 ? null : implode($panel);
 	}
 
-
 	/**
 	 * @internal
-	 *
-	 * @param array $resources
-	 * @return string
 	 */
 	private static function createResourcePanelHelper(array $resources): string
 	{
@@ -176,12 +155,6 @@ class Panel implements Tracy\IBarPanel
 		return $string;
 	}
 
-
-	/**
-	 * @param string $id
-	 * @param string|null $domain
-	 * @return self
-	 */
 	public function addMissingTranslation(string $id, ?string $domain): self
 	{
 		$key = $domain . '.' . $id;
@@ -199,25 +172,12 @@ class Panel implements Tracy\IBarPanel
 		return $this;
 	}
 
-
-	/**
-	 * @param Contributte\Translation\LocalesResolvers\ResolverInterface $resolver
-	 * @return self
-	 */
 	public function addLocaleResolver(Contributte\Translation\LocalesResolvers\ResolverInterface $resolver): self
 	{
 		$this->localeResolvers[] = $resolver;
 		return $this;
 	}
 
-
-	/**
-	 * @param string|null $format
-	 * @param string|array|null $resource
-	 * @param string|null $locale
-	 * @param string|null $domain
-	 * @return self
-	 */
 	public function addResource(?string $format, $resource, ?string $locale, ?string $domain): self
 	{
 		if (is_array($resource)) {
@@ -229,14 +189,6 @@ class Panel implements Tracy\IBarPanel
 		return $this;
 	}
 
-
-	/**
-	 * @param string|null $format
-	 * @param string|array|null $resource
-	 * @param string|null $locale
-	 * @param string|null $domain
-	 * @return self
-	 */
 	public function addIgnoredResource(?string $format, $resource, ?string $locale, ?string $domain): self
 	{
 		if (is_array($resource)) {
@@ -247,4 +199,5 @@ class Panel implements Tracy\IBarPanel
 		$this->ignoredResourcesCount++;
 		return $this;
 	}
+
 }

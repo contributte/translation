@@ -1,26 +1,17 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 namespace Contributte\Translation\Latte;
 
 use Contributte;
 use Latte;
 
-
-/**
- * @author Ales Wita
- * @author Filip Prochazka
- */
 class Macros extends Latte\Macros\MacroSet
 {
-	/**
-	 * @param Latte\Compiler $compiler
-	 */
+
 	public static function install(Latte\Compiler $compiler)
 	{
 		$me = new static($compiler);
@@ -28,7 +19,6 @@ class Macros extends Latte\Macros\MacroSet
 		$me->addMacro('_', [$me, 'macroTranslate'], [$me, 'macroTranslate']);
 		$me->addMacro('translator', [$me, 'macroPrefix'], [$me, 'macroPrefix']);
 	}
-
 
 	/**
 	 * https://github.com/nette/latte/blob/master/src/Latte/Macros/CoreMacros.php#L205
@@ -60,7 +50,6 @@ class Macros extends Latte\Macros\MacroSet
 		}
 	}
 
-
 	/**
 	 * {translate ...}
 	 *
@@ -81,4 +70,5 @@ class Macros extends Latte\Macros\MacroSet
 			return $writer->write('$this->global->translator->prefix = [%node.word];');
 		}
 	}
+
 }

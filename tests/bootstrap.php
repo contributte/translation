@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 require __DIR__ . '/../vendor/autoload.php';
 //require __DIR__ . '/../../vendor/autoload.php';

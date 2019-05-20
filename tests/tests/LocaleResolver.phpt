@@ -1,10 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 namespace Contributte\Translation\Tests\Tests;
 
@@ -13,12 +11,9 @@ use Tester;
 
 $container = require __DIR__ . '/../bootstrap.php';
 
-
-/**
- * @author Ales Wita
- */
 class LocaleResolver extends Contributte\Translation\Tests\AbstractTest
 {
+
 	public function test01(): void
 	{
 		$resolverMock = \Mockery::mock(Contributte\Translation\LocalesResolvers\Parameter::class);
@@ -32,6 +27,7 @@ class LocaleResolver extends Contributte\Translation\Tests\AbstractTest
 
 		Tester\Assert::count(2, $localeResolver->resolvers);
 	}
+
 }
 
 
