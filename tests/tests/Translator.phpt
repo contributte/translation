@@ -188,12 +188,14 @@ class Translator extends Contributte\Translation\Tests\AbstractTest
 			Tester\Assert::same('Hi Ales!', $template->renderToString(Tester\FileMock::create('{php $message = "hi"}{$message|translate: null, [name => Ales], messages, en}')));
 
 			Tester\Assert::same('Depth message', $template->renderToString(Tester\FileMock::create('{_messages.depth.message}')));
-			Tester\Assert::same('Depth message', $template->renderToString(Tester\FileMock::create('{translator messages}{_depth.message}{/translator}')));
-			Tester\Assert::same('Depth message', $template->renderToString(Tester\FileMock::create('{translator messages}{translator depth}{_message}{/translator}{/translator}')));
-			Tester\Assert::exception(function () use ($template): void {$template->renderToString(Tester\FileMock::create('{translator}{_depth.message}{/translator}'));}, \Latte\CompileException::class);
 
 			Tester\Assert::same('missing.translation', $template->renderToString(Tester\FileMock::create('{_messages.missing.translation}')));
 			Tester\Assert::same('missing.translation', $template->renderToString(Tester\FileMock::create('{php $message = "messages.missing.translation"}{$message|translate}')));
+
+			Tester\Assert::same('Depth message', $template->renderToString(Tester\FileMock::create('{translator messages}{_depth.message}{/translator}')));
+			Tester\Assert::same('Very very depth message', $template->renderToString(Tester\FileMock::create('{translator messages}{translator messages.very.very.depth}{_message}{/translator}{/translator}')));
+			Tester\Assert::same('Depth message-Very very depth message-Depth message', $template->renderToString(Tester\FileMock::create('{translator messages}{_depth.message}{translator messages.very.very.depth}-{_message}-{/translator}{_depth.message}{/translator}')));
+			Tester\Assert::exception(function () use ($template): void {$template->renderToString(Tester\FileMock::create('{translator}{_depth.message}{/translator}'));}, \Latte\CompileException::class);
 		};
 
 		$template->createTemplate();
