@@ -20,9 +20,10 @@ class FallbackResolver
 	/** @var array */
 	private $fallbackLocales = [];
 
-	public function setFallbackLocales(array $array)
+	public function setFallbackLocales(array $array): self
 	{
 		$this->fallbackLocales = $array;
+		return $this;
 	}
 
 	public function compute(Translator $translator, string $locale): array
