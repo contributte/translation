@@ -23,9 +23,8 @@ class Header extends AbstractTest
 	}
 
 	/**
-	 * @internal
-	 *
 	 * @param string[] $availableLocales
+	 * @internal
 	 */
 	private function resolve(?string $locale, array $availableLocales): ?string
 	{

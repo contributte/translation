@@ -145,9 +145,8 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	}
 
 	/**
-	 * @internal
-	 *
 	 * @return string[]
+	 * @internal
 	 */
 	public function getPrefixTemp(): array
 	{

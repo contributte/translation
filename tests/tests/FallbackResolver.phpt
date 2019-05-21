@@ -19,14 +19,13 @@ class FallbackResolver extends AbstractTest
 	}
 
 	/**
-	 * @internal
-	 *
 	 * @param string[] $fallbackLocales
 	 * @return string[]
+	 * @internal
 	 */
 	private function compute(?string $locale, array $fallbackLocales): array
 	{
-		$translatorMock = \Mockery::mock(Contributte\Translation\Translator::class);
+		$translatorMock = Mockery::mock(Contributte\Translation\Translator::class);
 
 		$translatorMock->shouldReceive('getAvailableLocales')
 			->once()

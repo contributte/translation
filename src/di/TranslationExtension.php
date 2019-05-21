@@ -81,7 +81,6 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		$builder->addDefinition($this->prefix('fallbackResolver'))
 			->setFactory(Contributte\Translation\FallbackResolver::class);
 
-
 		// ConfigCacheFactory
 		$reflection = new ReflectionClass($this->config->cache->factory);
 

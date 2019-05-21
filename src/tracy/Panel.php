@@ -8,6 +8,7 @@ namespace Contributte\Translation\Tracy;
 
 use Contributte;
 use Nette;
+use ReflectionClass;
 use ReflectionException;
 use Tracy;
 
@@ -94,7 +95,7 @@ class Panel implements Tracy\IBarPanel
 
 			$counter = 1;
 			foreach ($this->localeResolvers as $v1) {
-				$reflection = new \ReflectionClass($v1);
+				$reflection = new ReflectionClass($v1);
 				$locale = $v1->resolve($this->translator);
 
 				$panel[] = '<tr><td>' . $counter++ . '.</td><td title="' . $reflection->getName() . '">' . $reflection->getShortName() . '</td><td>' . ($locale !== null ? htmlspecialchars($locale) : '<i>n/a</i>') . '</td></tr>';
@@ -128,9 +129,8 @@ class Panel implements Tracy\IBarPanel
 	}
 
 	/**
-	 * @internal
-	 *
 	 * @param array[] $resources
+	 * @internal
 	 */
 	private static function createResourcePanelHelper(array $resources): string
 	{

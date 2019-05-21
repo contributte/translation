@@ -6,7 +6,9 @@
 
 namespace Contributte\Translation\Exceptions;
 
-class Exception extends \Exception
+use Exception as Excptn;
+
+class Exception extends Excptn
 {
 
 }

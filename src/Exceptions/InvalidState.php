@@ -6,7 +6,7 @@
 
 namespace Contributte\Translation\Exceptions;
 
-class InvalidState extends \Exception
+class InvalidState extends Exception
 {
 
 }

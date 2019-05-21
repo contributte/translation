@@ -56,9 +56,8 @@ abstract class DatabaseAbstract extends Symfony\Component\Translation\Loader\Arr
 	}
 
 	/**
-	 * @internal
-	 *
 	 * @param string[] $defaults
+	 * @internal
 	 */
 	private function getSchema(array $defaults = []): Nette\Schema\Elements\Structure
 	{

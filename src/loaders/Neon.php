@@ -28,7 +28,7 @@ class Neon extends Symfony\Component\Translation\Loader\ArrayLoader implements S
 
 		$messages = Nette\Neon\Neon::decode($content);
 
-		$catalogue = parent::load($messages !== null ? $messages : [], $locale, $domain);
+		$catalogue = parent::load($messages ?? [], $locale, $domain);
 		$catalogue->addResource(new Symfony\Component\Config\Resource\FileResource($resource));
 
 		return $catalogue;

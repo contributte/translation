@@ -6,7 +6,7 @@
 
 namespace Contributte\Translation\Exceptions;
 
-class InvalidArgument extends \Exception
+class InvalidArgument extends Exception
 {
 
 }

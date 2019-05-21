@@ -6,7 +6,7 @@
 
 namespace Contributte\Translation\Exceptions;
 
-class FileNotFound extends \Exception
+class FileNotFound extends Exception
 {
 
 }
