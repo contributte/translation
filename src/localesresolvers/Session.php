@@ -33,7 +33,7 @@ class Session implements ResolverInterface
 		$this->sessionSection = $session->getSection(__CLASS__);
 	}
 
-	public function setLocale(string $locale = null): self
+	public function setLocale(?string $locale = null): self
 	{
 		$this->sessionSection[self::$parameter] = $locale;
 		return $this;
