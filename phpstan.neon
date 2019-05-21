@@ -8,8 +8,16 @@ parameters:
 	ignoreErrors:
 		- '#^Parameter \#1 \$locale of method Contributte\\Translation\\Translator\:\:setLocale\(\) expects string, null given\.$#'
 		- '#^Method Contributte\\Translation\\Translator\:\:addResource\(\) has no return typehint specified\.$#'
-		- '#^Strict comparison using === between string and null will always evaluate to false\.$#'
+		-
+			message: '#^Strict comparison using === between string and null will always evaluate to false\.$#'
+			path: %currentWorkingDirectory%/src/Translator.php
 		- '#^Method Contributte\\Translation\\Translator\:\:setLocale\(\) has no return typehint specified\.$#'
 		- '#^Method Contributte\\Translation\\Translator\:\:setFallbackLocales\(\) has no return typehint specified\.$#'
 		- '#^Method Contributte\\Translation\\Translator\:\:computeFallbackLocales\(\) has no return typehint specified\.$#'
 		- '#^Method Contributte\\Translation\\Translator\:\:computeFallbackLocales\(\) has parameter \$locale with no typehint specified\.$#'
+		-
+			message: '#^Parameter \#1 \$string of function htmlspecialchars expects string, int\|string given\.$#'
+			path: %currentWorkingDirectory%/src/Latte/Panel.php
+		-
+			message: '#^Only numeric types are allowed in post-increment, int\|string given\.$#'
+			path: %currentWorkingDirectory%/src/Latte/Panel.php
