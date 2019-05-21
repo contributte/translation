@@ -30,9 +30,8 @@ class NetteDatabase extends AbstractTest
 	}
 
 	/**
-	 * @internal
-	 *
 	 * @param string[][] $data
+	 * @internal
 	 */
 	private function createCatalogue(string $file, string $locale, string $table, string $columnId, string $columnLocale, string $columnMessage, array $data = []): Symfony\Component\Translation\MessageCatalogue
 	{

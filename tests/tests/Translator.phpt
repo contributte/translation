@@ -11,7 +11,7 @@ class Translator extends AbstractTest
 
 	public function test01(): void
 	{
-		$translator = new Contributte\Translation\Translator(new Contributte\Translation\LocaleResolver, new Contributte\Translation\FallbackResolver, 'en', __DIR__ . '/cacheDir', true);
+		$translator = new Contributte\Translation\Translator(new Contributte\Translation\LocaleResolver(), new Contributte\Translation\FallbackResolver(), 'en', __DIR__ . '/cacheDir', true);
 
 		Tester\Assert::true($translator->localeResolver instanceof Contributte\Translation\LocaleResolver);
 		Tester\Assert::true($translator->fallbackResolver instanceof Contributte\Translation\FallbackResolver);
@@ -188,7 +188,7 @@ class Translator extends AbstractTest
 			Tester\Assert::same('Depth message-Very very depth message-Depth message', $template->renderToString(Tester\FileMock::create('{translator messages}{_depth.message}{translator messages.very.very.depth}-{_message}-{/translator}{_depth.message}{/translator}')));
 			Tester\Assert::exception(function () use ($template): void {
 				$template->renderToString(Tester\FileMock::create('{translator}{_depth.message}{/translator}'));
-			}, \Latte\CompileException::class);
+			}, Latte\CompileException::class);
 		};
 
 		$template->createTemplate();
@@ -199,7 +199,7 @@ class Translator extends AbstractTest
 	 */
 	private function createContainer(): Nette\DI\Container
 	{
-		$configurator = new Nette\Configurator;
+		$configurator = new Nette\Configurator();
 
 		$configurator->setTempDirectory($this->container->getParameters()['tempDir'])
 			->addConfig([

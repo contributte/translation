@@ -55,9 +55,8 @@ class TranslationExtension extends AbstractTest
 	}
 
 	/**
-	 * @internal
-	 *
 	 * @param string[] $config
+	 * @internal
 	 */
 	private function createContainer(array $config): Nette\DI\Container
 	{
@@ -68,7 +67,7 @@ class TranslationExtension extends AbstractTest
 			$compiler->addConfig(['parameters' => $this->container->getParameters(), 'translation' => $config]);
 		});
 
-		return new $class;
+		return new $class();
 	}
 
 }
