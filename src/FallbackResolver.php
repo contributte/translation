@@ -6,7 +6,6 @@
 
 namespace Contributte\Translation;
 
-use Contributte;
 use Nette;
 
 /**
