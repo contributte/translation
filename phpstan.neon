@@ -6,7 +6,7 @@ includes:
 
 parameters:
 	ignoreErrors:
-		- '#Parameter #1 $locale of method Contributte\\Translation\\Translator\:\:setLocale\(\) expects string, null given\.#'
+		- '#Parameter \#1 $locale of method Contributte\\Translation\\Translator\:\:setLocale\(\) expects string, null given\.#'
 		- '#Method Contributte\\Translation\\Translator\:\:addResource\(\) has no return typehint specified\.#'
 		- '#Strict comparison using === between string and null will always evaluate to false\.#'
 		- '#Method Contributte\\Translation\\Translator\:\:setLocale\(\) has no return typehint specified\.#'
