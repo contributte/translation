@@ -17,7 +17,7 @@ parameters:
 		- '#^Method Contributte\\Translation\\Translator\:\:computeFallbackLocales\(\) has parameter \$locale with no typehint specified\.$#'
 		-
 			message: '#^Parameter \#1 \$string of function htmlspecialchars expects string, int\|string given\.$#'
-			path: %currentWorkingDirectory%/src/Latte/Panel.php
+			path: %currentWorkingDirectory%/src/Tracy/Panel.php
 		-
 			message: '#^Only numeric types are allowed in post-increment, int\|string given\.$#'
-			path: %currentWorkingDirectory%/src/Latte/Panel.php
+			path: %currentWorkingDirectory%/src/Tracy/Panel.php
