@@ -23,7 +23,7 @@ class Helpers
 	}
 
 	/**
-	 * @return (string|null)[]
+	 * @return string[]
 	 */
 	public static function extractMessage(string $message): array
 	{
@@ -31,7 +31,7 @@ class Helpers
 			[$domain, $message] = explode('.', $message, 2);
 
 		} else {
-			$domain = null;
+			$domain = 'messages';
 		}
 
 		return [$domain, $message];
