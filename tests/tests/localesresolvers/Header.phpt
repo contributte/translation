@@ -28,7 +28,7 @@ class Header extends AbstractTest
 	 */
 	private function resolve(?string $locale, array $availableLocales): ?string
 	{
-		$request = new Nette\Http\Request(new Nette\Http\UrlScript, null, null, null, ['Accept-Language' => $locale]);
+		$request = new Nette\Http\Request(new Nette\Http\UrlScript(), null, null, null, ['Accept-Language' => $locale]);
 		$resolver = new Contributte\Translation\LocalesResolvers\Header($request);
 		$translatorMock = Mockery::mock(Contributte\Translation\Translator::class);
 

@@ -10,7 +10,7 @@ require __DIR__ . '/AbstractTest.php';
 
 Tester\Environment::setup();
 
-$configurator = new Nette\Configurator;
+$configurator = new Nette\Configurator();
 
 $configurator->setTempDirectory(__DIR__ . '/../temp');
 $configurator->createRobotLoader()

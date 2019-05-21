@@ -10,7 +10,7 @@ use Nette;
 
 /**
  * @property     string $message
- * @property     array $parameters
+ * @property     mixed[] $parameters
  */
 class Message
 {

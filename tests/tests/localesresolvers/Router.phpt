@@ -22,7 +22,7 @@ class Router extends AbstractTest
 	 */
 	private function resolve(?string $locale): ?string
 	{
-		$request = new Nette\Http\Request(new Nette\Http\UrlScript);
+		$request = new Nette\Http\Request(new Nette\Http\UrlScript());
 		$routeListMock = Mockery::mock(Nette\Application\Routers\RouteList::class);
 
 		$routeListMock->shouldReceive('match')

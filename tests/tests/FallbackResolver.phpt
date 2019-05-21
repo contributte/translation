@@ -32,7 +32,7 @@ class FallbackResolver extends AbstractTest
 			->withNoArgs()
 			->andReturn($fallbackLocales);
 
-		$resolver = new Contributte\Translation\FallbackResolver;
+		$resolver = new Contributte\Translation\FallbackResolver();
 
 		$resolver->setFallbackLocales($fallbackLocales);
 

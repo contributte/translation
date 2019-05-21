@@ -247,7 +247,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/**
 	 * @param mixed $message
 	 * @param mixed ...$parameters
-	 * @return string
 	 */
 	public function translate($message, ...$parameters): string
 	{

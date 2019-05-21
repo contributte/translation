@@ -38,8 +38,7 @@ abstract class DatabaseAbstract extends Symfony\Component\Translation\Loader\Arr
 
 		$catalogue = parent::load(
 			$this->getMessages(
-				(new Nette\Schema\Processor)->process
-				(
+				(new Nette\Schema\Processor())->process(
 					$this->getSchema(['table' => $domain]),
 					Nette\Neon\Neon::decode($content)
 				),

@@ -20,7 +20,7 @@ class Panel implements Tracy\IBarPanel
 	/** @var Contributte\Translation\Translator */
 	private $translator;
 
-	/** @var array[] */
+	/** @var (string|int)[][] */
 	private $missingTranslation = [];
 
 	/** @var int */
@@ -29,13 +29,13 @@ class Panel implements Tracy\IBarPanel
 	/** @var Contributte\Translation\LocalesResolvers\ResolverInterface[] */
 	private $localeResolvers = [];
 
-	/** @var array[] */
+	/** @var string[][] */
 	private $resources = [];
 
 	/** @var int */
 	private $resourcesCount = 0;
 
-	/** @var array[] */
+	/** @var string[][] */
 	private $ignoredResources = [];
 
 	/** @var int */
@@ -129,7 +129,7 @@ class Panel implements Tracy\IBarPanel
 	}
 
 	/**
-	 * @param array[] $resources
+	 * @param string[][] $resources
 	 * @internal
 	 */
 	private static function createResourcePanelHelper(array $resources): string
@@ -152,7 +152,7 @@ class Panel implements Tracy\IBarPanel
 		return $string;
 	}
 
-	public function addMissingTranslation(string $id, ?string $domain): self
+	public function addMissingTranslation(string $id, string $domain): self
 	{
 		$key = $domain . '.' . $id;
 
