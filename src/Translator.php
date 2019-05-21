@@ -151,7 +151,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/**
 	 * @throws Contributte\Translation\Exceptions\InvalidArgument
 	 */
-	public function removePrefix(string $string = null): self
+	public function removePrefix(?string $string = null): self
 	{
 		if ($string === null) {
 			$key = array_pop($this->prefix);
