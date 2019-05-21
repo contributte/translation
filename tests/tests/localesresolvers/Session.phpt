@@ -20,11 +20,13 @@ class Session extends AbstractTest
 
 	/**
 	 * @internal
+	 *
+	 * @param string[] $availableLocales
 	 */
 	private function resolve(?string $locale, array $availableLocales): ?string
 	{
-		$responseMock = \Mockery::mock(Nette\Http\IResponse::class);
-		$sessionMock = \Mockery::mock(Nette\Http\Session::class);
+		$responseMock = Mockery::mock(Nette\Http\IResponse::class);
+		$sessionMock = Mockery::mock(Nette\Http\Session::class);
 		$sessionSection = new Nette\Http\SessionSection($sessionMock, Contributte\Translation\LocalesResolvers\Session::class);
 
 		$sessionMock->shouldReceive('getSection')
@@ -33,7 +35,7 @@ class Session extends AbstractTest
 			->andReturn($sessionSection);
 
 		$resolver = new Contributte\Translation\LocalesResolvers\Session($responseMock, $sessionMock);
-		$translatorMock = \Mockery::mock(Contributte\Translation\Translator::class);
+		$translatorMock = Mockery::mock(Contributte\Translation\Translator::class);
 
 		$translatorMock->shouldReceive('getAvailableLocales')
 			->once()

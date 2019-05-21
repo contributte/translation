@@ -47,9 +47,8 @@ class Translator extends AbstractTest
 
 		$translator->setPrefix([]);
 
-		Tester\Assert::exception(function () use ($translator): void {$translator->removePrefix();}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Can not remove empty prefix.');
-		Tester\Assert::exception(function () use ($translator): void {$translator->removePrefix('unknown');}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Unknown "unknown" prefix.');
-
+		Tester\Assert::exception(function () use ($translator): void { $translator->removePrefix(); }, Contributte\Translation\Exceptions\InvalidArgument::class, 'Can not remove empty prefix.');
+		Tester\Assert::exception(function () use ($translator): void { $translator->removePrefix('unknown'); }, Contributte\Translation\Exceptions\InvalidArgument::class, 'Unknown "unknown" prefix.');
 
 		$translator->addResource('neon', __DIR__ . '/file.neon', 'en_US', 'domain');
 		$translator->addResource('neon', __DIR__ . '/file.neon', 'cs_CZ', 'domain');
@@ -64,8 +63,7 @@ class Translator extends AbstractTest
 		/** @var Contributte\Translation\Translator $translator */
 		$translator = $container->getByType(Nette\Localization\ITranslator::class);
 
-
-		Tester\Assert::throws(function () use ($translator): void {$translator->translate(new \stdClass);}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Message must be string, object given.');
+		Tester\Assert::throws(function () use ($translator): void { $translator->translate(new stdClass); }, Contributte\Translation\Exceptions\InvalidArgument::class, 'Message must be string, object given.');
 		Tester\Assert::same('', $translator->translate(null));
 		Tester\Assert::same('0', $translator->translate(0));
 		Tester\Assert::same('1', $translator->translate(1));
@@ -182,7 +180,7 @@ class Translator extends AbstractTest
 			Tester\Assert::same('Depth message', $template->renderToString(Tester\FileMock::create('{translator messages}{_depth.message}{/translator}')));
 			Tester\Assert::same('Very very depth message', $template->renderToString(Tester\FileMock::create('{translator messages}{translator messages.very.very.depth}{_message}{/translator}{/translator}')));
 			Tester\Assert::same('Depth message-Very very depth message-Depth message', $template->renderToString(Tester\FileMock::create('{translator messages}{_depth.message}{translator messages.very.very.depth}-{_message}-{/translator}{_depth.message}{/translator}')));
-			Tester\Assert::exception(function () use ($template): void {$template->renderToString(Tester\FileMock::create('{translator}{_depth.message}{/translator}'));}, \Latte\CompileException::class);
+			Tester\Assert::exception(function () use ($template): void { $template->renderToString(Tester\FileMock::create('{translator}{_depth.message}{/translator}')); }, \Latte\CompileException::class);
 		};
 
 		$template->createTemplate();

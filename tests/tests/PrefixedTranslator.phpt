@@ -11,7 +11,7 @@ class PrefixedTranslator extends AbstractTest
 
 	public function test01(): void
 	{
-		$translator = \Mockery::mock(Contributte\Translation\Translator::class);
+		$translator = Mockery::mock(Contributte\Translation\Translator::class);
 		$prefixedTranslator = new Contributte\Translation\PrefixedTranslator($translator, 'prefix');
 
 		Tester\Assert::true($prefixedTranslator->translator instanceof Contributte\Translation\Translator);

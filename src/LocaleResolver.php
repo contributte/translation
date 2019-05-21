@@ -17,9 +17,12 @@ class LocaleResolver
 
 	use Nette\SmartObject;
 
-	/** @var array */
+	/** @var Contributte\Translation\LocalesResolvers\ResolverInterface[] */
 	private $resolvers = [];
 
+	/**
+	 * @return Contributte\Translation\LocalesResolvers\ResolverInterface[]
+	 */
 	public function getResolvers(): array
 	{
 		return $this->resolvers;

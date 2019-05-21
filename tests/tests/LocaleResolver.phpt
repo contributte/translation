@@ -11,7 +11,7 @@ class LocaleResolver extends AbstractTest
 
 	public function test01(): void
 	{
-		$resolverMock = \Mockery::mock(Contributte\Translation\LocalesResolvers\Parameter::class);
+		$resolverMock = Mockery::mock(Contributte\Translation\LocalesResolvers\Parameter::class);
 		$localeResolver = new Contributte\Translation\LocaleResolver;
 
 		$localeResolver->addResolver($resolverMock);

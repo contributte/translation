@@ -15,7 +15,6 @@ class Neon extends AbstractTest
 test:
 	for: "translate"');
 
-
 		$catalogue = (new Contributte\Translation\Loaders\Neon)->load($file, 'en');
 
 		Tester\Assert::true($catalogue instanceof \Symfony\Component\Translation\MessageCatalogue);
@@ -26,7 +25,6 @@ test:
 		Tester\Assert::same('missing.translate', $catalogue->get('missing.translate', 'domain'));
 		Tester\Assert::same(['messages' => ['test.for' => 'translate']], $catalogue->all());
 
-
 		$catalogue = (new Contributte\Translation\Loaders\Neon)->load($file, 'cs', 'domain');
 		Tester\Assert::same('cs', $catalogue->getLocale());
 		Tester\Assert::same(['domain'], $catalogue->getDomains());
@@ -34,7 +32,6 @@ test:
 		Tester\Assert::same('missing.translate', $catalogue->get('missing.translate', 'domain'));
 		Tester\Assert::same('missing.translate', $catalogue->get('missing.translate'));
 		Tester\Assert::same(['domain' => ['test.for' => 'translate']], $catalogue->all());
-
 
 		$catalogue = (new Contributte\Translation\Loaders\Neon)->load(Tester\FileMock::create(''), 'en');
 		Tester\Assert::same('en', $catalogue->getLocale());
@@ -44,7 +41,7 @@ test:
 
 	public function test02(): void
 	{
-		Tester\Assert::exception(function (): void {(new Contributte\Translation\Loaders\Neon)->load('unknown_file', 'en');}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Something wrong with resource file "unknown_file".');
+		Tester\Assert::exception(function (): void { (new Contributte\Translation\Loaders\Neon)->load('unknown_file', 'en'); }, Contributte\Translation\Exceptions\InvalidArgument::class, 'Something wrong with resource file "unknown_file".');
 	}
 
 }

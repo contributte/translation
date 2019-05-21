@@ -9,11 +9,14 @@ namespace Contributte\Translation\DI;
 use Contributte;
 use Nette;
 use Nette\Schema\Expect;
+use ReflectionClass;
+use ReflectionException;
+use stdClass;
 use Symfony;
 use Tracy;
 
 /**
- * @property      \stdClass $config
+ * @property      stdClass $config
  */
 class TranslationExtension extends Nette\DI\CompilerExtension
 {
@@ -48,7 +51,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 	}
 
 	/**
-	 * @throws Contributte\Translation\Exceptions\InvalidArgument|\ReflectionException
+	 * @throws Contributte\Translation\Exceptions\InvalidArgument|ReflectionException
 	 */
 	public function loadConfiguration(): void
 	{
@@ -58,12 +61,11 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		$localeResolver = $builder->addDefinition($this->prefix('localeResolver'))
 			->setFactory(Contributte\Translation\LocaleResolver::class);
 
-
 		// LocaleResolvers
 		$localeResolvers = [];
 
 		foreach ($this->config->localeResolvers as $v1) {
-			$reflection = new \ReflectionClass($v1);
+			$reflection = new ReflectionClass($v1);
 
 			if (!$reflection->implementsInterface(Contributte\Translation\LocalesResolvers\ResolverInterface::class)) {
 				throw new Contributte\Translation\Exceptions\InvalidArgument('Resolver must implement interface "' . Contributte\Translation\LocalesResolvers\ResolverInterface::class . '".');
@@ -75,14 +77,13 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			$localeResolver->addSetup('addResolver', [$resolver]);
 		}
 
-
 		// FallbackResolver
 		$builder->addDefinition($this->prefix('fallbackResolver'))
 			->setFactory(Contributte\Translation\FallbackResolver::class);
 
 
 		// ConfigCacheFactory
-		$reflection = new \ReflectionClass($this->config->cache->factory);
+		$reflection = new ReflectionClass($this->config->cache->factory);
 
 		if (!$reflection->implementsInterface(Symfony\Component\Config\ConfigCacheFactoryInterface::class)) {
 			throw new Contributte\Translation\Exceptions\InvalidArgument('Cache factory must implement interface "' . Symfony\Component\Config\ConfigCacheFactoryInterface::class . '".');
@@ -90,7 +91,6 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 		$configCacheFactory = $builder->addDefinition($this->prefix('configCacheFactory'))
 			->setFactory($this->config->cache->factory, [$this->config->debug]);
-
 
 		// Translator
 		if ($this->config->locales->default === null) {
@@ -104,10 +104,9 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			->addSetup('setConfigCacheFactory', [$configCacheFactory])
 			->addSetup('setFallbackLocales', [$this->config->locales->fallback]);
 
-
 		// Loaders
 		foreach ($this->config->loaders as $k1 => $v1) {
-			$reflection = new \ReflectionClass($v1);
+			$reflection = new ReflectionClass($v1);
 
 			if (!$reflection->implementsInterface(Symfony\Component\Translation\Loader\LoaderInterface::class)) {
 				throw new Contributte\Translation\Exceptions\InvalidArgument('Loader must implement interface "' . Symfony\Component\Translation\Loader\LoaderInterface::class . '".');
@@ -118,7 +117,6 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 			$translator->addSetup('addLoader', [$k1, $loader]);
 		}
-
 
 		// Tracy\Panel
 		if ($this->config->debug && $this->config->debugger) {

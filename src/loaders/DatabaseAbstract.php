@@ -9,12 +9,13 @@ namespace Contributte\Translation\Loaders;
 use Contributte;
 use Nette;
 use Nette\Schema\Expect;
+use stdClass;
 use Symfony;
 
 abstract class DatabaseAbstract extends Symfony\Component\Translation\Loader\ArrayLoader implements Symfony\Component\Translation\Loader\LoaderInterface
 {
 
-	/** @var array */
+	/** @var string[] */
 	public static $defaults = [
 		'table' => 'messages',
 		'id' => 'id',
@@ -56,6 +57,8 @@ abstract class DatabaseAbstract extends Symfony\Component\Translation\Loader\Arr
 
 	/**
 	 * @internal
+	 *
+	 * @param string[] $defaults
 	 */
 	private function getSchema(array $defaults = []): Nette\Schema\Elements\Structure
 	{
@@ -67,6 +70,9 @@ abstract class DatabaseAbstract extends Symfony\Component\Translation\Loader\Arr
 		]);
 	}
 
-	abstract protected function getMessages(\stdClass $config, string $resource, string $locale, string $domain): array;
+	/**
+	 * @return string[]
+	 */
+	abstract protected function getMessages(stdClass $config, string $resource, string $locale, string $domain): array;
 
 }

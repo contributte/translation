@@ -14,11 +14,17 @@ class Helpers
 
 	use Nette\StaticClass;
 
+	/**
+	 * @param string[]|null $whitelist
+	 */
 	public static function whitelistRegexp(?array $whitelist): ?string
 	{
 		return $whitelist !== null ? '~^(' . implode('|', $whitelist) . ')~i' : null;
 	}
 
+	/**
+	 * @return string[]
+	 */
 	public static function extractMessage(string $message): array
 	{
 		if (strpos($message, '.') !== false && strpos($message, ' ') === false) {

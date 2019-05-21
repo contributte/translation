@@ -16,15 +16,21 @@ class FallbackResolver
 
 	use Nette\SmartObject;
 
-	/** @var array */
+	/** @var string[] */
 	private $fallbackLocales = [];
 
+	/**
+	 * @param string[] $array
+	 */
 	public function setFallbackLocales(array $array): self
 	{
 		$this->fallbackLocales = $array;
 		return $this;
 	}
 
+	/**
+	 * @return string[]
+	 */
 	public function compute(Translator $translator, string $locale): array
 	{
 		$locales = [];

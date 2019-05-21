@@ -8,6 +8,7 @@ namespace Contributte\Translation\Loaders;
 
 use Contributte;
 use Nette;
+use stdClass;
 use Symfony;
 
 class NetteDatabase extends DatabaseAbstract implements Symfony\Component\Translation\Loader\LoaderInterface
@@ -22,9 +23,10 @@ class NetteDatabase extends DatabaseAbstract implements Symfony\Component\Transl
 	}
 
 	/**
+	 * @return string[]
 	 * @throws Contributte\Translation\Exceptions\InvalidState
 	 */
-	protected function getMessages(\stdClass $config, string $resource, string $locale, string $domain): array
+	protected function getMessages(stdClass $config, string $resource, string $locale, string $domain): array
 	{
 		$messages = [];
 

@@ -20,9 +20,12 @@ class Message
 	/** @var string */
 	private $message;
 
-	/** @var array */
+	/** @var mixed[] */
 	private $parameters;
 
+	/**
+	 * @param mixed ...$parameters
+	 */
 	public function __construct(string $message, ...$parameters)
 	{
 		$this->message = $message;
@@ -40,11 +43,17 @@ class Message
 		return $this;
 	}
 
+	/**
+	 * @return mixed[]
+	 */
 	public function getParameters(): array
 	{
 		return $this->parameters;
 	}
 
+	/**
+	 * @param mixed[] $array
+	 */
 	public function setParameters(array $array): self
 	{
 		$this->parameters = $array;

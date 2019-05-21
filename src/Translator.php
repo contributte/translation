@@ -48,16 +48,16 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/** @var Contributte\Translation\Tracy\Panel|null */
 	private $tracyPanel;
 
-	/** @var array|null */
+	/** @var string[]|null */
 	private $localesWhitelist;
 
-	/** @var array */
+	/** @var string[] */
 	private $prefix = [];
 
-	/** @var array @internal */
+	/** @var string[] @internal */
 	private $prefixTemp = [];
 
-	/** @var array @internal */
+	/** @var bool[] @internal */
 	private $resourcesLocales = [];
 
 	public function __construct(LocaleResolver $localeResolver, FallbackResolver $fallbackResolver, string $defaultLocale, ?string $cacheDir = null, bool $debug = false)
@@ -109,22 +109,34 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		return $this;
 	}
 
+	/**
+	 * @return string[]|null
+	 */
 	public function getLocalesWhitelist(): ?array
 	{
 		return $this->localesWhitelist;
 	}
 
+	/**
+	 * @param string[]|null $whitelist
+	 */
 	public function setLocalesWhitelist(?array $whitelist): self
 	{
 		$this->localesWhitelist = $whitelist;
 		return $this;
 	}
 
+	/**
+	 * @return string[]
+	 */
 	public function getPrefix(): array
 	{
 		return $this->prefix;
 	}
 
+	/**
+	 * @param string[] $array
+	 */
 	public function setPrefix(array $array): self
 	{
 		$this->prefixTemp[] = $this->prefix;
@@ -134,6 +146,8 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 	/**
 	 * @internal
+	 *
+	 * @return string[]
 	 */
 	public function getPrefixTemp(): array
 	{

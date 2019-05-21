@@ -7,23 +7,26 @@
 namespace Contributte\Translation\Loaders;
 
 use Contributte;
+use Doctrine\ORM\Decorator\EntityManagerDecorator;
+use stdClass;
 use Symfony;
 
 class Doctrine extends DatabaseAbstract implements Symfony\Component\Translation\Loader\LoaderInterface
 {
 
-	/** @var \Doctrine\ORM\Decorator\EntityManagerDecorator $em */
+	/** @var EntityManagerDecorator $em */
 	private $em;
 
-	public function __construct(\Doctrine\ORM\Decorator\EntityManagerDecorator $em)
+	public function __construct(EntityManagerDecorator $em)
 	{
 		$this->em = $em;
 	}
 
 	/**
+	 * @return string[]
 	 * @throws Contributte\Translation\Exceptions\InvalidState
 	 */
-	protected function getMessages(\stdClass $config, string $resource, string $locale, string $domain): array
+	protected function getMessages(stdClass $config, string $resource, string $locale, string $domain): array
 	{
 		$messages = [];
 

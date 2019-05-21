@@ -6,8 +6,6 @@
 
 namespace Contributte\Translation;
 
-use Contributte;
-
 /**
  * @method createPrefixedTranslator(string $prefix)
  */

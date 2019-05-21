@@ -8,6 +8,7 @@ namespace Contributte\Translation\Tracy;
 
 use Contributte;
 use Nette;
+use ReflectionException;
 use Tracy;
 
 class Panel implements Tracy\IBarPanel
@@ -18,22 +19,22 @@ class Panel implements Tracy\IBarPanel
 	/** @var Contributte\Translation\Translator */
 	private $translator;
 
-	/** @var array */
+	/** @var array[] */
 	private $missingTranslation = [];
 
 	/** @var int */
 	private $missingTranslationCount = 0;
 
-	/** @var array */
+	/** @var Contributte\Translation\LocalesResolvers\ResolverInterface[] */
 	private $localeResolvers = [];
 
-	/** @var array */
+	/** @var array[] */
 	private $resources = [];
 
 	/** @var int */
 	private $resourcesCount = 0;
 
-	/** @var array */
+	/** @var array[] */
 	private $ignoredResources = [];
 
 	/** @var int */
@@ -53,12 +54,11 @@ class Panel implements Tracy\IBarPanel
 	}
 
 	/**
-	 * @throws \ReflectionException
+	 * @throws ReflectionException
 	 */
 	public function getPanel(): ?string
 	{
 		$panel = [];
-
 
 		$panel[] = '<h1>Missing translations: ' . $this->missingTranslationCount . ', Loaded resources: ' . $this->resourcesCount . '</h1>';
 		$panel[] = '<div class="tracy-inner">';
@@ -69,7 +69,6 @@ class Panel implements Tracy\IBarPanel
 		$panel[] = '<tr><td>Default locale</td><td>' . htmlspecialchars($this->translator->defaultLocale) . '</td></tr>';
 		$panel[] = '<tr><td>Locales whitelist</td><td>' . ($this->translator->localesWhitelist !== null ? htmlspecialchars(implode(', ', $this->translator->localesWhitelist)) : '&nbsp;') . '</td></tr>';
 		$panel[] = '</table></div>';
-
 
 		// missing translations
 		if ($this->missingTranslationCount > 0) {
@@ -85,7 +84,6 @@ class Panel implements Tracy\IBarPanel
 
 			$panel[] = '</table></div>';
 		}
-
 
 		// locale resolvers
 		if (count($this->localeResolvers) > 0) {
@@ -115,7 +113,6 @@ class Panel implements Tracy\IBarPanel
 			$panel[] = '</div>';
 		}
 
-
 		// ignored resources
 		if (count($this->ignoredResources) > 0) {
 			ksort($this->ignoredResources);
@@ -125,15 +122,15 @@ class Panel implements Tracy\IBarPanel
 			$panel[] = self::createResourcePanelHelper($this->ignoredResources);
 		}
 
-
 		$panel[] = '</div>';
-
 
 		return count($panel) === 0 ? null : implode($panel);
 	}
 
 	/**
 	 * @internal
+	 *
+	 * @param array[] $resources
 	 */
 	private static function createResourcePanelHelper(array $resources): string
 	{

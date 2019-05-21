@@ -16,8 +16,7 @@ class NetteDatabase extends AbstractTest
 		Tester\Assert::true($this->createCatalogue(Tester\FileMock::create('id: "my_id"'), 'en_US', 'messages', 'my_id', 'locale', 'message') instanceof Symfony\Component\Translation\MessageCatalogue);
 		Tester\Assert::true($this->createCatalogue(Tester\FileMock::create('locale: "my_locale"'), 'en_US', 'messages', 'id', 'my_locale', 'message') instanceof Symfony\Component\Translation\MessageCatalogue);
 		Tester\Assert::true($this->createCatalogue(Tester\FileMock::create('message: "my_message"'), 'en_US', 'messages', 'id', 'locale', 'my_message') instanceof Symfony\Component\Translation\MessageCatalogue);
-		Tester\Assert::exception(function (): void {(new Contributte\Translation\Loaders\NetteDatabase(\Mockery::mock(\Nette\Database\Connection::class)))->load('unknown_file', 'en_US');}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Something wrong with resource file "unknown_file".');
-
+		Tester\Assert::exception(function (): void { (new Contributte\Translation\Loaders\NetteDatabase(\Mockery::mock(\Nette\Database\Connection::class)))->load('unknown_file', 'en_US'); }, Contributte\Translation\Exceptions\InvalidArgument::class, 'Something wrong with resource file "unknown_file".');
 
 		$catalogue = $this->createCatalogue(Tester\FileMock::create(), 'en_US', 'messages', 'id', 'locale', 'message', [['id' => 'my.id', 'message' => 'my message'], ['id' => 'hi', 'message' => 'Hi']]);
 
@@ -30,11 +29,13 @@ class NetteDatabase extends AbstractTest
 
 	/**
 	 * @internal
+	 *
+	 * @param array[] $data
 	 */
 	private function createCatalogue(string $file, string $locale, string $table, string $columnId, string $columnLocale, string $columnMessage, array $data = []): Symfony\Component\Translation\MessageCatalogue
 	{
-		$connectionMock = \Mockery::mock(\Nette\Database\Connection::class);
-		$resultSetMock = \Mockery::mock(\Nette\Database\ResultSet::class);
+		$connectionMock = Mockery::mock(Nette\Database\Connection::class);
+		$resultSetMock = Mockery::mock(Nette\Database\ResultSet::class);
 
 		$loader = new Contributte\Translation\Loaders\NetteDatabase($connectionMock);
 

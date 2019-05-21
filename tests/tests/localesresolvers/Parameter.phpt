@@ -24,7 +24,7 @@ class Parameter extends AbstractTest
 		$request = new Nette\Http\Request(new Nette\Http\UrlScript('https://www.example.com/?' . Contributte\Translation\LocalesResolvers\Parameter::$parameter . '=' . $locale));
 
 		$resolver = new Contributte\Translation\LocalesResolvers\Parameter($request);
-		$translatorMock = \Mockery::mock(Contributte\Translation\Translator::class);
+		$translatorMock = Mockery::mock(Contributte\Translation\Translator::class);
 
 		return $resolver->resolve($translatorMock);
 	}
@@ -34,7 +34,7 @@ class Parameter extends AbstractTest
 		$request = new Nette\Http\Request(new Nette\Http\UrlScript('https://www.example.com'));
 
 		$resolver = new Contributte\Translation\LocalesResolvers\Parameter($request);
-		$translatorMock = \Mockery::mock(Contributte\Translation\Translator::class);
+		$translatorMock = Mockery::mock(Contributte\Translation\Translator::class);
 
 		Tester\Assert::null($resolver->resolve($translatorMock));
 	}

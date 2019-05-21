@@ -20,6 +20,9 @@ class FallbackResolver extends AbstractTest
 
 	/**
 	 * @internal
+	 *
+	 * @param string[] $fallbackLocales
+	 * @return string[]
 	 */
 	private function compute(?string $locale, array $fallbackLocales): array
 	{

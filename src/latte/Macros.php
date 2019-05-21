@@ -12,7 +12,7 @@ use Latte;
 class Macros extends Latte\Macros\MacroSet
 {
 
-	public static function install(Latte\Compiler $compiler)
+	public static function install(Latte\Compiler $compiler): void
 	{
 		$me = new static($compiler);
 
@@ -24,6 +24,9 @@ class Macros extends Latte\Macros\MacroSet
 	 * https://github.com/nette/latte/blob/master/src/Latte/Macros/CoreMacros.php#L205
 	 *
 	 * {_ ...}
+	 *
+	 * @return mixed
+	 * @throws Latte\CompileException
 	 */
 	public function macroTranslate(Latte\MacroNode $node, Latte\PhpWriter $writer)
 	{
@@ -53,6 +56,7 @@ class Macros extends Latte\Macros\MacroSet
 	/**
 	 * {translate ...}
 	 *
+	 * @return mixed
 	 * @throws Latte\CompileException
 	 */
 	public function macroPrefix(Latte\MacroNode $node, Latte\PhpWriter $writer)
