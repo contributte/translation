@@ -178,7 +178,7 @@ class Panel implements Tracy\IBarPanel
 		return $this;
 	}
 
-	public function addResource(?string $format, $resource, ?string $locale, ?string $domain): self
+	public function addResource(?string $format, string $resource, ?string $locale, ?string $domain): self
 	{
 		if (is_array($resource)) {
 			$resource = 'array ' . md5(serialize($resource));
@@ -189,7 +189,7 @@ class Panel implements Tracy\IBarPanel
 		return $this;
 	}
 
-	public function addIgnoredResource(?string $format, $resource, ?string $locale, ?string $domain): self
+	public function addIgnoredResource(?string $format, string $resource, ?string $locale, ?string $domain): self
 	{
 		if (is_array($resource)) {
 			$resource = 'array ' . md5(serialize($resource));
