@@ -25,14 +25,14 @@ abstract class DatabaseAbstract extends Symfony\Component\Translation\Loader\Arr
 	/**
 	 * {@inheritdoc}
 	 *
-	 * @throws Contributte\Translation\InvalidArgumentException|Contributte\Translation\InvalidStateException
+	 * @throws Contributte\Translation\Exceptions\InvalidArgument|Contributte\Translation\Exceptions\InvalidState
 	 */
 	public function load($resource, $locale, $domain = 'messages')
 	{
 		$content = @file_get_contents($resource); // @ -> prevent E_WARNING and thrown an exception
 
 		if ($content === false) {
-			throw new Contributte\Translation\InvalidArgumentException('Something wrong with resource file "' . $resource . '".');
+			throw new Contributte\Translation\Exceptions\InvalidArgument('Something wrong with resource file "' . $resource . '".');
 		}
 
 		$catalogue = parent::load(

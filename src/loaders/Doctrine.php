@@ -21,7 +21,7 @@ class Doctrine extends DatabaseAbstract implements Symfony\Component\Translation
 	}
 
 	/**
-	 * @throws Contributte\Translation\InvalidStateException
+	 * @throws Contributte\Translation\Exceptions\InvalidState
 	 */
 	protected function getMessages(\stdClass $config, string $resource, string $locale, string $domain): array
 	{
@@ -32,7 +32,7 @@ class Doctrine extends DatabaseAbstract implements Symfony\Component\Translation
 			$message = $v1->{$config->message};
 
 			if (array_key_exists($id, $messages)) {
-				throw new Contributte\Translation\InvalidStateException('Id "' . $id . '" declared twice in "' . $config->table . '" table/domain.');
+				throw new Contributte\Translation\Exceptions\InvalidState('Id "' . $id . '" declared twice in "' . $config->table . '" table/domain.');
 			}
 
 			$messages[$id] = $message;

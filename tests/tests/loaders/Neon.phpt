@@ -44,7 +44,7 @@ test:
 
 	public function test02(): void
 	{
-		Tester\Assert::exception(function (): void {(new Contributte\Translation\Loaders\Neon)->load('unknown_file', 'en');}, Contributte\Translation\InvalidArgumentException::class, 'Something wrong with resource file "unknown_file".');
+		Tester\Assert::exception(function (): void {(new Contributte\Translation\Loaders\Neon)->load('unknown_file', 'en');}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Something wrong with resource file "unknown_file".');
 	}
 
 }

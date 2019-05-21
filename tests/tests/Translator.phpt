@@ -47,8 +47,8 @@ class Translator extends AbstractTest
 
 		$translator->setPrefix([]);
 
-		Tester\Assert::exception(function () use ($translator): void {$translator->removePrefix();}, Contributte\Translation\InvalidArgumentException::class, 'Can not remove empty prefix.');
-		Tester\Assert::exception(function () use ($translator): void {$translator->removePrefix('unknown');}, Contributte\Translation\InvalidArgumentException::class, 'Unknown "unknown" prefix.');
+		Tester\Assert::exception(function () use ($translator): void {$translator->removePrefix();}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Can not remove empty prefix.');
+		Tester\Assert::exception(function () use ($translator): void {$translator->removePrefix('unknown');}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Unknown "unknown" prefix.');
 
 
 		$translator->addResource('neon', __DIR__ . '/file.neon', 'en_US', 'domain');
@@ -65,7 +65,7 @@ class Translator extends AbstractTest
 		$translator = $container->getByType(Nette\Localization\ITranslator::class);
 
 
-		Tester\Assert::throws(function () use ($translator): void {$translator->translate(new \stdClass);}, Contributte\Translation\InvalidArgumentException::class, 'Message must be string, object given.');
+		Tester\Assert::throws(function () use ($translator): void {$translator->translate(new \stdClass);}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Message must be string, object given.');
 		Tester\Assert::same('', $translator->translate(null));
 		Tester\Assert::same('0', $translator->translate(0));
 		Tester\Assert::same('1', $translator->translate(1));

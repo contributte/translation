@@ -48,7 +48,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 	}
 
 	/**
-	 * @throws Contributte\Translation\InvalidArgumentException|\ReflectionException
+	 * @throws Contributte\Translation\Exceptions\InvalidArgument|\ReflectionException
 	 */
 	public function loadConfiguration(): void
 	{
@@ -66,7 +66,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			$reflection = new \ReflectionClass($v1);
 
 			if (!$reflection->implementsInterface(Contributte\Translation\LocalesResolvers\ResolverInterface::class)) {
-				throw new Contributte\Translation\InvalidArgumentException('Resolver must implement interface "' . Contributte\Translation\LocalesResolvers\ResolverInterface::class . '".');
+				throw new Contributte\Translation\Exceptions\InvalidArgument('Resolver must implement interface "' . Contributte\Translation\LocalesResolvers\ResolverInterface::class . '".');
 			}
 
 			$localeResolvers[] = $resolver = $builder->addDefinition($this->prefix('localeResolver' . $reflection->getShortName()))
@@ -85,7 +85,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		$reflection = new \ReflectionClass($this->config->cache->factory);
 
 		if (!$reflection->implementsInterface(Symfony\Component\Config\ConfigCacheFactoryInterface::class)) {
-			throw new Contributte\Translation\InvalidArgumentException('Cache factory must implement interface "' . Symfony\Component\Config\ConfigCacheFactoryInterface::class . '".');
+			throw new Contributte\Translation\Exceptions\InvalidArgument('Cache factory must implement interface "' . Symfony\Component\Config\ConfigCacheFactoryInterface::class . '".');
 		}
 
 		$configCacheFactory = $builder->addDefinition($this->prefix('configCacheFactory'))
@@ -94,7 +94,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 		// Translator
 		if ($this->config->locales->default === null) {
-			throw new Contributte\Translation\InvalidArgumentException('Default locale must be set.');
+			throw new Contributte\Translation\Exceptions\InvalidArgument('Default locale must be set.');
 		}
 
 		$translator = $builder->addDefinition($this->prefix('translator'))
@@ -110,7 +110,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			$reflection = new \ReflectionClass($v1);
 
 			if (!$reflection->implementsInterface(Symfony\Component\Translation\Loader\LoaderInterface::class)) {
-				throw new Contributte\Translation\InvalidArgumentException('Loader must implement interface "' . Symfony\Component\Translation\Loader\LoaderInterface::class . '".');
+				throw new Contributte\Translation\Exceptions\InvalidArgument('Loader must implement interface "' . Symfony\Component\Translation\Loader\LoaderInterface::class . '".');
 			}
 
 			$loader = $builder->addDefinition($this->prefix('loader' . Nette\Utils\Strings::firstUpper($k1)))

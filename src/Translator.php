@@ -149,7 +149,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	}
 
 	/**
-	 * @throws Contributte\Translation\InvalidArgumentException
+	 * @throws Contributte\Translation\Exceptions\InvalidArgument
 	 */
 	public function removePrefix(string $string = null): self
 	{
@@ -157,14 +157,14 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 			$key = array_pop($this->prefix);
 
 			if ($key === null) {
-				throw new InvalidArgumentException('Can not remove empty prefix.');
+				throw new Exceptions\InvalidArgument('Can not remove empty prefix.');
 			}
 
 		} else {
 			$key = array_search($string, array_reverse($this->prefix), true);
 
 			if ($key === false) {
-				throw new InvalidArgumentException('Unknown "' . $string . '" prefix.');
+				throw new Exceptions\InvalidArgument('Unknown "' . $string . '" prefix.');
 			}
 
 			unset($key);
@@ -251,7 +251,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		}
 
 		if (!is_string($message)) {
-			throw new InvalidArgumentException('Message must be string, ' . gettype($message) . ' given.');
+			throw new Exceptions\InvalidArgument('Message must be string, ' . gettype($message) . ' given.');
 		}
 
 		$count = array_key_exists(0, $parameters) ? $parameters[0] : null;

@@ -16,14 +16,14 @@ class Neon extends Symfony\Component\Translation\Loader\ArrayLoader implements S
 	/**
 	 * {@inheritdoc}
 	 *
-	 * @throws Contributte\Translation\InvalidArgumentException
+	 * @throws Contributte\Translation\Exceptions\InvalidArgument
 	 */
 	public function load($resource, $locale, $domain = 'messages')
 	{
 		$content = @file_get_contents($resource); // @ -> prevent E_WARNING and thrown an exception
 
 		if ($content === false) {
-			throw new Contributte\Translation\InvalidArgumentException('Something wrong with resource file "' . $resource . '".');
+			throw new Contributte\Translation\Exceptions\InvalidArgument('Something wrong with resource file "' . $resource . '".');
 		}
 
 		$messages = Nette\Neon\Neon::decode($content);
