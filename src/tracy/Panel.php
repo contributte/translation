@@ -119,7 +119,7 @@ class Panel implements Tracy\IBarPanel
 			ksort($this->ignoredResources);
 
 			$panel[] = '<br>';
-			$panel[] = '<h2>Ignored resources: ' . $this->ignoredResourcesCount . ($this->translator->localesWhitelist ? ', <small>whitelist: ' . implode(', ', array_map('htmlspecialchars', $this->translator->localesWhitelist)) . '</small>' : null) . '</h2>';
+			$panel[] = '<h2>Ignored resources: ' . $this->ignoredResourcesCount . ($this->translator->localesWhitelist !== null ? ', <small>whitelist: ' . implode(', ', array_map('htmlspecialchars', $this->translator->localesWhitelist)) . '</small>' : null) . '</h2>';
 			$panel[] = self::createResourcePanelHelper($this->ignoredResources);
 		}
 
@@ -177,10 +177,6 @@ class Panel implements Tracy\IBarPanel
 
 	public function addResource(?string $format, string $resource, ?string $locale, ?string $domain): self
 	{
-		if (is_array($resource)) {
-			$resource = 'array ' . md5(serialize($resource));
-		}
-
 		$this->resources[$locale][$resource] = $domain;
 		$this->resourcesCount++;
 		return $this;
@@ -188,10 +184,6 @@ class Panel implements Tracy\IBarPanel
 
 	public function addIgnoredResource(?string $format, string $resource, ?string $locale, ?string $domain): self
 	{
-		if (is_array($resource)) {
-			$resource = 'array ' . md5(serialize($resource));
-		}
-
 		$this->ignoredResources[$locale][$resource] = $domain;
 		$this->ignoredResourcesCount++;
 		return $this;

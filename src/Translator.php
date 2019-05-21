@@ -54,7 +54,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/** @var string[] */
 	private $prefix = [];
 
-	/** @var string[] @internal */
+	/** @var (string|array)[] @internal */
 	private $prefixTemp = [];
 
 	/** @var bool[] @internal */
@@ -145,7 +145,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	}
 
 	/**
-	 * @return string[]
+	 * @return (string|array)[]
 	 * @internal
 	 */
 	public function getPrefixTemp(): array
@@ -245,7 +245,9 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @param mixed $message
+	 * @param mixed ...$parameters
+	 * @return string
 	 */
 	public function translate($message, ...$parameters): string
 	{
@@ -274,7 +276,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 		if (is_array($count)) {
 			$locale = $domain !== null ? (string) $domain : null;
-			$domain = $params !== null && !empty($params) ? (string) $params : null;
+			$domain = $params !== null && $params !== [] ? (string) $params : null;
 			$params = $count;
 			$count = null;
 		}
@@ -313,7 +315,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 				$domain = 'messages';
 			}
 
-			if ($id !== null && !$this->getCatalogue()->has($id, $domain)) {
+			if (!$this->getCatalogue()->has($id, $domain)) {
 				$this->tracyPanel->addMissingTranslation($id, $domain);
 			}
 		}

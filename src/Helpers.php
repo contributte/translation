@@ -23,7 +23,7 @@ class Helpers
 	}
 
 	/**
-	 * @return string[]
+	 * @return (string|null)[]
 	 */
 	public static function extractMessage(string $message): array
 	{

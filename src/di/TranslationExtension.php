@@ -172,11 +172,11 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 				foreach (Nette\Utils\Finder::find('*.' . $k1)->from($this->config->dirs) as $v2) {
 					$match = Nette\Utils\Strings::match($v2->getFilename(), '~^(?P<domain>.*?)\.(?P<locale>[^\.]+)\.(?P<format>[^\.]+)$~');
 
-					if (!$match) {
+					if ($match === null) {
 						continue;
 					}
 
-					if ($whitelistRegexp !== null && !preg_match($whitelistRegexp, $match['locale'])) {
+					if ($whitelistRegexp !== null && preg_match($whitelistRegexp, $match['locale']) === false) {
 						if (isset($tracyPanel)) {
 							$tracyPanel->addSetup('addIgnoredResource', [$match['format'], $v2->getPathname(), $match['locale'], $match['domain']]);
 						}
