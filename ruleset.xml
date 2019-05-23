@@ -4,14 +4,7 @@
 
 	<rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
 		<properties>
-			<property name="rootNamespaces" type="array" value="
-				src=>Contribute\Translation,
-				tests/Tests=>Tests
-			"/>
-			<property name="rootNamespaces" type="array">
-				<element key="src" value="Contribute\Translation" />
-				<element key="tests/Tests" value="Tests" />
-			</property>
+			<property name="rootNamespaces" type="array" value="src=>Contributte\Translation,tests/Tests=>Tests" />
 		</properties>
 	</rule>
 
