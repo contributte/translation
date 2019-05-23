@@ -17,9 +17,9 @@ use Symfony;
  * @property-read string|null $cacheDir
  * @property-read bool $debug
  * @property-read Contributte\Translation\Tracy\Panel|null $tracyPanel
- * @property      array|null $localesWhitelist
- * @property      array $prefix
- * @property-read array $prefixTemp
+ * @property      string[]|null $localesWhitelist
+ * @property      string[] $prefix
+ * @property-read string[][] $prefixTemp
  * @property-read string $formattedPrefix
  * @property-read string[] $availableLocales
  * @property      string|null $locale
@@ -54,7 +54,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/** @var string[] */
 	private $prefix = [];
 
-	/** @var (string|array)[] @internal */
+	/** @var string[][] @internal */
 	private $prefixTemp = [];
 
 	/** @var bool[] @internal */
@@ -145,7 +145,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	}
 
 	/**
-	 * @return (string|string[])[]
+	 * @return string[]
 	 * @internal
 	 */
 	public function getPrefixTemp(): array
@@ -167,9 +167,9 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	public function removePrefix(?string $string = null): self
 	{
 		if ($string === null) {
-			$key = array_pop($this->prefix);
+			$value = array_pop($this->prefix);
 
-			if ($key === null) {
+			if ($value === null) {
 				throw new Exceptions\InvalidArgument('Can not remove empty prefix.');
 			}
 
