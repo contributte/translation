@@ -46,7 +46,7 @@
 	},
 	"scripts": {
 		"tests": [
-			"tester tests/tests -s -j 1"
+			"tester tests/Tests -s -j 1"
 		],
 		"qa": [
 			"linter src tests",
