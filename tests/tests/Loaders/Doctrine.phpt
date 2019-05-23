@@ -8,8 +8,8 @@ namespace Tests\Loaders;
 
 use Contributte;
 use Doctrine as Dctr;
-use Nette;
 use Mockery;
+use Nette;
 use Symfony;
 use Tester;
 use Tests;
