@@ -6,6 +6,7 @@
 		<properties>
 			<property name="rootNamespaces" type="array" value="
                 src=>Contribute\Translation,
+                tests/Tests=>Tests
             "/>
 		</properties>
 	</rule>
