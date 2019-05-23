@@ -4,9 +4,17 @@
  * This file is part of the Contributte/Translation
  */
 
+namespace Tests;
+
+use Contributte;
+use Symfony;
+use Mockery;
+use Tester;
+use Tests;
+
 $container = require __DIR__ . '/../bootstrap.php';
 
-class FallbackResolver extends AbstractTest
+class FallbackResolver extends Tests\TestAbstract
 {
 
 	public function test01(): void

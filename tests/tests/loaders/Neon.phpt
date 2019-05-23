@@ -4,9 +4,16 @@
  * This file is part of the Contributte/Translation
  */
 
+namespace Tests\Loaders;
+
+use Contributte;
+use Symfony;
+use Tester;
+use Tests;
+
 $container = require __DIR__ . '/../../bootstrap.php';
 
-class Neon extends AbstractTest
+class Neon extends Tests\TestAbstract
 {
 
 	public function test01(): void

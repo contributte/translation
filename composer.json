@@ -35,7 +35,14 @@
 		"ninjify/nunjuck": "^0.2.0"
 	},
 	"autoload": {
-		"classmap": ["src/"]
+		"psr-4": {
+			"Contributte\\Translation\\": "src"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Tests\\": "tests/Tests"
+		}
 	},
 	"scripts": {
 		"tests": [

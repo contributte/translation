@@ -4,9 +4,15 @@
  * This file is part of the Contributte/Translation
  */
 
+namespace Tests\LocalesResolvers;
+
+use Contributte;
+use Tester;
+use Tests;
+
 $container = require __DIR__ . '/../../bootstrap.php';
 
-class NotTranslate extends AbstractTest
+class NotTranslate extends Tests\TestAbstract
 {
 
 	public function test01(): void

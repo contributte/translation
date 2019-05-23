@@ -4,9 +4,16 @@
  * This file is part of the Contributte/Translation
  */
 
+namespace Tests;
+
+use Contributte;
+use Mockery;
+use Tester;
+use Tests;
+
 $container = require __DIR__ . '/../bootstrap.php';
 
-class PrefixedTranslator extends AbstractTest
+class PrefixedTranslator extends Tests\TestAbstract
 {
 
 	public function test01(): void

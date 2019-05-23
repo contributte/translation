@@ -4,9 +4,18 @@
  * This file is part of the Contributte/Translation
  */
 
+namespace Tests\LocalesResolvers;
+
+use Contributte;
+use Symfony;
+use Nette;
+use Mockery;
+use Tester;
+use Tests;
+
 $container = require __DIR__ . '/../../bootstrap.php';
 
-class Session extends AbstractTest
+class Session extends Tests\TestAbstract
 {
 
 	public function test01(): void

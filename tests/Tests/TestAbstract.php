@@ -4,7 +4,12 @@
  * This file is part of the Contributte/Translation
  */
 
-abstract class AbstractTest extends Tester\TestCase
+namespace Tests;
+
+use Nette;
+use Tester;
+
+abstract class TestAbstract extends Tester\TestCase
 {
 
 	/** @var Nette\DI\Container */

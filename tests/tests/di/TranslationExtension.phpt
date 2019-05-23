@@ -4,9 +4,17 @@
  * This file is part of the Contributte/Translation
  */
 
+namespace Tests\DI;
+
+use Contributte;
+use Nette;
+use Tester;
+use Tests;
+use UnexpectedValueException;
+
 $container = require __DIR__ . '/../../bootstrap.php';
 
-class TranslationExtension extends AbstractTest
+class TranslationExtension extends Tests\TestAbstract
 {
 
 	public function test01(): void

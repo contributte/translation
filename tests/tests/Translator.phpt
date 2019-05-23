@@ -4,9 +4,18 @@
  * This file is part of the Contributte/Translation
  */
 
+namespace Tests;
+
+use Contributte;
+use Latte;
+use Nette;
+use stdClass;
+use Tester;
+use Tests;
+
 $container = require __DIR__ . '/../bootstrap.php';
 
-class Translator extends AbstractTest
+class Translator extends Tests\TestAbstract
 {
 
 	public function test01(): void
@@ -212,7 +221,7 @@ class Translator extends AbstractTest
 						'default' => 'en',
 					],
 					'dirs' => [
-						__DIR__ . '/../lang',
+						__DIR__ . '/lang',
 					],
 				],
 			]);

@@ -4,9 +4,19 @@
  * This file is part of the Contributte/Translation
  */
 
+namespace Tests\Loaders;
+
+use Contributte;
+use Doctrine as Dctr;
+use Nette;
+use Mockery;
+use Symfony;
+use Tester;
+use Tests;
+
 $container = require __DIR__ . '/../../bootstrap.php';
 
-class Doctrine extends AbstractTest
+class Doctrine extends Tests\TestAbstract
 {
 
 	public function test01(): void
@@ -35,8 +45,8 @@ class Doctrine extends AbstractTest
 	 */
 	private function createCatalogue(string $file, string $locale, string $table, string $columnId, string $columnLocale, string $columnMessage, array $data = []): Symfony\Component\Translation\MessageCatalogue
 	{
-		$emMock = Mockery::mock(Doctrine\ORM\Decorator\EntityManagerDecorator::class);
-		$repositoryMock = Mockery::mock(Doctrine\ORM\EntityRepository::class);
+		$emMock = Mockery::mock(Dctr\ORM\Decorator\EntityManagerDecorator::class);
+		$repositoryMock = Mockery::mock(Dctr\ORM\EntityRepository::class);
 
 		$loader = new Contributte\Translation\Loaders\Doctrine($emMock);
 

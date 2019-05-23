@@ -4,9 +4,18 @@
  * This file is part of the Contributte/Translation
  */
 
+namespace Tests\Loaders;
+
+use Contributte;
+use Nette;
+use Mockery;
+use Symfony;
+use Tester;
+use Tests;
+
 $container = require __DIR__ . '/../../bootstrap.php';
 
-class NetteDatabase extends AbstractTest
+class NetteDatabase extends Tests\TestAbstract
 {
 
 	public function test01(): void
