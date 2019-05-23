@@ -7,7 +7,6 @@
 namespace Tests;
 
 use Contributte;
-use Symfony;
 use Mockery;
 use Tester;
 use Tests;
