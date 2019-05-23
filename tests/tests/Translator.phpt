@@ -221,7 +221,7 @@ class Translator extends Tests\TestAbstract
 						'default' => 'en',
 					],
 					'dirs' => [
-						__DIR__ . '/lang',
+						__DIR__ . '/../lang',
 					],
 				],
 			]);
