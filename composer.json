@@ -63,7 +63,7 @@
 			"temp/phpstan/vendor/bin/phpstan analyse -l max -c phpstan.neon src"
 		],
 		"coverage": [
-			"tester -s -p phpdbg --coverage ./tests/coverage.xml --coverage-src ./src"
+			"tester -s -p phpdbg --coverage ./coverage.xml --coverage-src ./src"
 		]
 	}
 }
