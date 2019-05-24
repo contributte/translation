@@ -31,9 +31,9 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			'locales' => Expect::structure([
 				'whitelist' => Expect::array()->default(null), // @todo unique check?
 				'default' => Expect::string(null),
-				'fallback' => Expect::array(null),
+				'fallback' => Expect::array()->default(null),
 			]),
-			'localeResolvers' => Expect::array(null),
+			'localeResolvers' => Expect::array()->default(null),
 			'loaders' => Expect::array()->default([
 				'neon' => Contributte\Translation\Loaders\Neon::class,
 			]),
