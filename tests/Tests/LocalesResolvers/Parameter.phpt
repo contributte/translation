@@ -7,7 +7,6 @@
 namespace Tests\LocalesResolvers;
 
 use Contributte;
-use Symfony;
 use Nette;
 use Mockery;
 use Tester;
