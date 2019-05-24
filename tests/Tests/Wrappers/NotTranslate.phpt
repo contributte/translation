@@ -4,7 +4,7 @@
  * This file is part of the Contributte/Translation
  */
 
-namespace Tests\LocalesResolvers;
+namespace Tests\Wrappers;
 
 use Contributte;
 use Tester;
