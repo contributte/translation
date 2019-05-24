@@ -24,7 +24,7 @@ class Message
 	private $parameters;
 
 	/**
-	 * @param mixed[] ...$parameters
+	 * @param mixed[] $parameters
 	 */
 	public function __construct(string $message, ...$parameters)
 	{
