@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <ruleset>
-	<rule ref="./vendor/ninjify/coding-standard/contributte.xml"/>
+	<rule ref="./vendor/ninjify/coding-standard/contributte.xml">
+		<exclude name="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming.SuperfluousSuffix" />
+		<exclude name="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming.SuperfluousSuffix" />
+	<rule/>
 
 	<rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
 		<properties>
 			<property name="rootNamespaces" type="array" value="src=>Contributte\Translation,tests/Tests=>Tests" />
 		</properties>
-	</rule>
-
-	<rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
 	</rule>
 </ruleset>
