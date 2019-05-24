@@ -7,8 +7,8 @@
 namespace Tests\LocalesResolvers;
 
 use Contributte;
-use Nette;
 use Mockery;
+use Nette;
 use Tester;
 use Tests;
 
