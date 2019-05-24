@@ -31,14 +31,9 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			'locales' => Expect::structure([
 				'whitelist' => Expect::array()->default(null), // @todo unique check?
 				'default' => Expect::string(null),
-				'fallback' => Expect::array()->default(['en_US']),
+				'fallback' => Expect::array(null),
 			]),
-			'localeResolvers' => Expect::array()->default([
-				Contributte\Translation\LocalesResolvers\Session::class,
-				Contributte\Translation\LocalesResolvers\Router::class,
-				Contributte\Translation\LocalesResolvers\Parameter::class,
-				Contributte\Translation\LocalesResolvers\Header::class,
-			]),
+			'localeResolvers' => Expect::array(null),
 			'loaders' => Expect::array()->default([
 				'neon' => Contributte\Translation\Loaders\Neon::class,
 			]),
@@ -56,6 +51,19 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 	public function loadConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
+
+		if ($this->config->locales->fallback === null) {
+			$this->config->locales->fallback = ['en_US'];// may in future versions make this parameter as required?
+		}
+
+		if ($this->config->localeResolvers === null) {
+			$this->config->localeResolvers = [
+				Contributte\Translation\LocalesResolvers\Session::class,
+				Contributte\Translation\LocalesResolvers\Router::class,
+				Contributte\Translation\LocalesResolvers\Parameter::class,
+				Contributte\Translation\LocalesResolvers\Header::class,
+			];
+		}
 
 		// LocaleResolver
 		$localeResolver = $builder->addDefinition($this->prefix('localeResolver'))
