@@ -24,7 +24,8 @@ class Message
 	private $parameters;
 
 	/**
-	 * @param mixed[] $parameters
+	 * @param mixed[] ...$parameters
+	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
 	 */
 	public function __construct(string $message, ...$parameters)
 	{
