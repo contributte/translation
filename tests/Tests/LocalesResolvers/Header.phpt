@@ -74,6 +74,9 @@ class Header extends Tests\TestAbstract
 					return null;
 				}
 
+				/**
+				 * @return Nette\Http\FileUpload[]
+				 */
 				public function getFiles(): array
 				{
 					return [];
@@ -104,15 +107,14 @@ class Header extends Tests\TestAbstract
 				{
 					return true;
 				}
-
-				/**
-				 * @return string[]
-				 */
 				public function getHeader(string $header): ?string
 				{
 					return null;
 				}
-
+				
+				/**
+				 * @return string[]
+				 */
 				public function getHeaders(): array
 				{
 					return [];
