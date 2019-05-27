@@ -30,6 +30,103 @@ class Header extends Tests\TestAbstract
 		Tester\Assert::same('en-us', $this->resolve('da, en_us', ['en', 'en-us']));
 	}
 
+	public function test02(): void
+	{
+		Tester\Assert::exception(function (): void {
+			new Contributte\Translation\LocalesResolvers\Header(new class implements Nette\Http\IRequest {
+				public function getReferer()
+				{
+					return null;
+				}
+
+				public function isSameSite()
+				{
+					return true;
+				}
+
+				public function getUrl(): Nette\Http\UrlScript
+				{
+					return new Nette\Http\UrlScript;
+				}
+
+				public function getQuery(string $key = null)
+				{
+
+				}
+
+				public function getPost(string $key = null)
+				{
+
+				}
+
+				public function getFile(string $key)
+				{
+
+				}
+
+				public function getFiles(): array
+				{
+					return [];
+				}
+
+				public function getCookie(string $key)
+				{
+
+				}
+
+				public function getCookies(): array
+				{
+					return [];
+				}
+
+				public function getMethod(): string
+				{
+					return '';
+				}
+
+				public function isMethod(string $method): bool
+				{
+					return true;
+				}
+
+				public function getHeader(string $header): ?string
+				{
+					return null;
+				}
+
+				public function getHeaders(): array
+				{
+					return [];
+				}
+
+				public function isSecured(): bool
+				{
+					return true;
+				}
+
+				public function isAjax(): bool
+				{
+					return true;
+				}
+
+				public function getRemoteAddress(): ?string
+				{
+					return null;
+				}
+
+				public function getRemoteHost(): ?string
+				{
+					return null;
+				}
+
+				public function getRawBody(): ?string
+				{
+					return null;
+				}
+			});
+		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Header locale resolver need "Nette\\Http\\Request" or his child for using "detectLanguage" method.');
+	}
+
 	/**
 	 * @param string[] $availableLocales
 	 * @internal
