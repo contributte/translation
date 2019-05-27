@@ -156,14 +156,17 @@ class Translator extends Tests\TestAbstract
 		$template->onCreate[] = function (Nette\Bridges\ApplicationLatte\Template $template): void {
 			Tester\Assert::same('Hello', $template->renderToString(Tester\FileMock::create('{_messages.hello}')));
 			Tester\Assert::same('Hello', $template->renderToString(Tester\FileMock::create('{_}messages.hello{/_}')));
+			Tester\Assert::same('Hello', $template->renderToString(Tester\FileMock::create('{_}{php $message = "messages.hello"}{$message}{/_}')));
 			Tester\Assert::same('Hello', $template->renderToString(Tester\FileMock::create('{php $message = "messages.hello"}{$message|translate}')));
 
 			Tester\Assert::same('Hello', $template->renderToString(Tester\FileMock::create('{_hello}')));
 			Tester\Assert::same('Hello', $template->renderToString(Tester\FileMock::create('{_}hello{/_}')));
+			Tester\Assert::same('Hello', $template->renderToString(Tester\FileMock::create('{_}{php $message = "hello"}{$message}{/_}')));
 			Tester\Assert::same('Hello', $template->renderToString(Tester\FileMock::create('{php $message = "hello"}{$message|translate}')));
 
 			Tester\Assert::same('Hello', $template->renderToString(Tester\FileMock::create('{_//messages.hello}')));
 			Tester\Assert::same('Hello', $template->renderToString(Tester\FileMock::create('{_}//messages.hello{/_}')));
+			Tester\Assert::same('Hello', $template->renderToString(Tester\FileMock::create('{_}{php $message = "//messages.hello"}{$message}{/_}')));
 			Tester\Assert::same('Hello', $template->renderToString(Tester\FileMock::create('{php $message = "//messages.hello"}{$message|translate}')));
 
 			Tester\Assert::same('Hello', $template->renderToString(Tester\FileMock::create('{_hello, [], messages, en}')));
