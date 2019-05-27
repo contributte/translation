@@ -55,7 +55,7 @@ class Header extends Tests\TestAbstract
 				 */
 				public function getQuery(?string $key = null)
 				{
-
+					return null;
 				}
 
 				/**
@@ -63,7 +63,7 @@ class Header extends Tests\TestAbstract
 				 */
 				public function getPost(?string $key = null)
 				{
-
+					return null;
 				}
 
 				/**
@@ -71,7 +71,7 @@ class Header extends Tests\TestAbstract
 				 */
 				public function getFile(string $key)
 				{
-
+					return null;
 				}
 
 				public function getFiles(): array
@@ -84,9 +84,12 @@ class Header extends Tests\TestAbstract
 				 */
 				public function getCookie(string $key)
 				{
-
+					return null;
 				}
 
+				/**
+				 * @return string[]
+				 */
 				public function getCookies(): array
 				{
 					return [];
@@ -102,6 +105,9 @@ class Header extends Tests\TestAbstract
 					return true;
 				}
 
+				/**
+				 * @return string[]
+				 */
 				public function getHeader(string $header): ?string
 				{
 					return null;
