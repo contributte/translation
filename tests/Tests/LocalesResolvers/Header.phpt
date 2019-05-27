@@ -111,7 +111,7 @@ class Header extends Tests\TestAbstract
 				{
 					return null;
 				}
-				
+
 				/**
 				 * @return string[]
 				 */
