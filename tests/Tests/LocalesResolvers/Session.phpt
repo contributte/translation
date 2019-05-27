@@ -24,13 +24,16 @@ class Session extends Tests\TestAbstract
 		Tester\Assert::same('en', $this->resolve('en', ['en']));
 		Tester\Assert::same('en', $this->resolve('en', ['en_US']));
 		Tester\Assert::same('cs', $this->resolve('cs', ['en_US', 'cs_CZ']));
+		Tester\Assert::error(function (): void {
+			$this->resolve(null, [], false, true);
+		}, E_USER_WARNING, 'The advice of session locale resolver is required but the session has not been started and headers had been already sent. Either start your sessions earlier or disabled the SessionResolver.');
 	}
 
 	/**
 	 * @param string[] $availableLocales
 	 * @internal
 	 */
-	private function resolve(?string $locale, array $availableLocales): ?string
+	private function resolve(?string $locale, array $availableLocales, bool $sessionIsStarted = true, bool $responseIsSent = false): ?string
 	{
 		$responseMock = Mockery::mock(Nette\Http\IResponse::class);
 		$sessionMock = Mockery::mock(Nette\Http\Session::class);
@@ -52,12 +55,12 @@ class Session extends Tests\TestAbstract
 		$sessionMock->shouldReceive('isStarted')
 			->once()
 			->withNoArgs()
-			->andReturn(true);
+			->andReturn($sessionIsStarted);
 
 		$responseMock->shouldReceive('isSent')
 			->once()
 			->withNoArgs()
-			->andReturn(true);
+			->andReturn($responseIsSent);
 
 		$sessionMock->shouldReceive('start')
 			->once()
