@@ -184,7 +184,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 						continue;
 					}
 
-					if ($whitelistRegexp !== null && preg_match($whitelistRegexp, $match['locale']) === false) {
+					if ($whitelistRegexp !== null && Nette\Utils\Strings::match($match['locale'], $whitelistRegexp) === null) {
 						if (isset($tracyPanel)) {
 							$tracyPanel->addSetup('addIgnoredResource', [$match['format'], $v2->getPathname(), $match['locale'], $match['domain']]);
 						}

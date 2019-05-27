@@ -186,6 +186,15 @@ class Panel implements Tracy\IBarPanel
 		return $this;
 	}
 
+	/**
+	 * @return string[][]
+	 * @internal
+	 */
+	public function getResources(): array
+	{
+		return $this->resources;
+	}
+
 	public function addIgnoredResource(?string $format, string $resource, ?string $locale, ?string $domain): self
 	{
 		$this->ignoredResources[$locale][$resource] = $domain;
@@ -193,4 +202,12 @@ class Panel implements Tracy\IBarPanel
 		return $this;
 	}
 
+	/**
+	 * @return string[][]
+	 * @internal
+	 */
+	public function getIgnoredResources(): array
+	{
+		return $this->ignoredResources;
+	}
 }

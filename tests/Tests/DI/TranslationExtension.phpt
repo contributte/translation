@@ -62,6 +62,32 @@ class TranslationExtension extends Tests\TestAbstract
 		}
 	}
 
+	public function test03(): void
+	{
+		$container = $this->createContainer(['debug' => true, 'debugger' => true, 'locales' => ['default' => 'en', 'whitelist' => ['en']], 'localeResolvers' => [], 'dirs' => [__DIR__ . '/../../lang']]);
+
+		/** @var Contributte\Translation\Tracy\Panel $panel */
+		$panel = $container->getByType(Contributte\Translation\Tracy\Panel::class);
+
+		/** @var Contributte\Translation\Translator $translator */
+		$translator = $container->getByType(Nette\Localization\ITranslator::class);
+
+		Tester\Assert::count(2, $translator->tracyPanel->getResources());
+		Tester\Assert::count(2, $panel->getResources());
+		Tester\Assert::count(1, $translator->tracyPanel->getIgnoredResources());
+		Tester\Assert::count(1, $panel->getIgnoredResources());
+
+		$foo = $translator->tracyPanel->getIgnoredResources();
+		$foo = end($foo);
+		Tester\Assert::same('messages', end($foo));
+		Tester\Assert::true(Nette\Utils\Strings::contains(key($foo), 'messages.cs_CZ.neon'));
+
+		$foo = $panel->getIgnoredResources();
+		$foo = end($foo);
+		Tester\Assert::same('messages', end($foo));
+		Tester\Assert::true(Nette\Utils\Strings::contains(key($foo), 'messages.cs_CZ.neon'));
+	}
+
 	/**
 	 * @param string[] $config
 	 * @internal
