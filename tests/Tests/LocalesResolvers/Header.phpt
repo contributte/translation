@@ -34,31 +34,41 @@ class Header extends Tests\TestAbstract
 	{
 		Tester\Assert::exception(function (): void {
 			new Contributte\Translation\LocalesResolvers\Header(new class implements Nette\Http\IRequest {
-				public function getReferer()
+
+				public function getReferer(): ?Nette\Http\UrlImmutable
 				{
 					return null;
 				}
 
-				public function isSameSite()
+				public function isSameSite(): bool
 				{
 					return true;
 				}
 
 				public function getUrl(): Nette\Http\UrlScript
 				{
-					return new Nette\Http\UrlScript;
+					return new Nette\Http\UrlScript();
 				}
 
-				public function getQuery(string $key = null)
+				/**
+				 * @return mixed
+				 */
+				public function getQuery(?string $key = null)
 				{
 
 				}
 
-				public function getPost(string $key = null)
+				/**
+				 * @return mixed
+				 */
+				public function getPost(?string $key = null)
 				{
 
 				}
 
+				/**
+				 * @return mixed
+				 */
 				public function getFile(string $key)
 				{
 
@@ -69,6 +79,9 @@ class Header extends Tests\TestAbstract
 					return [];
 				}
 
+				/**
+				 * @return mixed
+				 */
 				public function getCookie(string $key)
 				{
 
@@ -123,6 +136,7 @@ class Header extends Tests\TestAbstract
 				{
 					return null;
 				}
+
 			});
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Header locale resolver need "Nette\\Http\\Request" or his child for using "detectLanguage" method.');
 	}
