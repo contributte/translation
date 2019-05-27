@@ -210,4 +210,5 @@ class Panel implements Tracy\IBarPanel
 	{
 		return $this->ignoredResources;
 	}
+
 }
