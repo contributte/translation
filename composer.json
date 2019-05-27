@@ -44,6 +44,11 @@
 			"Tests\\": "tests/Tests"
 		}
 	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "0.4.x-dev"
+		}
+	},
 	"scripts": {
 		"tests": [
 			"tester tests/Tests -s -j 1"
