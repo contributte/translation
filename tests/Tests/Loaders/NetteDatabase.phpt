@@ -36,6 +36,10 @@ class NetteDatabase extends Tests\TestAbstract
 		Tester\Assert::same('my message', $catalogue->get('my.id', 'messages'));
 		Tester\Assert::true($catalogue->has('hi', 'messages'));
 		Tester\Assert::same('Hi', $catalogue->get('hi', 'messages'));
+
+		Tester\Assert::exception(function (): void {
+			$this->createCatalogue(Tester\FileMock::create(), 'en_US', 'messages', 'id', 'locale', 'message', [['id' => 'duplicity.id', 'message' => 'my message'], ['id' => 'duplicity.id', 'message' => 'my message']]);
+		}, Contributte\Translation\Exceptions\InvalidState::class, 'Id "duplicity.id" declared twice in "messages" table/domain.');
 	}
 
 	/**
