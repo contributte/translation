@@ -70,7 +70,7 @@ class Panel implements Tracy\IBarPanel
 
 		$panel[] = '<div class="tracy-inner-container"><h2>Translator settings</h2>';
 		$panel[] = '<table class="tracy-sortable"><colgroup><col style="width: 75%"><col style="width: 25%"></colgroup>';
-		$panel[] = '<tr></th><th>Name</th><th>Value</th></tr>';
+		$panel[] = '<tr><th>Name</th><th>Value</th></tr>';
 		$panel[] = '<tr><td>Default locale</td><td>' . htmlspecialchars($this->translator->defaultLocale) . '</td></tr>';
 		$panel[] = '<tr><td>Locales whitelist</td><td>' . ($this->translator->localesWhitelist !== null ? htmlspecialchars(implode(', ', $this->translator->localesWhitelist)) : '&nbsp;') . '</td></tr>';
 		$panel[] = '</table></div>';
@@ -81,7 +81,7 @@ class Panel implements Tracy\IBarPanel
 			$panel[] = '<div class="tracy-inner-container"><h2>Missing translations: ' . $this->missingTranslationCount . '</h2>';
 
 			$panel[] = '<table class="tracy-sortable"><colgroup><col style="width: 50%"><col style="width: 25%"></colgroup><col style="width: 25%"></colgroup>';
-			$panel[] = '<tr></th><th>ID</th><th>Domain</th><th>Count</th></tr>';
+			$panel[] = '<tr><th>ID</th><th>Domain</th><th>Count</th></tr>';
 
 			foreach ($this->missingTranslation as $v1) {
 				$panel[] = '<tr><td>' . htmlspecialchars((string) $v1['id']) . '</td><td>' . htmlspecialchars((string) $v1['domain']) . '</td><td>' . $v1['count'] . '</td></tr>';
