@@ -189,9 +189,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 							$tracyPanel->addSetup('addIgnoredResource', [$match['format'], $v2->getPathname(), $match['locale'], $match['domain']]);
 						}
 
-						if (!$this->config->debug) {
-							continue;// ignore in production mode, there is no need to pass the ignored resources
-						}
+						continue;
 					}
 
 					$translator->addSetup('addResource', [$match['format'], $v2->getPathname(), $match['locale'], $match['domain']]);

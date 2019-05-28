@@ -72,8 +72,8 @@ class TranslationExtension extends Tests\TestAbstract
 		/** @var Contributte\Translation\Translator $translator */
 		$translator = $container->getByType(Nette\Localization\ITranslator::class);
 
-		Tester\Assert::count(2, $translator->tracyPanel->getResources());
-		Tester\Assert::count(2, $panel->getResources());
+		Tester\Assert::count(1, $translator->tracyPanel->getResources());
+		Tester\Assert::count(1, $panel->getResources());
 		Tester\Assert::count(1, $translator->tracyPanel->getIgnoredResources());
 		Tester\Assert::count(1, $panel->getIgnoredResources());
 
