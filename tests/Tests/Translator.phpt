@@ -222,7 +222,7 @@ class Translator extends Tests\TestAbstract
 		Tester\Assert::same('en', (string) $dom->find('td[class="contributte-translation-default-locale"]')[0]);
 		Tester\Assert::same('en', (string) $dom->find('td[class="contributte-translation-locales-whitelist"]')[0]);
 		Tester\Assert::count(1, $dom->find('tr[class="contributte-translation-missing-translation"]'));
-		Tester\Assert::count(0, $dom->find('tr[class="contributte-translation-locale-resolvers"]'));
+		Tester\Assert::count(1, $dom->find('tr[class="contributte-translation-locale-resolvers"]'));
 		Tester\Assert::count(1, $dom->find('tr[class="contributte-translation-resources"]'));
 		Tester\Assert::count(1, $dom->find('tr[class="contributte-translation-ignored-resources"]'));
 	}
@@ -245,7 +245,9 @@ class Translator extends Tests\TestAbstract
 						'default' => 'en',
 						'whitelist' => ['en'],
 					],
-					'localeResolvers' => [],
+					'localeResolvers' => [
+						LocaleResolverMock::class,
+					],
 					'dirs' => [
 						__DIR__ . '/../lang',
 					],
