@@ -228,7 +228,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 				}
 
 			} else {
-				throw new Contributte\Translation\Exceptions\InvalidArgument('Loader must implement interface "' . Symfony\Component\Translation\Loader\LoaderInterface::class . '".');
+				throw new Contributte\Translation\Exceptions\InvalidArgument('Option "logger" must be bool for autowired or class name as string.');
 			}
 
 			$translator->addSetup('setPsrLogger', [$psrLogger]);

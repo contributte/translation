@@ -40,6 +40,9 @@ class TranslationExtension extends Tests\TestAbstract
 		Tester\Assert::exception(function (): void {
 			$this->createContainer(['logger' => '\\stdClass', 'locales' => ['default' => 'en'], 'localeResolvers' => []]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Logger must implement interface "Psr\\Log\\LoggerInterface".');
+		Tester\Assert::exception(function (): void {
+			$this->createContainer(['logger' => 1, 'locales' => ['default' => 'en'], 'localeResolvers' => []]);
+		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Option "logger" must be bool for autowired or class name as string.');
 	}
 
 	public function test02(): void
