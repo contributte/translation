@@ -80,7 +80,7 @@ class Panel implements Tracy\IBarPanel
 			$panel[] = '<br>';
 			$panel[] = '<div class="tracy-inner-container"><h2>Missing translations: ' . $this->missingTranslationCount . '</h2>';
 
-			$panel[] = '<table class="tracy-sortable"><colgroup><col style="width: 50%"><col style="width: 25%"></colgroup><col style="width: 25%"></colgroup>';
+			$panel[] = '<table class="tracy-sortable"><colgroup><col style="width: 50%"><col style="width: 25%"><col style="width: 25%"></colgroup>';
 			$panel[] = '<tr><th>ID</th><th>Domain</th><th>Count</th></tr>';
 
 			foreach ($this->missingTranslation as $v1) {
