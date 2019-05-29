@@ -94,18 +94,25 @@ class TranslationExtension extends Tests\TestAbstract
 		Tester\Assert::true(Nette\Utils\Strings::contains(key($foo), 'messages.cs_CZ.neon'));
 	}
 
+	public function test04(): void
+	{
+		$container = $this->createContainer(['logger' => '\\Tests\\PsrLoggerMock', 'locales' => ['default' => 'en'], 'localeResolvers' => []], Tests\PsrLoggerMock::class);
+
+		Tester\Assert::count(1, $container->findByType(Tests\PsrLoggerMock::class));
+	}
+
 	/**
 	 * @param string[] $config
 	 * @internal
 	 */
-	private function createContainer(array $config): Nette\DI\Container
+	private function createContainer(array $config, ?string $key = null): Nette\DI\Container
 	{
 		$loader = new Nette\DI\ContainerLoader($this->container->getParameters()['tempDir'], true);
 
 		$class = $loader->load(function (Nette\DI\Compiler $compiler) use ($config): void {
 			$compiler->addExtension('translation', new Contributte\Translation\DI\TranslationExtension());
 			$compiler->addConfig(['parameters' => $this->container->getParameters(), 'translation' => $config]);
-		});
+		}, $key);
 
 		return new $class();
 	}
