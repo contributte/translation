@@ -206,6 +206,27 @@ class Translator extends Tests\TestAbstract
 		$template->createTemplate();
 	}
 
+	public function test04(): void
+	{
+		$container = $this->createContainer();
+
+		/** @var Contributte\Translation\Tracy\Panel $panel */
+		$panel = $container->getByType(Contributte\Translation\Tracy\Panel::class);
+
+		/** @var Contributte\Translation\Translator $translator */
+		$translator = $container->getByType(Nette\Localization\ITranslator::class);
+
+		$translator->translate('untranslated');// add missing translation
+		$dom = Tester\DomQuery::fromHtml($panel->getPanel());
+
+		Tester\Assert::same('en', (string) $dom->find('td[class="contributte-translation-default-locale"]')[0]);
+		Tester\Assert::same('en', (string) $dom->find('td[class="contributte-translation-locales-whitelist"]')[0]);
+		Tester\Assert::count(1, $dom->find('tr[class="contributte-translation-missing-translation"]'));
+		Tester\Assert::count(0, $dom->find('tr[class="contributte-translation-locale-resolvers"]'));
+		Tester\Assert::count(1, $dom->find('tr[class="contributte-translation-resources"]'));
+		Tester\Assert::count(1, $dom->find('tr[class="contributte-translation-ignored-resources"]'));
+	}
+
 	/**
 	 * @internal
 	 */
@@ -222,7 +243,9 @@ class Translator extends Tests\TestAbstract
 					'debug' => true,
 					'locales' => [
 						'default' => 'en',
+						'whitelist' => ['en'],
 					],
+					'localeResolvers' => [],
 					'dirs' => [
 						__DIR__ . '/../lang',
 					],
