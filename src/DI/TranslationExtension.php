@@ -9,6 +9,7 @@ namespace Contributte\Translation\DI;
 use Contributte;
 use Nette;
 use Nette\Schema\Expect;
+use Psr;
 use ReflectionClass;
 use ReflectionException;
 use stdClass;
@@ -28,6 +29,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		return Expect::structure([
 			'debug' => Expect::bool($builder->parameters['debugMode']),
 			'debugger' => Expect::bool(interface_exists(Tracy\IBarPanel::class)),
+			'logger' => Expect::mixed()->default(null),
 			'locales' => Expect::structure([
 				'whitelist' => Expect::array()->default(null), // @todo unique check?
 				'default' => Expect::string(null),
@@ -136,6 +138,10 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		}
 	}
 
+
+	/**
+	 * @throws Contributte\Translation\Exceptions\InvalidArgument|ReflectionException
+	 */
 	public function beforeCompile(): void
 	{
 		$builder = $this->getContainerBuilder();
@@ -199,6 +205,33 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 					}
 				}
 			}
+		}
+
+		// Psr\Log\LoggerInterface
+		if ($this->config->logger !== null) {
+			if ($this->config->logger === true) {
+				$psrLogger = $builder->getDefinitionByType(Psr\Log\LoggerInterface::class);
+
+			} elseif (is_string($this->config->logger)) {
+				$reflection = new ReflectionClass($this->config->logger);
+
+				if (!$reflection->implementsInterface(Psr\Log\LoggerInterface::class)) {
+					throw new Contributte\Translation\Exceptions\InvalidArgument('Logger must implement interface "' . Psr\Log\LoggerInterface::class . '".');
+				}
+
+				try {
+					$psrLogger = $builder->getDefinitionByType($this->config->logger);
+
+				} catch (Nette\DI\MissingServiceException $e) {
+					$psrLogger = $builder->addDefinition($this->prefix('psrLogger'))
+						->setFactory($this->config->logger);
+				}
+
+			} else {
+				throw new Contributte\Translation\Exceptions\InvalidArgument('Loader must implement interface "' . Symfony\Component\Translation\Loader\LoaderInterface::class . '".');
+			}
+
+			$translator->addSetup('setPsrLogger', [$psrLogger]);
 		}
 	}
 

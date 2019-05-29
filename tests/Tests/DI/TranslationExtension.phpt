@@ -34,6 +34,12 @@ class TranslationExtension extends Tests\TestAbstract
 		Tester\Assert::exception(function (): void {
 			$this->createContainer(['locales' => ['default' => 'en'], 'dirs' => [__DIR__ . '/__no_exists__']]);
 		}, UnexpectedValueException::class);
+		Tester\Assert::exception(function (): void {
+			$this->createContainer(['logger' => true, 'locales' => ['default' => 'en'], 'localeResolvers' => []]);
+		}, Nette\DI\MissingServiceException::class, 'Service of type \'Psr\\Log\\LoggerInterface\' not found.');
+		Tester\Assert::exception(function (): void {
+			$this->createContainer(['logger' => '\\stdClass', 'locales' => ['default' => 'en'], 'localeResolvers' => []]);
+		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Logger must implement interface "Psr\Log\LoggerInterface".');
 	}
 
 	public function test02(): void
