@@ -16,7 +16,6 @@ class PsrLoggerMock extends Psr\Log\AbstractLogger
 	 */
 	public function log($level, $message, array $context = [])
 	{
-
 	}
 
 }

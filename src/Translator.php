@@ -335,7 +335,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 					$this->tracyPanel->addMissingTranslation($id, $domain);
 				}
 
-				if ($this->psrLogger !== null ) {
+				if ($this->psrLogger !== null) {
 					$this->psrLogger->notice('Missing translation', [
 						'id' => $id,
 						'domain' => $domain,
