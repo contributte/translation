@@ -95,7 +95,7 @@ class Panel implements Tracy\IBarPanel
 			$panel[] = '<br>';
 			$panel[] = '<div class="tracy-inner-container"><h2>Locale resolvers</h2>';
 			$panel[] = '<table class="tracy-sortable"><colgroup><col style="width: 5%"><col style="width: 70%"><col style="width: 25%"></colgroup>';
-			$panel[] = '<tr><th>#</th></th><th>Resolver</th><th>Locale</th></tr>';
+			$panel[] = '<tr><th>#</th><th>Resolver</th><th>Locale</th></tr>';
 
 			$counter = 1;
 			foreach ($this->localeResolvers as $v1) {
