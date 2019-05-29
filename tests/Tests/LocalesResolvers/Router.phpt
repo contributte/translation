@@ -36,7 +36,7 @@ class Router extends Tests\TestAbstract
 		$routeListMock->shouldReceive('match')
 			->withArgs([$request])
 			->once()
-			->andReturn([Contributte\Translation\LocalesResolvers\Parameter::$parameter => $locale]);
+			->andReturn($locale !== null ? [Contributte\Translation\LocalesResolvers\Parameter::$parameter => $locale] : []);
 
 		$resolver = new Contributte\Translation\LocalesResolvers\Router($request, $routeListMock);
 		$translatorMock = Mockery::mock(Contributte\Translation\Translator::class);
