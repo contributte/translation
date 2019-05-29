@@ -9,6 +9,7 @@ namespace Tests;
 use Contributte;
 use Latte;
 use Nette;
+use Psr;
 use stdClass;
 use Tester;
 use Tests;
@@ -28,6 +29,7 @@ class Translator extends Tests\TestAbstract
 		Tester\Assert::same(__DIR__ . '/cacheDir', $translator->cacheDir);
 		Tester\Assert::true($translator->debug);
 		Tester\Assert::null($translator->tracyPanel);
+		Tester\Assert::null($translator->psrLogger);
 		Tester\Assert::null($translator->localesWhitelist);
 		Tester\Assert::same([], $translator->prefix);
 		Tester\Assert::same('', $translator->formattedPrefix);
@@ -37,6 +39,10 @@ class Translator extends Tests\TestAbstract
 		new Contributte\Translation\Tracy\Panel($translator);
 
 		Tester\Assert::true($translator->tracyPanel instanceof Contributte\Translation\Tracy\Panel);
+
+		$translator->setPsrLogger(new PsrLoggerMock());
+
+		Tester\Assert::true($translator->psrLogger instanceof PsrLoggerMock);
 
 		$translator->setLocalesWhitelist(['en', 'cs']);
 
@@ -225,6 +231,23 @@ class Translator extends Tests\TestAbstract
 		Tester\Assert::count(1, $dom->find('tr[class="contributte-translation-locale-resolvers"]'));
 		Tester\Assert::count(1, $dom->find('tr[class="contributte-translation-resources"]'));
 		Tester\Assert::count(1, $dom->find('tr[class="contributte-translation-ignored-resources"]'));
+
+		$psrLogger = new class() extends Psr\Log\AbstractLogger {
+
+			/**
+			 * @inheritDoc
+			 */
+			public function log($level, $message, array $context = [])
+			{
+				Tester\Assert::same(Psr\Log\LogLevel::NOTICE, $level);
+				Tester\Assert::same('Missing translation', $message);
+				Tester\Assert::same(['id' => 'untranslated', 'domain' => 'somedomain', 'locale' => 'en'], $context);
+			}
+
+		};
+
+		$translator->setPsrLogger($psrLogger);
+		$translator->translate('somedomain.untranslated');
 	}
 
 	/**

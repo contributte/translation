@@ -339,7 +339,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 					$this->psrLogger->notice('Missing translation', [
 						'id' => $id,
 						'domain' => $domain,
-						'locale' => $locale !== null ?? $this->getLocale(),
+						'locale' => $locale ?? $this->getLocale(),
 					]);
 				}
 			}
