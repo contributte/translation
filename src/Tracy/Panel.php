@@ -71,8 +71,8 @@ class Panel implements Tracy\IBarPanel
 		$panel[] = '<div class="tracy-inner-container"><h2>Translator settings</h2>';
 		$panel[] = '<table class="tracy-sortable"><colgroup><col style="width: 75%"><col style="width: 25%"></colgroup>';
 		$panel[] = '<tr><th>Name</th><th>Value</th></tr>';
-		$panel[] = '<tr><td>Default locale</td><td>' . htmlspecialchars($this->translator->defaultLocale) . '</td></tr>';
-		$panel[] = '<tr><td>Locales whitelist</td><td>' . ($this->translator->localesWhitelist !== null ? htmlspecialchars(implode(', ', $this->translator->localesWhitelist)) : '&nbsp;') . '</td></tr>';
+		$panel[] = '<tr><td>Default locale</td><td class="contributte-translation-default-locale">' . htmlspecialchars($this->translator->defaultLocale) . '</td></tr>';
+		$panel[] = '<tr><td>Locales whitelist</td><td class="contributte-translation-locales-whitelist">' . ($this->translator->localesWhitelist !== null ? htmlspecialchars(implode(', ', $this->translator->localesWhitelist)) : '&nbsp;') . '</td></tr>';
 		$panel[] = '</table></div>';
 
 		// missing translations
@@ -84,7 +84,7 @@ class Panel implements Tracy\IBarPanel
 			$panel[] = '<tr><th>ID</th><th>Domain</th><th>Count</th></tr>';
 
 			foreach ($this->missingTranslation as $v1) {
-				$panel[] = '<tr><td>' . htmlspecialchars((string) $v1['id']) . '</td><td>' . htmlspecialchars((string) $v1['domain']) . '</td><td>' . $v1['count'] . '</td></tr>';
+				$panel[] = '<tr class="contributte-translation-missing-translation"><td>' . htmlspecialchars((string) $v1['id']) . '</td><td>' . htmlspecialchars((string) $v1['domain']) . '</td><td>' . $v1['count'] . '</td></tr>';
 			}
 
 			$panel[] = '</table></div>';
@@ -102,7 +102,7 @@ class Panel implements Tracy\IBarPanel
 				$reflection = new ReflectionClass($v1);
 				$locale = $v1->resolve($this->translator);
 
-				$panel[] = '<tr><td>' . $counter++ . '.</td><td title="' . $reflection->getName() . '">' . $reflection->getShortName() . '</td><td>' . ($locale !== null ? htmlspecialchars($locale) : '<i>n/a</i>') . '</td></tr>';
+				$panel[] = '<tr class="contributte-translation-locale-resolvers"><td>' . $counter++ . '.</td><td title="' . $reflection->getName() . '">' . $reflection->getShortName() . '</td><td>' . ($locale !== null ? htmlspecialchars($locale) : '<i>n/a</i>') . '</td></tr>';
 			}
 
 			$panel[] = '</table></div>';
@@ -114,7 +114,7 @@ class Panel implements Tracy\IBarPanel
 
 			$panel[] = '<br>';
 			$panel[] = '<div class="tracy-inner-container"><h2>Loaded resources: ' . $this->resourcesCount . '</h2>';
-			$panel[] = self::createResourcePanelHelper($this->resources);
+			$panel[] = self::createResourcePanelHelper($this->resources, 'contributte-translation-resources');
 			$panel[] = '</div>';
 		}
 
@@ -124,7 +124,7 @@ class Panel implements Tracy\IBarPanel
 
 			$panel[] = '<br>';
 			$panel[] = '<h2>Ignored resources: ' . $this->ignoredResourcesCount . ($this->translator->localesWhitelist !== null ? ', <small>whitelist: ' . implode(', ', array_map('htmlspecialchars', $this->translator->localesWhitelist)) . '</small>' : null) . '</h2>';
-			$panel[] = self::createResourcePanelHelper($this->ignoredResources);
+			$panel[] = self::createResourcePanelHelper($this->ignoredResources, 'contributte-translation-ignored-resources');
 		}
 
 		$panel[] = '</div>';
@@ -136,14 +136,14 @@ class Panel implements Tracy\IBarPanel
 	 * @param string[][] $resources
 	 * @internal
 	 */
-	private static function createResourcePanelHelper(array $resources): string
+	private static function createResourcePanelHelper(array $resources, string $class): string
 	{
 		$string = '<table class="tracy-sortable"><colgroup><col style="width: 10%"><col style="width: 10%"><col style="width: 80%"></colgroup>';
 		$string .= '<tr><th>Locale</th><th>Domain</th><th>File name</th></tr>';
 
 		foreach ($resources as $k1 => $v1) {
 			foreach ($v1 as $k2 => $v2) {
-				$string .= '<tr>';
+				$string .= '<tr class="' . $class . '">';
 				$string .= '<td>' . htmlspecialchars($k1) . '</td>';
 				$string .= '<td>' . htmlspecialchars($v2) . '</td>';
 				$string .= '<td>' . htmlspecialchars(dirname($k2)) . '/<strong>' . htmlspecialchars(basename($k2)) . '</strong></td>';

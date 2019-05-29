@@ -86,6 +86,15 @@ class TranslationExtension extends Tests\TestAbstract
 		$foo = end($foo);
 		Tester\Assert::same('messages', end($foo));
 		Tester\Assert::true(Nette\Utils\Strings::contains(key($foo), 'messages.cs_CZ.neon'));
+
+		$dom = Tester\DomQuery::fromHtml($panel->getPanel());
+
+		Tester\Assert::same('en', (string) $dom->find('td[class="contributte-translation-default-locale"]')[0]);
+		Tester\Assert::same('en', (string) $dom->find('td[class="contributte-translation-locales-whitelist"]')[0]);
+		Tester\Assert::count(0, $dom->find('tr[class="contributte-translation-missing-translation"]'));
+		Tester\Assert::count(0, $dom->find('tr[class="contributte-translation-locale-resolvers"]'));
+		Tester\Assert::count(1, $dom->find('tr[class="contributte-translation-resources"]'));
+		Tester\Assert::count(1, $dom->find('tr[class="contributte-translation-ignored-resources"]'));
 	}
 
 	/**
