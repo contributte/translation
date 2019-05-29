@@ -119,9 +119,9 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		return $this->psrLogger;
 	}
 
-	public function setPsrLogger(?Psr\Log\LoggerInterface $tracyPanel): self
+	public function setPsrLogger(?Psr\Log\LoggerInterface $psrLogger): self
 	{
-		$this->psrLogger = $tracyPanel;
+		$this->psrLogger = $psrLogger;
 		return $this;
 	}
 
