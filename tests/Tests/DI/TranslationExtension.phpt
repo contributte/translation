@@ -24,13 +24,13 @@ class TranslationExtension extends Tests\TestAbstract
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Resolver must implement interface "Contributte\\Translation\\LocalesResolvers\\ResolverInterface".');
 		Tester\Assert::exception(function (): void {
 			$this->createContainer(['cache' => ['factory' => '\\stdClass']]);
-		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Cache factory must implement interface "Symfony\Component\Config\ConfigCacheFactoryInterface".');
+		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Cache factory must implement interface "Symfony\\Component\\Config\\ConfigCacheFactoryInterface".');
 		Tester\Assert::exception(function (): void {
 			$this->createContainer([]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Default locale must be set.');
 		Tester\Assert::exception(function (): void {
 			$this->createContainer(['locales' => ['default' => 'en'], 'loaders' => ['\\stdClass']]);
-		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Loader must implement interface "Symfony\Component\Translation\Loader\LoaderInterface".');
+		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Loader must implement interface "Symfony\\Component\\Translation\\Loader\\LoaderInterface".');
 		Tester\Assert::exception(function (): void {
 			$this->createContainer(['locales' => ['default' => 'en'], 'dirs' => [__DIR__ . '/__no_exists__']]);
 		}, UnexpectedValueException::class);
@@ -39,7 +39,7 @@ class TranslationExtension extends Tests\TestAbstract
 		}, Nette\DI\MissingServiceException::class, 'Service of type \'Psr\\Log\\LoggerInterface\' not found.');
 		Tester\Assert::exception(function (): void {
 			$this->createContainer(['logger' => '\\stdClass', 'locales' => ['default' => 'en'], 'localeResolvers' => []]);
-		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Logger must implement interface "Psr\Log\LoggerInterface".');
+		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Logger must implement interface "Psr\\Log\\LoggerInterface".');
 	}
 
 	public function test02(): void
