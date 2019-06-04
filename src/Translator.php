@@ -8,7 +8,6 @@ namespace Contributte\Translation;
 
 use Contributte;
 use Nette;
-use Psr;
 use Symfony;
 
 /**
