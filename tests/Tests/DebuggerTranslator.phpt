@@ -7,10 +7,6 @@
 namespace Tests;
 
 use Contributte;
-use Latte;
-use Nette;
-use Psr;
-use stdClass;
 use Tester;
 use Tests;
 
