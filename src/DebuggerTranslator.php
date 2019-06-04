@@ -12,7 +12,7 @@ use Nette;
 /**
  * @property      Contributte\Translation\Tracy\Panel|null $tracyPanel
  */
-class DebugTranslator extends LogableTranslator
+class DebuggerTranslator extends LoggerTranslator
 {
 
 	use Nette\SmartObject;
@@ -24,6 +24,7 @@ class DebugTranslator extends LogableTranslator
 	{
 		return $this->tracyPanel;
 	}
+
 	public function setTracyPanel(?Tracy\Panel $tracyPanel): self
 	{
 		$this->tracyPanel = $tracyPanel;
@@ -47,4 +48,5 @@ class DebugTranslator extends LogableTranslator
 
 		return parent::trans($id, $parameters, $domain, $locale);
 	}
+
 }

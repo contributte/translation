@@ -12,7 +12,7 @@ use Psr;
 /**
  * @property      Psr\Log\LoggerInterface|null $psrLogger
  */
-class LogableTranslator extends Translator
+class LoggerTranslator extends Translator
 {
 
 	use Nette\SmartObject;
@@ -52,4 +52,5 @@ class LogableTranslator extends Translator
 
 		return parent::trans($id, $parameters, $domain, $locale);
 	}
+
 }
