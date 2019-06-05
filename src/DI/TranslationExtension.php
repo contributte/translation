@@ -106,9 +106,19 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			throw new Contributte\Translation\Exceptions\InvalidArgument('Default locale must be set.');
 		}
 
+		if ($this->config->debug && $this->config->debugger) {
+			$factory = Contributte\Translation\DebuggerTranslator::class;
+
+		} elseif ($this->config->logger) {
+			$factory = Contributte\Translation\LoggerTranslator::class;
+
+		} else {
+			$factory = Contributte\Translation\Translator::class;
+		}
+
 		$translator = $builder->addDefinition($this->prefix('translator'))
 			->setType(Nette\Localization\ITranslator::class)
-			->setFactory(Contributte\Translation\Translator::class, ['defaultLocale' => $this->config->locales->default, 'cacheDir' => $this->config->cache->dir, 'debug' => $this->config->debug])
+			->setFactory($factory, ['defaultLocale' => $this->config->locales->default, 'cacheDir' => $this->config->cache->dir, 'debug' => $this->config->debug])
 			->addSetup('setLocalesWhitelist', [$this->config->locales->whitelist])
 			->addSetup('setConfigCacheFactory', [$configCacheFactory])
 			->addSetup('setFallbackLocales', [$this->config->locales->fallback]);

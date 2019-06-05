@@ -8,7 +8,6 @@ namespace Contributte\Translation;
 
 use Contributte;
 use Nette;
-use Psr;
 use Symfony;
 
 /**
@@ -17,8 +16,6 @@ use Symfony;
  * @property-read string $defaultLocale
  * @property-read string|null $cacheDir
  * @property-read bool $debug
- * @property-read Contributte\Translation\Tracy\Panel|null $tracyPanel
- * @property-read Psr\Log\LoggerInterface|null $psrLogger
  * @property      string[]|null $localesWhitelist
  * @property      string[] $prefix
  * @property-read string[][] $prefixTemp
@@ -46,12 +43,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 	/** @var bool */
 	private $debug;
-
-	/** @var Contributte\Translation\Tracy\Panel|null */
-	private $tracyPanel;
-
-	/** @var Psr\Log\LoggerInterface|null */
-	private $psrLogger;
 
 	/** @var string[]|null */
 	private $localesWhitelist;
@@ -101,28 +92,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	public function getDebug(): bool
 	{
 		return $this->debug;
-	}
-
-	public function getTracyPanel(): ?Tracy\Panel
-	{
-		return $this->tracyPanel;
-	}
-
-	public function setTracyPanel(?Tracy\Panel $tracyPanel): self
-	{
-		$this->tracyPanel = $tracyPanel;
-		return $this;
-	}
-
-	public function getPsrLogger(): ?Psr\Log\LoggerInterface
-	{
-		return $this->psrLogger;
-	}
-
-	public function setPsrLogger(?Psr\Log\LoggerInterface $psrLogger): self
-	{
-		$this->psrLogger = $psrLogger;
-		return $this;
 	}
 
 	/**
@@ -318,34 +287,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		}
 
 		return $this->trans($message, $params, $domain, $locale);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function trans($id, array $parameters = [], $domain = null, $locale = null)
-	{
-		if ($this->tracyPanel !== null || $this->psrLogger !== null) {
-			if ($domain === null) {
-				$domain = 'messages';
-			}
-
-			if (!$this->getCatalogue()->has($id, $domain)) {
-				if ($this->tracyPanel !== null) {
-					$this->tracyPanel->addMissingTranslation($id, $domain);
-				}
-
-				if ($this->psrLogger !== null) {
-					$this->psrLogger->notice('Missing translation', [
-						'id' => $id,
-						'domain' => $domain,
-						'locale' => $locale ?? $this->getLocale(),
-					]);
-				}
-			}
-		}
-
-		return parent::trans($id, $parameters, $domain, $locale);
 	}
 
 	/**

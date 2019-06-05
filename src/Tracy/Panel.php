@@ -17,7 +17,7 @@ class Panel implements Tracy\IBarPanel
 
 	use Nette\SmartObject;
 
-	/** @var Contributte\Translation\Translator */
+	/** @var Contributte\Translation\DebuggerTranslator */
 	private $translator;
 
 	/** @var (string|int)[][] */
@@ -41,7 +41,7 @@ class Panel implements Tracy\IBarPanel
 	/** @var int */
 	private $ignoredResourcesCount = 0;
 
-	public function __construct(Contributte\Translation\Translator $translator)
+	public function __construct(Contributte\Translation\DebuggerTranslator $translator)
 	{
 		$this->translator = $translator;
 		$translator->setTracyPanel($this);

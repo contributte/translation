@@ -28,21 +28,11 @@ class Translator extends Tests\TestAbstract
 		Tester\Assert::same('en', $translator->defaultLocale);
 		Tester\Assert::same(__DIR__ . '/cacheDir', $translator->cacheDir);
 		Tester\Assert::true($translator->debug);
-		Tester\Assert::null($translator->tracyPanel);
-		Tester\Assert::null($translator->psrLogger);
 		Tester\Assert::null($translator->localesWhitelist);
 		Tester\Assert::same([], $translator->prefix);
 		Tester\Assert::same('', $translator->formattedPrefix);
 		Tester\Assert::same([], $translator->availableLocales);
 		Tester\Assert::same('en', $translator->locale);
-
-		new Contributte\Translation\Tracy\Panel($translator);
-
-		Tester\Assert::true($translator->tracyPanel instanceof Contributte\Translation\Tracy\Panel);
-
-		$translator->setPsrLogger(new PsrLoggerMock());
-
-		Tester\Assert::true($translator->psrLogger instanceof PsrLoggerMock);
 
 		$translator->setLocalesWhitelist(['en', 'cs']);
 
