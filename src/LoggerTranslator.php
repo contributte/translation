@@ -6,7 +6,6 @@
 
 namespace Contributte\Translation;
 
-use Nette;
 use Psr;
 
 /**
@@ -14,8 +13,6 @@ use Psr;
  */
 class LoggerTranslator extends Translator
 {
-
-	use Nette\SmartObject;
 
 	/** @var Psr\Log\LoggerInterface|null */
 	private $psrLogger;

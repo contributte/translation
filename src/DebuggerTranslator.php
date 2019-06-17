@@ -7,15 +7,12 @@
 namespace Contributte\Translation;
 
 use Contributte;
-use Nette;
 
 /**
  * @property      Contributte\Translation\Tracy\Panel|null $tracyPanel
  */
 class DebuggerTranslator extends LoggerTranslator
 {
-
-	use Nette\SmartObject;
 
 	/** @var Contributte\Translation\Tracy\Panel|null */
 	private $tracyPanel;
