@@ -165,7 +165,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 				throw new Exceptions\InvalidArgument('Unknown "' . $string . '" prefix.');
 			}
 
-			unset($key);
+			unset($this->prefix[$key]);
 		}
 
 		return $this;

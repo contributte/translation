@@ -52,6 +52,12 @@ class Translator extends Tests\TestAbstract
 
 		$translator->setPrefix([]);
 
+		$translator->addPrefix('prefix');
+
+		Tester\Assert::same('prefix', $translator->formattedPrefix);
+
+		$translator->removePrefix('prefix');
+
 		Tester\Assert::exception(function () use ($translator): void {
 			$translator->removePrefix();
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Can not remove empty prefix.');
