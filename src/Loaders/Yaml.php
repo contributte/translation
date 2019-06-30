@@ -21,7 +21,7 @@ class Yaml extends Symfony\Component\Translation\Loader\YamlFileLoader implement
 	{
 		try {
 			$content = parent::load($resource, $locale, $domain);
-		} catch (\Exception $e) {
+		} catch (\Throwable $e) {
 			throw new Contributte\Translation\Exceptions\InvalidArgument('Something wrong with resource file "' . $resource . '".');
 		}
 
