@@ -142,6 +142,14 @@ prefix:
 	for: "message" # messages.prefix.for
 ```
 
+Configuration:
+```neon
+translation:
+	loaders:
+	    yaml: Contributte\Translation\Loaders\Yaml
+	    yml: Contributte\Translation\Loaders\Yaml    
+```
+
 ## Database loaders
 Package included database loaders for **[Doctrine 2](https://www.doctrine-project.org/)** and **[Nette Database 3](https://doc.nette.org/cs/3.0/database)**.
 
