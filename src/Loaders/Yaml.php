@@ -21,15 +21,11 @@ class Yaml extends Symfony\Component\Translation\Loader\YamlFileLoader implement
 	{
 		try {
 			$content = parent::load($resource, $locale, $domain);
-		} catch (Symfony\Component\Translation\Exception\NotFoundResourceException $e) {
-			throw new Contributte\Translation\Exceptions\InvalidArgument('Something wrong with resource file "' . $resource . '".');
-		}
-		if ($content instanceof Symfony\Component\Translation\MessageCatalogue) {
-			return $content;	
-		} else {
+		} catch (\Exception $e) {
 			throw new Contributte\Translation\Exceptions\InvalidArgument('Something wrong with resource file "' . $resource . '".');
 		}
 
+		return $content;
 	}
 
 }
