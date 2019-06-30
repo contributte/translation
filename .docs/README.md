@@ -124,6 +124,24 @@ prefix:
 	for: "message" # messages.prefix.for
 ```
 
+## Yaml
+File name format.
+```
+        locale
+          |
+         /--\
+messages.en_US.yaml
+\______/       \__/
+   |            |
+ domain     extension
+```
+
+File content format.
+```yaml
+prefix:
+	for: "message" # messages.prefix.for
+```
+
 ## Database loaders
 Package included database loaders for **[Doctrine 2](https://www.doctrine-project.org/)** and **[Nette Database 3](https://doc.nette.org/cs/3.0/database)**.
 

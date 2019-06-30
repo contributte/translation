@@ -21,7 +21,8 @@
 		"nette/schema": "^1.0",
 		"nette/utils": "^3.0",
 		"symfony/translation": "^4.2",
-		"symfony/config": "^4.2"
+		"symfony/config": "^4.2",
+		"symfony/yaml": "^4.3"
 	},
 	"require-dev": {
 		"nette/bootstrap": "^3.0",
