@@ -24,11 +24,12 @@ class Yaml extends Symfony\Component\Translation\Loader\YamlFileLoader implement
 		} catch (Symfony\Component\Translation\Exception\NotFoundResourceException $e) {
 			throw new Contributte\Translation\Exceptions\InvalidArgument('Something wrong with resource file "' . $resource . '".');
 		}
-		if (($content instanceof Symfony\Component\Translation\MessageCatalogueInterface) === false) {
+		if ($content instanceof Symfony\Component\Translation\MessageCatalogue) {
+			return $content;	
+		} else {
 			throw new Contributte\Translation\Exceptions\InvalidArgument('Something wrong with resource file "' . $resource . '".');
 		}
 
-		return $content;
 	}
 
 }
