@@ -21,8 +21,7 @@
 		"nette/schema": "^1.0",
 		"nette/utils": "^3.0",
 		"symfony/translation": "^4.2",
-		"symfony/config": "^4.2",
-		"symfony/yaml": "^4.3"
+		"symfony/config": "^4.2"
 	},
 	"require-dev": {
 		"nette/bootstrap": "^3.0",
@@ -34,7 +33,8 @@
 		"psr/log": "^1.0",
 		"mockery/mockery": "^1.2",
 		"ninjify/qa": "^0.8.0",
-		"ninjify/nunjuck": "^0.2.0"
+		"ninjify/nunjuck": "^0.2.0",
+        "symfony/yaml": "^4.3"
 	},
 	"autoload": {
 		"psr-4": {
@@ -72,5 +72,8 @@
 		"coverage": [
 			"tester tests/Tests -s -p phpdbg --coverage ./coverage.xml --coverage-src ./src"
 		]
-	}
+	},
+    "suggest": {
+      "symfony/yaml": "For usage of yaml resources"
+    }
 }
