@@ -8,6 +8,7 @@ namespace Tests;
 
 use Contributte;
 use Latte;
+use Mockery;
 use Nette;
 use Psr;
 use stdClass;
@@ -21,7 +22,7 @@ class Translator extends Tests\TestAbstract
 
 	public function test01(): void
 	{
-		$translator = new Contributte\Translation\Translator(new Contributte\Translation\LocaleResolver(), new Contributte\Translation\FallbackResolver(), 'en', __DIR__ . '/cacheDir', true);
+		$translator = new Contributte\Translation\Translator(new Contributte\Translation\LocaleResolver(Mockery::mock(Nette\DI\Container::class)), new Contributte\Translation\FallbackResolver(), 'en', __DIR__ . '/cacheDir', true);
 
 		Tester\Assert::true($translator->localeResolver instanceof Contributte\Translation\LocaleResolver);
 		Tester\Assert::true($translator->fallbackResolver instanceof Contributte\Translation\FallbackResolver);

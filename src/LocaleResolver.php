@@ -17,18 +17,26 @@ class LocaleResolver
 
 	use Nette\SmartObject;
 
-	/** @var Contributte\Translation\LocalesResolvers\ResolverInterface[] */
+	/** @var Nette\DI\Container */
+	private $container;
+
+	/** @var string[] */
 	private $resolvers = [];
 
+	public function __construct(Nette\DI\Container $container)
+	{
+		$this->container = $container;
+	}
+
 	/**
-	 * @return Contributte\Translation\LocalesResolvers\ResolverInterface[]
+	 * @return string[]
 	 */
 	public function getResolvers(): array
 	{
 		return $this->resolvers;
 	}
 
-	public function addResolver(LocalesResolvers\ResolverInterface $resolver): self
+	public function addResolver(string $resolver): self
 	{
 		$this->resolvers[] = $resolver;
 		return $this;
@@ -36,9 +44,10 @@ class LocaleResolver
 
 	public function resolve(Translator $translator): string
 	{
-		/** @var Contributte\Translation\LocalesResolvers\ResolverInterface $v1 */
 		foreach ($this->resolvers as $v1) {
-			$locale = $v1->resolve($translator);
+			/** @var Contributte\Translation\LocalesResolvers\ResolverInterface $resolver */
+			$resolver = $this->container->getByType($v1);
+			$locale = $resolver->resolve($translator);
 
 			if ($locale !== null) {
 				return $locale;
