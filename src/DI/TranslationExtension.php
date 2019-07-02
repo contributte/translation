@@ -84,7 +84,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			$localeResolvers[] = $resolver = $builder->addDefinition($this->prefix('localeResolver' . $reflection->getShortName()))
 				->setFactory($v1);
 
-			$localeResolver->addSetup('addResolver', [$resolver]);
+			$localeResolver->addSetup('addResolver', [$v1]);
 		}
 
 		// FallbackResolver
