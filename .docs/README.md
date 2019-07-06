@@ -7,6 +7,7 @@
 - [Latte - example](#latte)
 - [Neon - example](#neon)
 - [Database loaders](#database-loaders)
+- [Alternative loaders](#alternative-loaders)
 - [Features](#features)
 
 ## Usage
@@ -126,6 +127,22 @@ prefix:
 
 ## Database loaders
 Package included database loaders for **[Doctrine 2](https://www.doctrine-project.org/)** and **[Nette Database 3](https://doc.nette.org/cs/3.0/database)**.
+
+## Alternative loaders
+```
+array: Symfony\Component\Translation\Loader\ArrayLoader
+csv: Symfony\Component\Translation\Loader\CsvFileLoader
+dat: Symfony\Component\Translation\Loader\IcuDatFileLoader
+res: Symfony\Component\Translation\Loader\IcuResFileLoader
+ini: Symfony\Component\Translation\Loader\IniFileLoader
+json: Symfony\Component\Translation\Loader\JsonFileLoader
+mo: Symfony\Component\Translation\Loader\MoFileLoader
+php: Symfony\Component\Translation\Loader\PhpFileLoader
+po: Symfony\Component\Translation\Loader\PoFileLoader
+ts: Symfony\Component\Translation\Loader\QtFileLoader
+xlf: Symfony\Component\Translation\Loader\XliffFileLoader
+yml: Symfony\Component\Translation\Loader\YamlFileLoader
+```
 
 ### Doctrine
 You must create a file with specific format in scanned dirs like as **messages.en_US.doctrine**. All parameters are optional, but file must be created.
