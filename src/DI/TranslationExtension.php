@@ -141,7 +141,6 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			$translator->addSetup('addLoader', [$k1, $loader]);
 		}
 
-
 		// Tracy\Panel
 		if ($config['debug'] && $config['debugger']) {
 			$tracyPanel = $builder->addDefinition($this->prefix('tracyPanel'))
