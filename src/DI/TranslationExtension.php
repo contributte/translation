@@ -148,7 +148,6 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		}
 	}
 
-
 	/**
 	 * @throws Contributte\Translation\Exceptions\InvalidArgument|ReflectionException
 	 */
