@@ -85,7 +85,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 				throw new Contributte\Translation\Exceptions\InvalidArgument('Resolver must implement interface "' . Contributte\Translation\LocalesResolvers\ResolverInterface::class . '".');
 			}
 
-			$localeResolvers[] = $resolver = $builder->addDefinition($this->prefix('localeResolver' . $reflection->getShortName()))
+			$localeResolvers[] = $builder->addDefinition($this->prefix('localeResolver' . $reflection->getShortName()))
 				->setFactory($v1);
 
 			$localeResolver->addSetup('addResolver', [$v1]);
