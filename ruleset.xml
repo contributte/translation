@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<ruleset>
+	<rule ref="./vendor/ninjify/coding-standard/contributte.xml">
+		<exclude name="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming.SuperfluousSuffix" />
+		<exclude name="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming.SuperfluousSuffix" />
+	</rule>
+	<rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
+		<properties>
+			<property name="extensions" type="array" value="php, phpt" />
+			<property name="rootNamespaces" type="array">
+				<element key="src" value="Contributte\Translation" />
+				<element key="tests/Tests" value="Tests" />
+			</property>
+		</properties>
+	</rule>
+</ruleset>

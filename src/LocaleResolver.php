@@ -1,60 +1,53 @@
-<?php
+<?php declare(strict_types = 1);
 
 /**
  * This file is part of the Contributte/Translation
  */
-
-declare(strict_types=1);
 
 namespace Contributte\Translation;
 
 use Contributte;
 use Nette;
 
-
 /**
  * @property-read array $resolvers
- *
- * @author Ales Wita
- * @author Filip Prochazka
  */
 class LocaleResolver
 {
+
 	use Nette\SmartObject;
 
-	/** @var array */
+	/** @var Nette\DI\Container */
+	private $container;
+
+	/** @var string[] */
 	private $resolvers = [];
 
+	public function __construct(Nette\DI\Container $container)
+	{
+		$this->container = $container;
+	}
 
 	/**
-	 * @return array
+	 * @return string[]
 	 */
 	public function getResolvers(): array
 	{
 		return $this->resolvers;
 	}
 
-
-	/**
-	 * @param Contributte\Translation\LocalesResolvers\ResolverInterface $resolver
-	 * @return self
-	 */
-	public function addResolver(LocalesResolvers\ResolverInterface $resolver): self
+	public function addResolver(string $resolver): self
 	{
 		$this->resolvers[] = $resolver;
 		return $this;
 	}
 
-
-	/**
-	 * @param Contributte\Translation\Translator $translator
-	 * @return string
-	 */
 	public function resolve(Translator $translator): string
 	{
-		/** @var Contributte\Translation\LocalesResolvers\ResolverInterface $v1 */
 		foreach ($this->resolvers as $v1) {
-			$locale = $v1->resolve($translator);
+			/** @var Contributte\Translation\LocalesResolvers\ResolverInterface $resolver */
+			$resolver = $this->container->getByType($v1);
+			$locale = $resolver->resolve($translator);
 
 			if ($locale !== null) {
 				return $locale;
@@ -63,4 +56,5 @@ class LocaleResolver
 
 		return $translator->defaultLocale;
 	}
+
 }

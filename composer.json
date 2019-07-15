@@ -17,19 +17,58 @@
 		"nette/di": "^2.4",
 		"nette/finder": "^2.5",
 		"nette/http": "^2.4",
-		"nette/neon": "^2.4 || ^3.0",
+		"nette/neon": "^2.4",
 		"nette/utils": "^2.5",
 		"symfony/translation": "^4.2",
 		"symfony/config": "^4.2"
 	},
 	"require-dev": {
-		"nette/bootstrap": "^2.4 || ^3.0",
-		"nette/robot-loader": "^2.4 || ^3.0",
-		"nette/tester": "^2.2",
-		"tracy/tracy": "^2.5",
-		"mockery/mockery": "^1.0"
+		"nette/bootstrap": "^2.4",
+		"nette/database": "^2.4",
+		"nette/robot-loader": "^2.4",
+		"nette/tester": "^2.1",
+		"doctrine/orm": "^2.6",
+		"tracy/tracy": "^2.6",
+		"psr/log": "^1.0",
+		"mockery/mockery": "^1.0",
+		"ninjify/qa": "^0.8.0",
+		"ninjify/nunjuck": "^0.2.0"
 	},
 	"autoload": {
-		"classmap": ["src/"]
+		"psr-4": {
+			"Contributte\\Translation\\": "src"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Tests\\": "tests/Tests"
+		}
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "0.5.x-dev"
+		}
+	},
+	"scripts": {
+		"tests": [
+			"tester tests/Tests -s -j 1"
+		],
+		"qa": [
+			"linter src tests",
+			"codesniffer src tests"
+		],
+		"phpstan-install": [
+			"mkdir -p temp/phpstan",
+			"composer require -d temp/phpstan phpstan/phpstan:^0.11",
+			"composer require -d temp/phpstan phpstan/phpstan-deprecation-rules:^0.11",
+			"composer require -d temp/phpstan phpstan/phpstan-nette:^0.11",
+			"composer require -d temp/phpstan phpstan/phpstan-strict-rules:^0.11"
+		],
+		"phpstan": [
+			"temp/phpstan/vendor/bin/phpstan analyse -l max -c phpstan.neon src"
+		],
+		"coverage": [
+			"tester tests/Tests -s -p phpdbg --coverage ./coverage.xml --coverage-src ./src"
+		]
 	}
 }
