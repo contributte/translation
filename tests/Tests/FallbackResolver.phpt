@@ -48,5 +48,4 @@ class FallbackResolver extends Tests\TestAbstract
 
 }
 
-
 (new FallbackResolver($container))->run();

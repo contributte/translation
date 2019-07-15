@@ -27,5 +27,4 @@ class PrefixedTranslator extends Tests\TestAbstract
 
 }
 
-
 (new PrefixedTranslator($container))->run();

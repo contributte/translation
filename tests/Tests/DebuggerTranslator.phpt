@@ -30,5 +30,4 @@ class DebuggerTranslator extends Tests\TestAbstract
 
 }
 
-
 (new DebuggerTranslator($container))->run();

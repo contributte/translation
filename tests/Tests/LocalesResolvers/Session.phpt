@@ -79,5 +79,4 @@ class Session extends Tests\TestAbstract
 
 }
 
-
 (new Session($container))->run();

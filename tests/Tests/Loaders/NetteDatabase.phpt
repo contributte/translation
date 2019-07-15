@@ -87,5 +87,4 @@ class NetteDatabase extends Tests\TestAbstract
 
 }
 
-
 (new NetteDatabase($container))->run();

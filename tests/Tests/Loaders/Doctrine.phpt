@@ -69,5 +69,4 @@ class Doctrine extends Tests\TestAbstract
 
 }
 
-
 (new Doctrine($container))->run();

@@ -35,5 +35,4 @@ class Helpers extends Tests\TestAbstract
 
 }
 
-
 (new Helpers($container))->run();

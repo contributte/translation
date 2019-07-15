@@ -33,5 +33,4 @@ class LocaleResolver extends Tests\TestAbstract
 
 }
 
-
 (new LocaleResolver($container))->run();

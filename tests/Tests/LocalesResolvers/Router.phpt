@@ -46,5 +46,4 @@ class Router extends Tests\TestAbstract
 
 }
 
-
 (new Router($container))->run();

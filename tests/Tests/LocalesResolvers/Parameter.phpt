@@ -49,5 +49,4 @@ class Parameter extends Tests\TestAbstract
 
 }
 
-
 (new Parameter($container))->run();

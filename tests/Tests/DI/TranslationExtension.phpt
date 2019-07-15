@@ -122,5 +122,4 @@ class TranslationExtension extends Tests\TestAbstract
 
 }
 
-
 (new TranslationExtension($container))->run();

@@ -279,5 +279,4 @@ class Translator extends Tests\TestAbstract
 
 }
 
-
 (new Translator($container))->run();

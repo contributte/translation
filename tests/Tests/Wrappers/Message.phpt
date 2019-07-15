@@ -39,5 +39,4 @@ class Message extends Tests\TestAbstract
 
 }
 
-
 (new Message($container))->run();

@@ -28,5 +28,4 @@ class NotTranslate extends Tests\TestAbstract
 
 }
 
-
 (new NotTranslate($container))->run();

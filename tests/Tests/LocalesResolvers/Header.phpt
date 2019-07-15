@@ -169,5 +169,4 @@ class Header extends Tests\TestAbstract
 
 }
 
-
 (new Header($container))->run();

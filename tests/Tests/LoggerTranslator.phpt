@@ -30,5 +30,4 @@ class LoggerTranslator extends Tests\TestAbstract
 
 }
 
-
 (new LoggerTranslator($container))->run();
