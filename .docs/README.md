@@ -268,14 +268,14 @@ Possibility passing pluralization to components without pre-translation and avoi
 ```php
 $form = new Nette\Application\UI\Form;
 
-$form->addText('mail, 'form.mail.label')
+$form->addText('mail', 'form.mail.label')
     ->setOption('description', new Contributte\Translation\Wrappers\Message('form.mail.description', [...]);
 ```
 
 Or pass the not translatable texts.
 
 ```php
-$form->addSelect('country, 'form.country.label')
+$form->addSelect('country', 'form.country.label')
     ->setItems([
         new Contributte\Translation\Wrappers\NotTranslate('Czech republic'),
         new Contributte\Translation\Wrappers\NotTranslate('Slovak republic'),
