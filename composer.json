@@ -27,13 +27,13 @@
 		"nette/bootstrap": "^3.0",
 		"nette/database": "^3.0",
 		"nette/robot-loader": " ^3.0",
-		"nette/tester": "^2.1",
+		"nette/tester": "^2.3",
 		"doctrine/orm": "^2.6",
 		"tracy/tracy": "^2.6",
 		"psr/log": "^1.0",
 		"mockery/mockery": "^1.2",
 		"ninjify/qa": "^0.8.0",
-		"ninjify/nunjuck": "^0.2.0"
+		"ninjify/nunjuck": "dev-master"
 	},
 	"autoload": {
 		"psr-4": {
