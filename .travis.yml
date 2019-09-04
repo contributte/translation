@@ -1,7 +1,6 @@
 language: php
 
 php:
-    - 7.1
     - 7.2
     - 7.3
     - 7.4snapshot
@@ -27,19 +26,19 @@ jobs:
               - composer run-script tests
 
         - name: Quality Assurance
-          php: 7.1
+          php: 7.2
           script:
               - composer run-script qa
 
         - name: PHPStan
-          php: 7.1
+          php: 7.2
           script:
               - composer run-script phpstan-install
               - composer run-script phpstan
 
         - name: Test Coverage
           if: branch = master AND type = push
-          php: 7.1
+          php: 7.2
           script:
               - composer run-script coverage
           after_script:
