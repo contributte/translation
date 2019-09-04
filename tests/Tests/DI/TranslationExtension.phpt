@@ -8,6 +8,9 @@ namespace Tests\DI;
 
 use Contributte;
 use Nette;
+use Psr;
+use stdClass;
+use Symfony;
 use Tester;
 use Tests;
 use UnexpectedValueException;
@@ -20,23 +23,23 @@ class TranslationExtension extends Tests\TestAbstract
 	public function test01(): void
 	{
 		Tester\Assert::exception(function (): void {
-			$this->createContainer(['localeResolvers' => ['\\stdClass']]);
-		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Resolver must implement interface "Contributte\\Translation\\LocalesResolvers\\ResolverInterface".');
+			$this->createContainer(['localeResolvers' => [stdClass::class]]);
+		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Resolver must implement interface "' . Contributte\Translation\LocalesResolvers\ResolverInterface::class . '".');
 		Tester\Assert::exception(function (): void {
-			$this->createContainer(['cache' => ['factory' => '\\stdClass']]);
-		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Cache factory must implement interface "Symfony\\Component\\Config\\ConfigCacheFactoryInterface".');
+			$this->createContainer(['cache' => ['factory' => stdClass::class]]);
+		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Cache factory must implement interface "' . Symfony\Component\Config\ConfigCacheFactoryInterface::class . '".');
 		Tester\Assert::exception(function (): void {
-			$this->createContainer(['loaders' => ['\\stdClass']]);
-		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Loader must implement interface "Symfony\\Component\\Translation\\Loader\\LoaderInterface".');
+			$this->createContainer(['loaders' => [stdClass::class]]);
+		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Loader must implement interface "' . Symfony\Component\Translation\Loader\LoaderInterface::class . '".');
 		Tester\Assert::exception(function (): void {
 			$this->createContainer(['dirs' => [__DIR__ . '/__no_exists__']]);
 		}, UnexpectedValueException::class);
 		Tester\Assert::exception(function (): void {
 			$this->createContainer(['logger' => true, 'localeResolvers' => []]);
-		}, Nette\DI\MissingServiceException::class, 'Service of type \'Psr\\Log\\LoggerInterface\' not found.');
+		}, Nette\DI\MissingServiceException::class, "Service of type '" . Psr\Log\LoggerInterface::class . "' not found.");
 		Tester\Assert::exception(function (): void {
-			$this->createContainer(['logger' => '\\stdClass', 'localeResolvers' => []]);
-		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Logger must implement interface "Psr\\Log\\LoggerInterface".');
+			$this->createContainer(['logger' => stdClass::class, 'localeResolvers' => []]);
+		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Logger must implement interface "' . Psr\Log\LoggerInterface::class . '".');
 		Tester\Assert::exception(function (): void {
 			$this->createContainer(['logger' => 1, 'localeResolvers' => []]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Option "logger" must be bool for autowired or class name as string.');
@@ -96,7 +99,7 @@ class TranslationExtension extends Tests\TestAbstract
 
 	public function test04(): void
 	{
-		$container = $this->createContainer(['logger' => '\\Tests\\PsrLoggerMock', 'localeResolvers' => []], Tests\PsrLoggerMock::class);
+		$container = $this->createContainer(['logger' => Tests\PsrLoggerMock::class, 'localeResolvers' => []], Tests\PsrLoggerMock::class);
 
 		Tester\Assert::count(1, $container->findByType(Tests\PsrLoggerMock::class));
 	}

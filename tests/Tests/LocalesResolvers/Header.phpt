@@ -146,7 +146,7 @@ class Header extends Tests\TestAbstract
 				}
 
 			});
-		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Header locale resolver need "Nette\\Http\\Request" or his child for using "detectLanguage" method.');
+		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Header locale resolver need "' . Nette\Http\Request::class . '" or his child for using "detectLanguage" method.');
 	}
 
 	/**
