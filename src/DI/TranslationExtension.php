@@ -32,7 +32,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			'logger' => Expect::mixed()->default(null),
 			'locales' => Expect::structure([
 				'whitelist' => Expect::array()->default(null), // @todo unique check?
-				'default' => Expect::string(null),
+				'default' => Expect::string('en'),
 				'fallback' => Expect::array()->default(null),
 			]),
 			'localeResolvers' => Expect::array()->default(null),
@@ -102,10 +102,6 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			->setFactory($this->config->cache->factory, [$this->config->debug]);
 
 		// Translator
-		if ($this->config->locales->default === null) {
-			throw new Contributte\Translation\Exceptions\InvalidArgument('Default locale must be set.');
-		}
-
 		if ($this->config->debug && $this->config->debugger) {
 			$factory = Contributte\Translation\DebuggerTranslator::class;
 

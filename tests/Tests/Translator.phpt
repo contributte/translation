@@ -262,7 +262,6 @@ class Translator extends Tests\TestAbstract
 				'translation' => [
 					'debug' => true,
 					'locales' => [
-						'default' => 'en',
 						'whitelist' => ['en'],
 					],
 					'localeResolvers' => [

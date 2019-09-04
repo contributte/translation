@@ -26,22 +26,19 @@ class TranslationExtension extends Tests\TestAbstract
 			$this->createContainer(['cache' => ['factory' => '\\stdClass']]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Cache factory must implement interface "Symfony\\Component\\Config\\ConfigCacheFactoryInterface".');
 		Tester\Assert::exception(function (): void {
-			$this->createContainer([]);
-		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Default locale must be set.');
-		Tester\Assert::exception(function (): void {
-			$this->createContainer(['locales' => ['default' => 'en'], 'loaders' => ['\\stdClass']]);
+			$this->createContainer(['loaders' => ['\\stdClass']]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Loader must implement interface "Symfony\\Component\\Translation\\Loader\\LoaderInterface".');
 		Tester\Assert::exception(function (): void {
-			$this->createContainer(['locales' => ['default' => 'en'], 'dirs' => [__DIR__ . '/__no_exists__']]);
+			$this->createContainer(['dirs' => [__DIR__ . '/__no_exists__']]);
 		}, UnexpectedValueException::class);
 		Tester\Assert::exception(function (): void {
-			$this->createContainer(['logger' => true, 'locales' => ['default' => 'en'], 'localeResolvers' => []]);
+			$this->createContainer(['logger' => true, 'localeResolvers' => []]);
 		}, Nette\DI\MissingServiceException::class, 'Service of type \'Psr\\Log\\LoggerInterface\' not found.');
 		Tester\Assert::exception(function (): void {
-			$this->createContainer(['logger' => '\\stdClass', 'locales' => ['default' => 'en'], 'localeResolvers' => []]);
+			$this->createContainer(['logger' => '\\stdClass', 'localeResolvers' => []]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Logger must implement interface "Psr\\Log\\LoggerInterface".');
 		Tester\Assert::exception(function (): void {
-			$this->createContainer(['logger' => 1, 'locales' => ['default' => 'en'], 'localeResolvers' => []]);
+			$this->createContainer(['logger' => 1, 'localeResolvers' => []]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Option "logger" must be bool for autowired or class name as string.');
 	}
 
@@ -63,7 +60,7 @@ class TranslationExtension extends Tests\TestAbstract
 					}
 
 				});
-				$compiler->addConfig(['parameters' => $this->container->getParameters(), 'translation' => ['locales' => ['default' => 'en'], 'dirs' => [__DIR__ . '__config_dir__']]]);
+				$compiler->addConfig(['parameters' => $this->container->getParameters(), 'translation' => ['dirs' => [__DIR__ . '__config_dir__']]]);
 			});
 
 		} catch (UnexpectedValueException $e) {
@@ -73,7 +70,7 @@ class TranslationExtension extends Tests\TestAbstract
 
 	public function test03(): void
 	{
-		$container = $this->createContainer(['debug' => true, 'debugger' => true, 'locales' => ['default' => 'en', 'whitelist' => ['en']], 'localeResolvers' => [], 'dirs' => [__DIR__ . '/../../lang']]);
+		$container = $this->createContainer(['debug' => true, 'debugger' => true, 'locales' => ['whitelist' => ['en']], 'localeResolvers' => [], 'dirs' => [__DIR__ . '/../../lang']]);
 
 		/** @var Contributte\Translation\Tracy\Panel $panel */
 		$panel = $container->getByType(Contributte\Translation\Tracy\Panel::class);
@@ -99,7 +96,7 @@ class TranslationExtension extends Tests\TestAbstract
 
 	public function test04(): void
 	{
-		$container = $this->createContainer(['logger' => '\\Tests\\PsrLoggerMock', 'locales' => ['default' => 'en'], 'localeResolvers' => []], Tests\PsrLoggerMock::class);
+		$container = $this->createContainer(['logger' => '\\Tests\\PsrLoggerMock', 'localeResolvers' => []], Tests\PsrLoggerMock::class);
 
 		Tester\Assert::count(1, $container->findByType(Tests\PsrLoggerMock::class));
 	}
