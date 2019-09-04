@@ -145,7 +145,7 @@ class Translator extends Tests\TestAbstract
 
 		$translator->removePrefix();
 
-		$prefixedTranslator = $translator->domain('messages');
+		$prefixedTranslator = $translator->createPrefixedTranslator('messages');
 		Tester\Assert::same('Hello', $prefixedTranslator->translate('hello'));
 	}
 

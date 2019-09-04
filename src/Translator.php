@@ -27,7 +27,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 {
 
 	use Nette\SmartObject;
-	use KdybyTranslationBackCompatibilityTrait;
 
 	/** @var Contributte\Translation\LocaleResolver */
 	private $localeResolver;
