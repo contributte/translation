@@ -36,7 +36,13 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 				}),
 				'default' => Expect::string('en'),
 				'fallback' => Expect::array()->default(null),
-			]),
+			])->assert(function (stdClass $locales): bool {
+				if ($locales->whitelist !== null && !in_array($locales->default, $locales->whitelist, true)) {
+					throw new Contributte\Translation\Exceptions\InvalidArgument('If you set whitelist, default locale must be on him.');
+				}
+
+				return true;
+			}),
 			'localeResolvers' => Expect::array()->default(null),
 			'loaders' => Expect::array()->default([
 				'neon' => Contributte\Translation\Loaders\Neon::class,

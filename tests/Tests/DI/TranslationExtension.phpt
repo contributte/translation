@@ -22,6 +22,9 @@ class TranslationExtension extends Tests\TestAbstract
 			$this->createContainer(['locales' => ['whitelist' => ['en', 'en']]]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Whitelist settings have not unique values.');
 		Tester\Assert::exception(function (): void {
+			$this->createContainer(['locales' => ['whitelist' => ['en'], 'default' => 'cs']]);
+		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'If you set whitelist, default locale must be on him.');
+		Tester\Assert::exception(function (): void {
 			$this->createContainer(['localeResolvers' => [stdClass::class]]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Resolver must implement interface "' . Contributte\Translation\LocalesResolvers\ResolverInterface::class . '".');
 		Tester\Assert::exception(function (): void {
