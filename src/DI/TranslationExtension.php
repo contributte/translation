@@ -27,7 +27,13 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			'debugger' => Expect::bool(interface_exists(Tracy\IBarPanel::class)),
 			'logger' => Expect::mixed()->default(null),
 			'locales' => Expect::structure([
-				'whitelist' => Expect::array()->default(null), // @todo unique check?
+				'whitelist' => Expect::array()->default(null)->assert(function (array $array): bool {
+					if (count($array) !== count(array_unique($array))) {
+						throw new Contributte\Translation\Exceptions\InvalidArgument('Whitelist settings have not unique values.');
+					}
+
+					return true;
+				}),
 				'default' => Expect::string('en'),
 				'fallback' => Expect::array()->default(null),
 			]),
