@@ -61,7 +61,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		$this->debug = $debug;
 
 		parent::__construct('', null, $cacheDir, $debug);
-		$this->setLocale(null);
 	}
 
 	public function getLocaleResolver(): LocaleResolver
@@ -200,7 +199,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	 */
 	public function getLocale()
 	{
-		if (parent::getLocale() === null) {
+		if (parent::getLocale() === '') {
 			$this->setLocale($this->localeResolver->resolve($this));
 		}
 
