@@ -130,7 +130,7 @@ class Translator extends Tests\TestAbstract
 		Tester\Assert::same('There are 5.9 apples', $translator->translate('messages.apples', ['count' => 5.9]));
 		Tester\Assert::same('Depth message', $translator->translate('messages.depth.message'));
 		Tester\Assert::same('missing.translation', $translator->translate('messages.missing.translation'));
-		Tester\Assert::same('Empty string key', $translator->translate('messages.'));
+		Tester\Assert::same('', $translator->translate('messages.'));
 		Tester\Assert::same('emptyDomain', $translator->translate('.emptyDomain'));
 		Tester\Assert::same('messages.some broken message', $translator->translate('messages.some broken message'));
 
