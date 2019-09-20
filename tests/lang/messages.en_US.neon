@@ -7,3 +7,5 @@ very:
 	very:
 		depth:
 			message: "Very very depth message"
+overloading:
+	message: "Message"

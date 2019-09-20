@@ -125,6 +125,7 @@ class Translator extends Tests\TestAbstract
 		Tester\Assert::same('There are 5.9 apples', $translator->translate('messages.apples', 5.9));
 		Tester\Assert::same('There are 5.9 apples', $translator->translate('messages.apples', ['count' => 5.9]));
 		Tester\Assert::same('Depth message', $translator->translate('messages.depth.message'));
+		Tester\Assert::same('Overloaded message', $translator->translate('messages.overloading.message'));
 		Tester\Assert::same('missing.translation', $translator->translate('messages.missing.translation'));
 		Tester\Assert::same('', $translator->translate('messages.'));
 		Tester\Assert::same('emptyDomain', $translator->translate('.emptyDomain'));
@@ -222,7 +223,7 @@ class Translator extends Tests\TestAbstract
 		Tester\Assert::same('en', (string) $dom->find('td[class="contributte-translation-locales-whitelist"]')[0]);
 		Tester\Assert::count(1, $dom->find('tr[class="contributte-translation-missing-translation"]'));
 		Tester\Assert::count(1, $dom->find('tr[class="contributte-translation-locale-resolvers"]'));
-		Tester\Assert::count(1, $dom->find('tr[class="contributte-translation-resources"]'));
+		Tester\Assert::count(2, $dom->find('tr[class="contributte-translation-resources"]'));
 		Tester\Assert::count(1, $dom->find('tr[class="contributte-translation-ignored-resources"]'));
 
 		$psrLogger = new class() extends Psr\Log\AbstractLogger {
@@ -265,6 +266,7 @@ class Translator extends Tests\TestAbstract
 					],
 					'dirs' => [
 						__DIR__ . '/../lang',
+						__DIR__ . '/../lang_overloading',
 					],
 				],
 			]);
