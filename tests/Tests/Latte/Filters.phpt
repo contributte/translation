@@ -19,7 +19,7 @@ class Filters extends Tests\TestAbstract
 
 		$translatorMock->shouldReceive('translate')
 			->once()
-			->withArgs(['message', 'args'])
+			->withArgs(['message', 'parameters'])
 			->andReturn('');
 
 		$filters = new Contributte\Translation\Latte\Filters($translatorMock);
