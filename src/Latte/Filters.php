@@ -18,7 +18,7 @@ class Filters
 
 	/**
 	 * @param mixed $message
-	 * @param mixed[] ...$parameters
+	 * @param mixed ...$parameters
 	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
 	 */
 	public function translate(Latte\Runtime\FilterInfo $filterInfo, $message, ...$parameters): string
