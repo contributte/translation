@@ -18,12 +18,12 @@ class Filters
 
 	/**
 	 * @param mixed $message
-	 * @param mixed[] ...$args
+	 * @param mixed[] ...$parameters
 	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
 	 */
-	public function translate(Latte\Runtime\FilterInfo $filterInfo, $message, ...$args): string
+	public function translate(Latte\Runtime\FilterInfo $filterInfo, $message, ...$parameters): string
 	{
-		return $this->translator->translate($message, ...$args);
+		return $this->translator->translate($message, ...$parameters);
 	}
 
 }

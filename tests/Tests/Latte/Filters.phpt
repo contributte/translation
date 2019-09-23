@@ -23,7 +23,7 @@ class Filters extends Tests\TestAbstract
 			->andReturn('');
 
 		$filters = new Contributte\Translation\Latte\Filters($translatorMock);
-		Tester\Assert::same('', $filters->translate(new Latte\Runtime\FilterInfo(), 'message', 'args'));
+		Tester\Assert::same('', $filters->translate(new Latte\Runtime\FilterInfo(), 'message', 'parameters'));
 	}
 
 }
