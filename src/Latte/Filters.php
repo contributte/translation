@@ -17,6 +17,7 @@ class Filters
 	}
 
 	/**
+	 * @param Latte\Runtime\FilterInfo $filterInfo
 	 * @param mixed $message
 	 * @param mixed ...$parameters
 	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
