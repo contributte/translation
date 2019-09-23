@@ -13,12 +13,12 @@
 	"require": {
 		"php": "^7.2.9",
 		"latte/latte": "^2.5",
-		"nette/application": "^3.0",
 		"nette/di": "^3.0",
 		"nette/finder": "^2.5",
 		"nette/http": "^3.0",
 		"nette/neon": "^3.0",
 		"nette/schema": "^1.0",
+		"nette/routing": "^3.0",
 		"nette/utils": "^3.0",
 		"symfony/translation": "^4.2",
 		"symfony/config": "^4.2"
