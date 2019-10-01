@@ -150,14 +150,8 @@ class Translator extends Tests\TestAbstract
 	{
 		$container = $this->createContainer();
 
-		/** @var Nette\Localization\ITranslator $translator */
-		$translator = $container->getByType(Nette\Localization\ITranslator::class);
-
-		$latte = (new Latte\Engine())
-			->addProvider('translator', $translator)
-			->addFilter('translate', [new Contributte\Translation\Latte\Filters($translator), 'translate']);
-
-		Contributte\Translation\Latte\Macros::install($latte->getCompiler());
+		/** @var Latte\Engine $latte */
+		$latte = $container->getByType(Nette\Bridges\ApplicationLatte\ILatteFactory::class)->create();
 
 		Tester\Assert::same('Hello', $latte->renderToString(Tester\FileMock::create('{_messages.hello}')));
 		Tester\Assert::same('Hello', $latte->renderToString(Tester\FileMock::create('{_}messages.hello{/_}')));

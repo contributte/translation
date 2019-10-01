@@ -168,12 +168,14 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			$tracyPanel = $builder->getDefinition($this->prefix('tracyPanel'));
 		}
 
-		if ($builder->hasDefinition('latte.latteFactory')) {
+		$latteFactoryName = $builder->getByType(Nette\Bridges\ApplicationLatte\ILatteFactory::class);
+
+		if ($latteFactoryName !== null) {
 			$latteFilters = $builder->addDefinition($this->prefix('latte.filters'))
 				->setFactory(Contributte\Translation\Latte\Filters::class);
 
 			/** @var Nette\DI\Definitions\FactoryDefinition $latteFactory */
-			$latteFactory = $builder->getDefinition('latte.latteFactory');
+			$latteFactory = $builder->getDefinition($latteFactoryName);
 
 			$latteFactory->getResultDefinition()
 				->addSetup('?->onCompile[] = function (Latte\\Engine $engine): void { ?::install($engine->getCompiler()); }', ['@self', new Nette\PhpGenerator\PhpLiteral(Contributte\Translation\Latte\Macros::class)])
