@@ -38,7 +38,7 @@ class Session implements ResolverInterface
 	public function resolve(Contributte\Translation\Translator $translator): ?string
 	{
 		if (!$this->session->isStarted() && $this->httpResponse->isSent()) {
-			trigger_error('The advice of session locale resolver is required but the session has not been started and headers had been already sent. Either start your sessions earlier or disabled the SessionResolver.', E_USER_WARNING);
+			trigger_error('The advice of session locale resolver is required but the session has not been started and headers had been already sent. Either start your sessions earlier or disable the SessionResolver.', E_USER_WARNING);
 			return null;
 		}
 
