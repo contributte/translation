@@ -22,7 +22,7 @@ class Session extends Tests\TestAbstract
 		Tester\Assert::same('cs', $this->resolve('cs', ['en_US', 'cs_CZ']));
 		Tester\Assert::error(function (): void {
 			$this->resolve(null, [], false, true);
-		}, E_USER_WARNING, 'The advice of session locale resolver is required but the session has not been started and headers had been already sent. Either start your sessions earlier or disabled the SessionResolver.');
+		}, E_USER_WARNING, 'The advice of session locale resolver is required but the session has not been started and headers had been already sent. Either start your sessions earlier or disable the SessionResolver.');
 		Tester\Assert::null(@$this->resolve(null, [], false, true));
 	}
 
