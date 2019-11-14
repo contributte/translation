@@ -36,6 +36,9 @@
 		"ninjify/qa": "^0.8.0",
 		"ninjify/nunjuck": "^0.3.0"
 	},
+	"conflict": {
+		"symfony/translation": "^4.4"
+	},
 	"autoload": {
 		"psr-4": {
 			"Contributte\\Translation\\": "src"
