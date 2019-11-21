@@ -20,8 +20,8 @@
 		"nette/schema": "^1.0",
 		"nette/routing": "^3.0",
 		"nette/utils": "^3.0",
-		"symfony/translation": "^4.2",
-		"symfony/config": "^4.2"
+		"symfony/translation": "^4.4|^5.0",
+		"symfony/config": "^4.4|^5.0"
 	},
 	"require-dev": {
 		"nette/application": "^3.0",
