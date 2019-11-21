@@ -25,11 +25,17 @@ class LoggerTranslator extends Translator
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @param string|null $id
+	 * @param mixed[] $parameters
+	 * @param string|null $domain
+	 * @param string|null $locale
+	 * @return string
+	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
 	 */
 	public function trans($id, array $parameters = [], $domain = null, $locale = null)
 	{
-		if ($this->psrLogger !== null) {
+		if ($id !== null && $this->psrLogger !== null) {
 			if ($domain === null) {
 				$domain = 'messages';
 			}

@@ -186,7 +186,12 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @param string $format
+	 * @param mixed $resource
+	 * @param string $locale
+	 * @param string $domain
+	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
 	 */
 	public function addResource($format, $resource, $locale, $domain = null)
 	{
