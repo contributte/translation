@@ -97,6 +97,9 @@ class TranslationExtension extends Tests\TestAbstract
 		$foo = end($foo);
 		Tester\Assert::same('messages', end($foo));
 		Tester\Assert::true(Nette\Utils\Strings::contains(key($foo), 'messages.cs_CZ.neon'));
+
+		$symfonyTranslator = $container->getByType(Symfony\Contracts\Translation\TranslatorInterface::class);
+		Tester\Assert::same($translator, $symfonyTranslator);
 	}
 
 	public function test04(): void

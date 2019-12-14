@@ -121,11 +121,11 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		}
 
 		$translator = $builder->addDefinition($this->prefix('translator'))
-			->setType(Nette\Localization\ITranslator::class)
 			->setFactory($factory, ['defaultLocale' => $this->config->locales->default, 'cacheDir' => $this->config->cache->dir, 'debug' => $this->config->debug])
 			->addSetup('setLocalesWhitelist', [$this->config->locales->whitelist])
 			->addSetup('setConfigCacheFactory', [$configCacheFactory])
-			->addSetup('setFallbackLocales', [$this->config->locales->fallback]);
+			->addSetup('setFallbackLocales', [$this->config->locales->fallback])
+			->setAutowired([Nette\Localization\ITranslator::class, Symfony\Contracts\Translation\TranslatorInterface::class]);
 
 		// Loaders
 		foreach ($this->config->loaders as $k1 => $v1) {
