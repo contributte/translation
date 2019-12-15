@@ -19,7 +19,7 @@ class Session implements ResolverInterface
 	/** @var Nette\Http\Session */
 	private $session;
 
-	/** @var Nette\Http\SessionSection */
+	/** @var Nette\Http\SessionSection<string, mixed> */
 	private $sessionSection;
 
 	public function __construct(Nette\Http\IResponse $httpResponse, Nette\Http\Session $session)

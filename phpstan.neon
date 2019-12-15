@@ -5,6 +5,9 @@ includes:
 	- %rootDir%/../phpstan-strict-rules/rules.neon
 
 parameters:
+	level: max
+	paths:
+		- src
 	ignoreErrors:
 		# src\Loaders\Doctrine.php
 		# src\Loaders\Doctrine.php
@@ -33,3 +36,8 @@ parameters:
 
 		# src\Translator.php
 		- '#^Method Contributte\\Translation\\Translator\:\:computeFallbackLocales\(\) has parameter \$locale with no typehint specified\.$#'
+
+		-
+			count: 1
+			message: '~^Method Contributte\\Translation\\Translator::setFallbackLocales\(\) has parameter \$locales with no value type specified in iterable type array\.$~'
+			path: 'src/Translator.php'

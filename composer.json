@@ -61,13 +61,13 @@
 		],
 		"phpstan-install": [
 			"mkdir -p temp/phpstan",
-			"composer require -d temp/phpstan phpstan/phpstan:^0.11",
-			"composer require -d temp/phpstan phpstan/phpstan-deprecation-rules:^0.11",
-			"composer require -d temp/phpstan phpstan/phpstan-nette:^0.11",
-			"composer require -d temp/phpstan phpstan/phpstan-strict-rules:^0.11"
+			"composer require -d temp/phpstan phpstan/phpstan:^0.12",
+			"composer require -d temp/phpstan phpstan/phpstan-deprecation-rules:^0.12",
+			"composer require -d temp/phpstan phpstan/phpstan-nette:^0.12",
+			"composer require -d temp/phpstan phpstan/phpstan-strict-rules:^0.12"
 		],
 		"phpstan": [
-			"temp/phpstan/vendor/bin/phpstan analyse -l max -c phpstan.neon src"
+			"temp/phpstan/vendor/bin/phpstan analyse -c phpstan.neon"
 		],
 		"coverage": [
 			"tester tests/Tests -s -p phpdbg --coverage ./coverage.xml --coverage-src ./src"
