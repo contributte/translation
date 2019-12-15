@@ -8,6 +8,11 @@ use Latte;
 class Macros extends Latte\Macros\MacroSet
 {
 
+	final public function __construct(Latte\Compiler $compiler)
+	{
+		parent::__construct($compiler);
+	}
+
 	public static function install(Latte\Compiler $compiler): void
 	{
 		$me = new static($compiler);
@@ -21,10 +26,9 @@ class Macros extends Latte\Macros\MacroSet
 	 *
 	 * {_ ...}
 	 *
-	 * @return mixed
 	 * @throws Latte\CompileException
 	 */
-	public function macroTranslate(Latte\MacroNode $node, Latte\PhpWriter $writer)
+	public function macroTranslate(Latte\MacroNode $node, Latte\PhpWriter $writer): ?string
 	{
 		if ($node->closing) {
 			if (strpos($node->content, '<?php') === false) {
@@ -47,15 +51,16 @@ class Macros extends Latte\Macros\MacroSet
 
 			return $writer->write('echo %modify(call_user_func($this->filters->translate, %node.word, %node.args))');
 		}
+
+		return null;
 	}
 
 	/**
 	 * {translate ...}
 	 *
-	 * @return mixed
 	 * @throws Latte\CompileException
 	 */
-	public function macroPrefix(Latte\MacroNode $node, Latte\PhpWriter $writer)
+	public function macroPrefix(Latte\MacroNode $node, Latte\PhpWriter $writer): ?string
 	{
 		if ($node->closing) {
 			if ($node->content !== null && $node->content !== '') {
@@ -69,6 +74,8 @@ class Macros extends Latte\Macros\MacroSet
 
 			return $writer->write('$this->global->translator->prefix = [%node.word];');
 		}
+
+		return null;
 	}
 
 }

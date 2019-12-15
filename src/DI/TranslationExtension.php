@@ -219,7 +219,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			if ($this->config->logger === true) {
 				$psrLogger = $builder->getDefinitionByType(Psr\Log\LoggerInterface::class);
 
-			} elseif (is_string($this->config->logger)) {
+			} elseif (is_string($this->config->logger) && class_exists($this->config->logger)) {
 				$reflection = new ReflectionClass($this->config->logger);
 
 				if (!$reflection->implementsInterface(Psr\Log\LoggerInterface::class)) {
