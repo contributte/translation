@@ -11,31 +11,56 @@ parameters:
 	ignoreErrors:
 		# src\Loaders\Doctrine.php
 		# src\Loaders\Doctrine.php
-		- '#^Variable property access on object\.$#'
+		-
+			count: 2
+			message: '#^Variable property access on object\.$#'
+			path: src/Loaders/Doctrine.php
 
 		# src\Tracy\Panel.php
-		- '#^Only numeric types are allowed in post-increment, int\|string given\.$#'
+		- count: 1
+		  message: '#^Only numeric types are allowed in post-increment, int\|string given\.$#'
+		  path: src/Tracy/Panel.php
 
 		# src\PrefixedTranslator.php
-		- '#^Parameter \#2 \$parameters \(array<int, mixed>\) of method Contributte\\Translation\\PrefixedTranslator\:\:translate\(\) should be contravariant with parameter \$parameters \(mixed\) of method Nette\\Localization\\ITranslator\:\:translate\(\)$#'
+		- count: 1
+		  message: '#^Parameter \#2 \$parameters \(array<int, mixed>\) of method Contributte\\Translation\\PrefixedTranslator\:\:translate\(\) should be contravariant with parameter \$parameters \(mixed\) of method Nette\\Localization\\ITranslator\:\:translate\(\)$#'
+		  path: src/PrefixedTranslator.php
 
 		# src\Translator.php
-		- '#^Parameter \#2 \$parameters \(array<int, mixed>\) of method Contributte\\Translation\\Translator\:\:translate\(\) should be contravariant with parameter \$parameters \(mixed\) of method Nette\\Localization\\ITranslator\:\:translate\(\)$#'
+		-
+			count: 1
+			message: '#^Parameter \#2 \$parameters \(array<int, mixed>\) of method Contributte\\Translation\\Translator\:\:translate\(\) should be contravariant with parameter \$parameters \(mixed\) of method Nette\\Localization\\ITranslator\:\:translate\(\)$#'
+			path: src/Translator.php
 
 		# src\Translator.php
-		- '#^Method Contributte\\Translation\\Translator\:\:addResource\(\) has no return typehint specified\.$#'
+		-
+			count: 1
+			message: '#^Method Contributte\\Translation\\Translator\:\:addResource\(\) has no return typehint specified\.$#'
+			path: src/Translator.php
 
 		# src\Translator.php
-		- '#^Method Contributte\\Translation\\Translator\:\:setLocale\(\) has no return typehint specified\.$#'
+		-
+			count: 1
+			message: '#^Method Contributte\\Translation\\Translator\:\:setLocale\(\) has no return typehint specified\.$#'
+			path: src/Translator.php
 
 		# src\Translator.php
-		- '#^Method Contributte\\Translation\\Translator\:\:setFallbackLocales\(\) has no return typehint specified\.$#'
+		-
+			count: 1
+			message: '#^Method Contributte\\Translation\\Translator\:\:setFallbackLocales\(\) has no return typehint specified\.$#'
+			path: src/Translator.php
 
 		# src\Translator.php
-		- '#^Method Contributte\\Translation\\Translator\:\:computeFallbackLocales\(\) has no return typehint specified\.$#'
+		-
+			count: 1
+			message: '#^Method Contributte\\Translation\\Translator\:\:computeFallbackLocales\(\) has no return typehint specified\.$#'
+			path: src/Translator.php
 
 		# src\Translator.php
-		- '#^Method Contributte\\Translation\\Translator\:\:computeFallbackLocales\(\) has parameter \$locale with no typehint specified\.$#'
+		-
+			count: 1
+			message: '#^Method Contributte\\Translation\\Translator\:\:computeFallbackLocales\(\) has parameter \$locale with no typehint specified\.$#'
+			path: src/Translator.php
 
 		-
 			count: 1
