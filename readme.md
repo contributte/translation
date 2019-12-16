@@ -24,7 +24,6 @@ composer require contributte/translation
 |-------------|-----------|----------|----------|--------------|
 | development | `^0.6.0`  | `master` | `^7.1.3` | `^4.4\|^5.0` |
 | stable      | `^0.5.0`  | `master` | `^7.2.9` | `^4.4\|^5.0` |
-| stable      | `^0.4.0`  | `master` | `^7.1`   | `^4.2`       |
 
 ## Prolog
 Easy and clearly translations for your multi-language applications.
