@@ -14,7 +14,7 @@ class Neon extends Symfony\Component\Translation\Loader\ArrayLoader implements S
 	 *
 	 * @throws Contributte\Translation\Exceptions\InvalidArgument
 	 */
-	public function load($resource, $locale, $domain = 'messages')
+	public function load($resource, string $locale, string $domain = 'messages')
 	{
 		$content = @file_get_contents($resource); // @ -> prevent E_WARNING and thrown an exception
 

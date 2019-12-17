@@ -193,7 +193,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
 	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
 	 */
-	public function addResource($format, $resource, $locale, $domain = null)
+	public function addResource(string $format, $resource, string $locale, ?string $domain = null)
 	{
 		parent::addResource($format, $resource, $locale, $domain);
 		$this->resourcesLocales[$locale] = true;
@@ -214,7 +214,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/**
 	 * {@inheritdoc}
 	 */
-	public function setLocale($locale)
+	public function setLocale(string $locale)
 	{
 		parent::setLocale($locale);
 	}
@@ -291,7 +291,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function computeFallbackLocales($locale)
+	protected function computeFallbackLocales(string $locale)
 	{
 		return $this->fallbackResolver->compute($this, $locale);
 	}

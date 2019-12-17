@@ -24,7 +24,7 @@ abstract class DatabaseAbstract extends Symfony\Component\Translation\Loader\Arr
 	 *
 	 * @throws Contributte\Translation\Exceptions\InvalidArgument|Contributte\Translation\Exceptions\InvalidState
 	 */
-	public function load($resource, $locale, $domain = 'messages')
+	public function load($resource, string $locale, string $domain = 'messages')
 	{
 		$content = @file_get_contents($resource); // @ -> prevent E_WARNING and thrown an exception
 
