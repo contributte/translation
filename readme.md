@@ -22,8 +22,8 @@ composer require contributte/translation
 ## Versions
 | State       | Version   | Branch   | PHP      | Symfony      |
 |-------------|-----------|----------|----------|--------------|
-| development | `^0.6.0`  | `master` | `^7.1.3` | `^4.4\|^5.0` |
-| stable      | `^0.5.0`  | `master` | `^7.2.9` | `^4.4\|^5.0` |
+| development | `^0.7.0`  | `master` | `^7.1.3` | `^4.4\|^5.0` |
+| stable      | `^0.6.0`  | `master` | `^7.1.3` | `^4.4\|^5.0` |
 
 ## Prolog
 Easy and clearly translations for your multi-language applications.
