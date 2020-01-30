@@ -14,10 +14,24 @@ Symfony/Translation integration for [Nette Framework](https://nette.org).
 ## Discussion / Help
 [![Join the chat](https://img.shields.io/gitter/room/contributte/contributte.svg?style=flat-square)](http://bit.ly/ctteg)
 
-## Installation
-```sh
-composer require contributte/translation
-```
+## Documentation
+
+- [Setup](.docs/README.md#setup)
+- [Configuration](.docs/README.md#configuration)
+	- [Locale resolvers](.docs/README.md#locale-resolvers)
+- [Examples](.docs/README.md#examples)
+	- [Presenter](.docs/README.md#presenter)
+	- [Model](.docs/README.md#model)
+	- [Latte](.docs/README.md#latte)
+	- [Neon](.docs/README.md#neon)
+- [Loaders](.docs/README.md#loaders)	
+	- [File loaders](.docs/README.md#file-loaders)
+	- [Database loaders](.docs/README.md#database-loaders)
+		- [Doctrine](.docs/README.md#doctrine)
+		- [Nette Database](.docs/README.md#nette-database)
+- [Features](.docs/README.md#features)
+	- [Wrappers](.docs/README.md#wrappers)
+	- [TranslationProviderInterface](.docs/README.md#translationproviderinterface)
 
 ## Versions
 | State       | Version   | Branch   | PHP      | Symfony      |
