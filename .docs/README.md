@@ -5,12 +5,16 @@
 - [Configuration](README.md#configuration)
 - [Examples](README.md#examples)
 	- [Presenter](#presenter)
-    - [Model](#model)
+	- [Model](#model)
 	- [Latte](#latte)
 	- [Neon](#neon)
-- [Database loaders](#database-loaders)
-- [Alternative loaders](#alternative-loaders)
+- [Loaders](#loaders)	
+	- [File loaders](#file-loaders)
+	- [Database loaders](#database-loaders)
+		- [Doctrine](#doctrine)
+		- [Nette Database](#nette-database)
 - [Features](#features)
+	- [Wrappers](#wrappers)
 
 ## Setup
 
