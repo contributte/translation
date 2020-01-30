@@ -15,6 +15,7 @@
 		- [Nette Database](#nette-database)
 - [Features](#features)
 	- [Wrappers](#wrappers)
+	- [TranslationProviderInterface](#translationproviderinterface)
 
 ## Setup
 
@@ -288,4 +289,25 @@ $form->addSelect('country', 'form.country.label')
         new Contributte\Translation\Wrappers\NotTranslate('Czech republic'),
         new Contributte\Translation\Wrappers\NotTranslate('Slovak republic'),
     ]);
+```
+
+### TranslationProviderInterface
+
+It is possible to pass additional translation resources from your compiler extensions by implementing the `TranslationProviderInterface`.
+
+```php
+use Nette\DI\CompilerExtension;
+use Contributte\Translation\DI\TranslationProviderInterface;
+
+class MyExtension extends CompilerExtension implements TranslationProviderInterface
+{
+
+   public function getTranslationResources(): array
+   {
+      return [
+         __DIR__ . '/../lang/',
+      ];
+   }
+
+}
 ```
