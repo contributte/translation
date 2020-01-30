@@ -42,7 +42,7 @@ translation:
     locales:
         whitelist: [en, cs, sk]
         default: en
-	fallback: [en]
+        fallback: [en]
     dirs:
         - %appDir%/lang
 ```
