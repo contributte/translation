@@ -26,7 +26,7 @@ composer require contributte/translation
 | stable      | `^0.6.0`  | `master` | `^7.1.3` | `^4.4\|^5.0` |
 
 ## Prolog
-Easy and clearly translations for your multi-language applications.
+Easy and clear translations for your multi-language applications.
 
 ## Maintainers
 <table>
