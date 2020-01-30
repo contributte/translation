@@ -19,13 +19,13 @@
 
 ## Setup
 
-Require package
+Require package:
 
 ```bash
 composer require contributte/translation
 ```
 
-Register extension
+Register extension:
 
 ```yaml
 extensions:
@@ -34,16 +34,34 @@ extensions:
 
 ## Configuration
 
-Basic configuration
+Basic configuration:
 
 ```yaml
 translation:
     locales:
         whitelist: [en, cs, sk]
         default: en
+	fallback: [en]
     dirs:
         - %appDir%/lang
 ```
+
+### Locale resolvers
+
+This configuration instructs the extension how to resolve the locale and the order in which it will do so:
+
+```yaml
+translation:
+    localeResolvers:
+        - Contributte\Translation\LocalesResolvers\Router
+```
+
+Available resolvers:
+
+- Contributte\Translation\LocalesResolvers\Router
+- Contributte\Translation\LocalesResolvers\Header (HTTP header)
+- Contributte\Translation\LocalesResolvers\Parameter (Get parameter)
+- Contributte\Translation\LocalesResolvers\Session
 
 ## Examples
 
