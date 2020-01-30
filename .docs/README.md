@@ -3,6 +3,7 @@
 ## Content
 - [Setup](README.md#setup)
 - [Configuration](README.md#configuration)
+	- [Locale resolvers](#locale-resolvers)
 - [Examples](README.md#examples)
 	- [Presenter](#presenter)
 	- [Model](#model)
@@ -62,6 +63,8 @@ Available resolvers:
 - Contributte\Translation\LocalesResolvers\Header (HTTP header)
 - Contributte\Translation\LocalesResolvers\Parameter (Get parameter)
 - Contributte\Translation\LocalesResolvers\Session
+
+By default the `Router`, `Parameter` and `Session` resolvers expect the name of the parameter/key to be `locale`.
 
 ## Examples
 
