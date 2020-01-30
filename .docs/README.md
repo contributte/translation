@@ -1,11 +1,13 @@
 # Translation
 
 ## Content
-- [Setup - how to register](#setup)
-- [Configuration - how to configure](#configuration)
-- [Presenter - example](#presenter)
-- [Latte - example](#latte)
-- [Neon - example](#neon)
+- [Setup](.docs/README.md#setup)
+- [Configuration](.docs/README.md#configuration)
+- [Examples](.docs/README.md#examples)
+	- [Presenter](#presenter)
+    - [Model](#model)
+	- [Latte](#latte)
+	- [Neon](#neon)
 - [Database loaders](#database-loaders)
 - [Alternative loaders](#alternative-loaders)
 - [Features](#features)
@@ -39,9 +41,9 @@ translation:
         - %appDir%/lang
 ```
 
-## Presenter or model
+## Examples
 
-Example in the presenter.
+### Presenter
 
 ```php
 <?php declare(strict_types = 1);
@@ -78,8 +80,7 @@ class BasePresenter extends Nette\Application\UI\Presenter
 }
 ```
 
-Example in the model.
-
+### Model
 
 ```php
 <?php declare(strict_types = 1);
@@ -102,7 +103,7 @@ class Model
 }
 ```
 
-## Latte
+### Latte
 
 How to use on frontend.
 
@@ -125,7 +126,7 @@ How to use on frontend.
 {$myMessage|translate}
 ```
 
-## Neon
+### Neon
 
 File name format.
 
