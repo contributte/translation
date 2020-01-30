@@ -1,9 +1,9 @@
 # Translation
 
 ## Content
-- [Setup](.docs/README.md#setup)
-- [Configuration](.docs/README.md#configuration)
-- [Examples](.docs/README.md#examples)
+- [Setup](README.md#setup)
+- [Configuration](README.md#configuration)
+- [Examples](README.md#examples)
 	- [Presenter](#presenter)
     - [Model](#model)
 	- [Latte](#latte)
@@ -22,7 +22,6 @@ composer require contributte/translation
 
 Register extension
 
-
 ```yaml
 extensions:
     translation: Contributte\Translation\DI\TranslationExtension
@@ -30,7 +29,7 @@ extensions:
 
 ## Configuration
 
-Basic configuration.
+Basic configuration
 
 ```yaml
 translation:
@@ -128,7 +127,7 @@ How to use on frontend.
 
 ### Neon
 
-File name format.
+File name format:
 
 ```
         locale
@@ -140,18 +139,18 @@ messages.en_US.neon
  domain     extension
 ```
 
-File content format.
+File content format:
 
 ```yaml
 prefix:
     for: "message" # messages.prefix.for
 ```
 
-## Database loaders
+## Loaders
 
-Package included database loaders for **[Doctrine 2](https://www.doctrine-project.org/)** and **[Nette Database 3](https://doc.nette.org/cs/3.0/database)**.
+By default the extension will look for `.neon` files.
 
-## Alternative loaders
+### File loaders
 
 ```yaml
 array: Symfony\Component\Translation\Loader\ArrayLoader
@@ -168,18 +167,22 @@ xlf: Symfony\Component\Translation\Loader\XliffFileLoader
 yml: Symfony\Component\Translation\Loader\YamlFileLoader
 ```
 
-### Doctrine
+### Database loaders
 
-You must create a file with specific format in scanned dirs like as **messages.en_US.doctrine**. All parameters are optional, but file must be created.
+Package includes database loaders for **[Doctrine 2](https://www.doctrine-project.org/)** and **[Nette Database 3](https://doc.nette.org/cs/3.0/database)**.
+
+#### Doctrine
+
+You must create a file with specific format in scanned dirs such as **messages.en_US.doctrine**. All parameters are optional, but the file has to exist.
 
 ```yaml
-table: "My\Entity" # if you specify entity key, "messages" from file name will be ignored
+table: "My\Entity" # if you specify the entity key, "messages" from file name will be ignored
 id: "id" # id column name, default is "id"
 locale: "locale" # locale column name, default is "locale"
 message: "message" # message column name, default is "message"
 ```
 
-Added loader to translation configuration.
+Add loader to translation configuration:
 
 ```yaml
 translation:
@@ -187,7 +190,7 @@ translation:
         doctrine: Contributte\Translation\Loaders\Doctrine
 ```
 
-Entity example.
+Entity example:
 
 ```php
 <?php declare(strict_types = 1);
@@ -228,9 +231,9 @@ class Messages
 }
 ```
 
-### Nette Database
+#### Nette Database
 
-You must create a file with specific format in scanned dirs like as **messages.en_US.nettedatabase**. All parameters are optional, but file must be created.
+You must create a file with specific format in scanned dirs such as **messages.en_US.nettedatabase**. All parameters are optional, but the file has to exist.
 
 ```yaml
 table: "my_table" # if you specify table key, "messages" from file name will be ignored
@@ -239,7 +242,7 @@ locale: "locale" # locale column name, default is "locale"
 message: "message" # message column name, default is "message"
 ```
 
-Added loader to translation configuration.
+Add loader to translation configuration:
 
 ```yaml
 translation:
@@ -247,7 +250,7 @@ translation:
         nettedatabase: Contributte\Translation\Loaders\NetteDatabase
 ```
 
-DB table example.
+DB table example:
 
 ```sql
 CREATE TABLE `messages` (
@@ -264,7 +267,7 @@ CREATE TABLE `messages` (
 
 ### Wrappers
 
-Possibility passing pluralization to components without pre-translation and avoiding double translation.
+It is possible to pass pluralization to components without pre-translation and avoiding double translation.
 
 ```php
 $form = new Nette\Application\UI\Form;
@@ -273,7 +276,7 @@ $form->addText('mail', 'form.mail.label')
     ->setOption('description', new Contributte\Translation\Wrappers\Message('form.mail.description', [...]);
 ```
 
-Or pass the not translatable texts.
+Or pass the not translatable texts:
 
 ```php
 $form->addSelect('country', 'form.country.label')
