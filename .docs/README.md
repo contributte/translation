@@ -87,18 +87,18 @@ class BasePresenter extends Nette\Application\UI\Presenter
     /** @var Contributte\Translation\LocalesResolvers\Session @inject */
     public $translatorSessionResolver;
 
+
     public function handleChangeLocale(string $locale): void
     {
         $this->translatorSessionResolver->setLocale($locale);
         $this->redirect('this');
     }
 
+
     public function renderDefault(): void
     {
         $this->translator->translate('domain.message');
-
         $prefixedTranslator = $this->translator->createPrefixedTranslator('domain');
-
         $prefixedTranslator->translate('message');
     }
     
@@ -120,6 +120,7 @@ class Model
     /** @var Nette\Localization\ITranslator */
     private $translator;
 
+
     public function __construct(Nette\Localization\ITranslator $translator)
     {
         $this->translator = $translator;
@@ -134,16 +135,12 @@ How to use on frontend.
 
 ```smarty
 {_domain.message}
-
 {_domain.message, $count}
-
 {_domain.message, [name => "Ales"]}
 
 {translator domain}
     {_message}
-
     {_message, $count}
-
     {_message, [name => "Ales"]}
 {/translator}
 
