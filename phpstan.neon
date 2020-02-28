@@ -21,17 +21,6 @@ parameters:
 		  message: '#^Only numeric types are allowed in post-increment, int\|string given\.$#'
 		  path: src/Tracy/Panel.php
 
-		# src\PrefixedTranslator.php
-		- count: 1
-		  message: '#^Parameter \#2 \$parameters \(array<int, mixed>\) of method Contributte\\Translation\\PrefixedTranslator\:\:translate\(\) should be contravariant with parameter \$parameters \(mixed\) of method Nette\\Localization\\ITranslator\:\:translate\(\)$#'
-		  path: src/PrefixedTranslator.php
-
-		# src\Translator.php
-		-
-			count: 1
-			message: '#^Parameter \#2 \$parameters \(array<int, mixed>\) of method Contributte\\Translation\\Translator\:\:translate\(\) should be contravariant with parameter \$parameters \(mixed\) of method Nette\\Localization\\ITranslator\:\:translate\(\)$#'
-			path: src/Translator.php
-
 		# src\Translator.php
 		-
 			count: 1
