@@ -9,6 +9,7 @@
 	- [Model](#model)
 	- [Latte](#latte)
 	- [Neon](#neon)
+	- [Parameters in messages](#parameters-in-messages)
 - [Loaders](#loaders)	
 	- [File loaders](#file-loaders)
 	- [Database loaders](#database-loaders)
@@ -168,6 +169,30 @@ File content format:
 prefix:
     for: "message" # messages.prefix.for
 ```
+
+### Parameters in messages
+
+Sometimes it is convenient to include a dynamic parameter in the translation - as seen in the Latte examples above.
+
+Neon:
+
+``` yaml
+user.name.taken: "Sorry, the username %name% is already taken, please try a different one."
+```
+
+Latte:
+
+``` smarty
+{_user.name.taken, [name => "Ales"]}
+```
+
+Presenter/Model:
+
+``` php
+$this->translator->translate('user.name.taken', [name => 'Ales']);
+```
+
+**Note**: When passing parameters to the translator, the parameter names must not be enclosed in `%` characters. This is done by `Contributte/Translation` automatically.
 
 ## Loaders
 
