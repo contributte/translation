@@ -24,6 +24,7 @@ Symfony/Translation integration for [Nette Framework](https://nette.org).
 	- [Model](.docs/README.md#model)
 	- [Latte](.docs/README.md#latte)
 	- [Neon](.docs/README.md#neon)
+	- [Parameters in messages](.docs/README.md#parameters-in-messages)
 - [Loaders](.docs/README.md#loaders)	
 	- [File loaders](.docs/README.md#file-loaders)
 	- [Database loaders](.docs/README.md#database-loaders)
