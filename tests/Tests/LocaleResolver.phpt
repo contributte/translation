@@ -28,6 +28,8 @@ class LocaleResolver extends Tests\TestAbstract
 		Tester\Assert::same('cs', $localeResolver->resolve($translator));
 		$mockResolver->setLocale('en');
 		Tester\Assert::same('en', $localeResolver->resolve($translator));
+		$mockResolver->setLocale('sk');
+		Tester\Assert::same('cs', $localeResolver->resolve($translator));
 	}
 
 	/**
