@@ -3,7 +3,6 @@
 namespace Tests;
 
 use Contributte;
-use Mockery;
 use Nette;
 use Tester;
 use Tests;
@@ -15,16 +14,50 @@ class LocaleResolver extends Tests\TestAbstract
 
 	public function test01(): void
 	{
-		$containerMock = Mockery::mock(Nette\DI\Container::class);
-		$localeResolver = new Contributte\Translation\LocaleResolver($containerMock);
+		$container = $this->createContainer();
 
-		$localeResolver->addResolver('resolver1');
+		/** @var Contributte\Translation\Translator $translator */
+		$translator = $container->getByType(Nette\Localization\ITranslator::class);
 
-		Tester\Assert::count(1, $localeResolver->resolvers);
+		/** @var Tests\LocaleResolverMock $mockResolver */
+		$mockResolver = $container->getByType(LocaleResolverMock::class);
 
-		$localeResolver->addResolver('resolver2');
+		$localeResolver = $translator->getLocaleResolver();
 
-		Tester\Assert::count(2, $localeResolver->resolvers);
+		Tester\Assert::count(1, $localeResolver->getResolvers());
+		Tester\Assert::same('cs', $localeResolver->resolve($translator));
+		$mockResolver->setLocale('en');
+		Tester\Assert::same('en', $localeResolver->resolve($translator));
+	}
+
+	/**
+	 * @internal
+	 */
+	private function createContainer(): Nette\DI\Container
+	{
+		$configurator = new Nette\Configurator();
+
+		$configurator->setTempDirectory($this->container->getParameters()['tempDir'])
+			->addConfig([
+				'extensions' => [
+					'translation' => Contributte\Translation\DI\TranslationExtension::class,
+				],
+				'translation' => [
+					'debug' => true,
+					'locales' => [
+						'default' => 'cs',
+						'whitelist' => ['cs', 'en'],
+					],
+					'localeResolvers' => [
+						LocaleResolverMock::class,
+					],
+					'dirs' => [
+						__DIR__ . '/../lang',
+					],
+				],
+			]);
+
+		return $configurator->createContainer();
 	}
 
 }

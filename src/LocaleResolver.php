@@ -45,7 +45,9 @@ class LocaleResolver
 			$resolver = $this->container->getByType($v1);
 			$locale = $resolver->resolve($translator);
 
-			if ($locale !== null) {
+			if ($locale !== null && in_array(Nette\Utils\Strings::substring($locale, 0, 2), array_map(function ($locale): string {
+				return Nette\Utils\Strings::substring($locale, 0, 2);
+			}, $translator->getLocalesWhitelist()), true)) {
 				return $locale;
 			}
 		}

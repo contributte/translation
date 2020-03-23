@@ -46,12 +46,6 @@ class Session implements ResolverInterface
 			return null;
 		}
 
-		if (!in_array(Nette\Utils\Strings::substring($this->sessionSection[self::$parameter], 0, 2), array_map(function ($locale): string {
-			return Nette\Utils\Strings::substring($locale, 0, 2);
-		}, $translator->availableLocales), true)) {
-			return null;
-		}
-
 		return $this->sessionSection[self::$parameter];
 	}
 
