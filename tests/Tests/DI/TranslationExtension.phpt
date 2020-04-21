@@ -22,7 +22,7 @@ class TranslationExtension extends Tests\TestAbstract
 			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
 				'translation' => [
 					'locales' => [
-						'whitelist' => ['en', 'en']
+						'whitelist' => ['en', 'en'],
 					],
 				],
 			]);
