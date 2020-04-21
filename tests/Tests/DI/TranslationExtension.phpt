@@ -19,31 +19,77 @@ class TranslationExtension extends Tests\TestAbstract
 	public function test01(): void
 	{
 		Tester\Assert::exception(function (): void {
-			$this->createContainer(['locales' => ['whitelist' => ['en', 'en']]]);
+			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+				'translation' => [
+					'locales' => [
+						'whitelist' => ['en', 'en']
+					],
+				],
+			]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Whitelist settings have not unique values.');
 		Tester\Assert::exception(function (): void {
-			$this->createContainer(['locales' => ['whitelist' => ['en'], 'default' => 'cs']]);
+			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+				'translation' => [
+					'locales' => [
+						'whitelist' => ['en'],
+						'default' => 'cs',
+					],
+				],
+			]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'If you set whitelist, default locale must be on him.');
 		Tester\Assert::exception(function (): void {
-			$this->createContainer(['localeResolvers' => [stdClass::class]]);
+			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+				'translation' => [
+					'localeResolvers' => [stdClass::class],
+				],
+			]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Resolver must implement interface "' . Contributte\Translation\LocalesResolvers\ResolverInterface::class . '".');
 		Tester\Assert::exception(function (): void {
-			$this->createContainer(['cache' => ['factory' => stdClass::class]]);
+			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+				'translation' => [
+					'cache' => [
+						'factory' => stdClass::class,
+					],
+				],
+			]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Cache factory must implement interface "' . Symfony\Component\Config\ConfigCacheFactoryInterface::class . '".');
 		Tester\Assert::exception(function (): void {
-			$this->createContainer(['loaders' => [stdClass::class]]);
+			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+				'translation' => [
+					'loaders' => [stdClass::class],
+				],
+			]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Loader must implement interface "' . Symfony\Component\Translation\Loader\LoaderInterface::class . '".');
 		Tester\Assert::exception(function (): void {
-			$this->createContainer(['dirs' => [__DIR__ . '/__no_exists__']]);
+			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+				'translation' => [
+					'dirs' => [__DIR__ . '/__no_exists__'],
+				],
+			]);
 		}, UnexpectedValueException::class);
 		Tester\Assert::exception(function (): void {
-			$this->createContainer(['logger' => true, 'localeResolvers' => []]);
+			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+				'translation' => [
+					'logger' => true,
+					'localeResolvers' => [],
+				],
+			]);
 		}, Nette\DI\MissingServiceException::class, "Service of type '" . Psr\Log\LoggerInterface::class . "' not found.");
 		Tester\Assert::exception(function (): void {
-			$this->createContainer(['logger' => stdClass::class, 'localeResolvers' => []]);
+			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+				'translation' => [
+					'logger' => stdClass::class,
+					'localeResolvers' => [],
+				],
+			]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Logger must implement interface "' . Psr\Log\LoggerInterface::class . '".');
 		Tester\Assert::exception(function (): void {
-			$this->createContainer(['logger' => 1, 'localeResolvers' => []]);
+			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+				'translation' => [
+					'logger' => 1,
+					'localeResolvers' => [],
+				],
+			]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Option "logger" must be bool for autowired or class name as string.');
 	}
 
@@ -75,7 +121,11 @@ class TranslationExtension extends Tests\TestAbstract
 
 	public function test03(): void
 	{
-		$container = $this->createContainer(['debug' => true, 'debugger' => true, 'locales' => ['whitelist' => ['en']], 'localeResolvers' => [], 'dirs' => [__DIR__ . '/../../lang']]);
+		$container = Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+			'translation' => [
+				'locales' => ['whitelist' => ['en']],
+			],
+		]);
 
 		/** @var Contributte\Translation\Tracy\Panel $panel */
 		$panel = $container->getByType(Contributte\Translation\Tracy\Panel::class);
@@ -104,25 +154,13 @@ class TranslationExtension extends Tests\TestAbstract
 
 	public function test04(): void
 	{
-		$container = $this->createContainer(['logger' => Tests\PsrLoggerMock::class, 'localeResolvers' => []], Tests\PsrLoggerMock::class);
+		$container = Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+			'translation' => [
+				'logger' => Tests\PsrLoggerMock::class,
+			],
+		]);
 
 		Tester\Assert::count(1, $container->findByType(Tests\PsrLoggerMock::class));
-	}
-
-	/**
-	 * @param string[] $config
-	 * @internal
-	 */
-	private function createContainer(array $config, ?string $key = null): Nette\DI\Container
-	{
-		$loader = new Nette\DI\ContainerLoader($this->container->getParameters()['tempDir'], true);
-
-		$class = $loader->load(function (Nette\DI\Compiler $compiler) use ($config): void {
-			$compiler->addExtension('translation', new Contributte\Translation\DI\TranslationExtension());
-			$compiler->addConfig(['parameters' => $this->container->getParameters(), 'translation' => $config]);
-		}, $key);
-
-		return new $class();
 	}
 
 }

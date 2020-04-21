@@ -14,7 +14,14 @@ class LocaleResolver extends Tests\TestAbstract
 
 	public function test01(): void
 	{
-		$container = $this->createContainer();
+		$container = Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+			'translation' => [
+				'locales' => [
+					'default' => 'cs',
+					'whitelist' => ['cs', 'en'],
+				],
+			],
+		]);
 
 		/** @var Contributte\Translation\Translator $translator */
 		$translator = $container->getByType(Nette\Localization\ITranslator::class);
@@ -30,36 +37,6 @@ class LocaleResolver extends Tests\TestAbstract
 		Tester\Assert::same('en', $localeResolver->resolve($translator));
 		$mockResolver->setLocale('sk');
 		Tester\Assert::same('cs', $localeResolver->resolve($translator));
-	}
-
-	/**
-	 * @internal
-	 */
-	private function createContainer(): Nette\DI\Container
-	{
-		$configurator = new Nette\Configurator();
-
-		$configurator->setTempDirectory($this->container->getParameters()['tempDir'])
-			->addConfig([
-				'extensions' => [
-					'translation' => Contributte\Translation\DI\TranslationExtension::class,
-				],
-				'translation' => [
-					'debug' => true,
-					'locales' => [
-						'default' => 'cs',
-						'whitelist' => ['cs', 'en'],
-					],
-					'localeResolvers' => [
-						LocaleResolverMock::class,
-					],
-					'dirs' => [
-						__DIR__ . '/../lang',
-					],
-				],
-			]);
-
-		return $configurator->createContainer();
 	}
 
 }

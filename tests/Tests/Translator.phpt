@@ -70,7 +70,7 @@ class Translator extends Tests\TestAbstract
 
 	public function test02(): void
 	{
-		$container = $this->createContainer();
+		$container = Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir']);
 
 		/** @var Contributte\Translation\Translator $translator */
 		$translator = $container->getByType(Nette\Localization\ITranslator::class);
@@ -148,7 +148,7 @@ class Translator extends Tests\TestAbstract
 
 	public function test03(): void
 	{
-		$container = $this->createContainer();
+		$container = Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir']);
 
 		/** @var Latte\Engine $latte */
 		$latte = $container->getByType(Nette\Bridges\ApplicationLatte\ILatteFactory::class)->create();
@@ -204,7 +204,13 @@ class Translator extends Tests\TestAbstract
 
 	public function test04(): void
 	{
-		$container = $this->createContainer();
+		$container = Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+			'translation' => [
+				'locales' => [
+					'whitelist' => ['en'],
+				],
+			],
+		]);
 
 		/** @var Contributte\Translation\Tracy\Panel $panel */
 		$panel = $container->getByType(Contributte\Translation\Tracy\Panel::class);
@@ -238,36 +244,6 @@ class Translator extends Tests\TestAbstract
 
 		$translator->setPsrLogger($psrLogger);
 		$translator->translate('somedomain.untranslated');
-	}
-
-	/**
-	 * @internal
-	 */
-	private function createContainer(): Nette\DI\Container
-	{
-		$configurator = new Nette\Configurator();
-
-		$configurator->setTempDirectory($this->container->getParameters()['tempDir'])
-			->addConfig([
-				'extensions' => [
-					'translation' => Contributte\Translation\DI\TranslationExtension::class,
-				],
-				'translation' => [
-					'debug' => true,
-					'locales' => [
-						'whitelist' => ['en'],
-					],
-					'localeResolvers' => [
-						LocaleResolverMock::class,
-					],
-					'dirs' => [
-						__DIR__ . '/../lang',
-						__DIR__ . '/../lang_overloading',
-					],
-				],
-			]);
-
-		return $configurator->createContainer();
 	}
 
 }
