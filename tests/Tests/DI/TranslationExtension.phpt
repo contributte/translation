@@ -16,6 +16,9 @@ $container = require __DIR__ . '/../../bootstrap.php';
 class TranslationExtension extends Tests\TestAbstract
 {
 
+	public const LANGUAGE_1 = 'en';
+	public const LANGUAGE_2 = 'en';
+
 	public function test01(): void
 	{
 		Tester\Assert::exception(function (): void {
@@ -37,6 +40,16 @@ class TranslationExtension extends Tests\TestAbstract
 				],
 			]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'If you set whitelist, default locale must be on him.');
+		Tester\Assert::noError(function (): void {
+			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+				'translation' => [
+					'locales' => [
+						'whitelist' => ['\Tests\DI\TranslationExtension::LANGUAGE_1'],
+						'default' => '\Tests\DI\TranslationExtension::LANGUAGE_2',
+					],
+				],
+			]);
+		});
 		Tester\Assert::exception(function (): void {
 			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
 				'translation' => [
