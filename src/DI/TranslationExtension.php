@@ -43,7 +43,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 				return true;
 			}),
-			'localeResolvers' => Expect::array()->default(null),
+			'localeResolvers' => Expect::array()->default('en_US'),
 			'loaders' => Expect::array()->default([
 				'neon' => Contributte\Translation\Loaders\Neon::class,
 			]),
@@ -61,10 +61,6 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 	public function loadConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
-
-		if ($this->config->locales->fallback === null) {
-			$this->config->locales->fallback = ['en_US'];// may in future versions make this parameter as required?
-		}
 
 		if ($this->config->localeResolvers === null) {
 			$this->config->localeResolvers = [
