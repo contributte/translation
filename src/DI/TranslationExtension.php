@@ -25,6 +25,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		return Expect::structure([
 			'debug' => Expect::bool($builder->parameters['debugMode']),
 			'debugger' => Expect::bool(interface_exists(Tracy\IBarPanel::class)),
+			'factory' => Expect::string()->default(null),
 			'logger' => Expect::mixed()->default(null),
 			'locales' => Expect::structure([
 				'whitelist' => Expect::array()->default(null)->assert(function (array $array): bool {
@@ -35,7 +36,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 					return true;
 				}),
 				'default' => Expect::string('en'),
-				'fallback' => Expect::array()->default(null),
+				'fallback' => Expect::array()->default(['en_US']),
 			])->assert(function (stdClass $locales): bool {
 				if ($locales->whitelist !== null && !in_array($locales->default, $locales->whitelist, true)) {
 					throw new Contributte\Translation\Exceptions\InvalidArgument('If you set whitelist, default locale must be on him.');
@@ -43,7 +44,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 				return true;
 			}),
-			'localeResolvers' => Expect::array()->default(['en_US']),
+			'localeResolvers' => Expect::array()->default(null),
 			'loaders' => Expect::array()->default([
 				'neon' => Contributte\Translation\Loaders\Neon::class,
 			]),
