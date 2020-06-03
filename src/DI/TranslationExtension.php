@@ -43,7 +43,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 				return true;
 			}),
-			'localeResolvers' => Expect::array()->default('en_US'),
+			'localeResolvers' => Expect::array()->default(['en_US']),
 			'loaders' => Expect::array()->default([
 				'neon' => Contributte\Translation\Loaders\Neon::class,
 			]),
