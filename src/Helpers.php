@@ -23,7 +23,10 @@ class Helpers
 	 */
 	public static function extractMessage(string $message): array
 	{
-		if (strpos($message, '.') !== false && strpos($message, ' ') === false) {
+		$dot = strpos($message, '.');
+		$space = strpos($message, ' ');
+
+		if ($dot !== false && ($space === false || $dot < $space)) {
 			[$domain, $message] = explode('.', $message, 2);
 
 		} else {

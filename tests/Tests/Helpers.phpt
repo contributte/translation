@@ -23,10 +23,12 @@ class Helpers extends Tests\TestAbstract
 		Tester\Assert::same(['messages', 'message'], Contributte\Translation\Helpers::extractMessage('message'));
 		Tester\Assert::same(['messages', 'message with space'], Contributte\Translation\Helpers::extractMessage('message with space'));
 		Tester\Assert::same(['domain', 'message'], Contributte\Translation\Helpers::extractMessage('domain.message'));
-		Tester\Assert::same(['messages', 'domain.message with space'], Contributte\Translation\Helpers::extractMessage('domain.message with space'));
+		Tester\Assert::same(['domain', 'message with space'], Contributte\Translation\Helpers::extractMessage('domain.message with space'));
 		Tester\Assert::same(['domain', 'long.message'], Contributte\Translation\Helpers::extractMessage('domain.long.message'));
 		Tester\Assert::same(['domain', ''], Contributte\Translation\Helpers::extractMessage('domain.'));
 		Tester\Assert::same(['', 'message'], Contributte\Translation\Helpers::extractMessage('.message'));
+		Tester\Assert::same(['domain', 'Some sentense.'], Contributte\Translation\Helpers::extractMessage('domain.Some sentense.'));
+		Tester\Assert::same(['messages', 'domain .some_sentense'], Contributte\Translation\Helpers::extractMessage('domain .some_sentense'));
 	}
 
 }

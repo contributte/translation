@@ -129,7 +129,8 @@ class Translator extends Tests\TestAbstract
 		Tester\Assert::same('missing.translation', $translator->translate('messages.missing.translation'));
 		Tester\Assert::same('', $translator->translate('messages.'));
 		Tester\Assert::same('emptyDomain', $translator->translate('.emptyDomain'));
-		Tester\Assert::same('messages.some broken message', $translator->translate('messages.some broken message'));
+		Tester\Assert::same('some broken message', $translator->translate('messages.some broken message'));
+		Tester\Assert::same('Yes, we can!', $translator->translate('another_domain.Can you translate this message?'));
 
 		$translator->addPrefix('messages');
 
@@ -139,6 +140,12 @@ class Translator extends Tests\TestAbstract
 		Tester\Assert::same('Hi Ales!', $translator->translate('hi', ['name' => 'Ales']));
 		Tester\Assert::same('Hi Ales!', $translator->translate('//messages.hi', ['name' => 'Ales']));
 		Tester\Assert::same('messages.hi', $translator->translate('messages.hi', ['name' => 'Ales']));
+
+		$translator->removePrefix();
+
+		$translator->addPrefix('another_domain');
+
+		Tester\Assert::same('Yes, we can!', $translator->translate('Can you translate this message?'));
 
 		$translator->removePrefix();
 
@@ -225,8 +232,8 @@ class Translator extends Tests\TestAbstract
 		Tester\Assert::same('en', (string) $dom->find('td[class="contributte-translation-locales-whitelist"]')[0]);
 		Tester\Assert::count(1, $dom->find('tr[class="contributte-translation-missing-translation"]'));
 		Tester\Assert::count(1, $dom->find('tr[class="contributte-translation-locale-resolvers"]'));
-		Tester\Assert::count(2, $dom->find('tr[class="contributte-translation-resources"]'));
-		Tester\Assert::count(1, $dom->find('tr[class="contributte-translation-ignored-resources"]'));
+		Tester\Assert::count(3, $dom->find('tr[class="contributte-translation-resources"]'));// lang/another_domain.en_US.neon, lang/messages.en_US.neon, lang_overloading/messages.en_US.neon
+		Tester\Assert::count(1, $dom->find('tr[class="contributte-translation-ignored-resources"]'));// lang/messages.cs_CZ.neon
 
 		$psrLogger = new class() extends Psr\Log\AbstractLogger {
 
