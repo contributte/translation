@@ -163,6 +163,22 @@ class TranslationExtension extends Tests\TestAbstract
 		Tester\Assert::count(1, $container->findByType(Tests\PsrLoggerMock::class));
 	}
 
+	public function test05(): void
+	{
+		$container = Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+			'translation' => [
+				'locales' => [
+					'fallback' => ['cs_CZ'],
+				],
+			],
+		]);
+
+		/** @var Contributte\Translation\Translator $translator */
+		$translator = $container->getByType(Nette\Localization\ITranslator::class);
+
+		Tester\Assert::same($translator->getFallbackLocales(), ['cs_CZ']);
+	}
+
 }
 
 (new TranslationExtension($container))->run();
