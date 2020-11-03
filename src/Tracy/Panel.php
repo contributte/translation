@@ -126,7 +126,7 @@ class Panel implements Tracy\IBarPanel
 
 		$panel[] = '</div>';
 
-		return count($panel) === 0 ? '' : implode($panel);
+		return implode('', $panel);
 	}
 
 	/**
