@@ -5,6 +5,7 @@ php:
     - 7.2
     - 7.3
     - 7.4
+    - 8.0snapshot
 
 before_install:
     - phpenv config-rm xdebug.ini || return 0
@@ -27,19 +28,19 @@ jobs:
               - composer run-script tests
 
         - name: Quality Assurance
-          php: 7.3
+          php: 7.4
           script:
               - composer run-script qa
 
         - name: PHPStan
-          php: 7.3
+          php: 7.4
           script:
               - composer run-script phpstan-install
               - composer run-script phpstan
 
         - name: Test Coverage
           if: branch = master AND type = push
-          php: 7.3
+          php: 7.4
           script:
               - composer run-script coverage
           after_script:
