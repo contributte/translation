@@ -54,6 +54,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 				'factory' => Expect::string(Symfony\Component\Config\ConfigCacheFactory::class),
 				'vary' => Expect::array()->default([])
 			]),
+			'translator' => Expect::scalar()->default(null)
 		]);
 	}
 
@@ -120,6 +121,18 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 		} else {
 			$factory = Contributte\Translation\Translator::class;
+		}
+
+		// Add own Translator
+		if($this->config->translator !== null){
+			$reflection = new ReflectionClass($this->config->translator);
+			if(!$reflection->isSubclassOf(Symfony\Component\Translation\Translator::class)){
+				throw new Contributte\Translation\Exceptions\InvalidArgument('Translator must extends class "'.Contributte\Translation\Translator::class.'".');
+			}
+			if(!$reflection->isSubclassOf(Contributte\Translation\DebuggerTranslator::class)){
+				$this->config->debugger = false;
+			}
+			$factory = $this->config->translator;
 		}
 
 		$translator = $builder->addDefinition($this->prefix('translator'))
