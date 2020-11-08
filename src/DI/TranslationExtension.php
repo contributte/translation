@@ -126,7 +126,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		// Add own Translator
 		if($this->config->translator !== null){
 			$reflection = new ReflectionClass($this->config->translator);
-			if(!$reflection->isSubclassOf(Symfony\Component\Translation\Translator::class)){
+			if(!$reflection->isSubclassOf(Contributte\Translation\Translator::class)){
 				throw new Contributte\Translation\Exceptions\InvalidArgument('Translator must extends class "'.Contributte\Translation\Translator::class.'".');
 			}
 			if(!$reflection->isSubclassOf(Contributte\Translation\DebuggerTranslator::class)){
