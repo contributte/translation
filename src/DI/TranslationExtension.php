@@ -54,7 +54,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 				'factory' => Expect::string(Symfony\Component\Config\ConfigCacheFactory::class),
 				'vary' => Expect::array()->default([])
 			]),
-			'translator' => Expect::scalar()->default(null)
+			'translator' => Expect::string()->default(null)
 		]);
 	}
 
