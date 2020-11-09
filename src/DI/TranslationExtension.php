@@ -122,6 +122,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			$factory = Contributte\Translation\Translator::class;
 		}
 
+		
 		$translator = $builder->addDefinition($this->prefix('translator'))
 			->setFactory($factory, ['defaultLocale' => $this->config->locales->default, 'cacheDir' => $this->config->cache->dir, 'debug' => $this->config->debug, "cacheVary" => $this->config->cache->vary])
 			->addSetup('setLocalesWhitelist', [$this->config->locales->whitelist])
