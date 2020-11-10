@@ -52,7 +52,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			'cache' => Expect::structure([
 				'dir' => Expect::string($builder->parameters['tempDir'] . '/cache/translation'),
 				'factory' => Expect::string(Symfony\Component\Config\ConfigCacheFactory::class),
-				'vary' => Expect::array()->default([])
+				'vary' => Expect::array()->default([]),
 			]),
 		]);
 	}
@@ -122,9 +122,8 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			$factory = Contributte\Translation\Translator::class;
 		}
 
-
 		$translator = $builder->addDefinition($this->prefix('translator'))
-			->setFactory($factory, ['defaultLocale' => $this->config->locales->default, 'cacheDir' => $this->config->cache->dir, 'debug' => $this->config->debug, "cacheVary" => $this->config->cache->vary])
+			->setFactory($factory, ['defaultLocale' => $this->config->locales->default, 'cacheDir' => $this->config->cache->dir, 'debug' => $this->config->debug, 'cacheVary' => $this->config->cache->vary])
 			->addSetup('setLocalesWhitelist', [$this->config->locales->whitelist])
 			->addSetup('setConfigCacheFactory', [$configCacheFactory])
 			->addSetup('setFallbackLocales', [$this->config->locales->fallback])
