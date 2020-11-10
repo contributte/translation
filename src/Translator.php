@@ -189,7 +189,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	 * @param string $format
 	 * @param mixed $resource
 	 * @param string $locale
-	 * @param string $domain
+	 * @param string|null $domain
 	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
 	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
 	 */
