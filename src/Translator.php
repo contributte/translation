@@ -52,13 +52,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	private $resourcesLocales = [];
 
 	/**
-	 * Translator constructor.
-	 *
-	 * @param LocaleResolver $localeResolver
-	 * @param FallbackResolver $fallbackResolver
-	 * @param string $defaultLocale
-	 * @param string|null $cacheDir
-	 * @param bool $debug
 	 * @param string[] $cacheVary
 	 */
 	public function __construct(LocaleResolver $localeResolver, FallbackResolver $fallbackResolver, string $defaultLocale, ?string $cacheDir = null, bool $debug = false, array $cacheVary = [])
