@@ -66,6 +66,14 @@ class Translator extends Tests\TestAbstract
 		$translator->addResource('neon', __DIR__ . '/file.neon', 'cs_CZ', 'domain');
 
 		Tester\Assert::same(['cs_CZ', 'en_US'], $translator->availableLocales);
+
+		Tester\Assert::null($translator->psrLogger);
+		$translator->setPsrLogger(new PsrLoggerMock());
+		Tester\Assert::true($translator->psrLogger instanceof PsrLoggerMock);
+
+		Tester\Assert::null($translator->tracyPanel);
+		new Contributte\Translation\Tracy\Panel($translator);
+		Tester\Assert::true($translator->tracyPanel instanceof Contributte\Translation\Tracy\Panel);
 	}
 
 	public function test02(): void
