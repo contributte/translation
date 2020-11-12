@@ -112,15 +112,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			->setFactory($this->config->cache->factory, [$this->config->debug]);
 
 		// Translator
-		if ($this->config->debug && $this->config->debugger) {
-			$factory = Contributte\Translation\DebuggerTranslator::class;
-
-		} elseif ($this->config->logger) {
-			$factory = Contributte\Translation\LoggerTranslator::class;
-
-		} else {
-			$factory = Contributte\Translation\Translator::class;
-		}
+		$factory = Contributte\Translation\Translator::class;
 
 		$translator = $builder->addDefinition($this->prefix('translator'))
 			->setFactory($factory, ['defaultLocale' => $this->config->locales->default, 'cacheDir' => $this->config->cache->dir, 'debug' => $this->config->debug, 'cacheVary' => $this->config->cache->vary])
