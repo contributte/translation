@@ -152,6 +152,9 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 		// Tracy\Panel
 		if ($this->config->debug && $this->config->debugger) {
+			if (isset($reflectionTranslatorFactory) && !$reflectionTranslatorFactory->isSubclassOf(Contributte\Translation\DebuggerTranslator::class)) {
+				throw new Contributte\Translation\Exceptions\InvalidArgument('Translator must extends class "' . Contributte\Translation\DebuggerTranslator::class . '" in debug mode.');
+			}
 			$tracyPanel = $builder->addDefinition($this->prefix('tracyPanel'))
 				->setFactory(Contributte\Translation\Tracy\Panel::class, [$translator]);
 

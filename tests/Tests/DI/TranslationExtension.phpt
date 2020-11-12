@@ -179,6 +179,18 @@ class TranslationExtension extends Tests\TestAbstract
 		Tester\Assert::same($translator->getFallbackLocales(), ['cs_CZ']);
 	}
 
+	public function test06(): void
+	{
+		Tester\Assert::exception(function (): void {
+			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+				'translation' => [
+					'locales' => ['whitelist' => ['en']],
+					'translatorFactory' => Tests\CustomTranslatorMock::class
+				],
+			]);
+		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Translator must extends class "' . Contributte\Translation\DebuggerTranslator::class . '" in debug mode.');
+	}
+
 }
 
 (new TranslationExtension($container))->run();
