@@ -185,7 +185,7 @@ class TranslationExtension extends Tests\TestAbstract
 			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
 				'translation' => [
 					'locales' => ['whitelist' => ['en']],
-					'translatorFactory' => Tests\CustomTranslatorMock::class
+					'translatorFactory' => Tests\CustomTranslatorMock::class,
 				],
 			]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Translator must extends class "' . Contributte\Translation\DebuggerTranslator::class . '" in debug mode.');
