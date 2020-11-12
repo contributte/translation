@@ -53,7 +53,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 				'dir' => Expect::string($builder->parameters['tempDir'] . '/cache/translation'),
 				'factory' => Expect::string(Symfony\Component\Config\ConfigCacheFactory::class),
 			]),
-			'translator' => Expect::string()->default(null),
+			'translatorFactory' => Expect::string()->default(null),
 		]);
 	}
 
@@ -112,7 +112,14 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			->setFactory($this->config->cache->factory, [$this->config->debug]);
 
 		// Translator
-		if ($this->config->debug && $this->config->debugger) {
+		if ($this->config->translatorFactory !== null) {
+			$reflectionTranslatorFactory = new ReflectionClass($this->config->translatorFactory);
+			if (!$reflectionTranslatorFactory->isSubclassOf(Contributte\Translation\Translator::class)) {
+				throw new Contributte\Translation\Exceptions\InvalidArgument('Translator must extends class "' . Contributte\Translation\Translator::class . '".');
+			}
+			$factory = $this->config->translatorFactory;
+
+		} elseif ($this->config->debug && $this->config->debugger) {
 			$factory = Contributte\Translation\DebuggerTranslator::class;
 
 		} elseif ($this->config->logger) {
@@ -120,18 +127,6 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 		} else {
 			$factory = Contributte\Translation\Translator::class;
-		}
-
-		// Add own Translator
-		if ($this->config->translator !== null) {
-			$reflection = new ReflectionClass($this->config->translator);
-			if (!$reflection->isSubclassOf(Contributte\Translation\Translator::class)) {
-				throw new Contributte\Translation\Exceptions\InvalidArgument('Translator must extends class "' . Contributte\Translation\Translator::class . '".');
-			}
-			if (!$reflection->isSubclassOf(Contributte\Translation\DebuggerTranslator::class)) {
-				$this->config->debugger = false;
-			}
-			$factory = $this->config->translator;
 		}
 
 		$translator = $builder->addDefinition($this->prefix('translator'))
