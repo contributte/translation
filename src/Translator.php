@@ -4,6 +4,7 @@ namespace Contributte\Translation;
 
 use Contributte;
 use Nette;
+use Psr;
 use Symfony;
 
 /**
@@ -18,6 +19,8 @@ use Symfony;
  * @property-read string $formattedPrefix
  * @property-read string[] $availableLocales
  * @property      string|null $locale
+ * @property      Psr\Log\LoggerInterface|null $psrLogger
+ * @property      Contributte\Translation\Tracy\Panel|null $tracyPanel
  */
 class Translator extends Symfony\Component\Translation\Translator implements Nette\Localization\ITranslator
 {
@@ -50,6 +53,12 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 	/** @var bool[] @internal */
 	private $resourcesLocales = [];
+
+	/** @var Psr\Log\LoggerInterface|null */
+	private $psrLogger;
+
+	/** @var Contributte\Translation\Tracy\Panel|null */
+	private $tracyPanel;
 
 	/**
 	 * @param string[] $cacheVary
@@ -231,6 +240,28 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		$this->fallbackResolver->setFallbackLocales($locales);
 	}
 
+	public function getPsrLogger(): ?Psr\Log\LoggerInterface
+	{
+		return $this->psrLogger;
+	}
+
+	public function setPsrLogger(?Psr\Log\LoggerInterface $psrLogger): self
+	{
+		$this->psrLogger = $psrLogger;
+		return $this;
+	}
+
+	public function getTracyPanel(): ?Tracy\Panel
+	{
+		return $this->tracyPanel;
+	}
+
+	public function setTracyPanel(?Tracy\Panel $tracyPanel): self
+	{
+		$this->tracyPanel = $tracyPanel;
+		return $this;
+	}
+
 	/**
 	 * @param mixed $message
 	 * @param mixed ...$parameters
@@ -289,6 +320,42 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		}
 
 		return $this->trans($message, $params, $domain, $locale);
+	}
+
+	/**
+	 * @param string|null $id
+	 * @param mixed[] $parameters
+	 * @param string|null $domain
+	 * @param string|null $locale
+	 * @return string
+	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
+	 */
+	public function trans($id, array $parameters = [], $domain = null, $locale = null)
+	{
+		if ($domain === null) {
+			$domain = 'messages';
+		}
+
+		if ($id !== null) {
+			if ($this->psrLogger !== null) {
+				if (!$this->getCatalogue()->has($id, $domain)) {
+					$this->psrLogger->notice('Missing translation', [
+						'id' => $id,
+						'domain' => $domain,
+						'locale' => $locale ?? $this->getLocale(),
+					]);
+				}
+			}
+
+			if ($this->tracyPanel !== null) {
+				if (!$this->getCatalogue()->has($id, $domain)) {
+					$this->tracyPanel->addMissingTranslation($id, $domain);
+				}
+			}
+		}
+
+		return parent::trans($id, $parameters, $domain, $locale);
 	}
 
 	/**
