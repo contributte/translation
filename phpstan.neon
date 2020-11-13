@@ -8,44 +8,39 @@ parameters:
 	level: max
 	paths:
 		- src
+	excludes_analyse:
+		- src/compatibility.php
 	ignoreErrors:
-		# src\Loaders\Doctrine.php
 		-
 			count: 2
 			message: '#^Variable property access on T\.$#'
 			path: src/Loaders/Doctrine.php
 
-		# src\Tracy\Panel.php
 		-
 			count: 1
 			message: '#^Only numeric types are allowed in post-increment, int\|string given\.$#'
 			path: src/Tracy/Panel.php
 
-		# src\Translator.php
 		-
 			count: 1
 			message: '#^Method Contributte\\Translation\\Translator\:\:addResource\(\) has no return typehint specified\.$#'
 			path: src/Translator.php
 
-		# src\Translator.php
 		-
 			count: 1
 			message: '#^Method Contributte\\Translation\\Translator\:\:setLocale\(\) has no return typehint specified\.$#'
 			path: src/Translator.php
 
-		# src\Translator.php
 		-
 			count: 1
 			message: '#^Method Contributte\\Translation\\Translator\:\:setFallbackLocales\(\) has no return typehint specified\.$#'
 			path: src/Translator.php
 
-		# src\Translator.php
 		-
 			count: 1
 			message: '#^Method Contributte\\Translation\\Translator\:\:computeFallbackLocales\(\) has no return typehint specified\.$#'
 			path: src/Translator.php
 
-		# src\Translator.php
 		-
 			count: 1
 			message: '#^Method Contributte\\Translation\\Translator\:\:computeFallbackLocales\(\) has parameter \$locale with no typehint specified\.$#'

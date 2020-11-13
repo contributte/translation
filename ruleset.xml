@@ -13,4 +13,5 @@
 			</property>
 		</properties>
 	</rule>
+	<exclude-pattern>./src/compatibility.php</exclude-pattern>
 </ruleset>
