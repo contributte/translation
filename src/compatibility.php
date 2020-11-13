@@ -15,7 +15,7 @@ if (false) {
 }
 
 if (false) {
-	
+
 	/** @deprecated use Contributte\Translation\DebuggerTranslator */
 	class DebuggerTranslator
 	{
