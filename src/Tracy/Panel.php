@@ -13,7 +13,7 @@ class Panel implements Tracy\IBarPanel
 
 	use Nette\SmartObject;
 
-	/** @var Contributte\Translation\DebuggerTranslator */
+	/** @var Contributte\Translation\Translator */
 	private $translator;
 
 	/** @var (string|int)[][] */
