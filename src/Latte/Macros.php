@@ -41,8 +41,9 @@ class Macros extends Latte\Macros\MacroSet
 			}
 
 			return $writer->write('$_fi = new LR\FilterInfo(%var); echo %modifyContent($this->filters->filterContent("translate", $_fi, %raw))', $node->context[0], $value);
+		}
 
-		} elseif ($node->empty = ($node->args !== '')) {
+		if ($node->empty = ($node->args !== '')) {
 			// return $writer->write('echo %modify(($this->filters->translate)(%node.args))');
 
 			if (Contributte\Translation\Helpers::macroWithoutParameters($node)) {
@@ -67,15 +68,14 @@ class Macros extends Latte\Macros\MacroSet
 				return $writer->write('$this->global->translator->prefix = $this->global->translator->prefixTemp;');
 			}
 
-		} else {
-			if ($node->args === '') {
-				throw new Latte\CompileException('Expected message prefix, none given.');
-			}
-
-			return $writer->write('$this->global->translator->prefix = [%node.word];');
+			return null;
 		}
 
-		return null;
+		if ($node->args === '') {
+			throw new Latte\CompileException('Expected message prefix, none given.');
+		}
+
+		return $writer->write('$this->global->translator->prefix = [%node.word];');
 	}
 
 }

@@ -33,9 +33,11 @@ class Header implements ResolverInterface
 		foreach ($translator->availableLocales as $v1) {
 			$langs[] = $v1;
 
-			if (Nette\Utils\Strings::length($v1) > 2) {
-				$langs[] = Nette\Utils\Strings::substring($v1, 0, 2);// en_US => en
+			if (Nette\Utils\Strings::length($v1) < 3) {
+				continue;
 			}
+
+			$langs[] = Nette\Utils\Strings::substring($v1, 0, 2);// en_US => en
 		}
 
 		if (count($langs) === 0) {
