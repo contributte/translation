@@ -181,14 +181,17 @@ class TranslationExtension extends Tests\TestAbstract
 
 	public function test06(): void
 	{
-		Tester\Assert::exception(function (): void {
-			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
-				'translation' => [
-					'locales' => ['whitelist' => ['en']],
-					'translatorFactory' => Tests\CustomTranslatorMock::class,
-				],
-			]);
-		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Translator must extends class "' . Contributte\Translation\DebuggerTranslator::class . '" in debug mode.');
+		$container = Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+			'translation' => [
+				'locales' => ['whitelist' => ['en']],
+				'translatorFactory' => Tests\CustomTranslatorMock::class,
+			],
+		]);
+		
+		/** @var Contributte\Translation\Translator $translator */
+		$translator = $container->getByType(Nette\Localization\ITranslator::class);
+
+		Tester\Assert::type(Contributte\Translation\Translator::class, $translator);
 	}
 
 }
