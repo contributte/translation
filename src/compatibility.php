@@ -3,9 +3,11 @@
 namespace Contributte\Translation;
 
 if (false) {
+
 	/** @deprecated use Contributte\Translation\LoggerTranslator */
 	class LoggerTranslator
 	{
+
 	}
 
 } elseif (!class_exists(LoggerTranslator::class)) {
@@ -13,9 +15,11 @@ if (false) {
 }
 
 if (false) {
+	
 	/** @deprecated use Contributte\Translation\DebuggerTranslator */
 	class DebuggerTranslator
 	{
+
 	}
 
 } elseif (!class_exists(DebuggerTranslator::class)) {
