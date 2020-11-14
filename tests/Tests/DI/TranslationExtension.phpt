@@ -187,7 +187,7 @@ class TranslationExtension extends Tests\TestAbstract
 				'translatorFactory' => Tests\CustomTranslatorMock::class,
 			],
 		]);
-		
+
 		/** @var Contributte\Translation\Translator $translator */
 		$translator = $container->getByType(Nette\Localization\ITranslator::class);
 
