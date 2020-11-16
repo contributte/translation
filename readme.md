@@ -3,7 +3,7 @@ Symfony/Translation integration for [Nette Framework](https://nette.org).
 
 -----
 
-[![Build Status](https://travis-ci.org/contributte/translation.svg?branch=master)](https://travis-ci.org/contributte/translation)
+[![Build Status](https://github.com/contributte/translation/workflows/build/badge.svg)](https://github.com/contributte/translation/actions?query=workflow%3Abuild)
 [![Code coverage](https://coveralls.io/repos/github/contributte/translation/badge.svg?branch=master)](https://coveralls.io/github/contributte/translation?branch=master)
 [![Licence](https://img.shields.io/packagist/l/contributte/translation.svg?style=flat-square)](https://packagist.org/packages/contributte/translation)
 [![Downloads this Month](https://img.shields.io/packagist/dm/contributte/translation.svg?style=flat-square)](https://packagist.org/packages/contributte/translation)
