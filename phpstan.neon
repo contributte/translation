@@ -1,8 +1,8 @@
 includes:
-	- %rootDir%/../phpstan-deprecation-rules/rules.neon
-	- %rootDir%/../phpstan-nette/extension.neon
-	- %rootDir%/../phpstan-nette/rules.neon
-	- %rootDir%/../phpstan-strict-rules/rules.neon
+	- vendor/phpstan/phpstan-deprecation-rules/rules.neon
+	- vendor/phpstan/phpstan-nette/extension.neon
+	- vendor/phpstan/phpstan-nette/rules.neon
+	- vendor/phpstan/phpstan-strict-rules/rules.neon
 
 parameters:
 	level: max

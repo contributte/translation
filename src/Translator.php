@@ -163,7 +163,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 			if ($value === null) {
 				throw new Exceptions\InvalidArgument('Can not remove empty prefix.');
 			}
-
 		} else {
 			$key = array_search($string, array_reverse($this->prefix), true);
 
@@ -270,11 +269,13 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	{
 		if ($message === null) {
 			return '';
+		}
 
-		} elseif ($message instanceof Wrappers\NotTranslate) {
+		if ($message instanceof Wrappers\NotTranslate) {
 			return $message->message;
+		}
 
-		} elseif ($message instanceof Wrappers\Message) {
+		if ($message instanceof Wrappers\Message) {
 			$parameters = $message->parameters;
 			$message = $message->message;
 
@@ -313,6 +314,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		foreach ($params as $k1 => $v1) {
 			$tmp['%' . $k1 . '%'] = $v1;
 		}
+
 		$params = $tmp;
 
 		if (Nette\Utils\Validators::isNumeric($count)) {
