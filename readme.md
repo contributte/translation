@@ -25,7 +25,7 @@ Symfony/Translation integration for [Nette Framework](https://nette.org).
 	- [Latte](.docs/README.md#latte)
 	- [Neon](.docs/README.md#neon)
 	- [Parameters in messages](.docs/README.md#parameters-in-messages)
-- [Loaders](.docs/README.md#loaders)	
+- [Loaders](.docs/README.md#loaders)
 	- [File loaders](.docs/README.md#file-loaders)
 	- [Database loaders](.docs/README.md#database-loaders)
 		- [Doctrine](.docs/README.md#doctrine)
@@ -37,8 +37,8 @@ Symfony/Translation integration for [Nette Framework](https://nette.org).
 ## Versions
 | State       | Version   | Branch   | PHP            | Symfony      |
 |-------------|-----------|----------|----------------|--------------|
-| development | `^0.8.0`  | `master` | `^7.1.3\|^8.0` | `^4.4\|^5.0` |
-| stable      | `^0.7.0`  | `master` | `^7.1.3`       | `^4.4\|^5.0` |
+| development | `^0.9.0`  | `master` | `^7.1.3\|^8.0` | `^4.4\|^5.0` |
+| stable      | `^0.8.0`  | `master` | `^7.1.3\|^8.0` | `^4.4\|^5.0` |
 
 ## Prolog
 Easy and clear translations for your multi-language applications.
