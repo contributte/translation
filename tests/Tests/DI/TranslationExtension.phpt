@@ -91,6 +91,13 @@ class TranslationExtension extends Tests\TestAbstract
 				],
 			]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Option "logger" must be bool for autowired or class name as string.');
+		Tester\Assert::exception(function (): void {
+			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+				'translation' => [
+					'translatorFactory' => stdClass::class,
+				],
+			]);
+		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Translator must extends class "' . Contributte\Translation\Translator::class . '".');
 	}
 
 	public function test02(): void
@@ -191,7 +198,7 @@ class TranslationExtension extends Tests\TestAbstract
 		/** @var Contributte\Translation\Translator $translator */
 		$translator = $container->getByType(Nette\Localization\ITranslator::class);
 
-		Tester\Assert::type(Contributte\Translation\Translator::class, $translator);
+		Tester\Assert::type(Tests\CustomTranslatorMock::class, $translator);
 	}
 
 }
