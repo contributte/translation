@@ -38,7 +38,7 @@ class Macros extends Latte\Macros\MacroSet
 				$value = 'ob_get_clean()';
 			}
 
-			if (Latte\Engine::VERSION_ID < 20900) {
+			if (!defined(Latte\Engine::class . '::VERSION_ID') || Latte\Engine::VERSION_ID < 20900) {
 				return $writer->write('$_fi = new LR\FilterInfo(%var); echo %modifyContent($this->filters->filterContent("translate", $_fi, %raw))', $node->context[0], $value);
 			}
 
