@@ -48,5 +48,10 @@ parameters:
 
 		-
 			count: 1
-			message: '~^Method Contributte\\Translation\\Translator::setFallbackLocales\(\) has parameter \$locales with no value type specified in iterable type array\.$~'
+			message: '#^Method Contributte\\Translation\\Translator::setFallbackLocales\(\) has parameter \$locales with no value type specified in iterable type array\.$#'
+			path: 'src/Translator.php'
+
+		-
+			count: 1
+			message: '#^Comparison operation "<" between 20900 and 20900 is always false\.$#'
 			path: 'src/Translator.php'
