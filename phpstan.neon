@@ -53,5 +53,5 @@ parameters:
 
 		-
 			count: 1
-			message: '#^Comparison operation "<" between 20900 and 20900 is always false\.$#'
+			message: '#^Comparison operation "\<" between 20900 and 20900 is always false\.$#'
 			path: 'src/Translator.php'
