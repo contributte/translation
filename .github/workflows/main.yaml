@@ -238,7 +238,6 @@ jobs:
           php-version: "${{ matrix.php-version }}"
           extensions: "${{ env.extensions }}"
           tools: "composer:${{ env.composer-version }}"
-          ini-values: "memory_limit=256M"
 
       - name: "Setup problem matchers for PHP"
         run: 'echo "::add-matcher::${{ runner.tool_cache }}/php.json"'
@@ -267,4 +266,4 @@ jobs:
           COVERALLS_REPO_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         run: |
           wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.4.2/php-coveralls.phar
-          php php-coveralls.phar --verbose --config tests/.coveralls.yml
+          php -d memory_limit=256 php-coveralls.phar --verbose --config tests/.coveralls.yml
