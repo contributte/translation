@@ -87,6 +87,7 @@ class Translator extends Tests\TestAbstract
 			$translator->translate(new stdClass());
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Message must be string, object given.');
 		Tester\Assert::same('', $translator->translate(null));
+		Tester\Assert::same('', $translator->translate(''));
 		Tester\Assert::same('0', $translator->translate(0));
 		Tester\Assert::same('1', $translator->translate(1));
 		Tester\Assert::same('Not translate!', $translator->translate(new Contributte\Translation\Wrappers\NotTranslate('Not translate!')));

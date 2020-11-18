@@ -267,7 +267,7 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	 */
 	public function translate($message, ...$parameters): string
 	{
-		if ($message === null) {
+		if ($message === null || $message === '') {
 			return '';
 		}
 
