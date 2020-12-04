@@ -36,11 +36,4 @@ class Helpers
 		return [$domain, $message];
 	}
 
-	public static function macroWithoutParameters(Latte\MacroNode $node): bool
-	{
-		$result = Nette\Utils\Strings::trim($node->tokenizer->joinUntil(',')) === Nette\Utils\Strings::trim($node->args);
-		$node->tokenizer->reset();
-		return $result;
-	}
-
 }
