@@ -46,10 +46,6 @@ class Macros extends Latte\Macros\MacroSet
 		}
 
 		if ($node->empty = ($node->args !== '')) {
-			if (Contributte\Translation\Helpers::macroWithoutParameters($node)) {
-				return $writer->write('echo %modify(call_user_func($this->filters->translate, %node.word))');
-			}
-
 			return $writer->write('echo %modify(call_user_func($this->filters->translate, %node.word, %node.args))');
 		}
 
