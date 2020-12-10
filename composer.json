@@ -47,7 +47,8 @@
   "autoload": {
     "psr-4": {
       "Contributte\\Translation\\": "src"
-    }
+    },
+    "classmap": ["src/compatibility.php"]
   },
   "autoload-dev": {
     "psr-4": {
