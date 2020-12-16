@@ -278,7 +278,10 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		if ($message instanceof Wrappers\Message) {
 			$parameters = $message->parameters;
 			$message = $message->message;
-
+		} elseif ($message instanceof Symfony\Component\Translation\TranslatableMessage) {
+			$parameters = $message->getParameters();
+			$message = $message->getMessage();
+			// it would be nice to respect $message->getDomain()
 		} elseif (is_int($message)) {// float type can be confused for dot inside
 			$message = (string) $message;
 		}
