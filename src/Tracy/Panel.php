@@ -148,9 +148,7 @@ class Panel implements Tracy\IBarPanel
 			}
 		}
 
-		$string .= '</table>';
-
-		return $string;
+		return $string . '</table>';
 	}
 
 	public function addMissingTranslation(string $id, string $domain): self
