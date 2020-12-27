@@ -52,6 +52,16 @@ parameters:
 			path: 'src/Translator.php'
 
 		-
+			count: 2
+			message: '#^Comparison operation "\<" between \d+ and \d+ is always false\.$#'
+			path: 'src/Latte/Macros.php'
+
+		-
 			count: 1
-			message: '#^Comparison operation "\<" between \d+ and 20900 is always false\.$#'
+			message: '#^Comparison operation "\>=" between \d+ and \d+ is always true\.$#'
+			path: 'src/Latte/Macros.php'
+
+		-
+			count: 1
+			message: '#^Result of && is always false\.$#'
 			path: 'src/Latte/Macros.php'
