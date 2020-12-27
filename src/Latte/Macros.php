@@ -40,9 +40,12 @@ class Macros extends Latte\Macros\MacroSet
 
 			if (!defined(Latte\Engine::class . '::VERSION_ID') || Latte\Engine::VERSION_ID < 20900) {
 				return $writer->write('$_fi = new LR\FilterInfo(%var); echo %modifyContent($this->filters->filterContent("translate", $_fi, %raw))', $node->context[0], $value);
+
+			} elseif (Latte\Engine::VERSION_ID >= 20900 && Latte\Engine::VERSION_ID < 20902) {
+				return $writer->write('$__fi = new LR\FilterInfo(%var); echo %modifyContent($this->filters->filterContent("translate", $__fi, %raw))', $node->context[0], $value);
 			}
 
-			return $writer->write('$__fi = new LR\FilterInfo(%var); echo %modifyContent($this->filters->filterContent("translate", $__fi, %raw))', $node->context[0], $value);
+			return $writer->write('$ʟ_fi = new LR\FilterInfo(%var); echo %modifyContent($this->filters->filterContent("translate", $ʟ_fi, %raw))', $node->context[0], $value);
 		}
 
 		if ($node->empty = ($node->args !== '')) {
