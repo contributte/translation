@@ -52,7 +52,7 @@ parameters:
 			path: 'src/Translator.php'
 
 		-
-			count: 1
+			count: 2
 			message: '#^Comparison operation "\<" between \d+ and \d+ is always false\.$#'
 			path: 'src/Latte/Macros.php'
 
