@@ -3,6 +3,7 @@
 ## Content
 - [Setup](README.md#setup)
 - [Configuration](README.md#configuration)
+	- [Migration](README.md#migration)
 	- [Locale resolvers](#locale-resolvers)
 - [Examples](README.md#examples)
 	- [Presenter](#presenter)
@@ -46,6 +47,15 @@ translation:
         fallback: [en]
     dirs:
         - %appDir%/lang
+```
+
+### Migration
+
+If you're migrating from other extension like Kdyby\Translation, you should be able to make the switch without any major changes to your existing code. In addition to the steps above, you just have to change your import statements and you're all set. So if you're coming from Kdyby\Translation, you'd do this (use the "Replace All" feature if your IDE has it):
+
+```diff
+- use \Kdyby\Translation\Translator;
++ use \Contributte\Translation\Translator;
 ```
 
 ### Locale resolvers
