@@ -187,11 +187,6 @@ jobs:
           extensions: "${{ env.extensions }}"
           tools: "composer:${{ env.composer-version }}"
 
-      - name: 'Ping DB'
-        shell: bash
-        run: |
-          mysql --host=127.0.0.1 --port=3306 -uroot -p1234 -e "SET GLOBAL sql_mode = ''"
-
       - name: "Setup problem matchers for PHP"
         run: 'echo "::add-matcher::${{ runner.tool_cache }}/php.json"'
 
