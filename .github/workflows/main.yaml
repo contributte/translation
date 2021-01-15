@@ -144,11 +144,11 @@ jobs:
           MYSQL_DATABASE: "test"
           MYSQL_ROOT_PASSWORD: "1234"
         options:
-          "--mount type=tmpfs,destination=/var/lib/mysql"
-          '--health-cmd="mysqladmin ping"'
-          "--health-interval=5s"
-          "--health-timeout=2s"
-          "--health-retries=3"
+          --mount type=tmpfs,destination=/var/lib/mysql
+          --health-cmd="mysqladmin ping"
+          --health-interval=5s
+          --health-timeout=2s
+          --health-retries=3
 
     strategy:
       matrix:
