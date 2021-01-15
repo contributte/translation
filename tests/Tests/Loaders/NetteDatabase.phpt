@@ -18,7 +18,7 @@ class NetteDatabase extends Tests\TestAbstract
 			$this->container->getParameters()['tempDir'],
 			[
 				'database' => [
-					'dsn' => 'mysql:host=127.0.0.1;dbname=test',
+					'dsn' => 'mysql:host=127.0.0.1;port=13306;dbname=test',
 					'user' => 'root',
 					'password' => '1234',
 				],
