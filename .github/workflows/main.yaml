@@ -51,7 +51,7 @@ jobs:
         with:
           php-version: "${{ matrix.php-version }}"
           extensions: "${{ env.extensions }}"
-          tools: "composer:${{ env.composer-version }} "
+          tools: "composer:${{ env.composer-version }}"
 
       - name: "Setup problem matchers for PHP"
         run: 'echo "::add-matcher::${{ runner.tool_cache }}/php.json"'
@@ -110,7 +110,7 @@ jobs:
         with:
           php-version: "${{ matrix.php-version }}"
           extensions: "${{ env.extensions }}"
-          tools: "composer:${{ env.composer-version }} "
+          tools: "composer:${{ env.composer-version }}"
 
       - name: "Setup problem matchers for PHP"
         run: 'echo "::add-matcher::${{ runner.tool_cache }}/php.json"'
@@ -135,6 +135,20 @@ jobs:
   tests:
     name: "Tests"
     runs-on: "${{ matrix.operating-system }}"
+    services:
+      mariadb:
+        image: mariadb:10.4
+        ports:
+          - 13306:3306
+        env:
+          MYSQL_DATABASE: "test"
+          MYSQL_ROOT_PASSWORD: "1234"
+        options:
+          --mount type=tmpfs,destination=/var/lib/mysql
+          --health-cmd="mysqladmin ping"
+          --health-interval=5s
+          --health-timeout=2s
+          --health-retries=3
 
     strategy:
       matrix:
@@ -171,7 +185,7 @@ jobs:
         with:
           php-version: "${{ matrix.php-version }}"
           extensions: "${{ env.extensions }}"
-          tools: "composer:${{ env.composer-version }} "
+          tools: "composer:${{ env.composer-version }}"
 
       - name: "Setup problem matchers for PHP"
         run: 'echo "::add-matcher::${{ runner.tool_cache }}/php.json"'
