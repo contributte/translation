@@ -213,6 +213,20 @@ jobs:
   tests-code-coverage:
     name: "Tests with code coverage"
     runs-on: "${{ matrix.operating-system }}"
+    services:
+      mariadb:
+        image: "mariadb:10.4"
+        ports:
+          - "13306:3306"
+        env:
+          MYSQL_DATABASE: "test"
+          MYSQL_ROOT_PASSWORD: "1234"
+        options:
+          --mount type=tmpfs,destination=/var/lib/mysql
+          --health-cmd="mysqladmin ping"
+          --health-interval=5s
+          --health-timeout=2s
+          --health-retries=3
 
     strategy:
       matrix:
