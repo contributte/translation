@@ -4,7 +4,6 @@ namespace Tests\Loaders;
 
 use Contributte;
 use Nette;
-use Symfony;
 use Tester;
 use Tests;
 
@@ -20,7 +19,7 @@ class NetteDatabase extends Tests\TestAbstract
 			[
 				'database' => [
 					'dsn' => 'mysql:host=127.0.0.1;dbname=test',
-					'user' =>  'root',
+					'user' => 'root',
 					'password' => '1234',
 				],
 				'translation' => [
