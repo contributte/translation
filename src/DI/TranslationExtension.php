@@ -112,6 +112,12 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		$configCacheFactory = $builder->addDefinition($this->prefix('configCacheFactory'))
 			->setFactory($this->config->cache->factory, [$this->config->debug]);
 
+		$autowired = [
+			Nette\Localization\ITranslator::class,
+			Symfony\Contracts\Translation\TranslatorInterface::class,
+			Contributte\Translation\Translator::class,
+		];
+
 		// Translator
 		if ($this->config->translatorFactory !== null) {
 			$reflectionTranslatorFactory = new ReflectionClass($this->config->translatorFactory);
@@ -120,7 +126,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 				throw new Contributte\Translation\Exceptions\InvalidArgument('Translator must extends class "' . Contributte\Translation\Translator::class . '".');
 			}
 
-			$factory = $this->config->translatorFactory;
+			$autowired[] = $factory = $this->config->translatorFactory;
 
 		} else {
 			$factory = Contributte\Translation\Translator::class;
@@ -131,7 +137,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			->addSetup('setLocalesWhitelist', [$this->config->locales->whitelist])
 			->addSetup('setConfigCacheFactory', [$configCacheFactory])
 			->addSetup('setFallbackLocales', [$this->config->locales->fallback])
-			->setAutowired([Nette\Localization\ITranslator::class, Symfony\Contracts\Translation\TranslatorInterface::class]);
+			->setAutowired($autowired);
 
 		// Loaders
 		foreach ($this->config->loaders as $k1 => $v1) {
