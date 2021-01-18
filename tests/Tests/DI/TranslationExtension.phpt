@@ -157,6 +157,9 @@ class TranslationExtension extends Tests\TestAbstract
 
 		$symfonyTranslator = $container->getByType(Symfony\Contracts\Translation\TranslatorInterface::class);
 		Tester\Assert::same($translator, $symfonyTranslator);
+
+		$contributteTranslator = $container->getByType(Contributte\Translation\Translator::class);
+		Tester\Assert::same($translator, $contributteTranslator);
 	}
 
 	public function test04(): void
