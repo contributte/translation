@@ -30,6 +30,7 @@ class Translator extends Tests\TestAbstract
 		Tester\Assert::same('', $translator->getFormattedPrefix());
 		Tester\Assert::same([], $translator->getAvailableLocales());
 		Tester\Assert::same('en', $translator->getLocale());
+		Tester\Assert::true($translator->returnOriginalMessage);
 
 		$translator->setLocalesWhitelist(['en', 'cs']);
 
@@ -135,10 +136,31 @@ class Translator extends Tests\TestAbstract
 		Tester\Assert::same('There are 5.9 apples', $translator->translate('messages.apples', ['count' => 5.9]));
 		Tester\Assert::same('Depth message', $translator->translate('messages.depth.message'));
 		Tester\Assert::same('Overloaded message', $translator->translate('messages.overloading.message'));
+
+		$translator->returnOriginalMessage = false;
 		Tester\Assert::same('missing.translation', $translator->translate('messages.missing.translation'));
+
+		$translator->returnOriginalMessage = true;
+		Tester\Assert::same('messages.missing.translation', $translator->translate('messages.missing.translation'));
+
+		$translator->returnOriginalMessage = false;
 		Tester\Assert::same('', $translator->translate('messages.'));
+
+		$translator->returnOriginalMessage = true;
+		Tester\Assert::same('messages.', $translator->translate('messages.'));
+
+		$translator->returnOriginalMessage = false;
 		Tester\Assert::same('emptyDomain', $translator->translate('.emptyDomain'));
+
+		$translator->returnOriginalMessage = true;
+		Tester\Assert::same('.emptyDomain', $translator->translate('.emptyDomain'));
+
+		$translator->returnOriginalMessage = false;
 		Tester\Assert::same('some broken message', $translator->translate('messages.some broken message'));
+
+		$translator->returnOriginalMessage = true;
+		Tester\Assert::same('messages.some broken message', $translator->translate('messages.some broken message'));
+
 		Tester\Assert::same('Yes, we can!', $translator->translate('another_domain.Can you translate this message?'));
 
 		$translator->addPrefix('messages');
@@ -168,6 +190,9 @@ class Translator extends Tests\TestAbstract
 
 		/** @var Latte\Engine $latte */
 		$latte = $container->getByType(Nette\Bridges\ApplicationLatte\ILatteFactory::class)->create();
+
+		/** @var Contributte\Translation\Translator $translator */
+		$translator = $container->getByType(Nette\Localization\ITranslator::class);
 
 		Tester\Assert::same('Hello', $latte->renderToString(Tester\FileMock::create('{_messages.hello}')));
 		Tester\Assert::same('Hello', $latte->renderToString(Tester\FileMock::create('{_}messages.hello{/_}')));
@@ -207,8 +232,17 @@ class Translator extends Tests\TestAbstract
 
 		Tester\Assert::same('Depth message', $latte->renderToString(Tester\FileMock::create('{_messages.depth.message}')));
 
+		$translator->returnOriginalMessage = false;
 		Tester\Assert::same('missing.translation', $latte->renderToString(Tester\FileMock::create('{_messages.missing.translation}')));
+
+		$translator->returnOriginalMessage = true;
+		Tester\Assert::same('messages.missing.translation', $latte->renderToString(Tester\FileMock::create('{_messages.missing.translation}')));
+
+		$translator->returnOriginalMessage = false;
 		Tester\Assert::same('missing.translation', $latte->renderToString(Tester\FileMock::create('{php $message = "messages.missing.translation"}{$message|translate}')));
+
+		$translator->returnOriginalMessage = true;
+		Tester\Assert::same('messages.missing.translation', $latte->renderToString(Tester\FileMock::create('{php $message = "messages.missing.translation"}{$message|translate}')));
 
 		Tester\Assert::same('Depth message', $latte->renderToString(Tester\FileMock::create('{translator messages}{_depth.message}{/translator}')));
 		Tester\Assert::same('Very very depth message', $latte->renderToString(Tester\FileMock::create('{translator messages}{translator messages.very.very.depth}{_message}{/translator}{/translator}')));

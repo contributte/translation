@@ -55,6 +55,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 				'vary' => Expect::array()->default([]),
 			]),
 			'translatorFactory' => Expect::string()->default(null),
+			'returnOriginalMessage' => Expect::bool()->default(false),
 		]);
 	}
 
@@ -131,6 +132,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			->addSetup('setLocalesWhitelist', [$this->config->locales->whitelist])
 			->addSetup('setConfigCacheFactory', [$configCacheFactory])
 			->addSetup('setFallbackLocales', [$this->config->locales->fallback])
+			->addSetup('$returnOriginalMessage', [$this->config->returnOriginalMessage])
 			->setAutowired([Nette\Localization\ITranslator::class, Symfony\Contracts\Translation\TranslatorInterface::class]);
 
 		// Loaders

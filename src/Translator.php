@@ -25,6 +25,9 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/** @var bool */
 	private $debug;
 
+	/** @var bool */
+	public $returnOriginalMessage = true;
+
 	/** @var string[]|null */
 	private $localesWhitelist;
 
@@ -270,6 +273,8 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 			throw new Exceptions\InvalidArgument('Message must be string, ' . gettype($message) . ' given.');
 		}
 
+		$originalMessage = $message;
+
 		$count = array_key_exists(0, $parameters) ? $parameters[0] : null;
 		$params = array_key_exists(1, $parameters) ? $parameters[1] : [];
 		$domain = array_key_exists(2, $parameters) ? $parameters[2] : null;
@@ -304,7 +309,15 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 			$params += ['%count%' => $count];
 		}
 
-		return $this->trans($message, $params, $domain, $locale);
+		$translated = $this->trans($message, $params, $domain, $locale);
+
+		if ($this->returnOriginalMessage) {
+			if ($domain . '.' . $translated === $originalMessage) {
+				return $originalMessage;
+			}
+		}
+
+		return $translated;
 	}
 
 	/**
