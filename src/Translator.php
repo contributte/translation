@@ -239,6 +239,8 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	 */
 	public function translate($message, $count = null, $params = [], $domain = null, $locale = null)
 	{
+		$originalMessage = $message;
+
 		if ($message === null) {
 			return '';
 
@@ -290,8 +292,8 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 
 		$translated = $this->trans($message, $params, $domain, $locale);
 
-		if ($translated === $message) {
-			return $domain . '.' . $message;
+		if (($domain . '.' . $translated) === $originalMessage) {
+			return $originalMessage;
 		}
 
 		return $translated;
