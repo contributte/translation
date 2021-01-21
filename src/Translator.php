@@ -288,7 +288,13 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 			$params += ['%count%' => $count];
 		}
 
-		return $this->trans($message, $params, $domain, $locale);
+		$translated = $this->trans($message, $params, $domain, $locale);
+
+		if ($translated === $message) {
+			return $domain . '.' . $message;
+		}
+
+		return $translated;
 	}
 
 	/**
