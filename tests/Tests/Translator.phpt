@@ -20,38 +20,38 @@ class Translator extends Tests\TestAbstract
 	{
 		$translator = new Contributte\Translation\Translator(new Contributte\Translation\LocaleResolver(Mockery::mock(Nette\DI\Container::class)), new Contributte\Translation\FallbackResolver(), 'en', __DIR__ . '/cacheDir', true);
 
-		Tester\Assert::true($translator->localeResolver instanceof Contributte\Translation\LocaleResolver);
-		Tester\Assert::true($translator->fallbackResolver instanceof Contributte\Translation\FallbackResolver);
-		Tester\Assert::same('en', $translator->defaultLocale);
-		Tester\Assert::same(__DIR__ . '/cacheDir', $translator->cacheDir);
-		Tester\Assert::true($translator->debug);
-		Tester\Assert::null($translator->localesWhitelist);
-		Tester\Assert::same([], $translator->prefix);
-		Tester\Assert::same('', $translator->formattedPrefix);
-		Tester\Assert::same([], $translator->availableLocales);
-		Tester\Assert::same('en', $translator->locale);
+		Tester\Assert::true($translator->getLocaleResolver() instanceof Contributte\Translation\LocaleResolver);
+		Tester\Assert::true($translator->getFallbackResolver() instanceof Contributte\Translation\FallbackResolver);
+		Tester\Assert::same('en', $translator->getDefaultLocale());
+		Tester\Assert::same(__DIR__ . '/cacheDir', $translator->getCacheDir());
+		Tester\Assert::true($translator->getDebug());
+		Tester\Assert::null($translator->getLocalesWhitelist());
+		Tester\Assert::same([], $translator->getPrefix());
+		Tester\Assert::same('', $translator->getFormattedPrefix());
+		Tester\Assert::same([], $translator->getAvailableLocales());
+		Tester\Assert::same('en', $translator->getLocale());
 
 		$translator->setLocalesWhitelist(['en', 'cs']);
 
-		Tester\Assert::same(['en', 'cs'], $translator->localesWhitelist);
+		Tester\Assert::same(['en', 'cs'], $translator->getLocalesWhitelist());
 
 		$translator->setPrefix(['prefix']);
 
-		Tester\Assert::same('prefix', $translator->formattedPrefix);
+		Tester\Assert::same('prefix', $translator->getFormattedPrefix());
 
 		$translator->addPrefix('next');
 
-		Tester\Assert::same('prefix.next', $translator->formattedPrefix);
+		Tester\Assert::same('prefix.next', $translator->getFormattedPrefix());
 
 		$translator->removePrefix();
 
-		Tester\Assert::same('prefix', $translator->formattedPrefix);
+		Tester\Assert::same('prefix', $translator->getFormattedPrefix());
 
 		$translator->setPrefix([]);
 
 		$translator->addPrefix('prefix');
 
-		Tester\Assert::same('prefix', $translator->formattedPrefix);
+		Tester\Assert::same('prefix', $translator->getFormattedPrefix());
 
 		$translator->removePrefix('prefix');
 
@@ -65,15 +65,15 @@ class Translator extends Tests\TestAbstract
 		$translator->addResource('neon', __DIR__ . '/file.neon', 'en_US', 'domain');
 		$translator->addResource('neon', __DIR__ . '/file.neon', 'cs_CZ', 'domain');
 
-		Tester\Assert::same(['cs_CZ', 'en_US'], $translator->availableLocales);
+		Tester\Assert::same(['cs_CZ', 'en_US'], $translator->getAvailableLocales());
 
-		Tester\Assert::null($translator->psrLogger);
+		Tester\Assert::null($translator->getPsrLogger());
 		$translator->setPsrLogger(new PsrLoggerMock());
-		Tester\Assert::true($translator->psrLogger instanceof PsrLoggerMock);
+		Tester\Assert::true($translator->getPsrLogger() instanceof PsrLoggerMock);
 
-		Tester\Assert::null($translator->tracyPanel);
+		Tester\Assert::null($translator->getTracyPanel());
 		new Contributte\Translation\Tracy\Panel($translator);
-		Tester\Assert::true($translator->tracyPanel instanceof Contributte\Translation\Tracy\Panel);
+		Tester\Assert::true($translator->getTracyPanel() instanceof Contributte\Translation\Tracy\Panel);
 	}
 
 	public function test02(): void

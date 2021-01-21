@@ -140,12 +140,14 @@ class TranslationExtension extends Tests\TestAbstract
 		/** @var Contributte\Translation\Translator $translator */
 		$translator = $container->getByType(Nette\Localization\ITranslator::class);
 
-		Tester\Assert::count(1, $translator->tracyPanel->getResources());
+		$tracyPanel = $translator->getTracyPanel();
+
+		Tester\Assert::count(1, $tracyPanel->getResources());
 		Tester\Assert::count(1, $panel->getResources());
-		Tester\Assert::count(1, $translator->tracyPanel->getIgnoredResources());
+		Tester\Assert::count(1, $tracyPanel->getIgnoredResources());
 		Tester\Assert::count(1, $panel->getIgnoredResources());
 
-		$foo = $translator->tracyPanel->getIgnoredResources();
+		$foo = $tracyPanel->getIgnoredResources();
 		$foo = end($foo);
 		Tester\Assert::same('messages', end($foo));
 		Tester\Assert::true(Nette\Utils\Strings::contains(key($foo), 'messages.cs_CZ.neon'));

@@ -17,8 +17,8 @@ class PrefixedTranslator extends Tests\TestAbstract
 		$translator = Mockery::mock(Contributte\Translation\Translator::class);
 		$prefixedTranslator = new Contributte\Translation\PrefixedTranslator($translator, 'prefix');
 
-		Tester\Assert::true($prefixedTranslator->translator instanceof Contributte\Translation\Translator);
-		Tester\Assert::same('prefix', $prefixedTranslator->prefix);
+		Tester\Assert::true($prefixedTranslator->getTranslator() instanceof Contributte\Translation\Translator);
+		Tester\Assert::same('prefix', $prefixedTranslator->getPrefix());
 	}
 
 }

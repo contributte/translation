@@ -2,15 +2,8 @@
 
 namespace Contributte\Translation\Wrappers;
 
-use Nette;
-
-/**
- * @property     string $message
- */
 class NotTranslate
 {
-
-	use Nette\SmartObject;
 
 	/** @var string */
 	private $message;

@@ -5,14 +5,8 @@ namespace Contributte\Translation;
 use Contributte;
 use Nette;
 
-/**
- * @property-read Contributte\Translation\Translator $translator
- * @property-read string $prefix
- */
 class PrefixedTranslator implements Nette\Localization\ITranslator
 {
-
-	use Nette\SmartObject;
 
 	/** @var Contributte\Translation\Translator */
 	private $translator;

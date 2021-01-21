@@ -8,8 +8,6 @@ use Nette;
 class Helpers
 {
 
-	use Nette\StaticClass;
-
 	/**
 	 * @param string[]|null $whitelist
 	 */

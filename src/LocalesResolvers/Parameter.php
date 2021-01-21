@@ -8,8 +8,6 @@ use Nette;
 class Parameter implements ResolverInterface
 {
 
-	use Nette\SmartObject;
-
 	/** @var string */
 	public static $parameter = 'locale';
 

@@ -15,22 +15,22 @@ class Message extends Tests\TestAbstract
 	{
 		$message = new Contributte\Translation\Wrappers\Message('message', [], 'domain', 'locale');
 
-		Tester\Assert::same('message', $message->message);
-		Tester\Assert::same([[], 'domain', 'locale'], $message->parameters);
+		Tester\Assert::same('message', $message->getMessage());
+		Tester\Assert::same([[], 'domain', 'locale'], $message->getParameters());
 
 		$message->setMessage('new message')
 			->setParameters([]);
 
-		Tester\Assert::same('new message', $message->message);
-		Tester\Assert::same([], $message->parameters);
+		Tester\Assert::same('new message', $message->getMessage());
+		Tester\Assert::same([], $message->getParameters());
 	}
 
 	public function test02(): void
 	{
 		$message = new Contributte\Translation\Wrappers\Message('message');
 
-		Tester\Assert::same('message', $message->message);
-		Tester\Assert::same([], $message->parameters);
+		Tester\Assert::same('message', $message->getMessage());
+		Tester\Assert::same([], $message->getParameters());
 	}
 
 }
