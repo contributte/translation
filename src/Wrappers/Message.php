@@ -2,8 +2,6 @@
 
 namespace Contributte\Translation\Wrappers;
 
-use Nette;
-
 class Message
 {
 

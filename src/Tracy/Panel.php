@@ -3,7 +3,6 @@
 namespace Contributte\Translation\Tracy;
 
 use Contributte;
-use Nette;
 use ReflectionClass;
 use ReflectionException;
 use Tracy;
