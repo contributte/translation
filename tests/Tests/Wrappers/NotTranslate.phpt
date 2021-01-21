@@ -15,11 +15,11 @@ class NotTranslate extends Tests\TestAbstract
 	{
 		$message = new Contributte\Translation\Wrappers\NotTranslate('message');
 
-		Tester\Assert::same('message', $message->message);
+		Tester\Assert::same('message', $message->getMessage());
 
 		$message->setMessage('new message');
 
-		Tester\Assert::same('new message', $message->message);
+		Tester\Assert::same('new message', $message->getMessage());
 	}
 
 }

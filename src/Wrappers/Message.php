@@ -2,16 +2,8 @@
 
 namespace Contributte\Translation\Wrappers;
 
-use Nette;
-
-/**
- * @property     string $message
- * @property     mixed[] $parameters
- */
 class Message
 {
-
-	use Nette\SmartObject;
 
 	/** @var string */
 	private $message;

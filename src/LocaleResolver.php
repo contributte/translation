@@ -5,13 +5,8 @@ namespace Contributte\Translation;
 use Contributte;
 use Nette;
 
-/**
- * @property-read array $resolvers
- */
 class LocaleResolver
 {
-
-	use Nette\SmartObject;
 
 	/** @var Nette\DI\Container */
 	private $container;
@@ -52,7 +47,7 @@ class LocaleResolver
 			}
 		}
 
-		return $translator->defaultLocale;
+		return $translator->getDefaultLocale();
 	}
 
 }

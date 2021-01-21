@@ -4,13 +4,8 @@ namespace Contributte\Translation;
 
 use Nette;
 
-/**
- * @property      array $fallbackLocales
- */
 class FallbackResolver
 {
-
-	use Nette\SmartObject;
 
 	/** @var string[] */
 	private $fallbackLocales = [];
@@ -43,7 +38,7 @@ class FallbackResolver
 			array_unshift($locales, Nette\Utils\Strings::substring($locale, 0, -Nette\Utils\Strings::length(strrchr($locale, '_'))));
 		}
 
-		foreach ($translator->availableLocales as $v1) {
+		foreach ($translator->getAvailableLocales() as $v1) {
 			if ($v1 === $locale) {
 				continue;
 			}

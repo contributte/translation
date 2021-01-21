@@ -8,8 +8,6 @@ use Nette;
 class Header implements ResolverInterface
 {
 
-	use Nette\SmartObject;
-
 	/** @var Nette\Http\Request */
 	private $httpRequest;
 
@@ -30,7 +28,7 @@ class Header implements ResolverInterface
 		/** @var string[] $langs */
 		$langs = [];
 
-		foreach ($translator->availableLocales as $v1) {
+		foreach ($translator->getAvailableLocales() as $v1) {
 			$langs[] = $v1;
 
 			if (Nette\Utils\Strings::length($v1) < 3) {

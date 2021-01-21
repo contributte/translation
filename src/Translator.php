@@ -7,25 +7,8 @@ use Nette;
 use Psr;
 use Symfony;
 
-/**
- * @property-read Contributte\Translation\LocaleResolver $localeResolver
- * @property-read Contributte\Translation\FallbackResolver $fallbackResolver
- * @property-read string $defaultLocale
- * @property-read string|null $cacheDir
- * @property-read bool $debug
- * @property      string[]|null $localesWhitelist
- * @property      string[] $prefix
- * @property-read string[][] $prefixTemp
- * @property-read string $formattedPrefix
- * @property-read string[] $availableLocales
- * @property      string|null $locale
- * @property      Psr\Log\LoggerInterface|null $psrLogger
- * @property      Contributte\Translation\Tracy\Panel|null $tracyPanel
- */
 class Translator extends Symfony\Component\Translation\Translator implements Nette\Localization\ITranslator
 {
-
-	use Nette\SmartObject;
 
 	/** @var Contributte\Translation\LocaleResolver */
 	private $localeResolver;
@@ -272,12 +255,12 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 		}
 
 		if ($message instanceof Wrappers\NotTranslate) {
-			return $message->message;
+			return $message->getMessage();
 		}
 
 		if ($message instanceof Wrappers\Message) {
-			$parameters = $message->parameters;
-			$message = $message->message;
+			$parameters = $message->getParameters();
+			$message = $message->getMessage();
 
 		} elseif (is_int($message)) {// float type can be confused for dot inside
 			$message = (string) $message;

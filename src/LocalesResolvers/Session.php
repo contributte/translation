@@ -8,8 +8,6 @@ use Nette;
 class Session implements ResolverInterface
 {
 
-	use Nette\SmartObject;
-
 	/** @var string|null */
 	public static $parameter = 'locale';
 
