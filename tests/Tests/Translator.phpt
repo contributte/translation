@@ -182,6 +182,8 @@ class Translator extends Tests\TestAbstract
 
 		$prefixedTranslator = $translator->createPrefixedTranslator('messages');
 		Tester\Assert::same('Hello', $prefixedTranslator->translate('hello'));
+
+		Tester\Assert::same('no_exists', $translator->translate('no_exists', [], 'messages'));
 	}
 
 	public function test03(): void
