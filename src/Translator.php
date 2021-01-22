@@ -273,8 +273,6 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 			throw new Exceptions\InvalidArgument('Message must be string, ' . gettype($message) . ' given.');
 		}
 
-		$originalMessage = $message;
-
 		$count = array_key_exists(0, $parameters) ? $parameters[0] : null;
 		$params = array_key_exists(1, $parameters) ? $parameters[1] : [];
 		$domain = array_key_exists(2, $parameters) ? $parameters[2] : null;
@@ -286,6 +284,8 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 			$params = $count;
 			$count = null;
 		}
+
+		$originalMessage = $message;
 
 		if (Nette\Utils\Strings::startsWith($message, '//')) {
 			$message = Nette\Utils\Strings::substring($message, 2);
