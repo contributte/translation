@@ -25,6 +25,9 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 	/** @var bool */
 	private $debug;
 
+	/** @var bool */
+	public $returnOriginalMessage = true;
+
 	/** @var string[]|null */
 	private $localesWhitelist;
 
@@ -282,6 +285,8 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 			$count = null;
 		}
 
+		$originalMessage = $message;
+
 		if (Nette\Utils\Strings::startsWith($message, '//')) {
 			$message = Nette\Utils\Strings::substring($message, 2);
 
@@ -304,7 +309,15 @@ class Translator extends Symfony\Component\Translation\Translator implements Net
 			$params += ['%count%' => $count];
 		}
 
-		return $this->trans($message, $params, $domain, $locale);
+		$translated = $this->trans($message, $params, $domain, $locale);
+
+		if ($this->returnOriginalMessage) {
+			if ($domain . '.' . $translated === $originalMessage) {
+				return $originalMessage;
+			}
+		}
+
+		return $translated;
 	}
 
 	/**
