@@ -227,6 +227,20 @@ class TranslationExtension extends Tests\TestAbstract
 	{
 		$container = Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
 			'translation' => [
+				'returnOriginalMessage' => false,
+			],
+		]);
+
+		/** @var Contributte\Translation\Translator $translator */
+		$translator = $container->getByType(Nette\Localization\ITranslator::class);
+
+		Tester\Assert::false($translator->returnOriginalMessage);
+	}
+
+	public function test09(): void
+	{
+		$container = Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+			'translation' => [
 				'autowired' => false,
 			],
 		]);
@@ -250,20 +264,6 @@ class TranslationExtension extends Tests\TestAbstract
 		$translator = $container->getByType(Contributte\Translation\Translator::class, false);
 
 		Tester\Assert::true($translator instanceof Contributte\Translation\Translator);
-	}
-
-	public function test07(): void
-	{
-		$container = Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
-			'translation' => [
-				'returnOriginalMessage' => false,
-			],
-		]);
-
-		/** @var Contributte\Translation\Translator $translator */
-		$translator = $container->getByType(Nette\Localization\ITranslator::class);
-
-		Tester\Assert::false($translator->returnOriginalMessage);
 	}
 
 }
