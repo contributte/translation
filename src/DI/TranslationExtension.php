@@ -144,7 +144,6 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			if ($this->config->autowired) {
 				$autowired[] = $factory;
 			}
-
 		} else {
 			$factory = Contributte\Translation\Translator::class;
 		}
