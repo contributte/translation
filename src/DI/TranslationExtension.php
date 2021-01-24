@@ -116,7 +116,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 		$autowired = [];
 
-		if ($this->config->autowired) {
+		if ($this->config->autowired === true) {
 			$autowired = [
 				Nette\Localization\ITranslator::class,
 				Symfony\Contracts\Translation\TranslatorInterface::class,
