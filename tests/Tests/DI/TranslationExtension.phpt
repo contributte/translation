@@ -252,6 +252,20 @@ class TranslationExtension extends Tests\TestAbstract
 		Tester\Assert::true($translator instanceof Contributte\Translation\Translator);
 	}
 
+	public function test07(): void
+	{
+		$container = Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+			'translation' => [
+				'returnOriginalMessage' => false,
+			],
+		]);
+
+		/** @var Contributte\Translation\Translator $translator */
+		$translator = $container->getByType(Nette\Localization\ITranslator::class);
+
+		Tester\Assert::false($translator->returnOriginalMessage);
+	}
+
 }
 
 (new TranslationExtension($container))->run();
