@@ -56,6 +56,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			]),
 			'translatorFactory' => Expect::string()->default(null),
 			'returnOriginalMessage' => Expect::bool()->default(false),
+			'autowired' => Expect::type('bool|array')->default(true),
 		]);
 	}
 
@@ -113,6 +114,23 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 		$configCacheFactory = $builder->addDefinition($this->prefix('configCacheFactory'))
 			->setFactory($this->config->cache->factory, [$this->config->debug]);
 
+		$autowired = [];
+
+		if ($this->config->autowired) {
+			$autowired = [
+				Nette\Localization\ITranslator::class,
+				Symfony\Contracts\Translation\TranslatorInterface::class,
+				Contributte\Translation\Translator::class,
+			];
+
+		} elseif (is_array($this->config->autowired)) {
+			$autowired = $this->config->autowired;
+		}
+
+		if (is_array($this->config->autowired)) {
+			$autowired = $this->config->autowired;
+		}
+
 		// Translator
 		if ($this->config->translatorFactory !== null) {
 			$reflectionTranslatorFactory = new ReflectionClass($this->config->translatorFactory);
@@ -123,6 +141,10 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 			$factory = $this->config->translatorFactory;
 
+			if ($this->config->autowired) {
+				$autowired[] = $factory;
+			}
+
 		} else {
 			$factory = Contributte\Translation\Translator::class;
 		}
@@ -132,8 +154,13 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 			->addSetup('setLocalesWhitelist', [$this->config->locales->whitelist])
 			->addSetup('setConfigCacheFactory', [$configCacheFactory])
 			->addSetup('setFallbackLocales', [$this->config->locales->fallback])
-			->addSetup('$returnOriginalMessage', [$this->config->returnOriginalMessage])
-			->setAutowired([Nette\Localization\ITranslator::class, Symfony\Contracts\Translation\TranslatorInterface::class]);
+			->addSetup('$returnOriginalMessage', [$this->config->returnOriginalMessage]);
+
+		if ($this->config->autowired === false) {
+			$translator->setAutowired(false);
+		} else {
+			$translator->setAutowired($autowired);
+		}
 
 		// Loaders
 		foreach ($this->config->loaders as $k1 => $v1) {
@@ -182,7 +209,7 @@ class TranslationExtension extends Nette\DI\CompilerExtension
 
 		if ($latteFactoryName !== null) {
 			$latteFilters = $builder->addDefinition($this->prefix('latte.filters'))
-				->setFactory(Contributte\Translation\Latte\Filters::class);
+				->setFactory(Contributte\Translation\Latte\Filters::class, [$translator]);
 
 			/** @var Nette\DI\Definitions\FactoryDefinition $latteFactory */
 			$latteFactory = $builder->getDefinition($latteFactoryName);
