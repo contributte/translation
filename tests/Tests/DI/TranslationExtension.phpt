@@ -159,6 +159,9 @@ class TranslationExtension extends Tests\TestAbstract
 
 		$symfonyTranslator = $container->getByType(Symfony\Contracts\Translation\TranslatorInterface::class);
 		Tester\Assert::same($translator, $symfonyTranslator);
+
+		$contributteTranslator = $container->getByType(Contributte\Translation\Translator::class);
+		Tester\Assert::same($translator, $contributteTranslator);
 	}
 
 	public function test04(): void
@@ -201,6 +204,9 @@ class TranslationExtension extends Tests\TestAbstract
 		$translator = $container->getByType(Nette\Localization\ITranslator::class);
 
 		Tester\Assert::type(Tests\CustomTranslatorMock::class, $translator);
+
+		$factoryTranslator = $container->getByType(Tests\CustomTranslatorMock::class);
+		Tester\Assert::same($translator, $factoryTranslator);
 	}
 
 	public function test07(): void
@@ -215,6 +221,49 @@ class TranslationExtension extends Tests\TestAbstract
 		$translator = $container->getByType(Nette\Localization\ITranslator::class);
 
 		Tester\Assert::false($translator->returnOriginalMessage);
+	}
+
+	public function test08(): void
+	{
+		$container = Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+			'translation' => [
+				'returnOriginalMessage' => false,
+			],
+		]);
+
+		/** @var Contributte\Translation\Translator $translator */
+		$translator = $container->getByType(Nette\Localization\ITranslator::class);
+
+		Tester\Assert::false($translator->returnOriginalMessage);
+	}
+
+	public function test09(): void
+	{
+		$container = Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+			'translation' => [
+				'autowired' => false,
+			],
+		]);
+
+		$translator = $container->getByType(Nette\Localization\ITranslator::class, false);
+
+		Tester\Assert::null($translator);
+
+		$container = Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+			'translation' => [
+				'autowired' => [
+					Contributte\Translation\Translator::class,
+				],
+			],
+		]);
+
+		$translator = $container->getByType(Nette\Localization\ITranslator::class, false);
+
+		Tester\Assert::null($translator);
+
+		$translator = $container->getByType(Contributte\Translation\Translator::class, false);
+
+		Tester\Assert::true($translator instanceof Contributte\Translation\Translator);
 	}
 
 }
