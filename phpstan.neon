@@ -8,8 +8,6 @@ parameters:
 	level: max
 	paths:
 		- src
-	excludes_analyse:
-		- src/compatibility.php
 	ignoreErrors:
 		-
 			count: 2
