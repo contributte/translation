@@ -3,7 +3,7 @@
 namespace Tests\Wrappers;
 
 use Contributte;
-use Tester;
+use Tester\Assert;
 use Tests;
 
 $container = require __DIR__ . '/../../bootstrap.php';
@@ -15,22 +15,22 @@ class Message extends Tests\TestAbstract
 	{
 		$message = new Contributte\Translation\Wrappers\Message('message', [], 'domain', 'locale');
 
-		Tester\Assert::same('message', $message->getMessage());
-		Tester\Assert::same([[], 'domain', 'locale'], $message->getParameters());
+		Assert::same('message', $message->getMessage());
+		Assert::same([[], 'domain', 'locale'], $message->getParameters());
 
 		$message->setMessage('new message')
 			->setParameters([]);
 
-		Tester\Assert::same('new message', $message->getMessage());
-		Tester\Assert::same([], $message->getParameters());
+		Assert::same('new message', $message->getMessage());
+		Assert::same([], $message->getParameters());
 	}
 
 	public function test02(): void
 	{
 		$message = new Contributte\Translation\Wrappers\Message('message');
 
-		Tester\Assert::same('message', $message->getMessage());
-		Tester\Assert::same([], $message->getParameters());
+		Assert::same('message', $message->getMessage());
+		Assert::same([], $message->getParameters());
 	}
 
 }
