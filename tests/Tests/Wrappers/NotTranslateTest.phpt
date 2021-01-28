@@ -15,11 +15,11 @@ final class NotTranslateTest extends TestAbstract
 	{
 		$message = new NotTranslate('message');
 
-		Assert::same('message', $message->getMessage());
+		Assert::same('message', $message->message);
 
-		$message->setMessage('new message');
+		$message->message = 'new message';
 
-		Assert::same('new message', $message->getMessage());
+		Assert::same('new message', $message->message);
 	}
 
 }
