@@ -2,40 +2,47 @@
 
 namespace Contributte\Translation\LocalesResolvers;
 
-use Contributte;
-use Nette;
+use Contributte\Translation\Exceptions\InvalidArgument;
+use Contributte\Translation\Translator;
+use Nette\Http\IRequest;
+use Nette\Http\Request;
+use Nette\Utils\Strings;
 
 class Header implements ResolverInterface
 {
 
-	/** @var Nette\Http\Request */
+	/** @var \Nette\Http\Request */
 	private $httpRequest;
 
 	/**
-	 * @throws Contributte\Translation\Exceptions\InvalidArgument
+	 * @throws \Contributte\Translation\Exceptions\InvalidArgument
 	 */
-	public function __construct(Nette\Http\IRequest $httpRequest)
+	public function __construct(
+		IRequest $httpRequest
+	)
 	{
-		if (!is_a($httpRequest, Nette\Http\Request::class, true)) {
-			throw new Contributte\Translation\Exceptions\InvalidArgument('Header locale resolver need "Nette\\Http\\Request" or his child for using "detectLanguage" method.');
+		if (!is_a($httpRequest, Request::class, true)) {
+			throw new InvalidArgument('Header locale resolver need "Nette\\Http\\Request" or his child for using "detectLanguage" method.');
 		}
 
 		$this->httpRequest = $httpRequest;
 	}
 
-	public function resolve(Contributte\Translation\Translator $translator): ?string
+	public function resolve(
+		Translator $translator
+	): ?string
 	{
-		/** @var string[] $langs */
+		/** @var array<string> $langs */
 		$langs = [];
 
 		foreach ($translator->getAvailableLocales() as $v1) {
 			$langs[] = $v1;
 
-			if (Nette\Utils\Strings::length($v1) < 3) {
+			if (Strings::length($v1) < 3) {
 				continue;
 			}
 
-			$langs[] = Nette\Utils\Strings::substring($v1, 0, 2);// en_US => en
+			$langs[] = Strings::substring($v1, 0, 2);// en_US => en
 		}
 
 		if (count($langs) === 0) {
