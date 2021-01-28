@@ -5,21 +5,18 @@ namespace Contributte\Translation\LocalesResolvers;
 use Contributte\Translation\Translator;
 use Nette\Http\IResponse;
 use Nette\Http\Session as NetteSession;
+use Nette\Http\SessionSection;
 
 class Session implements ResolverInterface
 {
 
-	/** @var string|null */
-	public static $parameter = 'locale';
+	public static ?string $parameter = 'locale';
 
-	/** @var \Nette\Http\IResponse */
-	private $httpResponse;
+	private IResponse $httpResponse;
 
-	/** @var \Nette\Http\Session */
-	private $session;
+	private NetteSession $session;
 
-	/** @var \Nette\Http\SessionSection<string, mixed> */
-	private $sessionSection;
+	private SessionSection $sessionSection;
 
 	public function __construct(
 		IResponse $httpResponse,
