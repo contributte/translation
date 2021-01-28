@@ -3,7 +3,7 @@
 namespace Tests\Wrappers;
 
 use Contributte;
-use Tester;
+use Tester\Assert;
 use Tests;
 
 $container = require __DIR__ . '/../../bootstrap.php';
@@ -15,11 +15,11 @@ class NotTranslate extends Tests\TestAbstract
 	{
 		$message = new Contributte\Translation\Wrappers\NotTranslate('message');
 
-		Tester\Assert::same('message', $message->getMessage());
+		Assert::same('message', $message->getMessage());
 
 		$message->setMessage('new message');
 
-		Tester\Assert::same('new message', $message->getMessage());
+		Assert::same('new message', $message->getMessage());
 	}
 
 }
