@@ -209,8 +209,6 @@ class Translator extends SymfonyTranslator implements ITranslator
 	 * @param mixed $resource
 	 * @param string $locale
 	 * @param string|null $domain
-	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
-	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingReturnTypeHint
 	 */
 	public function addResource(
 		$format,
