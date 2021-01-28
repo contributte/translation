@@ -4,7 +4,7 @@ namespace Tests;
 
 use Contributte;
 use Nette;
-use Tester;
+use Tester\Assert;
 use Tests;
 
 $container = require __DIR__ . '/../bootstrap.php';
@@ -31,12 +31,12 @@ class LocaleResolver extends Tests\TestAbstract
 
 		$localeResolver = $translator->getLocaleResolver();
 
-		Tester\Assert::count(1, $localeResolver->getResolvers());
-		Tester\Assert::same('cs', $localeResolver->resolve($translator));
+		Assert::count(1, $localeResolver->getResolvers());
+		Assert::same('cs', $localeResolver->resolve($translator));
 		$mockResolver->setLocale('en');
-		Tester\Assert::same('en', $localeResolver->resolve($translator));
+		Assert::same('en', $localeResolver->resolve($translator));
 		$mockResolver->setLocale('sk');
-		Tester\Assert::same('cs', $localeResolver->resolve($translator));
+		Assert::same('cs', $localeResolver->resolve($translator));
 	}
 
 }
