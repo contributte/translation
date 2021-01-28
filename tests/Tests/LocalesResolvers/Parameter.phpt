@@ -5,7 +5,7 @@ namespace Tests\LocalesResolvers;
 use Contributte;
 use Mockery;
 use Nette;
-use Tester;
+use Tester\Assert;
 use Tests;
 
 $container = require __DIR__ . '/../../bootstrap.php';
@@ -15,9 +15,9 @@ class Parameter extends Tests\TestAbstract
 
 	public function test01(): void
 	{
-		Tester\Assert::same('', $this->resolve(''));
-		Tester\Assert::same('en', $this->resolve('en'));
-		Tester\Assert::same('cs', $this->resolve('cs'));
+		Assert::same('', $this->resolve(''));
+		Assert::same('en', $this->resolve('en'));
+		Assert::same('cs', $this->resolve('cs'));
 	}
 
 	/**
@@ -40,7 +40,7 @@ class Parameter extends Tests\TestAbstract
 		$resolver = new Contributte\Translation\LocalesResolvers\Parameter($request);
 		$translatorMock = Mockery::mock(Contributte\Translation\Translator::class);
 
-		Tester\Assert::null($resolver->resolve($translatorMock));
+		Assert::null($resolver->resolve($translatorMock));
 	}
 
 }
