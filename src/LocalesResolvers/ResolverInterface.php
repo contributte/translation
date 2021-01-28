@@ -2,11 +2,13 @@
 
 namespace Contributte\Translation\LocalesResolvers;
 
-use Contributte;
+use Contributte\Translation\Translator;
 
 interface ResolverInterface
 {
 
-	public function resolve(Contributte\Translation\Translator $translator): ?string;
+	public function resolve(
+		Translator $translator
+	): ?string;
 
 }
