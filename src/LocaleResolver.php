@@ -8,11 +8,10 @@ use Nette\Utils\Strings;
 class LocaleResolver
 {
 
-	/** @var \Nette\DI\Container */
-	private $container;
+	private Container $container;
 
 	/** @var array<string> */
-	private $resolvers = [];
+	private array $resolvers = [];
 
 	public function __construct(
 		Container $container
