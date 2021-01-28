@@ -23,27 +23,7 @@ parameters:
 
 		-
 			count: 1
-			message: '#^Method Contributte\\Translation\\Translator\:\:addResource\(\) has no return typehint specified\.$#'
-			path: src/Translator.php
-
-		-
-			count: 1
-			message: '#^Method Contributte\\Translation\\Translator\:\:setFallbackLocales\(\) has no return typehint specified\.$#'
-			path: src/Translator.php
-
-		-
-			count: 1
-			message: '#^Method Contributte\\Translation\\Translator\:\:computeFallbackLocales\(\) has no return typehint specified\.$#'
-			path: src/Translator.php
-
-		-
-			count: 1
-			message: '#^Method Contributte\\Translation\\Translator\:\:computeFallbackLocales\(\) has parameter \$locale with no typehint specified\.$#'
-			path: src/Translator.php
-
-		-
-			count: 1
-			message: '#^Method Contributte\\Translation\\Translator::setFallbackLocales\(\) has parameter \$locales with no value type specified in iterable type array\.$#'
+			message: '#^Parameter \#1 \$locales \(array<string>\) of method Contributte\\Translation\\Translator::setFallbackLocales\(\) should be contravariant with parameter \$locales \(array\) of method Symfony\\Component\\Translation\\Translator::setFallbackLocales\(\)$#'
 			path: 'src/Translator.php'
 
 		-
