@@ -14,12 +14,16 @@ class Parameter implements ResolverInterface
 	/** @var \Nette\Http\IRequest */
 	private $request;
 
-	public function __construct(IRequest $request)
+	public function __construct(
+		IRequest $request
+	)
 	{
 		$this->request = $request;
 	}
 
-	public function resolve(Translator $translator): ?string
+	public function resolve(
+		Translator $translator
+	): ?string
 	{
 		return $this->request->getQuery(self::$parameter);
 	}
