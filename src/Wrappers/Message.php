@@ -6,10 +6,10 @@ class Message
 {
 
 	/** @var string */
-	private $message;
+	public $message;
 
 	/** @var array<mixed> */
-	private $parameters;
+	public $parameters;
 
 	/**
 	 * @param array<mixed> ...$parameters
@@ -21,38 +21,6 @@ class Message
 	{
 		$this->message = $message;
 		$this->parameters = $parameters;
-	}
-
-	public function getMessage(): string
-	{
-		return $this->message;
-	}
-
-	public function setMessage(
-		string $string
-	): self
-	{
-		$this->message = $string;
-		return $this;
-	}
-
-	/**
-	 * @return array<mixed>
-	 */
-	public function getParameters(): array
-	{
-		return $this->parameters;
-	}
-
-	/**
-	 * @param array<mixed> $array
-	 */
-	public function setParameters(
-		array $array
-	): self
-	{
-		$this->parameters = $array;
-		return $this;
 	}
 
 }
