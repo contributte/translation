@@ -8,14 +8,16 @@ class Message
 	/** @var string */
 	private $message;
 
-	/** @var mixed[] */
+	/** @var array<mixed> */
 	private $parameters;
 
 	/**
-	 * @param mixed[] ...$parameters
-	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
+	 * @param array<mixed> ...$parameters
 	 */
-	public function __construct(string $message, ...$parameters)
+	public function __construct(
+		string $message,
+		...$parameters
+	)
 	{
 		$this->message = $message;
 		$this->parameters = $parameters;
@@ -26,14 +28,16 @@ class Message
 		return $this->message;
 	}
 
-	public function setMessage(string $string): self
+	public function setMessage(
+		string $string
+	): self
 	{
 		$this->message = $string;
 		return $this;
 	}
 
 	/**
-	 * @return mixed[]
+	 * @return array<mixed>
 	 */
 	public function getParameters(): array
 	{
@@ -41,9 +45,11 @@ class Message
 	}
 
 	/**
-	 * @param mixed[] $array
+	 * @param array<mixed> $array
 	 */
-	public function setParameters(array $array): self
+	public function setParameters(
+		array $array
+	): self
 	{
 		$this->parameters = $array;
 		return $this;
