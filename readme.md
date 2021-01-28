@@ -52,7 +52,7 @@ Easy and clear translations for your multi-language applications.
 					<img width="150" height="150" src="https://avatars1.githubusercontent.com/u/6991688?s=460&amp;v=4">
 				</a>
 				<br>
-				<a href="https://github.com/mabar">Aleš Wita</a>
+				<a href="https://github.com/aleswita">Aleš Wita</a>
 			</td>
 			<td align="center">
 				<a href="https://github.com/f3l1x">
