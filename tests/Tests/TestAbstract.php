@@ -8,8 +8,7 @@ use Tester\TestCase;
 abstract class TestAbstract extends TestCase
 {
 
-	/** @var \Nette\DI\Container */
-	protected $container;
+	protected Container $container;
 
 	public function __construct(
 		Container $container
