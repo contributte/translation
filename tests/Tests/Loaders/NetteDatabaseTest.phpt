@@ -1,9 +1,5 @@
 <?php declare(strict_types = 1);
 
-/**
- * @skip
- */
-
 namespace Tests\Loaders;
 
 use Contributte\Translation\Loaders\NetteDatabase;
