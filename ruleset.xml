@@ -9,7 +9,7 @@
 	</rule>
 	<rule ref="SlevomatCodingStandard.Classes.RequireMultiLineMethodSignature">
 		<properties>
-			<property name="minLineLength" type="int" value="0"/>
+			<property name="minLineLength" type="int" value="0" />
 		</properties>
 	</rule>
 	<rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
