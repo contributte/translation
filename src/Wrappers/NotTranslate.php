@@ -5,27 +5,13 @@ namespace Contributte\Translation\Wrappers;
 class NotTranslate
 {
 
-	/** @var string */
-	private $message;
+	public string $message;
 
 	public function __construct(
 		string $message
 	)
 	{
 		$this->message = $message;
-	}
-
-	public function getMessage(): string
-	{
-		return $this->message;
-	}
-
-	public function setMessage(
-		string $string
-	): self
-	{
-		$this->message = $string;
-		return $this;
 	}
 
 }
