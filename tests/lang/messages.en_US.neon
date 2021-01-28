@@ -9,3 +9,4 @@ very:
 			message: "Very very depth message"
 overloading:
 	message: "Message"
+plural: "Contact|Contacts"
