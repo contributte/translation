@@ -4,7 +4,7 @@ namespace Tests\Loaders;
 
 use Contributte;
 use Nette;
-use Tester;
+use Tester\Assert;
 use Tests;
 
 $container = require __DIR__ . '/../../bootstrap.php';
@@ -38,11 +38,11 @@ class NetteDatabase extends Tests\TestAbstract
 
 		$translator->setLocale('cs');
 
-		Tester\Assert::same('Ahoj', $translator->translate('db_table.hello'));
+		Assert::same('Ahoj', $translator->translate('db_table.hello'));
 
 		$translator->setLocale('en');
 
-		Tester\Assert::same('Hello', $translator->translate('db_table.hello'));
+		Assert::same('Hello', $translator->translate('db_table.hello'));
 	}
 
 }
