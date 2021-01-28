@@ -5,7 +5,7 @@ namespace Tests\Latte;
 use Contributte;
 use Latte;
 use Mockery;
-use Tester;
+use Tester\Assert;
 use Tests;
 
 $container = require __DIR__ . '/../../bootstrap.php';
@@ -23,7 +23,7 @@ class Filters extends Tests\TestAbstract
 			->andReturn('');
 
 		$filters = new Contributte\Translation\Latte\Filters($translatorMock);
-		Tester\Assert::same('', $filters->translate(new Latte\Runtime\FilterInfo(), 'message', 'parameters'));
+		Assert::same('', $filters->translate(new Latte\Runtime\FilterInfo(), 'message', 'parameters'));
 	}
 
 }
