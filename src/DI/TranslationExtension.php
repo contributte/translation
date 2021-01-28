@@ -51,7 +51,7 @@ class TranslationExtension extends CompilerExtension
 			'factory' => Expect::string()->default(null),
 			'logger' => Expect::mixed()->default(null),
 			'locales' => Expect::structure([
-				'whitelist' => Expect::array()->default(null)->assert(function (array $array): bool {
+				'whitelist' => Expect::array()->default(null)->assert(static function (array $array): bool {
 					if (count($array) !== count(array_unique($array))) {
 						throw new InvalidArgument('Whitelist settings have not unique values.');
 					}
@@ -60,7 +60,7 @@ class TranslationExtension extends CompilerExtension
 				}),
 				'default' => Expect::string('en'),
 				'fallback' => Expect::array()->default(null),
-			])->assert(function (stdClass $locales): bool {
+			])->assert(static function (stdClass $locales): bool {
 				if ($locales->whitelist !== null && !in_array($locales->default, $locales->whitelist, true)) {
 					throw new InvalidArgument('If you set whitelist, default locale must be on him.');
 				}
