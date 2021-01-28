@@ -11,7 +11,9 @@ abstract class TestAbstract extends TestCase
 	/** @var \Nette\DI\Container */
 	protected $container;
 
-	public function __construct(Container $container)
+	public function __construct(
+		Container $container
+	)
 	{
 		$this->container = $container;
 	}
