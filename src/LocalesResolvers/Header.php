@@ -11,8 +11,7 @@ use Nette\Utils\Strings;
 class Header implements ResolverInterface
 {
 
-	/** @var \Nette\Http\Request */
-	private $httpRequest;
+	private Request $httpRequest;
 
 	/**
 	 * @throws \Contributte\Translation\Exceptions\InvalidArgument
