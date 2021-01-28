@@ -33,7 +33,7 @@ final class HeaderTest extends TestAbstract
 
 	public function test02(): void
 	{
-		Assert::exception(function (): void {
+		Assert::exception(static function (): void {
 			new Header(new class implements IRequest {
 
 				public function getReferer(): ?UrlImmutable
