@@ -28,7 +28,7 @@ class Translator extends SymfonyTranslator implements ITranslator
 	public bool $returnOriginalMessage = true;
 
 	/** @var array<string>|null */
-	private ?array $localesWhitelist;
+	private ?array $localesWhitelist = null;
 
 	/** @var array<string> */
 	private array $prefix = [];
@@ -39,9 +39,9 @@ class Translator extends SymfonyTranslator implements ITranslator
 	/** @var array<bool> */
 	private array $resourcesLocales = [];
 
-	private ?LoggerInterface $psrLogger;
+	private ?LoggerInterface $psrLogger = null;
 
-	private ?Panel $tracyPanel;
+	private ?Panel $tracyPanel = null;
 
 	/**
 	 * @param array<string> $cacheVary
