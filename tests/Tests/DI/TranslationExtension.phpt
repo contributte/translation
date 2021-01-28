@@ -7,7 +7,7 @@ use Nette;
 use Psr;
 use stdClass;
 use Symfony;
-use Tester;
+use Tester\Assert;
 use Tests;
 use UnexpectedValueException;
 
@@ -18,7 +18,7 @@ class TranslationExtension extends Tests\TestAbstract
 
 	public function test01(): void
 	{
-		Tester\Assert::exception(function (): void {
+		Assert::exception(function (): void {
 			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
 				'translation' => [
 					'locales' => [
@@ -27,7 +27,7 @@ class TranslationExtension extends Tests\TestAbstract
 				],
 			]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Whitelist settings have not unique values.');
-		Tester\Assert::exception(function (): void {
+		Assert::exception(function (): void {
 			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
 				'translation' => [
 					'locales' => [
@@ -37,14 +37,14 @@ class TranslationExtension extends Tests\TestAbstract
 				],
 			]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'If you set whitelist, default locale must be on him.');
-		Tester\Assert::exception(function (): void {
+		Assert::exception(function (): void {
 			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
 				'translation' => [
 					'localeResolvers' => [stdClass::class],
 				],
 			]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Resolver must implement interface "' . Contributte\Translation\LocalesResolvers\ResolverInterface::class . '".');
-		Tester\Assert::exception(function (): void {
+		Assert::exception(function (): void {
 			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
 				'translation' => [
 					'cache' => [
@@ -53,21 +53,21 @@ class TranslationExtension extends Tests\TestAbstract
 				],
 			]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Cache factory must implement interface "' . Symfony\Component\Config\ConfigCacheFactoryInterface::class . '".');
-		Tester\Assert::exception(function (): void {
+		Assert::exception(function (): void {
 			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
 				'translation' => [
 					'loaders' => [stdClass::class],
 				],
 			]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Loader must implement interface "' . Symfony\Component\Translation\Loader\LoaderInterface::class . '".');
-		Tester\Assert::exception(function (): void {
+		Assert::exception(function (): void {
 			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
 				'translation' => [
 					'dirs' => [__DIR__ . '/__no_exists__'],
 				],
 			]);
 		}, UnexpectedValueException::class);
-		Tester\Assert::exception(function (): void {
+		Assert::exception(function (): void {
 			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
 				'translation' => [
 					'logger' => true,
@@ -75,7 +75,7 @@ class TranslationExtension extends Tests\TestAbstract
 				],
 			]);
 		}, Nette\DI\MissingServiceException::class, "Service of type '" . Psr\Log\LoggerInterface::class . "' not found.");
-		Tester\Assert::exception(function (): void {
+		Assert::exception(function (): void {
 			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
 				'translation' => [
 					'logger' => stdClass::class,
@@ -83,7 +83,7 @@ class TranslationExtension extends Tests\TestAbstract
 				],
 			]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Logger must implement interface "' . Psr\Log\LoggerInterface::class . '".');
-		Tester\Assert::exception(function (): void {
+		Assert::exception(function (): void {
 			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
 				'translation' => [
 					'logger' => 1,
@@ -91,7 +91,7 @@ class TranslationExtension extends Tests\TestAbstract
 				],
 			]);
 		}, Contributte\Translation\Exceptions\InvalidArgument::class, 'Option "logger" must be bool for autowired or class name as string.');
-		Tester\Assert::exception(function (): void {
+		Assert::exception(function (): void {
 			Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
 				'translation' => [
 					'translatorFactory' => stdClass::class,
@@ -122,7 +122,7 @@ class TranslationExtension extends Tests\TestAbstract
 			});
 
 		} catch (UnexpectedValueException $e) {
-			Tester\Assert::true(Nette\Utils\Strings::contains($e->getMessage(), __DIR__ . '/__translation_provider_dir__'));// translation provider dirs first !!
+			Assert::true(Nette\Utils\Strings::contains($e->getMessage(), __DIR__ . '/__translation_provider_dir__'));// translation provider dirs first !!
 		}
 	}
 
@@ -142,26 +142,26 @@ class TranslationExtension extends Tests\TestAbstract
 
 		$tracyPanel = $translator->getTracyPanel();
 
-		Tester\Assert::count(1, $tracyPanel->getResources());
-		Tester\Assert::count(1, $panel->getResources());
-		Tester\Assert::count(1, $tracyPanel->getIgnoredResources());
-		Tester\Assert::count(1, $panel->getIgnoredResources());
+		Assert::count(1, $tracyPanel->getResources());
+		Assert::count(1, $panel->getResources());
+		Assert::count(1, $tracyPanel->getIgnoredResources());
+		Assert::count(1, $panel->getIgnoredResources());
 
 		$foo = $tracyPanel->getIgnoredResources();
 		$foo = end($foo);
-		Tester\Assert::same('messages', end($foo));
-		Tester\Assert::true(Nette\Utils\Strings::contains(key($foo), 'messages.cs_CZ.neon'));
+		Assert::same('messages', end($foo));
+		Assert::true(Nette\Utils\Strings::contains(key($foo), 'messages.cs_CZ.neon'));
 
 		$foo = $panel->getIgnoredResources();
 		$foo = end($foo);
-		Tester\Assert::same('messages', end($foo));
-		Tester\Assert::true(Nette\Utils\Strings::contains(key($foo), 'messages.cs_CZ.neon'));
+		Assert::same('messages', end($foo));
+		Assert::true(Nette\Utils\Strings::contains(key($foo), 'messages.cs_CZ.neon'));
 
 		$symfonyTranslator = $container->getByType(Symfony\Contracts\Translation\TranslatorInterface::class);
-		Tester\Assert::same($translator, $symfonyTranslator);
+		Assert::same($translator, $symfonyTranslator);
 
 		$contributteTranslator = $container->getByType(Contributte\Translation\Translator::class);
-		Tester\Assert::same($translator, $contributteTranslator);
+		Assert::same($translator, $contributteTranslator);
 	}
 
 	public function test04(): void
@@ -172,7 +172,7 @@ class TranslationExtension extends Tests\TestAbstract
 			],
 		]);
 
-		Tester\Assert::count(1, $container->findByType(Tests\PsrLoggerMock::class));
+		Assert::count(1, $container->findByType(Tests\PsrLoggerMock::class));
 	}
 
 	public function test05(): void
@@ -188,7 +188,7 @@ class TranslationExtension extends Tests\TestAbstract
 		/** @var Contributte\Translation\Translator $translator */
 		$translator = $container->getByType(Nette\Localization\ITranslator::class);
 
-		Tester\Assert::same($translator->getFallbackLocales(), ['cs_CZ']);
+		Assert::same($translator->getFallbackLocales(), ['cs_CZ']);
 	}
 
 	public function test06(): void
@@ -203,10 +203,10 @@ class TranslationExtension extends Tests\TestAbstract
 		/** @var Contributte\Translation\Translator $translator */
 		$translator = $container->getByType(Nette\Localization\ITranslator::class);
 
-		Tester\Assert::type(Tests\CustomTranslatorMock::class, $translator);
+		Assert::type(Tests\CustomTranslatorMock::class, $translator);
 
 		$factoryTranslator = $container->getByType(Tests\CustomTranslatorMock::class);
-		Tester\Assert::same($translator, $factoryTranslator);
+		Assert::same($translator, $factoryTranslator);
 	}
 
 	public function test07(): void
@@ -220,7 +220,7 @@ class TranslationExtension extends Tests\TestAbstract
 		/** @var Contributte\Translation\Translator $translator */
 		$translator = $container->getByType(Nette\Localization\ITranslator::class);
 
-		Tester\Assert::false($translator->returnOriginalMessage);
+		Assert::false($translator->returnOriginalMessage);
 	}
 
 	public function test08(): void
@@ -234,7 +234,7 @@ class TranslationExtension extends Tests\TestAbstract
 		/** @var Contributte\Translation\Translator $translator */
 		$translator = $container->getByType(Nette\Localization\ITranslator::class);
 
-		Tester\Assert::false($translator->returnOriginalMessage);
+		Assert::false($translator->returnOriginalMessage);
 	}
 
 	public function test09(): void
@@ -247,7 +247,7 @@ class TranslationExtension extends Tests\TestAbstract
 
 		$translator = $container->getByType(Nette\Localization\ITranslator::class, false);
 
-		Tester\Assert::null($translator);
+		Assert::null($translator);
 
 		$container = Tests\Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
 			'translation' => [
@@ -259,11 +259,11 @@ class TranslationExtension extends Tests\TestAbstract
 
 		$translator = $container->getByType(Nette\Localization\ITranslator::class, false);
 
-		Tester\Assert::null($translator);
+		Assert::null($translator);
 
 		$translator = $container->getByType(Contributte\Translation\Translator::class, false);
 
-		Tester\Assert::true($translator instanceof Contributte\Translation\Translator);
+		Assert::true($translator instanceof Contributte\Translation\Translator);
 	}
 
 }
