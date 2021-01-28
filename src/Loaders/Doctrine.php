@@ -2,27 +2,34 @@
 
 namespace Contributte\Translation\Loaders;
 
-use Contributte;
+use Contributte\Translation\Exceptions\InvalidState;
 use Doctrine\ORM\Decorator\EntityManagerDecorator;
 use stdClass;
-use Symfony;
+use Symfony\Component\Translation\Loader\LoaderInterface;
 
-class Doctrine extends DatabaseAbstract implements Symfony\Component\Translation\Loader\LoaderInterface
+class Doctrine extends DatabaseAbstract implements LoaderInterface
 {
 
-	/** @var EntityManagerDecorator $em */
+	/** @var \Doctrine\ORM\Decorator\EntityManagerDecorator $em */
 	private $em;
 
-	public function __construct(EntityManagerDecorator $em)
+	public function __construct(
+		EntityManagerDecorator $em
+	)
 	{
 		$this->em = $em;
 	}
 
 	/**
-	 * @return string[]
-	 * @throws Contributte\Translation\Exceptions\InvalidState
+	 * @return array<string>
+	 * @throws \Contributte\Translation\Exceptions\InvalidState
 	 */
-	protected function getMessages(stdClass $config, string $resource, string $locale, string $domain): array
+	protected function getMessages(
+		stdClass $config,
+		string $resource,
+		string $locale,
+		string $domain
+	): array
 	{
 		$messages = [];
 
@@ -31,7 +38,7 @@ class Doctrine extends DatabaseAbstract implements Symfony\Component\Translation
 			$message = $v1->{$config->message};
 
 			if (array_key_exists($id, $messages)) {
-				throw new Contributte\Translation\Exceptions\InvalidState('Id "' . $id . '" declared twice in "' . $config->table . '" table/domain.');
+				throw new InvalidState('Id "' . $id . '" declared twice in "' . $config->table . '" table/domain.');
 			}
 
 			$messages[$id] = $message;
