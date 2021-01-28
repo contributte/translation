@@ -45,9 +45,20 @@ class LocaleResolver
 			$resolver = $this->container->getByType($v1);
 			$locale = $resolver->resolve($translator);
 
-			if ($locale !== null && ($translator->getLocalesWhitelist() === null || in_array(Strings::substring($locale, 0, 2), array_map(function ($locale): string {
-				return Strings::substring($locale, 0, 2);
-			}, $translator->getLocalesWhitelist()), true))) {
+			if (
+				$locale !== null &&
+				(
+					$translator->getLocalesWhitelist() === null ||
+					in_array(
+						Strings::substring($locale, 0, 2),
+						array_map(
+							fn (string $locale): string => Strings::substring($locale, 0, 2),
+							$translator->getLocalesWhitelist()
+						),
+						true
+					)
+				)
+			) {
 				return $locale;
 			}
 		}
