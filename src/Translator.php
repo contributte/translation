@@ -284,12 +284,12 @@ class Translator extends SymfonyTranslator implements ITranslator
 		}
 
 		if ($message instanceof NotTranslate) {
-			return $message->getMessage();
+			return $message->message;
 		}
 
 		if ($message instanceof Message) {
-			$parameters = $message->getParameters();
-			$message = $message->getMessage();
+			$parameters = $message->parameters;
+			$message = $message->message;
 
 		} elseif (is_int($message)) {// float type can be confused for dot inside
 			$message = (string) $message;
