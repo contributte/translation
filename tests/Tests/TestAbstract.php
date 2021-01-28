@@ -2,16 +2,18 @@
 
 namespace Tests;
 
-use Nette;
-use Tester;
+use Nette\DI\Container;
+use Tester\TestCase;
 
-abstract class TestAbstract extends Tester\TestCase
+abstract class TestAbstract extends TestCase
 {
 
-	/** @var Nette\DI\Container */
+	/** @var \Nette\DI\Container */
 	protected $container;
 
-	public function __construct(Nette\DI\Container $container)
+	public function __construct(
+		Container $container
+	)
 	{
 		$this->container = $container;
 	}

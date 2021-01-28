@@ -2,16 +2,20 @@
 
 namespace Contributte\Translation\Loaders;
 
-use Contributte;
-use Nette;
+use Contributte\Translation\Exceptions\InvalidArgument;
+use Nette\Neon\Neon;
+use Nette\Schema\Elements\Structure;
 use Nette\Schema\Expect;
+use Nette\Schema\Processor;
 use stdClass;
-use Symfony;
+use Symfony\Component\Config\Resource\FileResource;
+use Symfony\Component\Translation\Loader\ArrayLoader;
+use Symfony\Component\Translation\Loader\LoaderInterface;
 
-abstract class DatabaseAbstract extends Symfony\Component\Translation\Loader\ArrayLoader implements Symfony\Component\Translation\Loader\LoaderInterface
+abstract class DatabaseAbstract extends ArrayLoader implements LoaderInterface
 {
 
-	/** @var string[] */
+	/** @var array<string> */
 	public static $defaults = [
 		'table' => 'messages',
 		'id' => 'id',
@@ -22,21 +26,25 @@ abstract class DatabaseAbstract extends Symfony\Component\Translation\Loader\Arr
 	/**
 	 * {@inheritdoc}
 	 *
-	 * @throws Contributte\Translation\Exceptions\InvalidArgument|Contributte\Translation\Exceptions\InvalidState
+	 * @throws \Contributte\Translation\Exceptions\InvalidArgument
 	 */
-	public function load($resource, $locale, $domain = 'messages')
+	public function load(
+		$resource,
+		$locale,
+		$domain = 'messages'
+	)
 	{
 		$content = @file_get_contents($resource); // @ -> prevent E_WARNING and thrown an exception
 
 		if ($content === false) {
-			throw new Contributte\Translation\Exceptions\InvalidArgument('Something wrong with resource file "' . $resource . '".');
+			throw new InvalidArgument('Something wrong with resource file "' . $resource . '".');
 		}
 
 		$catalogue = parent::load(
 			$this->getMessages(
-				(new Nette\Schema\Processor())->process(
+				(new Processor())->process(
 					$this->getSchema(['table' => $domain]),
-					Nette\Neon\Neon::decode($content)
+					Neon::decode($content)
 				),
 				$resource,
 				$locale,
@@ -45,16 +53,17 @@ abstract class DatabaseAbstract extends Symfony\Component\Translation\Loader\Arr
 			$locale,
 			$domain
 		);
-		$catalogue->addResource(new Symfony\Component\Config\Resource\FileResource($resource));
+		$catalogue->addResource(new FileResource($resource));
 
 		return $catalogue;
 	}
 
 	/**
-	 * @param string[] $defaults
-	 * @internal
+	 * @param array<string> $defaults
 	 */
-	private function getSchema(array $defaults = []): Nette\Schema\Elements\Structure
+	private function getSchema(
+		array $defaults = []
+	): Structure
 	{
 		return Expect::structure([
 			'table' => Expect::string(array_key_exists('table', $defaults) ? $defaults['table'] : self::$defaults['table']),
@@ -65,8 +74,13 @@ abstract class DatabaseAbstract extends Symfony\Component\Translation\Loader\Arr
 	}
 
 	/**
-	 * @return string[]
+	 * @return array<string>
 	 */
-	abstract protected function getMessages(stdClass $config, string $resource, string $locale, string $domain): array;
+	abstract protected function getMessages(
+		stdClass $config,
+		string $resource,
+		string $locale,
+		string $domain
+	): array;
 
 }

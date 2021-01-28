@@ -28,11 +28,6 @@ parameters:
 
 		-
 			count: 1
-			message: '#^Method Contributte\\Translation\\Translator\:\:setLocale\(\) has no return typehint specified\.$#'
-			path: src/Translator.php
-
-		-
-			count: 1
 			message: '#^Method Contributte\\Translation\\Translator\:\:setFallbackLocales\(\) has no return typehint specified\.$#'
 			path: src/Translator.php
 

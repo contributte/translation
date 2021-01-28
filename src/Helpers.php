@@ -2,24 +2,28 @@
 
 namespace Contributte\Translation;
 
-use Latte;
-use Nette;
+use Latte\MacroNode;
+use Nette\Utils\Strings;
 
 class Helpers
 {
 
 	/**
-	 * @param string[]|null $whitelist
+	 * @param array<string>|null $whitelist
 	 */
-	public static function whitelistRegexp(?array $whitelist): ?string
+	public static function whitelistRegexp(
+		?array $whitelist
+	): ?string
 	{
 		return $whitelist !== null ? '~^(' . implode('|', $whitelist) . ')~i' : null;
 	}
 
 	/**
-	 * @return string[]
+	 * @return array<string>
 	 */
-	public static function extractMessage(string $message): array
+	public static function extractMessage(
+		string $message
+	): array
 	{
 		$dot = strpos($message, '.');
 		$space = strpos($message, ' ');
@@ -34,9 +38,11 @@ class Helpers
 		return [$domain, $message];
 	}
 
-	public static function macroWithoutParameters(Latte\MacroNode $node): bool
+	public static function macroWithoutParameters(
+		MacroNode $node
+	): bool
 	{
-		$result = Nette\Utils\Strings::trim($node->tokenizer->joinUntil(',')) === Nette\Utils\Strings::trim($node->args);
+		$result = Strings::trim($node->tokenizer->joinUntil(',')) === Strings::trim($node->args);
 		$node->tokenizer->reset();
 		return $result;
 	}

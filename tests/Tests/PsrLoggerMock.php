@@ -2,15 +2,19 @@
 
 namespace Tests;
 
-use Psr;
+use Psr\Log\AbstractLogger;
 
-class PsrLoggerMock extends Psr\Log\AbstractLogger
+final class PsrLoggerMock extends AbstractLogger
 {
 
 	/**
 	 * @inheritDoc
 	 */
-	public function log($level, $message, array $context = [])
+	public function log(
+		$level,
+		$message,
+		array $context = []
+	)
 	{
 	}
 

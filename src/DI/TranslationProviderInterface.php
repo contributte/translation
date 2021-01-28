@@ -6,7 +6,7 @@ interface TranslationProviderInterface
 {
 
 	/**
-	 * @return string[]
+	 * @return array<string>
 	 */
 	public function getTranslationResources(): array;
 

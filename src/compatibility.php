@@ -4,7 +4,7 @@ namespace Contributte\Translation;
 
 if (false) {
 
-	/** @deprecated use Contributte\Translation\LoggerTranslator */
+	/** @deprecated use \Contributte\Translation\LoggerTranslator */
 	class LoggerTranslator
 	{
 
@@ -16,7 +16,7 @@ if (false) {
 
 if (false) {
 
-	/** @deprecated use Contributte\Translation\DebuggerTranslator */
+	/** @deprecated use \Contributte\Translation\DebuggerTranslator */
 	class DebuggerTranslator
 	{
 

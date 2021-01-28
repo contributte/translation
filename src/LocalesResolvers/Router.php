@@ -2,8 +2,9 @@
 
 namespace Contributte\Translation\LocalesResolvers;
 
-use Contributte;
-use Nette;
+use Contributte\Translation\Translator;
+use Nette\Http\IRequest;
+use Nette\Routing\Router as NetteRouter;
 
 class Router implements ResolverInterface
 {
@@ -11,19 +12,24 @@ class Router implements ResolverInterface
 	/** @var string */
 	public static $parameter = 'locale';
 
-	/** @var Nette\Http\IRequest */
+	/** @var \Nette\Http\IRequest */
 	private $request;
 
-	/** @var Nette\Routing\Router */
+	/** @var \Nette\Routing\Router */
 	private $router;
 
-	public function __construct(Nette\Http\IRequest $request, Nette\Routing\Router $router)
+	public function __construct(
+		IRequest $request,
+		NetteRouter $router
+	)
 	{
 		$this->request = $request;
 		$this->router = $router;
 	}
 
-	public function resolve(Contributte\Translation\Translator $translator): ?string
+	public function resolve(
+		Translator $translator
+	): ?string
 	{
 		$match = $this->router->match($this->request);
 

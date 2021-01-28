@@ -4,7 +4,7 @@ namespace Tests;
 
 use Contributte\Translation\Translator;
 
-class CustomTranslatorMock extends Translator
+final class CustomTranslatorMock extends Translator
 {
 
 }

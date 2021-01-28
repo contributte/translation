@@ -1,11 +1,13 @@
 <?php declare(strict_types = 1);
 
 require __DIR__ . '/../vendor/autoload.php';
-//require __DIR__ . '/../../vendor/autoload.php';
 
-Tester\Environment::setup();
+use Nette\Configurator;
+use Tester\Environment;
 
-$configurator = new Nette\Configurator();
+Environment::setup();
+
+$configurator = new Configurator();
 
 $configurator->setTempDirectory(__DIR__ . '/../temp');
 $configurator->createRobotLoader()
