@@ -5,7 +5,7 @@ namespace Tests\LocalesResolvers;
 use Contributte;
 use Mockery;
 use Nette;
-use Tester;
+use Tester\Assert;
 use Tests;
 
 $container = require __DIR__ . '/../../bootstrap.php';
@@ -15,20 +15,20 @@ class Header extends Tests\TestAbstract
 
 	public function test01(): void
 	{
-		Tester\Assert::null($this->resolve(null, ['foo']));
-		Tester\Assert::null($this->resolve('en', []));
-		Tester\Assert::null($this->resolve('foo', ['en']));
-		Tester\Assert::same('en', $this->resolve('en, cs', ['en', 'cs']));
-		Tester\Assert::same('en', $this->resolve('en, cs', ['cs', 'en']));
-		Tester\Assert::same('en-us', $this->resolve('da, en-us;q=0.8, en;q=0.7', ['en', 'en-us']));
-		Tester\Assert::same('en', $this->resolve('da, en-us;q=0.8, en;q=0.7', ['en']));
-		Tester\Assert::same('en', $this->resolve('da, en_us', ['en']));
-		Tester\Assert::same('en-us', $this->resolve('da, en_us', ['en', 'en-us']));
+		Assert::null($this->resolve(null, ['foo']));
+		Assert::null($this->resolve('en', []));
+		Assert::null($this->resolve('foo', ['en']));
+		Assert::same('en', $this->resolve('en, cs', ['en', 'cs']));
+		Assert::same('en', $this->resolve('en, cs', ['cs', 'en']));
+		Assert::same('en-us', $this->resolve('da, en-us;q=0.8, en;q=0.7', ['en', 'en-us']));
+		Assert::same('en', $this->resolve('da, en-us;q=0.8, en;q=0.7', ['en']));
+		Assert::same('en', $this->resolve('da, en_us', ['en']));
+		Assert::same('en-us', $this->resolve('da, en_us', ['en', 'en-us']));
 	}
 
 	public function test02(): void
 	{
-		Tester\Assert::exception(function (): void {
+		Assert::exception(function (): void {
 			new Contributte\Translation\LocalesResolvers\Header(new class implements Nette\Http\IRequest {
 
 				public function getReferer(): ?Nette\Http\UrlImmutable
