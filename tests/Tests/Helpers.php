@@ -2,22 +2,24 @@
 
 namespace Tests;
 
-use Contributte;
-use Nette;
+use Contributte\Translation\DI\TranslationExtension;
+use Nette\Configurator;
+use Nette\DI\Container;
 
-class Helpers
+final class Helpers
 {
 
-	use Nette\StaticClass;
-
 	/**
-	 * @param mixed[] $config
+	 * @param array<mixed> $config
 	 */
-	public static function createContainerFromConfigurator(string $tempDir, array $config = []): Nette\DI\Container
+	public static function createContainerFromConfigurator(
+		string $tempDir,
+		array $config = []
+	): Container
 	{
 		$config = array_merge_recursive($config, [
 			'extensions' => [
-				'translation' => Contributte\Translation\DI\TranslationExtension::class,
+				'translation' => TranslationExtension::class,
 			],
 			'translation' => [
 				'debug' => true,
@@ -32,7 +34,7 @@ class Helpers
 			],
 		]);
 
-		$configurator = new Nette\Configurator();
+		$configurator = new Configurator();
 
 		$configurator->setTempDirectory($tempDir)
 			->addConfig($config);
