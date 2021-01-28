@@ -308,7 +308,11 @@ final class TranslatorTest extends TestAbstract
 			/**
 			 * @inheritDoc
 			 */
-			public function log($level, $message, array $context = [])
+			public function log(
+				$level,
+				$message,
+				array $context = []
+			)
 			{
 				Assert::same(LogLevel::NOTICE, $level);
 				Assert::same('Missing translation', $message);
