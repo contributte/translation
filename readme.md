@@ -1,38 +1,33 @@
-# Translation
-Symfony/Translation integration for [Nette Framework](https://nette.org).
+![](https://heatbadger.now.sh/github/readme/contributte/translation/)
 
------
+<p align=center>
+    <a href="https://github.com/contributte/translation/actions"><img src="https://badgen.net/github/checks/contributte/translation"></a>
+    <a href="https://coveralls.io/r/contributte/translation"><img src="https://badgen.net/coveralls/c/github/contributte/translation"></a>
+    <a href="https://packagist.org/packages/contributte/translation"><img src="https://badgen.net/packagist/dm/contributte/translation"></a>
+    <a href="https://packagist.org/packages/contributte/translation"><img src="https://badgen.net/packagist/v/contributte/translation"></a>
+</p>
+<p align=center>
+    <a href="https://packagist.org/packages/contributte/translation"><img src="https://badgen.net/packagist/php/contributte/translation"></a>
+    <a href="https://github.com/contributte/translation"><img src="https://badgen.net/github/license/contributte/translation"></a>
+    <a href="https://bit.ly/ctteg"><img src="https://badgen.net/badge/support/gitter/cyan"></a>
+    <a href="https://bit.ly/cttfo"><img src="https://badgen.net/badge/support/forum/yellow"></a>
+    <a href="https://contributte.org/partners.html"><img src="https://badgen.net/badge/sponsor/donations/F96854"></a>
+</p>
 
-[![Build Status](https://github.com/contributte/translation/workflows/build/badge.svg)](https://github.com/contributte/translation/actions?query=workflow%3Abuild)
-[![Code coverage](https://coveralls.io/repos/github/contributte/translation/badge.svg?branch=master)](https://coveralls.io/github/contributte/translation?branch=master)
-[![Licence](https://img.shields.io/packagist/l/contributte/translation.svg?style=flat-square)](https://packagist.org/packages/contributte/translation)
-[![Downloads this Month](https://img.shields.io/packagist/dm/contributte/translation.svg?style=flat-square)](https://packagist.org/packages/contributte/translation)
-[![Downloads total](https://img.shields.io/packagist/dt/contributte/translation.svg?style=flat-square)](https://packagist.org/packages/contributte/translation)
-[![Latest stable](https://img.shields.io/packagist/v/contributte/translation.svg?style=flat-square)](https://packagist.org/packages/contributte/translation)
-[![PHPStan](https://img.shields.io/badge/PHPStan-enabled-brightgreen.svg?style=flat-square)](https://github.com/phpstan/phpstan)
+<p align=center>
+    Website 🚀 <a href="https://contributte.org">contributte.org</a> | Contact 👨🏻‍💻 <a href="https://f3l1x.io">f3l1x.io</a> | Twitter 🐦 <a href="https://twitter.com/contributte">@contributte</a>
+</p>
 
-## Discussion / Help
-[![Join the chat](https://img.shields.io/gitter/room/contributte/contributte.svg?style=flat-square)](http://bit.ly/ctteg)
+## Usage
 
+To install the latest version of `contributte/translation` use [Composer](https://getcomposer.com).
+
+```
+composer require contributte/translation
+```
 ## Documentation
 
-- [Setup](.docs/README.md#setup)
-- [Configuration](.docs/README.md#configuration)
-	- [Locale resolvers](.docs/README.md#locale-resolvers)
-- [Examples](.docs/README.md#examples)
-	- [Presenter](.docs/README.md#presenter)
-	- [Model](.docs/README.md#model)
-	- [Latte](.docs/README.md#latte)
-	- [Neon](.docs/README.md#neon)
-	- [Parameters in messages](.docs/README.md#parameters-in-messages)
-- [Loaders](.docs/README.md#loaders)
-	- [File loaders](.docs/README.md#file-loaders)
-	- [Database loaders](.docs/README.md#database-loaders)
-		- [Doctrine](.docs/README.md#doctrine)
-		- [Nette Database](.docs/README.md#nette-database)
-- [Features](.docs/README.md#features)
-	- [Wrappers](.docs/README.md#wrappers)
-	- [TranslationProviderInterface](.docs/README.md#translationproviderinterface)
+For details on how to use this package, check out our [documentation](.docs).
 
 ## Versions
 | State       | Version   | Branch   | PHP            | Symfony      |
@@ -40,31 +35,17 @@ Symfony/Translation integration for [Nette Framework](https://nette.org).
 | development | `^0.9.0`  | `master` | `^7.1.3\|^8.0` | `^4.4\|^5.0` |
 | stable      | `^0.8.0`  | `master` | `^7.1.3\|^8.0` | `^4.4\|^5.0` |
 
-## Prolog
-Easy and clear translations for your multi-language applications.
+## Development
 
-## Maintainers
-<table>
-	<tbody>
-		<tr>
-			<td align="center">
-				<a href="https://github.com/aleswita">
-					<img width="150" height="150" src="https://avatars1.githubusercontent.com/u/6991688?s=460&amp;v=4">
-				</a>
-				<br>
-				<a href="https://github.com/aleswita">Aleš Wita</a>
-			</td>
-			<td align="center">
-				<a href="https://github.com/f3l1x">
-					<img width="150" height="150" src="https://avatars2.githubusercontent.com/u/538058?v=3&s=150">
-				</a>
-				<br>
-				<a href="https://github.com/f3l1x">Milan Felix Šulc</a>
-			</td>
-		</tr>
-	</tbody>
-</table>
+See [how to contribute](https://contributte.org/contributing.html) to this package.
+
+This package is currently maintaining by these authors.
+
+<a href="https://github.com/aleswita">
+  <img width="80" height="80" src="https://avatars1.githubusercontent.com/u/6991688?s=80&amp;v=3">
+</a>
 
 -----
 
-Thank you for testing, reporting and contributing.
+Consider to [support](https://contributte.org/partners.html) **contributte** development team.
+Also thank you for using this package.
