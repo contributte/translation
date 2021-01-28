@@ -2,18 +2,27 @@
 
 namespace Contributte\Translation\Latte;
 
-use Contributte;
-use Latte;
+use Contributte\Translation\Helpers;
+use Latte\CompileException;
+use Latte\Compiler;
+use Latte\Engine;
+use Latte\MacroNode;
+use Latte\Macros\MacroSet;
+use Latte\PhpWriter;
 
-class Macros extends Latte\Macros\MacroSet
+class Macros extends MacroSet
 {
 
-	final public function __construct(Latte\Compiler $compiler)
+	public function __construct(
+		Compiler $compiler
+	)
 	{
 		parent::__construct($compiler);
 	}
 
-	public static function install(Latte\Compiler $compiler): void
+	public static function install(
+		Compiler $compiler
+	): void
 	{
 		$me = new static($compiler);
 
@@ -24,9 +33,12 @@ class Macros extends Latte\Macros\MacroSet
 	/**
 	 * {_ ...}
 	 *
-	 * @throws Latte\CompileException
+	 * @throws \Latte\CompileException
 	 */
-	public function macroTranslate(Latte\MacroNode $node, Latte\PhpWriter $writer): string
+	public function macroTranslate(
+		MacroNode $node,
+		PhpWriter $writer
+	): string
 	{
 		if ($node->closing) {
 			if (strpos($node->content, '<?php') === false) {
@@ -38,11 +50,11 @@ class Macros extends Latte\Macros\MacroSet
 				$value = 'ob_get_clean()';
 			}
 
-			if (!defined(Latte\Engine::class . '::VERSION_ID') || Latte\Engine::VERSION_ID < 20900) {
+			if (!defined(Engine::class . '::VERSION_ID') || Engine::VERSION_ID < 20900) {
 				return $writer->write('$_fi = new LR\FilterInfo(%var); echo %modifyContent($this->filters->filterContent("translate", $_fi, %raw))', $node->context[0], $value);
 			}
 
-			if (Latte\Engine::VERSION_ID >= 20900 && Latte\Engine::VERSION_ID < 20902) {
+			if (Engine::VERSION_ID >= 20900 && Engine::VERSION_ID < 20902) {
 				return $writer->write('$__fi = new LR\FilterInfo(%var); echo %modifyContent($this->filters->filterContent("translate", $__fi, %raw))', $node->context[0], $value);
 			}
 
@@ -50,7 +62,7 @@ class Macros extends Latte\Macros\MacroSet
 		}
 
 		if ($node->empty = ($node->args !== '')) {
-			if (Contributte\Translation\Helpers::macroWithoutParameters($node)) {
+			if (Helpers::macroWithoutParameters($node)) {
 				return $writer->write('echo %modify(call_user_func($this->filters->translate, %node.word))');
 			}
 
@@ -63,9 +75,12 @@ class Macros extends Latte\Macros\MacroSet
 	/**
 	 * {translate ...}
 	 *
-	 * @throws Latte\CompileException
+	 * @throws \Latte\CompileException
 	 */
-	public function macroPrefix(Latte\MacroNode $node, Latte\PhpWriter $writer): string
+	public function macroPrefix(
+		MacroNode $node,
+		PhpWriter $writer
+	): string
 	{
 		if ($node->closing) {
 			if ($node->content !== null && $node->content !== '') {
@@ -76,7 +91,7 @@ class Macros extends Latte\Macros\MacroSet
 		}
 
 		if ($node->args === '') {
-			throw new Latte\CompileException('Expected message prefix, none given.');
+			throw new CompileException('Expected message prefix, none given.');
 		}
 
 		return $writer->write('$this->global->translator->setPrefix([%node.word]);');
