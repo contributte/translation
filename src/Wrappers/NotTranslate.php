@@ -8,7 +8,9 @@ class NotTranslate
 	/** @var string */
 	private $message;
 
-	public function __construct(string $message)
+	public function __construct(
+		string $message
+	)
 	{
 		$this->message = $message;
 	}
@@ -18,7 +20,9 @@ class NotTranslate
 		return $this->message;
 	}
 
-	public function setMessage(string $string): self
+	public function setMessage(
+		string $string
+	): self
 	{
 		$this->message = $string;
 		return $this;
