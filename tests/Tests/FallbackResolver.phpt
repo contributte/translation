@@ -4,7 +4,7 @@ namespace Tests;
 
 use Contributte;
 use Mockery;
-use Tester;
+use Tester\Assert;
 use Tests;
 
 $container = require __DIR__ . '/../bootstrap.php';
@@ -14,11 +14,11 @@ class FallbackResolver extends Tests\TestAbstract
 
 	public function test01(): void
 	{
-		Tester\Assert::same(['cs_CZ'], $this->compute('cs', ['cs', 'cs_CZ']));
-		Tester\Assert::same(['cs', 'cs_CZ'], $this->compute('sk', ['cs', 'cs_CZ']));
-		Tester\Assert::same(['cs', 'en'], $this->compute('cs_CZ', ['cs', 'cs_CZ', 'en']));
-		Tester\Assert::same(['en', 'cs', 'cs_CZ'], $this->compute('en_US', ['cs', 'cs_CZ', 'en', 'en_US']));
-		Tester\Assert::same(['cs', 'cs_CZ', 'en', 'en_US'], $this->compute('sk', ['cs', 'cs_CZ', 'en', 'en_US']));
+		Assert::same(['cs_CZ'], $this->compute('cs', ['cs', 'cs_CZ']));
+		Assert::same(['cs', 'cs_CZ'], $this->compute('sk', ['cs', 'cs_CZ']));
+		Assert::same(['cs', 'en'], $this->compute('cs_CZ', ['cs', 'cs_CZ', 'en']));
+		Assert::same(['en', 'cs', 'cs_CZ'], $this->compute('en_US', ['cs', 'cs_CZ', 'en', 'en_US']));
+		Assert::same(['cs', 'cs_CZ', 'en', 'en_US'], $this->compute('sk', ['cs', 'cs_CZ', 'en', 'en_US']));
 	}
 
 	/**
