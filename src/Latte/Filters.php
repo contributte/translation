@@ -20,10 +20,8 @@ class Filters
 
 	/**
 	 * @param \Latte\Runtime\FilterInfo $filterInfo
-	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.UselessParameterAnnotation
 	 * @param mixed $message
 	 * @param mixed ...$parameters
-	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.TypeHintDeclaration.MissingParameterTypeHint
 	 */
 	public function translate(
 		FilterInfo $filterInfo,
