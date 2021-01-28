@@ -4,7 +4,6 @@ namespace Contributte\Translation\Tracy;
 
 use Contributte;
 use ReflectionClass;
-use ReflectionException;
 use Tracy;
 
 class Panel implements Tracy\IBarPanel
@@ -53,7 +52,6 @@ class Panel implements Tracy\IBarPanel
 
 	/**
 	 * @inheritdoc
-	 * @throws ReflectionException
 	 */
 	public function getPanel(): string
 	{
