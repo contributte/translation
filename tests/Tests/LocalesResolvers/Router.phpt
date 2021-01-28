@@ -5,7 +5,7 @@ namespace Tests\LocalesResolvers;
 use Contributte;
 use Mockery;
 use Nette;
-use Tester;
+use Tester\Assert;
 use Tests;
 
 $container = require __DIR__ . '/../../bootstrap.php';
@@ -15,10 +15,10 @@ class Router extends Tests\TestAbstract
 
 	public function test01(): void
 	{
-		Tester\Assert::null($this->resolve(null));
-		Tester\Assert::same('', $this->resolve(''));
-		Tester\Assert::same('en', $this->resolve('en'));
-		Tester\Assert::same('cs', $this->resolve('cs'));
+		Assert::null($this->resolve(null));
+		Assert::same('', $this->resolve(''));
+		Assert::same('en', $this->resolve('en'));
+		Assert::same('cs', $this->resolve('cs'));
 	}
 
 	/**
