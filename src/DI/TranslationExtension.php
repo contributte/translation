@@ -78,7 +78,7 @@ class TranslationExtension extends CompilerExtension
 				'vary' => Expect::array()->default([]),
 			]),
 			'translatorFactory' => Expect::string()->default(null),
-			'returnOriginalMessage' => Expect::bool()->default(false),
+			'returnOriginalMessage' => Expect::bool()->default(true),
 			'autowired' => Expect::type('bool|array')->default(true),
 		]);
 	}
