@@ -15,22 +15,22 @@ final class MessageTest extends TestAbstract
 	{
 		$message = new Message('message', [], 'domain', 'locale');
 
-		Assert::same('message', $message->getMessage());
-		Assert::same([[], 'domain', 'locale'], $message->getParameters());
+		Assert::same('message', $message->message);
+		Assert::same([[], 'domain', 'locale'], $message->parameters);
 
-		$message->setMessage('new message')
-			->setParameters([]);
+		$message->message = 'new message';
+		$message->parameters = [];
 
-		Assert::same('new message', $message->getMessage());
-		Assert::same([], $message->getParameters());
+		Assert::same('new message', $message->message);
+		Assert::same([], $message->parameters);
 	}
 
 	public function test02(): void
 	{
 		$message = new Message('message');
 
-		Assert::same('message', $message->getMessage());
-		Assert::same([], $message->getParameters());
+		Assert::same('message', $message->message);
+		Assert::same([], $message->parameters);
 	}
 
 }
