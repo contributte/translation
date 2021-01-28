@@ -8,7 +8,7 @@ use Contributte\Translation\Translator;
 final class LocaleResolverMock implements ResolverInterface
 {
 
-	private ?string $locale;
+	private ?string $locale = null;
 
 	public function setLocale(
 		?string $locale
