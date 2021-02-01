@@ -51,43 +51,24 @@ class Macros extends MacroSet
 			}
 
 			if (!defined(Engine::class . '::VERSION_ID') || Engine::VERSION_ID < 20900) {
-				return $writer->write('$_fi = new LR\FilterInfo(%var); echo %modifyContent($this->filters->filterContent("translate", $_fi, %raw))', $node->context[0], $value);
+				$latteProp = '$_fi';
+			} elseif (Engine::VERSION_ID >= 20900 && Engine::VERSION_ID < 20902) {
+				$latteProp = '$__fi';
+			} else {
+				$latteProp = '$ʟ_fi';
 			}
 
-			if (Engine::VERSION_ID >= 20900 && Engine::VERSION_ID < 20902) {
-				return $writer->write('$__fi = new LR\FilterInfo(%var); echo %modifyContent($this->filters->filterContent("translate", $__fi, %raw))', $node->context[0], $value);
-			}
-
-			return $writer->write('$ʟ_fi = new LR\FilterInfo(%var); echo %modifyContent($this->filters->filterContent("translate", $ʟ_fi, %raw))', $node->context[0], $value);
+			return $writer->write($latteProp . ' = new LR\FilterInfo(%var); echo %modifyContent($this->filters->filterContent("translate", ' . $latteProp . ', %raw))', $node->context[0], $value);
 		}
 
 		if ($node->empty = ($node->args !== '')) {
+			$prefix = '$message = isset($prefix)? implode(".", $prefix) . "." : "";';
+
 			if (Helpers::macroWithoutParameters($node)) {
-				return $writer->write('
-
-				if (isset($prefix)) {
-					$message = implode(".", $prefix) . ".";
-				} else {
-					$message = "";
-				}
-
-				echo %modify(call_user_func($this->filters->translate, $message . %node.word))'
-				);
-				//return $writer->write('echo %modify(call_user_func($this->filters->translate, %node.word))');
+				return $writer->write($prefix . 'echo %modify(call_user_func($this->filters->translate, $message . %node.word))');
 			}
 
-
-
-			return $writer->write('
-				if (isset($prefix)) {
-					$message = implode(".", $prefix) . ".";
-				} else {
-					$message = "";
-				}
-
-				echo %modify(call_user_func($this->filters->translate, $message . %node.word, %node.args))
-			');
-			//return $writer->write('echo %modify(call_user_func($this->filters->translate, %node.word, %node.args))');
+			return $writer->write($prefix . 'echo %modify(call_user_func($this->filters->translate, $message . %node.word, %node.args))');
 		}
 
 		return '';
@@ -105,10 +86,7 @@ class Macros extends MacroSet
 	{
 		if ($node->closing) {
 			if ($node->content !== null && $node->content !== '') {
-				return $writer->write('
-					$prefix = array_pop($tempPrefix);
-				');
-				//return $writer->write('$this->global->translator->setPrefix($this->global->translator->getPrefixTemp());');
+				return $writer->write('$prefix = array_pop($tempPrefix);');
 			}
 
 			return '';
@@ -129,7 +107,6 @@ class Macros extends MacroSet
 
 			$prefix = [%node.word];
 		');
-		//return $writer->write('$this->global->translator->setPrefix([%node.word]);');
 	}
 
 }
