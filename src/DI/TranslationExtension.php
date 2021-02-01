@@ -219,8 +219,6 @@ class TranslationExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 
-		/** @var \Nette\DI\Definitions\ServiceDefinition $translator */
-		$translator = $builder->getDefinition($this->prefix('translator'));
 		$whitelistRegexp = Helpers::whitelistRegexp($this->config->locales->whitelist);
 
 		if ($this->config->debug && $this->config->debugger) {
@@ -245,7 +243,7 @@ class TranslationExtension extends CompilerExtension
 
 			$latteFactory->getResultDefinition()
 				->addSetup('?->onCompile[] = function (Latte\\Engine $engine): void { ?::install($engine->getCompiler()); }', ['@self', new PhpLiteral(Macros::class)])
-				->addSetup('addProvider', ['translator', $builder->getDefinition($this->prefix('translator'))])
+				->addSetup('addProvider', ['translator', $iTranslator])
 				->addSetup('addFilter', ['translate', [$latteFilters, 'translate']]);
 		}
 
@@ -253,6 +251,9 @@ class TranslationExtension extends CompilerExtension
 		foreach ($this->compiler->getExtensions(TranslationProviderInterface::class) as $v1) {
 			$this->config->dirs = array_merge($v1->getTranslationResources(), $this->config->dirs);
 		}
+
+		/** @var \Nette\DI\Definitions\ServiceDefinition $translator */
+		$translator = $builder->getDefinition($this->prefix('translator'));
 
 		if (count($this->config->dirs) > 0) {
 			foreach ($this->config->loaders as $k1 => $v1) {
