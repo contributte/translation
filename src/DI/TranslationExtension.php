@@ -3,7 +3,6 @@
 namespace Contributte\Translation\DI;
 
 use Contributte\Translation\Exceptions\InvalidArgument;
-use Contributte\Translation\Exceptions\InvalidState;
 use Contributte\Translation\FallbackResolver;
 use Contributte\Translation\Helpers;
 use Contributte\Translation\Latte\Filters;
