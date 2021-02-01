@@ -212,7 +212,7 @@ class TranslationExtension extends CompilerExtension
 	}
 
 	/**
-	 * @throws \Contributte\Translation\Exceptions\InvalidArgument|\Contributte\Translation\Exceptions\InvalidState|\ReflectionException
+	 * @throws \Contributte\Translation\Exceptions\InvalidArgument|\ReflectionException
 	 */
 	public function beforeCompile(): void
 	{
