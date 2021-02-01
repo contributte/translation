@@ -5,7 +5,6 @@ namespace Tests\DI;
 use Contributte\Translation\DI\TranslationExtension;
 use Contributte\Translation\DI\TranslationProviderInterface;
 use Contributte\Translation\Exceptions\InvalidArgument;
-use Contributte\Translation\Exceptions\InvalidState;
 use Contributte\Translation\LocalesResolvers\ResolverInterface;
 use Contributte\Translation\Tracy\Panel;
 use Contributte\Translation\Translator;
@@ -255,17 +254,31 @@ final class TranslationExtensionTest extends TestAbstract
 
 	public function test09(): void
 	{
-		Assert::exception(
-			function (): void {
-				Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
-					'translation' => [
-						'autowired' => false,
-					],
-				]);
-			},
-			InvalidState::class,
-			'If you set autowired false, you need another implementation of ' . ITranslator::class . ' for Latte filters.'
-		);
+		$container = Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+			'translation' => [
+				'autowired' => false,
+			],
+		]);
+
+		$translator = $container->getByType(ITranslator::class, false);
+
+		Assert::null($translator);
+
+		$container = Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+			'translation' => [
+				'autowired' => [
+					Translator::class,
+				],
+			],
+		]);
+
+		$translator = $container->getByType(ITranslator::class, false);
+
+		Assert::null($translator);
+
+		$translator = $container->getByType(Translator::class, false);
+
+		Assert::true($translator instanceof Translator);
 	}
 
 }
