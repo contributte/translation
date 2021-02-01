@@ -3,6 +3,7 @@
 namespace Contributte\Translation\DI;
 
 use Contributte\Translation\Exceptions\InvalidArgument;
+use Contributte\Translation\Exceptions\InvalidState;
 use Contributte\Translation\FallbackResolver;
 use Contributte\Translation\Helpers;
 use Contributte\Translation\Latte\Filters;
@@ -212,7 +213,7 @@ class TranslationExtension extends CompilerExtension
 	}
 
 	/**
-	 * @throws \Contributte\Translation\Exceptions\InvalidArgument|\ReflectionException
+	 * @throws \Contributte\Translation\Exceptions\InvalidArgument|\Contributte\Translation\Exceptions\InvalidState|\ReflectionException
 	 */
 	public function beforeCompile(): void
 	{
@@ -230,8 +231,14 @@ class TranslationExtension extends CompilerExtension
 		$latteFactoryName = $builder->getByType(ILatteFactory::class);
 
 		if ($latteFactoryName !== null) {
+			$iTranslator = $builder->getByType(ITranslator::class, false);
+
+			if ($iTranslator === null) {
+				throw new InvalidState('If you set autowired false, you need another implementation of ' . ITranslator::class . ' for Latte filters.');
+			}
+
 			$latteFilters = $builder->addDefinition($this->prefix('latte.filters'))
-				->setFactory(Filters::class, [$translator]);
+				->setFactory(Filters::class);
 
 			/** @var \Nette\DI\Definitions\FactoryDefinition $latteFactory */
 			$latteFactory = $builder->getDefinition($latteFactoryName);
