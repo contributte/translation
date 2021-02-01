@@ -257,7 +257,7 @@ final class TranslationExtensionTest extends TestAbstract
 	{
 		Assert::exception(
 			function (): void {
-				$container = Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+				Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
 					'translation' => [
 						'autowired' => false,
 					],
