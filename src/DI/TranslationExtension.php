@@ -233,22 +233,22 @@ class TranslationExtension extends CompilerExtension
 		if ($latteFactoryName !== null) {
 			$iTranslator = $builder->getByType(ITranslator::class, false);
 
-			if ($iTranslator === null) {
-				throw new InvalidState('If you set autowired false, you need another implementation of ' . ITranslator::class . ' for Latte filters.');
+			if ($iTranslator !== null) {
+				$latteFilters = $builder->addDefinition($this->prefix('latte.filters'))
+					->setFactory(Filters::class);
 			}
-
-			//$iTranslatorDefinition = $builder->getDefinition($iTranslator);
-
-			$latteFilters = $builder->addDefinition($this->prefix('latte.filters'))
-				->setFactory(Filters::class);
 
 			/** @var \Nette\DI\Definitions\FactoryDefinition $latteFactory */
 			$latteFactory = $builder->getDefinition($latteFactoryName);
 
 			$latteFactory->getResultDefinition()
 				->addSetup('?->onCompile[] = function (Latte\\Engine $engine): void { ?::install($engine->getCompiler()); }', ['@self', new PhpLiteral(Macros::class)])
-				->addSetup('addProvider', ['translator', $translator])
-				->addSetup('addFilter', ['translate', [$latteFilters, 'translate']]);
+				->addSetup('addProvider', ['translator', $translator]);
+
+			if ($iTranslator !== null) {
+				$latteFactory->getResultDefinition()
+					->addSetup('addFilter', ['translate', [$latteFilters, 'translate']]);
+			}
 		}
 
 		/** @var \Contributte\Translation\DI\TranslationProviderInterface $v1 */
