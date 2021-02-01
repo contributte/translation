@@ -63,10 +63,31 @@ class Macros extends MacroSet
 
 		if ($node->empty = ($node->args !== '')) {
 			if (Helpers::macroWithoutParameters($node)) {
-				return $writer->write('echo %modify(call_user_func($this->filters->translate, %node.word))');
+				return $writer->write('
+
+				if (isset($prefix)) {
+					$message = implode(".", $prefix) . ".";
+				} else {
+					$message = "";
+				}
+
+				echo %modify(call_user_func($this->filters->translate, $message . %node.word))'
+				);
+				//return $writer->write('echo %modify(call_user_func($this->filters->translate, %node.word))');
 			}
 
-			return $writer->write('echo %modify(call_user_func($this->filters->translate, %node.word, %node.args))');
+
+
+			return $writer->write('
+				if (isset($prefix)) {
+					$message = implode(".", $prefix) . ".";
+				} else {
+					$message = "";
+				}
+
+				echo %modify(call_user_func($this->filters->translate, $message . %node.word, %node.args))
+			');
+			//return $writer->write('echo %modify(call_user_func($this->filters->translate, %node.word, %node.args))');
 		}
 
 		return '';
@@ -84,7 +105,10 @@ class Macros extends MacroSet
 	{
 		if ($node->closing) {
 			if ($node->content !== null && $node->content !== '') {
-				return $writer->write('$this->global->translator->setPrefix($this->global->translator->getPrefixTemp());');
+				return $writer->write('
+					$prefix = array_pop($tempPrefix);
+				');
+				//return $writer->write('$this->global->translator->setPrefix($this->global->translator->getPrefixTemp());');
 			}
 
 			return '';
@@ -94,7 +118,18 @@ class Macros extends MacroSet
 			throw new CompileException('Expected message prefix, none given.');
 		}
 
-		return $writer->write('$this->global->translator->setPrefix([%node.word]);');
+		return $writer->write('
+			if (!isset($tempPrefix)) {
+				$tempPrefix = [];
+			}
+
+			if (isset($prefix)) {
+				$tempPrefix[] = $prefix;
+			}
+
+			$prefix = [%node.word];
+		');
+		//return $writer->write('$this->global->translator->setPrefix([%node.word]);');
 	}
 
 }
