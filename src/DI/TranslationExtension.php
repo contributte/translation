@@ -230,15 +230,17 @@ class TranslationExtension extends CompilerExtension
 		$latteFactoryName = $builder->getByType(ILatteFactory::class);
 
 		if ($latteFactoryName !== null) {
+			$iTranslator = $builder->getDefinitionByType(ITranslator::class);
+
 			$latteFilters = $builder->addDefinition($this->prefix('latte.filters'))
-				->setFactory(Filters::class, [$translator]);
+				->setFactory(Filters::class);
 
 			/** @var \Nette\DI\Definitions\FactoryDefinition $latteFactory */
 			$latteFactory = $builder->getDefinition($latteFactoryName);
 
 			$latteFactory->getResultDefinition()
 				->addSetup('?->onCompile[] = function (Latte\\Engine $engine): void { ?::install($engine->getCompiler()); }', ['@self', new PhpLiteral(Macros::class)])
-				->addSetup('addProvider', ['translator', $builder->getDefinition($this->prefix('translator'))])
+				->addSetup('addProvider', ['translator', $iTranslator])
 				->addSetup('addFilter', ['translate', [$latteFilters, 'translate']]);
 		}
 

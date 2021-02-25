@@ -254,31 +254,16 @@ final class TranslationExtensionTest extends TestAbstract
 
 	public function test09(): void
 	{
-		$container = Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
-			'translation' => [
-				'autowired' => false,
-			],
-		]);
-
-		$translator = $container->getByType(ITranslator::class, false);
-
-		Assert::null($translator);
-
-		$container = Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
-			'translation' => [
-				'autowired' => [
-					Translator::class,
-				],
-			],
-		]);
-
-		$translator = $container->getByType(ITranslator::class, false);
-
-		Assert::null($translator);
-
-		$translator = $container->getByType(Translator::class, false);
-
-		Assert::true($translator instanceof Translator);
+		Assert::exception(
+			function (): void {
+				Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+					'translation' => [
+						'autowired' => false,
+					],
+				]);
+			},
+			MissingServiceException::class
+		);
 	}
 
 }
