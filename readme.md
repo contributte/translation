@@ -20,10 +20,10 @@
 
 ## Usage
 
-To install the latest version of `contributte/translation` use [Composer](https://getcomposer.com).
+To install the latest version of `contributte/translation` use [Composer](https://getcomposer.org).
 
 ```
-composer require contributte/translation
+$ composer require contributte/translation
 ```
 ## Documentation
 
