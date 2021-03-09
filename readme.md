@@ -22,8 +22,8 @@
 
 To install the latest version of `contributte/translation` use [Composer](https://getcomposer.org).
 
-```
-$ composer require contributte/translation
+```bash
+composer require contributte/translation
 ```
 ## Documentation
 

@@ -10,7 +10,7 @@
 	- [Latte](#latte)
 	- [Neon](#neon)
 	- [Parameters in messages](#parameters-in-messages)
-- [Loaders](#loaders)	
+- [Loaders](#loaders)
 	- [File loaders](#file-loaders)
 	- [Database loaders](#database-loaders)
 		- [Doctrine](#doctrine)
@@ -81,7 +81,7 @@ use Contributte;
 
 class BasePresenter extends Nette\Application\UI\Presenter
 {
-    
+
     /** @var Nette\Localization\ITranslator @inject */
     public $translator;
 
@@ -102,7 +102,7 @@ class BasePresenter extends Nette\Application\UI\Presenter
         $prefixedTranslator = $this->translator->createPrefixedTranslator('domain');
         $prefixedTranslator->translate('message');
     }
-    
+
 }
 ```
 
@@ -117,7 +117,7 @@ use Nette;
 
 class Model
 {
-    
+
     /** @var Nette\Localization\ITranslator */
     private $translator;
 
@@ -126,7 +126,7 @@ class Model
     {
         $this->translator = $translator;
     }
-    
+
 }
 ```
 
@@ -134,7 +134,7 @@ class Model
 
 How to use on frontend.
 
-```smarty
+```latte
 {_domain.message}
 {_domain.message, $count}
 {_domain.message, [name => "Ales"]}
@@ -176,19 +176,19 @@ Sometimes it is convenient to include a dynamic parameter in the translation - a
 
 Neon:
 
-``` yaml
+```yaml
 user.name.taken: "Sorry, the username %name% is already taken, please try a different one."
 ```
 
 Latte:
 
-``` smarty
+```latte
 {_user.name.taken, [name => "Ales"]}
 ```
 
 Presenter/Model:
 
-``` php
+```php
 $this->translator->translate('user.name.taken', [name => 'Ales']);
 ```
 
@@ -253,7 +253,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Messages
 {
-    
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer", nullable=false)
@@ -275,7 +275,7 @@ class Messages
      * @ORM\Column(type="string", nullable=false)
      */
     public $message;
-    
+
 }
 ```
 
