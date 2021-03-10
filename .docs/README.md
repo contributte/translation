@@ -29,33 +29,33 @@ composer require contributte/translation
 
 Register extension:
 
-```yaml
+```neon
 extensions:
-    translation: Contributte\Translation\DI\TranslationExtension
+	translation: Contributte\Translation\DI\TranslationExtension
 ```
 
 ## Configuration
 
 Basic configuration:
 
-```yaml
+```neon
 translation:
-    locales:
-        whitelist: [en, cs, sk]
-        default: en
-        fallback: [en]
-    dirs:
-        - %appDir%/lang
+	locales:
+		whitelist: [en, cs, sk]
+		default: en
+		fallback: [en]
+	dirs:
+		- %appDir%/lang
 ```
 
 ### Locale resolvers
 
 This configuration instructs the extension how to resolve the locale and the order in which it will do so:
 
-```yaml
+```neon
 translation:
-    localeResolvers:
-        - Contributte\Translation\LocalesResolvers\Router
+	localeResolvers:
+		- Contributte\Translation\LocalesResolvers\Router
 ```
 
 Available resolvers:
@@ -82,26 +82,26 @@ use Contributte;
 class BasePresenter extends Nette\Application\UI\Presenter
 {
 
-    /** @var Nette\Localization\ITranslator @inject */
-    public $translator;
+	/** @var Nette\Localization\ITranslator @inject */
+	public $translator;
 
-    /** @var Contributte\Translation\LocalesResolvers\Session @inject */
-    public $translatorSessionResolver;
-
-
-    public function handleChangeLocale(string $locale): void
-    {
-        $this->translatorSessionResolver->setLocale($locale);
-        $this->redirect('this');
-    }
+	/** @var Contributte\Translation\LocalesResolvers\Session @inject */
+	public $translatorSessionResolver;
 
 
-    public function renderDefault(): void
-    {
-        $this->translator->translate('domain.message');
-        $prefixedTranslator = $this->translator->createPrefixedTranslator('domain');
-        $prefixedTranslator->translate('message');
-    }
+	public function handleChangeLocale(string $locale): void
+	{
+		$this->translatorSessionResolver->setLocale($locale);
+		$this->redirect('this');
+	}
+
+
+	public function renderDefault(): void
+	{
+		$this->translator->translate('domain.message');
+		$prefixedTranslator = $this->translator->createPrefixedTranslator('domain');
+		$prefixedTranslator->translate('message');
+	}
 
 }
 ```
@@ -118,14 +118,14 @@ use Nette;
 class Model
 {
 
-    /** @var Nette\Localization\ITranslator */
-    private $translator;
+	/** @var Nette\Localization\ITranslator */
+	private $translator;
 
 
-    public function __construct(Nette\Localization\ITranslator $translator)
-    {
-        $this->translator = $translator;
-    }
+	public function __construct(Nette\Localization\ITranslator $translator)
+	{
+		$this->translator = $translator;
+	}
 
 }
 ```
@@ -140,9 +140,9 @@ How to use on frontend.
 {_domain.message, [name => "Ales"]}
 
 {translator domain}
-    {_message}
-    {_message, $count}
-    {_message, [name => "Ales"]}
+	{_message}
+	{_message, $count}
+	{_message, [name => "Ales"]}
 {/translator}
 
 {var $myMessage = 'domain.message'}
@@ -165,9 +165,9 @@ messages.en_US.neon
 
 File content format:
 
-```yaml
+```neon
 prefix:
-    for: "message" # messages.prefix.for
+	for: "message" # messages.prefix.for
 ```
 
 ### Parameters in messages
@@ -176,7 +176,7 @@ Sometimes it is convenient to include a dynamic parameter in the translation - a
 
 Neon:
 
-```yaml
+```neon
 user.name.taken: "Sorry, the username %name% is already taken, please try a different one."
 ```
 
@@ -200,7 +200,7 @@ By default the extension will look for `.neon` files.
 
 ### File loaders
 
-```yaml
+```neon
 array: Symfony\Component\Translation\Loader\ArrayLoader
 csv: Symfony\Component\Translation\Loader\CsvFileLoader
 dat: Symfony\Component\Translation\Loader\IcuDatFileLoader
@@ -223,7 +223,7 @@ Package includes database loaders for **[Doctrine 2](https://www.doctrine-projec
 
 You must create a file with specific format in scanned dirs such as **messages.en_US.doctrine**. All parameters are optional, but the file has to exist.
 
-```yaml
+```neon
 table: "My\Entity" # if you specify the entity key, "messages" from file name will be ignored
 id: "id" # id column name, default is "id"
 locale: "locale" # locale column name, default is "locale"
@@ -232,10 +232,10 @@ message: "message" # message column name, default is "message"
 
 Add loader to translation configuration:
 
-```yaml
+```neon
 translation:
-    loaders:
-        doctrine: Contributte\Translation\Loaders\Doctrine
+	loaders:
+		doctrine: Contributte\Translation\Loaders\Doctrine
 ```
 
 Entity example:
@@ -254,27 +254,27 @@ use Doctrine\ORM\Mapping as ORM;
 class Messages
 {
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer", nullable=false)
-     * @ORM\GeneratedValue
-     */
-    public $messageId;
+	/**
+	 * @ORM\Id
+	 * @ORM\Column(type="integer", nullable=false)
+	 * @ORM\GeneratedValue
+	 */
+	public $messageId;
 
-    /**
-     * @ORM\Column(type="string", nullable=false)
-     */
-    public $id;
+	/**
+	 * @ORM\Column(type="string", nullable=false)
+	 */
+	public $id;
 
-    /**
-     * @ORM\Column(type="string", nullable=false)
-     */
-    public $locale;
+	/**
+	 * @ORM\Column(type="string", nullable=false)
+	 */
+	public $locale;
 
-    /**
-     * @ORM\Column(type="string", nullable=false)
-     */
-    public $message;
+	/**
+	 * @ORM\Column(type="string", nullable=false)
+	 */
+	public $message;
 
 }
 ```
@@ -283,7 +283,7 @@ class Messages
 
 You must create a file with specific format in scanned dirs such as **messages.en_US.nettedatabase**. All parameters are optional, but the file has to exist.
 
-```yaml
+```neon
 table: "my_table" # if you specify table key, "messages" from file name will be ignored
 id: "id" # id column name, default is "id"
 locale: "locale" # locale column name, default is "locale"
@@ -292,10 +292,10 @@ message: "message" # message column name, default is "message"
 
 Add loader to translation configuration:
 
-```yaml
+```neon
 translation:
-    loaders:
-        nettedatabase: Contributte\Translation\Loaders\NetteDatabase
+	loaders:
+		nettedatabase: Contributte\Translation\Loaders\NetteDatabase
 ```
 
 DB table example:
@@ -321,17 +321,17 @@ It is possible to pass pluralization to components without pre-translation and a
 $form = new Nette\Application\UI\Form;
 
 $form->addText('mail', 'form.mail.label')
-    ->setOption('description', new Contributte\Translation\Wrappers\Message('form.mail.description', [...]);
+	->setOption('description', new Contributte\Translation\Wrappers\Message('form.mail.description', [...]);
 ```
 
 Or pass the not translatable texts:
 
 ```php
 $form->addSelect('country', 'form.country.label')
-    ->setItems([
-        new Contributte\Translation\Wrappers\NotTranslate('Czech republic'),
-        new Contributte\Translation\Wrappers\NotTranslate('Slovak republic'),
-    ]);
+	->setItems([
+		new Contributte\Translation\Wrappers\NotTranslate('Czech republic'),
+		new Contributte\Translation\Wrappers\NotTranslate('Slovak republic'),
+	]);
 ```
 
 ### TranslationProviderInterface
@@ -345,12 +345,12 @@ use Contributte\Translation\DI\TranslationProviderInterface;
 class MyExtension extends CompilerExtension implements TranslationProviderInterface
 {
 
-   public function getTranslationResources(): array
-   {
-      return [
-         __DIR__ . '/../lang/',
-      ];
-   }
+ 	public function getTranslationResources(): array
+	{
+		return [
+			__DIR__ . '/../lang/',
+		];
+	}
 
 }
 ```
