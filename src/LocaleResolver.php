@@ -30,10 +30,15 @@ class LocaleResolver
 	}
 
 	public function addResolver(
-		string $resolver
+		string $resolver,
+		bool $vip = false
 	): self
 	{
-		$this->resolvers[] = $resolver;
+		if ($vip === true) {
+			array_unshift($this->resolvers, $resolver);
+		} else {
+			$this->resolvers[] = $resolver;
+		}
 		return $this;
 	}
 
