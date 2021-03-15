@@ -46,7 +46,7 @@ class TranslationExtension extends CompilerExtension
 		$builder = $this->getContainerBuilder();
 
 		return Expect::structure([
-			'debug' => Expect::bool($builder->parameters['debugMode']),
+			'debug' => Expect::bool($builder->parameters['debugMode'] ?? false),
 			'debugger' => Expect::bool(interface_exists(IBarPanel::class)),
 			'factory' => Expect::string()->default(null),
 			'logger' => Expect::mixed()->default(null),
