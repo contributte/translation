@@ -39,6 +39,7 @@ class LocaleResolver
 		} else {
 			$this->resolvers[] = $resolver;
 		}
+
 		return $this;
 	}
 
