@@ -12,6 +12,9 @@ class LocaleResolver
 	private $container;
 
 	/** @var array<string> */
+	private $primaryResolvers = [];
+
+	/** @var array<string> */
 	private $resolvers = [];
 
 	public function __construct(
@@ -24,21 +27,33 @@ class LocaleResolver
 	/**
 	 * @return array<string>
 	 */
+	public function getPrimaryResolvers(): array
+	{
+		return $this->primaryResolvers;
+	}
+
+	/**
+	 * @return array<string>
+	 */
 	public function getResolvers(): array
 	{
 		return $this->resolvers;
 	}
 
-	public function addResolver(
-		string $resolver,
-		bool $vip = false
+	public function addPrimaryResolver(
+		string $primaryResolver
 	): self
 	{
-		if ($vip === true) {
-			array_unshift($this->resolvers, $resolver);
-		} else {
-			$this->resolvers[] = $resolver;
-		}
+		$this->primaryResolvers[] = $primaryResolver;
+
+		return $this;
+	}
+
+	public function addResolver(
+		string $resolver
+	): self
+	{
+		$this->resolvers[] = $resolver;
 
 		return $this;
 	}
@@ -47,7 +62,7 @@ class LocaleResolver
 		Translator $translator
 	): string
 	{
-		foreach ($this->resolvers as $v1) {
+		foreach (array_merge($this->primaryResolvers, $this->resolvers) as $v1) {
 			/** @var \Contributte\Translation\LocalesResolvers\ResolverInterface $resolver */
 			$resolver = $this->container->getByType($v1);
 			$locale = $resolver->resolve($translator);
