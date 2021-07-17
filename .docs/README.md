@@ -46,6 +46,7 @@ translation:
 		fallback: [en]
 	dirs:
 		- %appDir%/lang
+	returnOriginalMessage: true # to not translate undefined messages, default is false
 ```
 
 ### Locale resolvers
