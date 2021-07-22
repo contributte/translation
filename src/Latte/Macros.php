@@ -62,7 +62,7 @@ class Macros extends MacroSet
 		}
 
 		if ($node->empty = ($node->args !== '')) {
-			$prefix = '$message = isset($prefix) ? implode(".", $prefix) . "." : "";';
+			$prefix = '$message = isset($prefix) && !\Contributte\Translation\Helpers::isAbsoluteMessage(%node.word) ? implode(".", $prefix) . "." : "";';
 
 			if (Helpers::macroWithoutParameters($node)) {
 				return $writer->write($prefix . 'echo %modify(call_user_func($this->filters->translate, $message . %node.word))');

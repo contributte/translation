@@ -47,4 +47,11 @@ class Helpers
 		return $result;
 	}
 
+	public static function isAbsoluteMessage(
+		string $message
+	): bool
+	{
+		return Strings::startsWith($message, '//');
+	}
+
 }
