@@ -275,6 +275,7 @@ final class TranslatorTest extends TestAbstract
 		Assert::exception(function () use ($latte): void {
 			$latte->renderToString(FileMock::create('{translator}{_depth.message}{/translator}'));
 		}, CompileException::class);
+		Assert::same('<div>Hello</div>', $latte->renderToString(FileMock::create('<div n:translator="some.prefix">{_//messages.hello}</div>')));
 	}
 
 	public function test04(): void
