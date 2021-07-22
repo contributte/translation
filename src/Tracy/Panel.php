@@ -10,29 +10,25 @@ use Tracy\IBarPanel;
 class Panel implements IBarPanel
 {
 
-	/** @var \Contributte\Translation\Translator */
-	private $translator;
+	private Translator $translator;
 
 	/** @var array<array<string|int>> */
-	private $missingTranslation = [];
+	private array $missingTranslation = [];
 
-	/** @var int */
-	private $missingTranslationCount = 0;
+	private int $missingTranslationCount = 0;
 
 	/** @var array<\Contributte\Translation\LocalesResolvers\ResolverInterface> */
-	private $localeResolvers = [];
+	private array $localeResolvers = [];
 
 	/** @var array<array<string>> */
-	private $resources = [];
+	private array $resources = [];
 
-	/** @var int */
-	private $resourcesCount = 0;
+	private int $resourcesCount = 0;
 
 	/** @var array<array<string>> */
-	private $ignoredResources = [];
+	private array $ignoredResources = [];
 
-	/** @var int */
-	private $ignoredResourcesCount = 0;
+	private int $ignoredResourcesCount = 0;
 
 	public function __construct(
 		Translator $translator
@@ -42,9 +38,6 @@ class Panel implements IBarPanel
 		$translator->setTracyPanel($this);
 	}
 
-	/**
-	 * @inheritdoc
-	 */
 	public function getTab(): string
 	{
 		// https://www.flaticon.com/free-icon/book_1017764
@@ -59,9 +52,6 @@ class Panel implements IBarPanel
 			'</span>';
 	}
 
-	/**
-	 * @inheritdoc
-	 */
 	public function getPanel(): string
 	{
 		$panel = [];

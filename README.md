@@ -32,7 +32,7 @@ For details on how to use this package, check out our [documentation](.docs).
 ## Versions
 | State       | Version   | Branch   | PHP            | Symfony      |
 |-------------|-----------|----------|----------------|--------------|
-| development | `^1.0.0`  | `master` | `^7.4.0\|^8.0` | `^5.0`       |
+| development | `^1.0.0`  | `master` | `^7.4\|^8.0`   | `^5.0`       |
 | stable      | `^0.9.0`  | `master` | `^7.1.3\|^8.0` | `^4.4\|^5.0` |
 
 ## Development

@@ -7,11 +7,9 @@ use Nette\Localization\ITranslator;
 class PrefixedTranslator implements ITranslator
 {
 
-	/** @var \Contributte\Translation\Translator */
-	private $translator;
+	private Translator $translator;
 
-	/** @var string */
-	private $prefix;
+	private string $prefix;
 
 	public function __construct(
 		Translator $translator,

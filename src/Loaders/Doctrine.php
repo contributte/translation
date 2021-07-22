@@ -10,8 +10,7 @@ use Symfony\Component\Translation\Loader\LoaderInterface;
 class Doctrine extends DatabaseAbstract implements LoaderInterface
 {
 
-	/** @var \Doctrine\ORM\Decorator\EntityManagerDecorator $em */
-	private $em;
+	private EntityManagerDecorator $em;
 
 	public function __construct(
 		EntityManagerDecorator $em

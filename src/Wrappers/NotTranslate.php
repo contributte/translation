@@ -5,8 +5,7 @@ namespace Contributte\Translation\Wrappers;
 class NotTranslate
 {
 
-	/** @var string */
-	public $message;
+	public string $message;
 
 	public function __construct(
 		string $message

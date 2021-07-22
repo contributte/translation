@@ -46,7 +46,7 @@ test:
 
 	public function test02(): void
 	{
-		Assert::exception(function (): void {
+		Assert::exception(static function (): void {
 			(new Neon())->load('unknown_file', 'en');
 		}, InvalidArgument::class, 'Something wrong with resource file "unknown_file".');
 	}

@@ -8,8 +8,7 @@ use Nette\Localization\ITranslator;
 class Filters
 {
 
-	/** @var \Nette\Localization\ITranslator */
-	private $translator;
+	private ITranslator $translator;
 
 	public function __construct(
 		ITranslator $translator
