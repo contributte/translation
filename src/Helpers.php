@@ -58,7 +58,7 @@ class Helpers
 		string $suffix
 	): string
 	{
-		return '$ʟ_contributteTranslation' . Strings::firstUpper(Strings::lower($suffix));
+		return '$ʟ_contributteTranslation' . $suffix;
 	}
 
 }

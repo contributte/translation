@@ -62,8 +62,8 @@ class Macros extends MacroSet
 		}
 
 		if ($node->empty = ($node->args !== '')) {
-			$messageProp = Helpers::createLatteProperty('message');
-			$prefixProp = Helpers::createLatteProperty('prefix');
+			$messageProp = Helpers::createLatteProperty('Message');
+			$prefixProp = Helpers::createLatteProperty('Prefix');
 
 			$prefix = $messageProp . ' = isset(' . $prefixProp . ') && !\Contributte\Translation\Helpers::isAbsoluteMessage(%node.word) ? implode(".", ' . $prefixProp . ') . "." : "";';
 
@@ -87,8 +87,8 @@ class Macros extends MacroSet
 		PhpWriter $writer
 	): string
 	{
-		$prefixProp = Helpers::createLatteProperty('prefix');
-		$tempPrefixProp = Helpers::createLatteProperty('tempPrefix');
+		$prefixProp = Helpers::createLatteProperty('Prefix');
+		$tempPrefixProp = Helpers::createLatteProperty('TempPrefix');
 
 		if ($node->closing) {
 			if ($node->content !== null && $node->content !== '') {
