@@ -47,4 +47,18 @@ class Helpers
 		return $result;
 	}
 
+	public static function isAbsoluteMessage(
+		string $message
+	): bool
+	{
+		return Strings::startsWith($message, '//');
+	}
+
+	public static function createLatteProperty(
+		string $suffix
+	): string
+	{
+		return '$ʟ_contributteTranslation' . $suffix;
+	}
+
 }

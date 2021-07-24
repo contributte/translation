@@ -296,7 +296,7 @@ class Translator extends SymfonyTranslator implements ITranslator
 
 		$originalMessage = $message;
 
-		if (Strings::startsWith($message, '//')) {
+		if (Helpers::isAbsoluteMessage($message)) {
 			$message = Strings::substring($message, 2);
 
 		} elseif (count($this->prefix) > 0) {
