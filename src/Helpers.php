@@ -54,4 +54,11 @@ class Helpers
 		return Strings::startsWith($message, '//');
 	}
 
+	public static function createLatteProperty(
+		string $suffix
+	): string
+	{
+		return '$ʟ_contributteTranslation' . Strings::firstUpper(Strings::lower($suffix));
+	}
+
 }
