@@ -58,20 +58,31 @@ class Macros extends MacroSet
 				$latteProp = '$ʟ_fi';
 			}
 
-			return $writer->write($latteProp . ' = new LR\FilterInfo(%var); echo %modifyContent($this->filters->filterContent("translate", ' . $latteProp . ', %raw))', $node->context[0], $value);
+			return $writer->write("$latteProp = new LR\\FilterInfo(%var); echo %modifyContent(\$this->filters->filterContent('translate', $latteProp, %raw))", $node->context[0], $value);
 		}
 
 		if ($node->empty = ($node->args !== '')) {
 			$messageProp = Helpers::createLatteProperty('Message');
 			$prefixProp = Helpers::createLatteProperty('Prefix');
 
-			$prefix = $messageProp . ' = isset(' . $prefixProp . ') && !\Contributte\Translation\Helpers::isAbsoluteMessage(%node.word) ? implode(".", ' . $prefixProp . ') . "." : "";';
+			$macroCodeEcho1 = Helpers::macroWithoutParameters($node)
+				? "echo %modify(call_user_func(\$this->filters->translate, $messageProp . %node.word))"
+				: "echo %modify(call_user_func(\$this->filters->translate, $messageProp . %node.word, %node.args))";
 
-			if (Helpers::macroWithoutParameters($node)) {
-				return $writer->write($prefix . 'echo %modify(call_user_func($this->filters->translate, ' . $messageProp . ' . %node.word))');
-			}
+			$macroCodeEcho2 = Helpers::macroWithoutParameters($node)
+				? "echo %modify(call_user_func(\$this->filters->translate, %node.word))"
+				: "echo %modify(call_user_func(\$this->filters->translate, %node.word, %node.args))";
 
-			return $writer->write($prefix . 'echo %modify(call_user_func($this->filters->translate, ' . $messageProp . ' . %node.word, %node.args))');
+			$macroCode = "
+				if (is_string(%node.word)) {
+					$messageProp = isset($prefixProp) && !\Contributte\Translation\Helpers::isAbsoluteMessage(%node.word) ? implode('.', $prefixProp) . '.' : '';
+					$macroCodeEcho1;
+				} else {
+					$macroCodeEcho2;
+				}
+			";
+
+			return $writer->write($macroCode);
 		}
 
 		return '';
@@ -92,7 +103,7 @@ class Macros extends MacroSet
 
 		if ($node->closing) {
 			if ($node->content !== null && $node->content !== '') {
-				return $writer->write($prefixProp . ' = array_pop(' . $tempPrefixProp . ');');
+				return $writer->write("$prefixProp = array_pop($tempPrefixProp);");
 			}
 
 			return '';
@@ -102,17 +113,17 @@ class Macros extends MacroSet
 			throw new CompileException('Expected message prefix, none given.');
 		}
 
-		return $writer->write('
-			if (!isset(' . $tempPrefixProp . ')) {
-				' . $tempPrefixProp . ' = [];
+		return $writer->write("
+			if (!isset($tempPrefixProp)) {
+				$tempPrefixProp = [];
 			}
 
-			if (isset(' . $prefixProp . ')) {
-				' . $tempPrefixProp . '[] = ' . $prefixProp . ';
+			if (isset($prefixProp)) {
+				{$tempPrefixProp}[] = $prefixProp;
 			}
 
-			' . $prefixProp . ' = [%node.word];
-		');
+			$prefixProp = [%node.word];
+		");
 	}
 
 }
