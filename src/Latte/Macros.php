@@ -65,22 +65,19 @@ class Macros extends MacroSet
 			$messageProp = Helpers::createLatteProperty('Message');
 			$prefixProp = Helpers::createLatteProperty('Prefix');
 
-			$macroCodeEcho1 = Helpers::macroWithoutParameters($node)
-				? sprintf('echo %%modify(call_user_func($this->filters->translate, %s . %%node.word))', $messageProp)
-				: sprintf('echo %%modify(call_user_func($this->filters->translate, %s . %%node.word, %%node.args))', $messageProp);
-
-			$macroCodeEcho2 = Helpers::macroWithoutParameters($node)
-				? 'echo %modify(call_user_func($this->filters->translate, %node.word))'
-				: 'echo %modify(call_user_func($this->filters->translate, %node.word, %node.args))';
+			$macroCodeEcho = Helpers::macroWithoutParameters($node)
+				? sprintf('echo %%modify(call_user_func($this->filters->translate, %s))', $messageProp)
+				: sprintf('echo %%modify(call_user_func($this->filters->translate, %s, %%node.args))', $messageProp);
 
 			return $writer->write(sprintf('
-				if (is_string(%%node.word)) {
-					%s = isset(%s) && !\Contributte\Translation\Helpers::isAbsoluteMessage(%%node.word) ? implode(".", %s) . "." : "";
-					%s;
-				} else {
-					%s;
+				%s = %%node.word;
+
+				if (is_string(%s)) {
+					%s = isset(%s) && !\Contributte\Translation\Helpers::isAbsoluteMessage(%%node.word) ? implode(".", %s) . "." . %%node.word : %%node.word;
 				}
-			', $messageProp, $prefixProp, $prefixProp, $macroCodeEcho1, $macroCodeEcho2));
+
+				%s;
+			', $messageProp, $messageProp, $messageProp, $prefixProp, $prefixProp, $macroCodeEcho));
 		}
 
 		return '';
