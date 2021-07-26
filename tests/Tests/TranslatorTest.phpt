@@ -276,6 +276,8 @@ final class TranslatorTest extends TestAbstract
 			$latte->renderToString(FileMock::create('{translator}{_depth.message}{/translator}'));
 		}, CompileException::class);
 		Assert::same('<div>Hello</div>', $latte->renderToString(FileMock::create('<div n:translator="some.prefix">{_//messages.hello}</div>')));
+		Assert::same('Do not translate!', $latte->renderToString(FileMock::create('{php $wrapper = new \Contributte\Translation\Wrappers\NotTranslate("Do not translate!")}{_$wrapper}')));
+		Assert::same('Hi Ales!', $latte->renderToString(FileMock::create('{php $wrapper = new \Contributte\Translation\Wrappers\Message("hi", ["name" => "Ales"])}{_$wrapper}')));
 	}
 
 	public function test04(): void
