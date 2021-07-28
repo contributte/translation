@@ -70,7 +70,7 @@ class Translator extends SymfonyTranslator implements ITranslator
 		$this->cacheDir = $cacheDir;
 		$this->debug = $debug;
 
-		parent::__construct('', null, $cacheDir, $debug, $cacheVary);
+		parent::__construct($localeResolver->resolve($this), null, $cacheDir, $debug, $cacheVary);
 	}
 
 	public function getLocaleResolver(): LocaleResolver
