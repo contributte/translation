@@ -51,6 +51,9 @@ class Translator extends SymfonyTranslator implements ITranslator
 	/** @var \Contributte\Translation\Tracy\Panel|null */
 	private $tracyPanel;
 
+	/** @var string */
+	private $initLang;
+
 	/**
 	 * @param array<string> $cacheVary
 	 */
@@ -69,8 +72,9 @@ class Translator extends SymfonyTranslator implements ITranslator
 		$this->defaultLocale = $defaultLocale;
 		$this->cacheDir = $cacheDir;
 		$this->debug = $debug;
+		$this->initLang = Strings::replace(self::class, '~\\\\~');
 
-		parent::__construct('', null, $cacheDir, $debug, $cacheVary);
+		parent::__construct($this->initLang, null, $cacheDir, $debug, $cacheVary);
 	}
 
 	public function getLocaleResolver(): LocaleResolver
@@ -226,7 +230,7 @@ class Translator extends SymfonyTranslator implements ITranslator
 	 */
 	public function getLocale()
 	{
-		if (parent::getLocale() === '') {
+		if (parent::getLocale() === $this->initLang) {
 			$this->setLocale($this->localeResolver->resolve($this));
 		}
 
