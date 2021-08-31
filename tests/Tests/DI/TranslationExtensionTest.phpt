@@ -89,7 +89,7 @@ final class TranslationExtensionTest extends TestAbstract
 					'localeResolvers' => [],
 				],
 			]);
-		}, MissingServiceException::class, "Service of type '" . LoggerInterface::class . "' not found.");
+		}, MissingServiceException::class);
 		Assert::exception(function (): void {
 			Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
 				'translation' => [
