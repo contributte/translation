@@ -207,6 +207,10 @@ final class TranslatorTest extends TestAbstract
 		Assert::same('Kontakty', $translator->translate('plural', 3));
 		Assert::same('Kontakty', $translator->translate('plural', 4));
 		Assert::same('Hodně kontaktů', $translator->translate('plural', 5));
+
+		Assert::same('It\'s a boy!', $translator->translate('baby_gender', ['gender' => 'boy']));
+		Assert::same('It\'s a girl!', $translator->translate('baby_gender', ['gender' => 'girl']));
+		Assert::same('It\'s something else!', $translator->translate('baby_gender', ['gender' => 'kibork']));
 	}
 
 	public function test03(): void
@@ -303,7 +307,7 @@ final class TranslatorTest extends TestAbstract
 		Assert::same('en', (string) $dom->find('td[class="contributte-translation-locales-whitelist"]')[0]);
 		Assert::count(1, $dom->find('tr[class="contributte-translation-missing-translation"]'));
 		Assert::count(1, $dom->find('tr[class="contributte-translation-locale-resolvers"]'));
-		Assert::count(3, $dom->find('tr[class="contributte-translation-resources"]'));// lang/another_domain.en_US.neon, lang/messages.en_US.neon, lang_overloading/messages.en_US.neon
+		Assert::count(4, $dom->find('tr[class="contributte-translation-resources"]'));// lang/another_domain.en_US.neon, lang/messages+intl-icu.en_US.neon, lang/messages.en_US.neon, lang_overloading/messages.en_US.neon
 		Assert::count(1, $dom->find('tr[class="contributte-translation-ignored-resources"]'));// lang/messages.cs_CZ.neon
 
 		$psrLogger = new class() extends AbstractLogger {
