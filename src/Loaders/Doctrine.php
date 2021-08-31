@@ -33,7 +33,7 @@ class Doctrine extends DatabaseAbstract implements LoaderInterface
 	{
 		$messages = [];
 
-		foreach ($this->em->getRepository($config->table)->findBy([$config->locale => $locale]) as $v1) {
+		foreach ($this->em->getRepository($config->table)->findBy([(string) $config->locale => $locale]) as $v1) {
 			$id = $v1->{$config->id};
 			$message = $v1->{$config->message};
 
