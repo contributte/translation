@@ -152,6 +152,8 @@ final class TranslatorTest extends TestAbstract
 
 		$translator->returnOriginalMessage = true;
 		Assert::same('messages.missing.translation', $translator->translate('messages.missing.translation'));
+		Assert::same('for', $translator->translate('another_domain.for'));
+		Assert::same('another_domain.foreach', $translator->translate('another_domain.foreach'));
 
 		$translator->returnOriginalMessage = false;
 		Assert::same('', $translator->translate('messages.'));
