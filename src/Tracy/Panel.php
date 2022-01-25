@@ -189,7 +189,7 @@ class Panel implements IBarPanel
 		?string $format,
 		string $resource,
 		?string $locale,
-		?string $domain
+		string $domain
 	): self
 	{
 		$this->resources[$locale][$resource] = $domain;
@@ -210,7 +210,7 @@ class Panel implements IBarPanel
 		?string $format,
 		string $resource,
 		?string $locale,
-		?string $domain
+		string $domain
 	): self
 	{
 		$this->ignoredResources[$locale][$resource] = $domain;

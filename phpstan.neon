@@ -8,7 +8,7 @@ parameters:
 	level: max
 	paths:
 		- src
-	excludes_analyse:
+	excludePaths:
 		- src/compatibility.php
 	ignoreErrors:
 		-
@@ -20,31 +20,6 @@ parameters:
 			count: 1
 			message: '#^Only numeric types are allowed in post-increment, int\|string given\.$#'
 			path: src/Tracy/Panel.php
-
-		-
-			count: 1
-			message: '#^Method Contributte\\Translation\\Translator\:\:addResource\(\) has no return typehint specified\.$#'
-			path: src/Translator.php
-
-		-
-			count: 1
-			message: '#^Method Contributte\\Translation\\Translator\:\:setFallbackLocales\(\) has no return typehint specified\.$#'
-			path: src/Translator.php
-
-		-
-			count: 1
-			message: '#^Method Contributte\\Translation\\Translator\:\:computeFallbackLocales\(\) has no return typehint specified\.$#'
-			path: src/Translator.php
-
-		-
-			count: 1
-			message: '#^Method Contributte\\Translation\\Translator\:\:computeFallbackLocales\(\) has parameter \$locale with no typehint specified\.$#'
-			path: src/Translator.php
-
-		-
-			count: 1
-			message: '#^Method Contributte\\Translation\\Translator::setFallbackLocales\(\) has parameter \$locales with no value type specified in iterable type array\.$#'
-			path: 'src/Translator.php'
 
 		-
 			count: 2

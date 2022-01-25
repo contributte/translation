@@ -219,7 +219,7 @@ class Translator extends SymfonyTranslator implements ITranslator
 		$resource,
 		$locale,
 		$domain = null
-	)
+	): void
 	{
 		parent::addResource($format, $resource, $locale, $domain);
 		$this->resourcesLocales[$locale] = true;
@@ -242,7 +242,7 @@ class Translator extends SymfonyTranslator implements ITranslator
 	 */
 	public function setFallbackLocales(
 		array $locales
-	)
+	): void
 	{
 		parent::setFallbackLocales($locales);
 		$this->fallbackResolver->setFallbackLocales($locales);
@@ -391,10 +391,12 @@ class Translator extends SymfonyTranslator implements ITranslator
 
 	/**
 	 * {@inheritdoc}
+	 *
+	 * @return array<mixed>
 	 */
 	protected function computeFallbackLocales(
-		$locale
-	)
+		string $locale
+	): array
 	{
 		return $this->fallbackResolver->compute($this, $locale);
 	}

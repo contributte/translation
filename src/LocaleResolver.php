@@ -43,6 +43,7 @@ class LocaleResolver
 	{
 		foreach ($this->resolvers as $v1) {
 			/** @var \Contributte\Translation\LocalesResolvers\ResolverInterface $resolver */
+			/** @var class-string $v1 */
 			$resolver = $this->container->getByType($v1);
 			$locale = $resolver->resolve($translator);
 
