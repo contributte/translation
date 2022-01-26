@@ -2,12 +2,14 @@
 
 namespace Tests\LocalesResolvers;
 
+use Contributte\Translation\FallbackResolver;
+use Contributte\Translation\LocaleResolver;
 use Contributte\Translation\LocalesResolvers\Session;
 use Contributte\Translation\Translator;
-use Mockery;
-use Nette\Http\IResponse;
+use Nette\Http\Request;
+use Nette\Http\Response;
 use Nette\Http\Session as NetteSession;
-use Nette\Http\SessionSection;
+use Nette\Http\UrlScript;
 use Tester\Assert;
 use Tests\TestAbstract;
 
@@ -21,52 +23,38 @@ final class SessionTest extends TestAbstract
 		Assert::null($this->resolve(null));
 		Assert::same('cs', $this->resolve('cs'));
 		Assert::same('en', $this->resolve('en'));
-		Assert::error(function (): void {
-			$this->resolve(null, false, true);
-		}, E_USER_WARNING, 'The advice of session locale resolver is required but the session has not been started and headers had been already sent. Either start your sessions earlier or disable the SessionResolver.');
-		Assert::null(@$this->resolve(null, false, true));
+		Assert::null($this->resolve(null));
 	}
 
 	private function resolve(
-		?string $locale,
-		bool $sessionIsStarted = true,
-		bool $responseIsSent = false
+		?string $locale
 	): ?string
 	{
-		$responseMock = Mockery::mock(IResponse::class);
-		$sessionMock = Mockery::mock(NetteSession::class);
-		$sessionSection = new SessionSection($sessionMock, Session::class);
+		$response = new Response();
 
-		$sessionMock->shouldReceive('getSection')
-			->once()
-			->withArgs([Session::class])
-			->andReturn($sessionSection);
+		$request = new Request(
+			new UrlScript('https://example.com')
+		);
 
-		$resolver = new Session($responseMock, $sessionMock);
-		$translatorMock = Mockery::mock(Translator::class);
+		$session = new NetteSession(
+			$request,
+			$response
+		);
 
-		$sessionMock->shouldReceive('isStarted')
-			->once()
-			->withNoArgs()
-			->andReturn($sessionIsStarted);
+		$resolver = new Session(
+			$response,
+			$session
+		);
 
-		$responseMock->shouldReceive('isSent')
-			->once()
-			->withNoArgs()
-			->andReturn($responseIsSent);
-
-		$sessionMock->shouldReceive('start')
-			->once()
-			->withNoArgs();
-
-		$sessionMock->shouldReceive('exists')
-			->once()
-			->withNoArgs()
-			->andReturn(true);
+		$translator = new Translator(
+			new LocaleResolver($this->container),
+			new FallbackResolver(),
+			'en'
+		);
 
 		$resolver->setLocale($locale);
 
-		return $resolver->resolve($translatorMock);
+		return $resolver->resolve($translator);
 	}
 
 }
