@@ -20,11 +20,6 @@ parameters:
 			path: src/Tracy/Panel.php
 
 		-
-			count: 1
-			message: '#^Parameter \#1 \$locales \(array<string>\) of method Contributte\\Translation\\Translator::setFallbackLocales\(\) should be contravariant with parameter \$locales \(array\) of method Symfony\\Component\\Translation\\Translator::setFallbackLocales\(\)$#'
-			path: 'src/Translator.php'
-
-		-
 			count: 2
 			message: '#^Comparison operation "\<" between \d+ and \d+ is always false\.$#'
 			path: 'src/Latte/Macros.php'
