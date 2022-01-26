@@ -325,7 +325,7 @@ class Translator extends SymfonyTranslator implements ITranslator
 		$translated = $this->trans($message, $params, $domain, $locale);
 
 		if ($this->returnOriginalMessage) {
-			if ($domain . '.' . $translated === $originalMessage) {
+			if (!$this->getCatalogue()->has($message, $domain)) {
 				return $originalMessage;
 			}
 		}
