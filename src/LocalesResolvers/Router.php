@@ -9,14 +9,11 @@ use Nette\Routing\Router as NetteRouter;
 class Router implements ResolverInterface
 {
 
-	/** @var string */
-	public static $parameter = 'locale';
+	public static string $parameter = 'locale';
 
-	/** @var \Nette\Http\IRequest */
-	private $request;
+	private IRequest $request;
 
-	/** @var \Nette\Routing\Router */
-	private $router;
+	private NetteRouter $router;
 
 	public function __construct(
 		IRequest $request,

@@ -10,8 +10,7 @@ use Symfony\Component\Translation\Loader\LoaderInterface;
 class NetteDatabase extends DatabaseAbstract implements LoaderInterface
 {
 
-	/** @var \Nette\Database\Connection */
-	private $connection;
+	private Connection $connection;
 
 	public function __construct(
 		Connection $connection

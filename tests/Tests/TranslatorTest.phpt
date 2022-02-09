@@ -66,10 +66,10 @@ final class TranslatorTest extends TestAbstract
 
 		$translator->removePrefix('prefix');
 
-		Assert::exception(function () use ($translator): void {
+		Assert::exception(static function () use ($translator): void {
 			$translator->removePrefix();
 		}, InvalidArgument::class, 'Can not remove empty prefix.');
-		Assert::exception(function () use ($translator): void {
+		Assert::exception(static function () use ($translator): void {
 			$translator->removePrefix('unknown');
 		}, InvalidArgument::class, 'Unknown "unknown" prefix.');
 
@@ -94,7 +94,7 @@ final class TranslatorTest extends TestAbstract
 		/** @var \Contributte\Translation\Translator $translator */
 		$translator = $container->getByType(ITranslator::class);
 
-		Assert::throws(function () use ($translator): void {
+		Assert::throws(static function () use ($translator): void {
 			$translator->translate(new stdClass());
 		}, InvalidArgument::class, 'Message must be string, object given.');
 		Assert::same('', $translator->translate(null));
@@ -278,7 +278,7 @@ final class TranslatorTest extends TestAbstract
 		Assert::same('Depth message', $latte->renderToString(FileMock::create('{translator messages}{_depth.message}{/translator}')));
 		Assert::same('Very very depth message', $latte->renderToString(FileMock::create('{translator messages}{translator messages.very.very.depth}{_message}{/translator}{/translator}')));
 		Assert::same('Depth message-Very very depth message-Depth message', $latte->renderToString(FileMock::create('{translator messages}{_depth.message}{translator messages.very.very.depth}-{_message}-{/translator}{_depth.message}{/translator}')));
-		Assert::exception(function () use ($latte): void {
+		Assert::exception(static function () use ($latte): void {
 			$latte->renderToString(FileMock::create('{translator}{_depth.message}{/translator}'));
 		}, CompileException::class);
 		Assert::same('<div>Hello</div>', $latte->renderToString(FileMock::create('<div n:translator="some.prefix">{_//messages.hello}</div>')));

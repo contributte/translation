@@ -8,7 +8,7 @@ class FallbackResolver
 {
 
 	/** @var array<string> */
-	private $fallbackLocales = [];
+	private array $fallbackLocales = [];
 
 	/**
 	 * @param array<string> $array

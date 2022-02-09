@@ -8,11 +8,10 @@ use Nette\Utils\Strings;
 class LocaleResolver
 {
 
-	/** @var \Nette\DI\Container */
-	private $container;
+	private Container $container;
 
 	/** @var array<class-string> */
-	private $resolvers = [];
+	private array $resolvers = [];
 
 	public function __construct(
 		Container $container
@@ -51,9 +50,20 @@ class LocaleResolver
 
 			$locale = $resolver->resolve($translator);
 
-			if ($locale !== null && ($translator->getLocalesWhitelist() === null || in_array(Strings::substring($locale, 0, 2), array_map(function ($locale): string {
-				return Strings::substring($locale, 0, 2);
-			}, $translator->getLocalesWhitelist()), true))) {
+			if (
+				$locale !== null &&
+				(
+					$translator->getLocalesWhitelist() === null ||
+					in_array(
+						Strings::substring($locale, 0, 2),
+						array_map(
+							fn (string $locale): string => Strings::substring($locale, 0, 2),
+							$translator->getLocalesWhitelist()
+						),
+						true
+					)
+				)
+			) {
 				return $locale;
 			}
 		}

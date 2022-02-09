@@ -5,11 +5,10 @@ namespace Contributte\Translation\Wrappers;
 class Message
 {
 
-	/** @var string */
-	public $message;
+	public string $message;
 
 	/** @var array<mixed> */
-	public $parameters;
+	public array $parameters;
 
 	/**
 	 * @param array<mixed> ...$parameters

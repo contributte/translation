@@ -16,7 +16,7 @@ abstract class DatabaseAbstract extends ArrayLoader implements LoaderInterface
 {
 
 	/** @var array<string> */
-	public static $defaults = [
+	public static array $defaults = [
 		'table' => 'messages',
 		'id' => 'id',
 		'locale' => 'locale',
