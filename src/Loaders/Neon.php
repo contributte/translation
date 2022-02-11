@@ -35,6 +35,7 @@ class Neon extends ArrayLoader implements LoaderInterface
 		$messages = Nette\Neon\Neon::decode($content);
 
 		$catalogue = parent::load($messages ?? [], $locale, $domain);
+
 		$catalogue->addResource(new FileResource($resource));
 
 		return $catalogue;
