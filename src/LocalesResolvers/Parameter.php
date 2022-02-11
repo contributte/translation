@@ -23,7 +23,14 @@ class Parameter implements ResolverInterface
 		Translator $translator
 	): ?string
 	{
-		return $this->request->getQuery(self::$parameter);
+		$locale = $this->request
+			->getQuery(self::$parameter);
+
+		if (is_string($locale)) {
+			return $locale;
+		}
+
+		return null;
 	}
 
 }
