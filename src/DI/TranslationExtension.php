@@ -260,7 +260,7 @@ class TranslationExtension extends CompilerExtension
 
 					if ($whitelistRegexp !== null && Strings::match($match['locale'], $whitelistRegexp) === null) {
 						if (isset($tracyPanel)) {
-							$tracyPanel->addSetup('addIgnoredResource', [$match['format'], $v2->getPathname(), $match['locale'], $match['domain']]);
+							$tracyPanel->addSetup('addIgnoredResource', [$v2->getPathname(), $match['locale'], $match['domain']]);
 						}
 
 						continue;
@@ -272,7 +272,7 @@ class TranslationExtension extends CompilerExtension
 						continue;
 					}
 
-					$tracyPanel->addSetup('addResource', [$match['format'], $v2->getPathname(), $match['locale'], $match['domain']]);
+					$tracyPanel->addSetup('addResource', [$v2->getPathname(), $match['locale'], $match['domain']]);
 				}
 			}
 		}
