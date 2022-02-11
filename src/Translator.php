@@ -43,8 +43,7 @@ class Translator extends SymfonyTranslator implements ITranslator
 
 	private ?Panel $tracyPanel = null;
 
-	/** @var string */
-	private $initLang;
+	private string $initLang;
 
 	/**
 	 * @param array<string> $cacheVary
@@ -110,6 +109,7 @@ class Translator extends SymfonyTranslator implements ITranslator
 	): self
 	{
 		$this->localesWhitelist = $whitelist;
+
 		return $this;
 	}
 
@@ -130,6 +130,7 @@ class Translator extends SymfonyTranslator implements ITranslator
 	{
 		$this->prefixTemp[] = $this->prefix;
 		$this->prefix = $array;
+
 		return $this;
 	}
 
@@ -141,6 +142,7 @@ class Translator extends SymfonyTranslator implements ITranslator
 	{
 		$temp = end($this->prefixTemp);
 		array_pop($this->prefixTemp);
+
 		return $temp !== false ? $temp : [];
 	}
 
@@ -208,6 +210,7 @@ class Translator extends SymfonyTranslator implements ITranslator
 	): void
 	{
 		parent::addResource($format, $resource, $locale, $domain);
+
 		$this->resourcesLocales[$locale] = true;
 	}
 
@@ -228,7 +231,9 @@ class Translator extends SymfonyTranslator implements ITranslator
 	): void
 	{
 		parent::setFallbackLocales($locales);
-		$this->fallbackResolver->setFallbackLocales($locales);
+
+		$this->fallbackResolver
+			->setFallbackLocales($locales);
 	}
 
 	public function getPsrLogger(): ?LoggerInterface
@@ -312,6 +317,7 @@ class Translator extends SymfonyTranslator implements ITranslator
 		}
 
 		$tmp = [];
+
 		foreach ($params as $k1 => $v1) {
 			$tmp['%' . $k1 . '%'] = $v1;
 		}
@@ -350,22 +356,32 @@ class Translator extends SymfonyTranslator implements ITranslator
 		if ($id !== null) {
 			if ($this->psrLogger !== null) {
 				if (!$this->getCatalogue()->has($id, $domain)) {
-					$this->psrLogger->notice('Missing translation', [
-						'id' => $id,
-						'domain' => $domain,
-						'locale' => $locale ?? $this->getLocale(),
-					]);
+					$this->psrLogger
+						->notice(
+							'Missing translation',
+							[
+								'id' => $id,
+								'domain' => $domain,
+								'locale' => $locale ?? $this->getLocale(),
+							]
+						);
 				}
 			}
 
 			if ($this->tracyPanel !== null) {
 				if (!$this->getCatalogue()->has($id, $domain)) {
-					$this->tracyPanel->addMissingTranslation($id, $domain);
+					$this->tracyPanel
+						->addMissingTranslation($id, $domain);
 				}
 			}
 		}
 
-		return parent::trans($id, $parameters, $domain, $locale);
+		return parent::trans(
+			$id,
+			$parameters,
+			$domain,
+			$locale
+		);
 	}
 
 	/**
@@ -375,7 +391,11 @@ class Translator extends SymfonyTranslator implements ITranslator
 		string $locale
 	): array
 	{
-		return $this->fallbackResolver->compute($this, $locale);
+		return $this->fallbackResolver
+			->compute(
+				$this,
+				$locale
+			);
 	}
 
 }
