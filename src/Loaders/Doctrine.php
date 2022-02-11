@@ -4,7 +4,6 @@ namespace Contributte\Translation\Loaders;
 
 use Contributte\Translation\Exceptions\InvalidState;
 use Doctrine\ORM\Decorator\EntityManagerDecorator;
-use stdClass;
 use Symfony\Component\Translation\Loader\LoaderInterface;
 
 class Doctrine extends DatabaseAbstract implements LoaderInterface
@@ -20,11 +19,11 @@ class Doctrine extends DatabaseAbstract implements LoaderInterface
 	}
 
 	/**
-	 * @return array<string>
+	 * @inheritdoc
 	 * @throws \Contributte\Translation\Exceptions\InvalidState
 	 */
 	protected function getMessages(
-		stdClass $config,
+		array $config,
 		string $resource,
 		string $locale,
 		string $domain
@@ -32,12 +31,24 @@ class Doctrine extends DatabaseAbstract implements LoaderInterface
 	{
 		$messages = [];
 
-		foreach ($this->em->getRepository($config->table)->findBy([(string) $config->locale => $locale]) as $v1) {
-			$id = $v1->{$config->id};
-			$message = $v1->{$config->message};
+		/** @var class-string $className */
+		$className = $config['table'];
+
+		/** @var array<object> $result */
+		$result = $this->em
+			->getRepository($className)
+			->findBy(
+				[
+					$config['locale'] => $locale,
+				]
+			);
+
+		foreach ($result as $v1) {
+			$id = $v1->{$config['id']};
+			$message = $v1->{$config['message']};
 
 			if (array_key_exists($id, $messages)) {
-				throw new InvalidState('Id "' . $id . '" declared twice in "' . $config->table . '" table/domain.');
+				throw new InvalidState('Id "' . $id . '" declared twice in "' . $config['table'] . '" table/domain.');
 			}
 
 			$messages[$id] = $message;
