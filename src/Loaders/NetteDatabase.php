@@ -20,7 +20,6 @@ class NetteDatabase extends DatabaseAbstract implements LoaderInterface
 
 	/**
 	 * @inheritdoc
-	 *
 	 * @throws \Contributte\Translation\Exceptions\InvalidState
 	 */
 	protected function getMessages(
