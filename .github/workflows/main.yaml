@@ -19,7 +19,14 @@ env:
 jobs:
   qa:
     name: "Quality assurance"
-    runs-on: "ubuntu-latest"
+    runs-on: "${{ matrix.operating-system }}"
+
+    strategy:
+      matrix:
+        php-version: [ "7.4", "8.0", "8.1" ]
+        operating-system: [ "ubuntu-latest" ]
+      fail-fast: false
+
     steps:
       - name: "Checkout"
         uses: "actions/checkout@v2"
@@ -28,7 +35,7 @@ jobs:
         id: "extcache"
         uses: "shivammathur/cache-extensions@v1"
         with:
-          php-version: "8.0"
+          php-version: "${{ matrix.php-version }}"
           extensions: "${{ env.extensions }}"
           key: "${{ env.cache-version }}"
 
@@ -42,7 +49,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "8.0"
+          php-version: "${{ matrix.php-version }}"
           extensions: "${{ env.extensions }}"
           tools: "composer:${{ env.composer-version }}"
 
@@ -71,7 +78,14 @@ jobs:
 
   static-analysis:
     name: "Static analysis"
-    runs-on: "ubuntu-latest"
+    runs-on: "${{ matrix.operating-system }}"
+
+    strategy:
+      matrix:
+        php-version: [ "7.4" ]
+        operating-system: [ "ubuntu-latest" ]
+      fail-fast: false
+
     steps:
       - name: "Checkout"
         uses: "actions/checkout@v2"
@@ -80,7 +94,7 @@ jobs:
         id: "extcache"
         uses: "shivammathur/cache-extensions@v1"
         with:
-          php-version: "8.0"
+          php-version: "${{ matrix.php-version }}"
           extensions: "${{ env.extensions }}"
           key: "${{ env.cache-version }}"
 
@@ -94,7 +108,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "8.0"
+          php-version: "${{ matrix.php-version }}"
           extensions: "${{ env.extensions }}"
           tools: "composer:${{ env.composer-version }}"
 
@@ -138,11 +152,11 @@ jobs:
 
     strategy:
       matrix:
-        php-version: [ "8.0", "8.1" ]
+        php-version: [ "7.4", "8.0" ]
         operating-system: [ "ubuntu-latest" ]
         composer-args: [ "" ]
         include:
-          - php-version: "8.0"
+          - php-version: "7.4"
             operating-system: "ubuntu-latest"
             composer-args: "--prefer-lowest"
       fail-fast: false
@@ -198,7 +212,7 @@ jobs:
 
   tests-code-coverage:
     name: "Tests with code coverage"
-    runs-on: "ubuntu-latest"
+    runs-on: "${{ matrix.operating-system }}"
     services:
       mariadb:
         image: "mariadb:10.4"
@@ -214,6 +228,12 @@ jobs:
           --health-timeout=2s
           --health-retries=3
 
+    strategy:
+      matrix:
+        php-version: [ "7.4" ]
+        operating-system: [ "ubuntu-latest" ]
+      fail-fast: false
+
     if: "github.event_name == 'push'"
 
     steps:
@@ -224,7 +244,7 @@ jobs:
         id: "extcache"
         uses: "shivammathur/cache-extensions@v1"
         with:
-          php-version: "8.0"
+          php-version: "${{ matrix.php-version }}"
           extensions: "${{ env.extensions }}"
           key: "${{ env.cache-version }}"
 
@@ -238,7 +258,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "8.0"
+          php-version: "${{ matrix.php-version }}"
           extensions: "${{ env.extensions }}"
           tools: "composer:${{ env.composer-version }}"
 
