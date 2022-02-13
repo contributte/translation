@@ -18,10 +18,14 @@ class Neon extends ArrayLoader implements LoaderInterface
 	 */
 	public function load(
 		$resource,
-		$locale,
-		$domain = 'messages'
+		string $locale,
+		string $domain = 'messages'
 	)
 	{
+		if (!\is_string($resource)) {
+			throw new InvalidArgument('Parameter resource must be string.');
+		}
+
 		$content = @file_get_contents($resource); // @ -> prevent E_WARNING and thrown an exception
 
 		if ($content === false) {
@@ -31,6 +35,7 @@ class Neon extends ArrayLoader implements LoaderInterface
 		$messages = Nette\Neon\Neon::decode($content);
 
 		$catalogue = parent::load($messages ?? [], $locale, $domain);
+
 		$catalogue->addResource(new FileResource($resource));
 
 		return $catalogue;

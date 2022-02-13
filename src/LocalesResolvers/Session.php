@@ -45,11 +45,13 @@ class Session implements ResolverInterface
 			return null;
 		}
 
-		if (!isset($this->sessionSection[self::$parameter])) {
-			return null;
+		$locale = $this->sessionSection[self::$parameter] ?? null;
+
+		if (is_string($locale)) {
+			return $locale;
 		}
 
-		return $this->sessionSection[self::$parameter];
+		return null;
 	}
 
 }
