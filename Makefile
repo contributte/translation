@@ -24,4 +24,4 @@ tests: vendor
 	vendor/bin/tester -s -p php --colors 1 -C tests/Tests
 
 coverage: vendor
-	vendor/bin/tester -s --colors 1 -c ./tests/php.ini --coverage ./coverage.xml --coverage-src ./src tests/Tests
+	vendor/bin/tester -s --colors 1 -c tests/php.ini --coverage ./coverage.xml --coverage-src ./src tests/Tests
