@@ -45,4 +45,4 @@ final class TranslationExtensionTest3 extends TestAbstract
 
 }
 
-(new TranslationExtensionTest4($container))->run();
+(new TranslationExtensionTest3($container))->run();
