@@ -2,7 +2,6 @@
 
 namespace Tests\DI;
 
-use Contributte\Translation\Translator;
 use Nette\Localization\ITranslator;
 use Tester\Assert;
 use Tests\CustomTranslatorMock;
@@ -17,39 +16,58 @@ final class TranslationExtensionTest5 extends TestAbstract
 
 	public function test01(): void
 	{
-		$container = Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
-			'translation' => [
-				'logger' => PsrLoggerMock::class,
-			],
-		]);
+		$tempDir = Helpers::generateRandomTempDir($this->container->getParameters()['tempDir'] . '/' . self::class);
+
+		$container = Helpers::createContainerFromConfigurator(
+			$tempDir,
+			[
+				'translation' => [
+					'logger' => PsrLoggerMock::class,
+				],
+			]
+		);
 
 		Assert::count(1, $container->findByType(PsrLoggerMock::class));
+
+		Helpers::clearTempDir($tempDir);
 	}
 
 	public function test02(): void
 	{
-		$container = Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
-			'translation' => [
-				'locales' => [
-					'fallback' => ['cs_CZ'],
-				],
-			],
-		]);
+		$tempDir = Helpers::generateRandomTempDir($this->container->getParameters()['tempDir'] . '/' . self::class);
 
-		/** @var Translator $translator */
+		$container = Helpers::createContainerFromConfigurator(
+			$tempDir,
+			[
+				'translation' => [
+					'locales' => [
+						'fallback' => ['cs_CZ'],
+					],
+				],
+			]
+		);
+
+		/** @var \Contributte\Translation\Translator $translator */
 		$translator = $container->getByType(ITranslator::class);
 
 		Assert::same($translator->getFallbackLocales(), ['cs_CZ']);
+
+		Helpers::clearTempDir($tempDir);
 	}
 
 	public function test03(): void
 	{
-		$container = Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
-			'translation' => [
-				'locales' => ['whitelist' => ['en']],
-				'translatorFactory' => CustomTranslatorMock::class,
-			],
-		]);
+		$tempDir = Helpers::generateRandomTempDir($this->container->getParameters()['tempDir'] . '/' . self::class);
+
+		$container = Helpers::createContainerFromConfigurator(
+			$tempDir,
+			[
+				'translation' => [
+					'locales' => ['whitelist' => ['en']],
+					'translatorFactory' => CustomTranslatorMock::class,
+				],
+			]
+		);
 
 		/** @var \Contributte\Translation\Translator $translator */
 		$translator = $container->getByType(ITranslator::class);
@@ -58,6 +76,8 @@ final class TranslationExtensionTest5 extends TestAbstract
 
 		$factoryTranslator = $container->getByType(CustomTranslatorMock::class);
 		Assert::same($translator, $factoryTranslator);
+
+		Helpers::clearTempDir($tempDir);
 	}
 
 }
