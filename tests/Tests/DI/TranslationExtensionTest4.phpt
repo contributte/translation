@@ -2,12 +2,13 @@
 
 namespace Tests\DI;
 
+use Contributte\Translation\Tracy\Panel;
 use Contributte\Translation\Translator;
 use Nette\Localization\ITranslator;
+use Nette\Utils\Strings;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Tester\Assert;
-use Tests\CustomTranslatorMock;
 use Tests\Helpers;
-use Tests\PsrLoggerMock;
 use Tests\TestAbstract;
 
 $container = require __DIR__ . '/../../bootstrap.php';
@@ -19,45 +20,38 @@ final class TranslationExtensionTest4 extends TestAbstract
 	{
 		$container = Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
 			'translation' => [
-				'logger' => PsrLoggerMock::class,
+				'locales' => ['whitelist' => ['en']],
 			],
 		]);
 
-		Assert::count(1, $container->findByType(PsrLoggerMock::class));
-	}
-
-	public function test02(): void
-	{
-		$container = Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
-			'translation' => [
-				'locales' => [
-					'fallback' => ['cs_CZ'],
-				],
-			],
-		]);
+		/** @var Panel $panel */
+		$panel = $container->getByType(Panel::class);
 
 		/** @var Translator $translator */
 		$translator = $container->getByType(ITranslator::class);
 
-		Assert::same($translator->getFallbackLocales(), ['cs_CZ']);
-	}
+		$tracyPanel = $translator->getTracyPanel();
 
-	public function test03(): void
-	{
-		$container = Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
-			'translation' => [
-				'locales' => ['whitelist' => ['en']],
-				'translatorFactory' => CustomTranslatorMock::class,
-			],
-		]);
+		Assert::count(1, $tracyPanel->getResources());
+		Assert::count(1, $panel->getResources());
+		Assert::count(1, $tracyPanel->getIgnoredResources());
+		Assert::count(1, $panel->getIgnoredResources());
 
-		/** @var \Contributte\Translation\Translator $translator */
-		$translator = $container->getByType(ITranslator::class);
+		$foo = $tracyPanel->getIgnoredResources();
+		$foo = end($foo);
+		Assert::same('messages', end($foo));
+		Assert::true(Strings::contains(key($foo), 'messages.cs_CZ.neon'));
 
-		Assert::type(CustomTranslatorMock::class, $translator);
+		$foo = $panel->getIgnoredResources();
+		$foo = end($foo);
+		Assert::same('messages', end($foo));
+		Assert::true(Strings::contains(key($foo), 'messages.cs_CZ.neon'));
 
-		$factoryTranslator = $container->getByType(CustomTranslatorMock::class);
-		Assert::same($translator, $factoryTranslator);
+		$symfonyTranslator = $container->getByType(TranslatorInterface::class);
+		Assert::same($translator, $symfonyTranslator);
+
+		$contributteTranslator = $container->getByType(Translator::class);
+		Assert::same($translator, $contributteTranslator);
 	}
 
 }

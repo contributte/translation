@@ -2,10 +2,12 @@
 
 namespace Tests\DI;
 
-use Nette\DI\MissingServiceException;
+use Contributte\Translation\Translator;
 use Nette\Localization\ITranslator;
 use Tester\Assert;
+use Tests\CustomTranslatorMock;
 use Tests\Helpers;
+use Tests\PsrLoggerMock;
 use Tests\TestAbstract;
 
 $container = require __DIR__ . '/../../bootstrap.php';
@@ -17,42 +19,45 @@ final class TranslationExtensionTest5 extends TestAbstract
 	{
 		$container = Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
 			'translation' => [
-				'returnOriginalMessage' => false,
+				'logger' => PsrLoggerMock::class,
 			],
 		]);
 
-		/** @var \Contributte\Translation\Translator $translator */
-		$translator = $container->getByType(ITranslator::class);
-
-		Assert::false($translator->returnOriginalMessage);
+		Assert::count(1, $container->findByType(PsrLoggerMock::class));
 	}
 
 	public function test02(): void
 	{
 		$container = Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
 			'translation' => [
-				'returnOriginalMessage' => false,
+				'locales' => [
+					'fallback' => ['cs_CZ'],
+				],
+			],
+		]);
+
+		/** @var Translator $translator */
+		$translator = $container->getByType(ITranslator::class);
+
+		Assert::same($translator->getFallbackLocales(), ['cs_CZ']);
+	}
+
+	public function test03(): void
+	{
+		$container = Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
+			'translation' => [
+				'locales' => ['whitelist' => ['en']],
+				'translatorFactory' => CustomTranslatorMock::class,
 			],
 		]);
 
 		/** @var \Contributte\Translation\Translator $translator */
 		$translator = $container->getByType(ITranslator::class);
 
-		Assert::false($translator->returnOriginalMessage);
-	}
+		Assert::type(CustomTranslatorMock::class, $translator);
 
-	public function test03(): void
-	{
-		Assert::exception(
-			function (): void {
-				Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
-					'translation' => [
-						'autowired' => false,
-					],
-				]);
-			},
-			MissingServiceException::class
-		);
+		$factoryTranslator = $container->getByType(CustomTranslatorMock::class);
+		Assert::same($translator, $factoryTranslator);
 	}
 
 }

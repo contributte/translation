@@ -2,14 +2,15 @@
 
 namespace Tests\DI;
 
-use Contributte\Translation\Tracy\Panel;
-use Contributte\Translation\Translator;
-use Nette\Localization\ITranslator;
+use Contributte\Translation\DI\TranslationExtension;
+use Contributte\Translation\DI\TranslationProviderInterface;
+use Nette\DI\Compiler;
+use Nette\DI\CompilerExtension;
+use Nette\DI\ContainerLoader;
 use Nette\Utils\Strings;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Tester\Assert;
-use Tests\Helpers;
 use Tests\TestAbstract;
+use UnexpectedValueException;
 
 $container = require __DIR__ . '/../../bootstrap.php';
 
@@ -18,42 +19,30 @@ final class TranslationExtensionTest3 extends TestAbstract
 
 	public function test01(): void
 	{
-		$container = Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
-			'translation' => [
-				'locales' => ['whitelist' => ['en']],
-			],
-		]);
+		try {
+			$loader = new ContainerLoader($this->container->getParameters()['tempDir'], true);
 
-		/** @var Panel $panel */
-		$panel = $container->getByType(Panel::class);
+			$loader->load(function (Compiler $compiler): void {
+				$compiler->addExtension('translation', new TranslationExtension());
+				$compiler->addExtension('translationProvider', new class extends CompilerExtension implements TranslationProviderInterface {
 
-		/** @var Translator $translator */
-		$translator = $container->getByType(ITranslator::class);
+					/**
+					 * @return string[]
+					 */
+					public function getTranslationResources(): array
+					{
+						return [__DIR__ . '/__translation_provider_dir__'];
+					}
 
-		$tracyPanel = $translator->getTracyPanel();
+				});
+				$compiler->addConfig(['parameters' => $this->container->getParameters(), 'translation' => ['dirs' => [__DIR__ . '__config_dir__']]]);
+			});
 
-		Assert::count(1, $tracyPanel->getResources());
-		Assert::count(1, $panel->getResources());
-		Assert::count(1, $tracyPanel->getIgnoredResources());
-		Assert::count(1, $panel->getIgnoredResources());
-
-		$foo = $tracyPanel->getIgnoredResources();
-		$foo = end($foo);
-		Assert::same('messages', end($foo));
-		Assert::true(Strings::contains(key($foo), 'messages.cs_CZ.neon'));
-
-		$foo = $panel->getIgnoredResources();
-		$foo = end($foo);
-		Assert::same('messages', end($foo));
-		Assert::true(Strings::contains(key($foo), 'messages.cs_CZ.neon'));
-
-		$symfonyTranslator = $container->getByType(TranslatorInterface::class);
-		Assert::same($translator, $symfonyTranslator);
-
-		$contributteTranslator = $container->getByType(Translator::class);
-		Assert::same($translator, $contributteTranslator);
+		} catch (UnexpectedValueException $e) {
+			Assert::true(Strings::contains($e->getMessage(), __DIR__ . '/__translation_provider_dir__'));// translation provider dirs first !!
+		}
 	}
 
 }
 
-(new TranslationExtensionTest3($container))->run();
+(new TranslationExtensionTest4($container))->run();
