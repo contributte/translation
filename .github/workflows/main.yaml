@@ -19,13 +19,7 @@ env:
 jobs:
   qa:
     name: "Quality assurance"
-    runs-on: "${{ matrix.operating-system }}"
-
-    strategy:
-      matrix:
-        php-version: [ "8.0" ]
-        operating-system: [ "ubuntu-latest" ]
-      fail-fast: false
+    runs-on: "ubuntu-latest"
 
     steps:
       - name: "Checkout"
@@ -35,7 +29,7 @@ jobs:
         id: "extcache"
         uses: "shivammathur/cache-extensions@v1"
         with:
-          php-version: "${{ matrix.php-version }}"
+          php-version: "8.0"
           extensions: "${{ env.extensions }}"
           key: "${{ env.cache-version }}"
 
@@ -49,7 +43,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "${{ matrix.php-version }}"
+          php-version: "8.0"
           extensions: "${{ env.extensions }}"
           tools: "composer:${{ env.composer-version }}"
 
@@ -78,13 +72,7 @@ jobs:
 
   static-analysis:
     name: "Static analysis"
-    runs-on: "${{ matrix.operating-system }}"
-
-    strategy:
-      matrix:
-        php-version: [ "8.0" ]
-        operating-system: [ "ubuntu-latest" ]
-      fail-fast: false
+    runs-on: "ubuntu-latest"
 
     steps:
       - name: "Checkout"
@@ -94,7 +82,7 @@ jobs:
         id: "extcache"
         uses: "shivammathur/cache-extensions@v1"
         with:
-          php-version: "${{ matrix.php-version }}"
+          php-version: "8.0"
           extensions: "${{ env.extensions }}"
           key: "${{ env.cache-version }}"
 
@@ -108,7 +96,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "${{ matrix.php-version }}"
+          php-version: "8.0"
           extensions: "${{ env.extensions }}"
           tools: "composer:${{ env.composer-version }}"
 
@@ -211,8 +199,9 @@ jobs:
         run: "make tests"
 
   tests-code-coverage:
+    if: "github.event_name == 'push'"
     name: "Tests with code coverage"
-    runs-on: "${{ matrix.operating-system }}"
+    runs-on: "ubuntu-latest"
     services:
       mariadb:
         image: "mariadb:10.4"
@@ -227,15 +216,6 @@ jobs:
           --health-interval=5s
           --health-timeout=2s
           --health-retries=3
-
-    strategy:
-      matrix:
-        php-version: [ "8.0" ]
-        operating-system: [ "ubuntu-latest" ]
-      fail-fast: false
-
-    if: "github.event_name == 'push'"
-
     steps:
       - name: "Checkout"
         uses: "actions/checkout@v2"
@@ -244,7 +224,7 @@ jobs:
         id: "extcache"
         uses: "shivammathur/cache-extensions@v1"
         with:
-          php-version: "${{ matrix.php-version }}"
+          php-version: "8.0"
           extensions: "${{ env.extensions }}"
           key: "${{ env.cache-version }}"
 
@@ -258,7 +238,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "${{ matrix.php-version }}"
+          php-version: "8.0"
           extensions: "${{ env.extensions }}"
           tools: "composer:${{ env.composer-version }}"
 
