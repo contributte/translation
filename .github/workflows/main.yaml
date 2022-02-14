@@ -144,7 +144,7 @@ jobs:
         operating-system: [ "ubuntu-latest" ]
         composer-args: [ "" ]
         include:
-          - php-version: "7.4"
+          - php-version: "8.0"
             operating-system: "ubuntu-latest"
             composer-args: "--prefer-lowest"
       fail-fast: false
@@ -199,6 +199,7 @@ jobs:
         run: "make tests"
 
   tests-code-coverage:
+    if: "github.event_name == 'push'"
     name: "Tests with code coverage"
     runs-on: "ubuntu-latest"
     services:
@@ -215,9 +216,6 @@ jobs:
           --health-interval=5s
           --health-timeout=2s
           --health-retries=3
-
-    if: "github.event_name == 'push'"
-
     steps:
       - name: "Checkout"
         uses: "actions/checkout@v2"
@@ -241,6 +239,7 @@ jobs:
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "7.4"
+          coverage: "xdebug"
           extensions: "${{ env.extensions }}"
           tools: "composer:${{ env.composer-version }}"
 
@@ -270,5 +269,5 @@ jobs:
           CI: true
           COVERALLS_REPO_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
         run: |
-          wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.4.2/php-coveralls.phar
+          wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.5.2/php-coveralls.phar
           php php-coveralls.phar --verbose --config tests/.coveralls.yml
