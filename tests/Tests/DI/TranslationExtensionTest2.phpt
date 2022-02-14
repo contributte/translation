@@ -3,13 +3,10 @@
 namespace Tests\DI;
 
 use Contributte\Translation\Exceptions\InvalidArgument;
-use Contributte\Translation\LocalesResolvers\ResolverInterface;
 use Contributte\Translation\Translator;
 use Nette\DI\MissingServiceException;
 use Psr\Log\LoggerInterface;
 use stdClass;
-use Symfony\Component\Config\ConfigCacheFactoryInterface;
-use Symfony\Component\Translation\Loader\LoaderInterface;
 use Tester\Assert;
 use Tests\Helpers;
 use Tests\TestAbstract;
@@ -23,98 +20,6 @@ final class TranslationExtensionTest2 extends TestAbstract
 	public function test01(): void
 	{
 		$tempDir = Helpers::generateRandomTempDir($this->container->getParameters()['tempDir'] . '/' . self::class);
-
-		Assert::exception(
-			function () use ($tempDir): void {
-				Helpers::createContainerFromConfigurator(
-					$tempDir,
-					[
-						'translation' => [
-							'locales' => [
-								'whitelist' => ['en', 'en'],
-							],
-						],
-					]
-				);
-			},
-			InvalidArgument::class,
-			'Whitelist settings have not unique values.'
-		);
-
-		Helpers::clearTempDir($tempDir);
-
-		Assert::exception(
-			function () use ($tempDir): void {
-				Helpers::createContainerFromConfigurator(
-					$tempDir,
-					[
-						'translation' => [
-							'locales' => [
-								'whitelist' => ['en'],
-								'default' => 'cs',
-							],
-						],
-					]
-				);
-			},
-			InvalidArgument::class,
-			'If you set whitelist, default locale must be on him.'
-		);
-
-		Helpers::clearTempDir($tempDir);
-
-		Assert::exception(
-			function () use ($tempDir): void {
-				Helpers::createContainerFromConfigurator(
-					$tempDir,
-					[
-						'translation' => [
-							'localeResolvers' => [stdClass::class],
-						],
-					]
-				);
-			},
-			InvalidArgument::class,
-			'Resolver must implement interface "' . ResolverInterface::class . '".'
-		);
-
-		Helpers::clearTempDir($tempDir);
-
-		Assert::exception(
-			function () use ($tempDir): void {
-				Helpers::createContainerFromConfigurator(
-					$tempDir,
-					[
-						'translation' => [
-							'cache' => [
-								'factory' => stdClass::class,
-							],
-						],
-					]
-				);
-			},
-			InvalidArgument::class,
-			'Cache factory must implement interface "' . ConfigCacheFactoryInterface::class . '".'
-		);
-
-		Helpers::clearTempDir($tempDir);
-
-		Assert::exception(
-			function () use ($tempDir): void {
-				Helpers::createContainerFromConfigurator(
-					$tempDir,
-					[
-					'translation' => [
-						'loaders' => [stdClass::class],
-					],
-					]
-				);
-			},
-			InvalidArgument::class,
-			'Loader must implement interface "' . LoaderInterface::class . '".'
-		);
-
-		Helpers::clearTempDir($tempDir);
 
 		Assert::exception(
 			function () use ($tempDir): void {
