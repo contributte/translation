@@ -3,13 +3,10 @@
 namespace Tests\DI;
 
 use Contributte\Translation\Exceptions\InvalidArgument;
-use Contributte\Translation\LocalesResolvers\ResolverInterface;
 use Contributte\Translation\Translator;
 use Nette\DI\MissingServiceException;
 use Psr\Log\LoggerInterface;
 use stdClass;
-use Symfony\Component\Config\ConfigCacheFactoryInterface;
-use Symfony\Component\Translation\Loader\LoaderInterface;
 use Tester\Assert;
 use Tests\Helpers;
 use Tests\TestAbstract;
