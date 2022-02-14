@@ -239,6 +239,7 @@ jobs:
         uses: "shivammathur/setup-php@v2"
         with:
           php-version: "8.0"
+          coverage: "xdebug"
           extensions: "${{ env.extensions }}"
           tools: "composer:${{ env.composer-version }}"
 
