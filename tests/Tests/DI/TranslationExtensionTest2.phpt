@@ -19,44 +19,93 @@ final class TranslationExtensionTest2 extends TestAbstract
 
 	public function test01(): void
 	{
-		Assert::exception(function (): void {
-			Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
-				'translation' => [
-					'dirs' => [__DIR__ . '/__no_exists__'],
-				],
-			]);
-		}, UnexpectedValueException::class);
-		Assert::exception(function (): void {
-			Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
-				'translation' => [
-					'logger' => true,
-					'localeResolvers' => [],
-				],
-			]);
-		}, MissingServiceException::class);
-		Assert::exception(function (): void {
-			Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
-				'translation' => [
-					'logger' => stdClass::class,
-					'localeResolvers' => [],
-				],
-			]);
-		}, InvalidArgument::class, 'Logger must implement interface "' . LoggerInterface::class . '".');
-		Assert::exception(function (): void {
-			Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
-				'translation' => [
-					'logger' => 1,
-					'localeResolvers' => [],
-				],
-			]);
-		}, InvalidArgument::class, 'Option "logger" must be bool for autowired or class name as string.');
-		Assert::exception(function (): void {
-			Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir'], [
-				'translation' => [
-					'translatorFactory' => stdClass::class,
-				],
-			]);
-		}, InvalidArgument::class, 'Translator must extends class "' . Translator::class . '".');
+		$tempDir = Helpers::generateRandomTempDir($this->container->getParameters()['tempDir'] . '/' . self::class);
+
+		Assert::exception(
+			function () use ($tempDir): void {
+				Helpers::createContainerFromConfigurator(
+					$tempDir,
+					[
+						'translation' => [
+							'dirs' => [__DIR__ . '/__no_exists__'],
+						],
+					]
+				);
+			},
+			UnexpectedValueException::class
+		);
+
+		Helpers::clearTempDir($tempDir);
+
+		Assert::exception(
+			function () use ($tempDir): void {
+				Helpers::createContainerFromConfigurator(
+					$tempDir,
+					[
+						'translation' => [
+							'logger' => true,
+							'localeResolvers' => [],
+						],
+					]
+				);
+			},
+			MissingServiceException::class
+		);
+
+		Helpers::clearTempDir($tempDir);
+
+		Assert::exception(
+			function () use ($tempDir): void {
+				Helpers::createContainerFromConfigurator(
+					$tempDir,
+					[
+						'translation' => [
+							'logger' => stdClass::class,
+							'localeResolvers' => [],
+						],
+					]
+				);
+			},
+			InvalidArgument::class,
+			'Logger must implement interface "' . LoggerInterface::class . '".'
+		);
+
+		Helpers::clearTempDir($tempDir);
+
+		Assert::exception(
+			function () use ($tempDir): void {
+				Helpers::createContainerFromConfigurator(
+					$tempDir,
+					[
+					'translation' => [
+						'logger' => 1,
+						'localeResolvers' => [],
+					],
+					]
+				);
+			},
+			InvalidArgument::class,
+			'Option "logger" must be bool for autowired or class name as string.'
+		);
+
+		Helpers::clearTempDir($tempDir);
+
+		Assert::exception(
+			function () use ($tempDir): void {
+				Helpers::createContainerFromConfigurator(
+					$tempDir,
+					[
+						'translation' => [
+							'translatorFactory' => stdClass::class,
+						],
+					]
+				);
+			},
+			InvalidArgument::class,
+			'Translator must extends class "' . Translator::class . '".'
+		);
+
+		Helpers::clearTempDir($tempDir);
 	}
 
 }
