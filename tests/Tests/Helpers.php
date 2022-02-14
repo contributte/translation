@@ -5,6 +5,8 @@ namespace Tests;
 use Contributte\Translation\DI\TranslationExtension;
 use Nette\Configurator;
 use Nette\DI\Container;
+use Nette\Utils\FileSystem;
+use Nette\Utils\Random;
 
 final class Helpers
 {
@@ -40,6 +42,20 @@ final class Helpers
 			->addConfig($config);
 
 		return $configurator->createContainer();
+	}
+
+	public static function generateRandomTempDir(
+		string $tempDir
+	): string
+	{
+		return $tempDir . '/' . Random::generate();
+	}
+
+	public static function clearTempDir(
+		string $location
+	): void
+	{
+		FileSystem::delete($location);
 	}
 
 }
