@@ -38,11 +38,11 @@ final class NetteDatabaseTest extends TestAbstract
 
 		$connection->query(file_get_contents(__DIR__ . '/../../sql.sql'));
 
-		$translator->setLocale('cs_CZ');
+		$translator->setLocale('cs');
 
 		Assert::same('Ahoj', $translator->translate('db_table.hello'));
 
-		$translator->setLocale('en_US');
+		$translator->setLocale('en');
 
 		Assert::same('Hello', $translator->translate('db_table.hello'));
 	}
