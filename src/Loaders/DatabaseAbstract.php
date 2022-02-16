@@ -12,9 +12,8 @@ use Symfony\Component\Translation\MessageCatalogue;
 abstract class DatabaseAbstract extends ArrayLoader implements LoaderInterface
 {
 
-	/** @var array{table: string, id: string, locale: string, message: string} */
+	/** @var array{id: string, locale: string, message: string} */
 	public static array $defaults = [
-		'table' => 'messages',
 		'id' => 'id',
 		'locale' => 'locale',
 		'message' => 'message',
@@ -47,7 +46,7 @@ abstract class DatabaseAbstract extends ArrayLoader implements LoaderInterface
 		$settings['table'] = $settings['table'] ?? $domain;
 
 		$config = [
-			'table' => $settings['table'],
+			'table' => $settings['table'] ?? $domain,
 			'id' => $settings['id'] ?? self::$defaults['id'],
 			'locale' => $settings['locale'] ?? self::$defaults['locale'],
 			'message' => $settings['message'] ?? self::$defaults['message'],
