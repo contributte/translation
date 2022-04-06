@@ -46,7 +46,7 @@ translation:
 		fallback: [en]
 	dirs:
 		- %appDir%/lang
-	returnOriginalMessage: true # to not translate undefined messages, default is false
+	returnOriginalMessage: true # to not translate undefined messages, default is true
 ```
 Note: The `fallback` configuration values should always reflect the **locale code** used in the file you wish to _fallback_ to (e.g. `en_US` for `messages.en_US.neon`, or `en` for `messages.en.neon`).
 
