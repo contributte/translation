@@ -251,8 +251,12 @@ class TranslationExtension extends CompilerExtension
 
 		if (count($this->config->dirs) > 0) {
 			foreach ($this->config->loaders as $k1 => $v1) {
-				foreach (Finder::find('*.' . $k1)->from($this->config->dirs) as $v2) {
-					$match = Strings::match($v2->getFilename(), '~^(?P<domain>.*?)\.(?P<locale>[^\.]+)\.(?P<format>[^\.]+)$~');
+				/** @var array<\SplFileInfo> $finder */
+				$finder = Finder::find('*.' . $k1)
+					->from($this->config->dirs);
+
+				foreach ($finder as $fileInfo) {
+					$match = Strings::match($fileInfo->getFilename(), '~^(?P<domain>.*?)\.(?P<locale>[^\.]+)\.(?P<format>[^\.]+)$~');
 
 					if ($match === null) {
 						continue;
@@ -260,19 +264,19 @@ class TranslationExtension extends CompilerExtension
 
 					if ($whitelistRegexp !== null && Strings::match($match['locale'], $whitelistRegexp) === null) {
 						if (isset($tracyPanel)) {
-							$tracyPanel->addSetup('addIgnoredResource', [$v2->getPathname(), $match['locale'], $match['domain']]);
+							$tracyPanel->addSetup('addIgnoredResource', [$fileInfo->getPathname(), $match['locale'], $match['domain']]);
 						}
 
 						continue;
 					}
 
-					$translator->addSetup('addResource', [$match['format'], $v2->getPathname(), $match['locale'], $match['domain']]);
+					$translator->addSetup('addResource', [$match['format'], $fileInfo->getPathname(), $match['locale'], $match['domain']]);
 
 					if (!isset($tracyPanel)) {
 						continue;
 					}
 
-					$tracyPanel->addSetup('addResource', [$v2->getPathname(), $match['locale'], $match['domain']]);
+					$tracyPanel->addSetup('addResource', [$fileInfo->getPathname(), $match['locale'], $match['domain']]);
 				}
 			}
 		}
