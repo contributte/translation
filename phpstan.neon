@@ -30,9 +30,9 @@ parameters:
 			message: '#^Result of && is always false\.$#'
 			path: 'src/Latte/Macros.php'
 
-		# ---------------------------------------------------------------------
-		# for back compatibility with olde packages - will be remove in future
-		# ---------------------------------------------------------------------
+		# -------------------------------------------------------------------
+		# for back compatibility with old packages - will be remove in future
+		# -------------------------------------------------------------------
 		-
 			message: """
 				#^Fetching class constant class of deprecated class Nette\\\\Bridges\\\\ApplicationLatte\\\\ILatteFactory\\:
