@@ -29,3 +29,54 @@ parameters:
 			count: 1
 			message: '#^Result of && is always false\.$#'
 			path: 'src/Latte/Macros.php'
+
+		# -------------------------------------------------------------------
+		# for back compatibility with old packages - will be remove in future
+		# -------------------------------------------------------------------
+		-
+			message: """
+				#^Fetching class constant class of deprecated class Nette\\\\Bridges\\\\ApplicationLatte\\\\ILatteFactory\\:
+				use Nette\\\\Bridges\\\\ApplicationLatte\\\\LatteFactory$#
+			"""
+			count: 1
+			path: src/DI/TranslationExtension.php
+
+		-
+			message: """
+				#^Fetching class constant class of deprecated class Nette\\\\Localization\\\\ITranslator\\:
+				use Nette\\\\Localization\\\\Translator$#
+			"""
+			count: 2
+			path: src/DI/TranslationExtension.php
+
+		-
+			count: 1
+			message: """
+				#^Parameter \\$translator of method Contributte\\\\Translation\\\\Latte\\\\Filters\\:\\:__construct\\(\\) has typehint with deprecated interface Nette\\\\Localization\\\\ITranslator\\:
+				use Nette\\\\Localization\\\\Translator$#
+			"""
+			path: src/Latte/Filters.php
+
+		-
+			count: 1
+			message: """
+				#^Class Contributte\\\\Translation\\\\PrefixedTranslator implements deprecated interface Nette\\\\Localization\\\\ITranslator\\:
+				use Nette\\\\Localization\\\\Translator$#
+			"""
+			path: src/PrefixedTranslator.php
+
+		-
+			count: 1
+			message: """
+				#^Class Contributte\\\\Translation\\\\Translator implements deprecated interface Nette\\\\Localization\\\\ITranslator\\:
+				use Nette\\\\Localization\\\\Translator$#
+			"""
+			path: src/Translator.php
+
+		-
+			message: """
+				#^Instantiation of deprecated class Nette\\\\PhpGenerator\\\\PhpLiteral\\:
+				use Nette\\\\PhpGenerator\\\\Literal$#
+			"""
+			count: 1
+			path: src/DI/TranslationExtension.php
