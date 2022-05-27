@@ -213,6 +213,10 @@ final class TranslatorTest extends TestAbstract
 		Assert::same('It\'s a boy!', $translator->translate('baby_gender', ['gender' => 'boy']));
 		Assert::same('It\'s a girl!', $translator->translate('baby_gender', ['gender' => 'girl']));
 		Assert::same('It\'s something else!', $translator->translate('baby_gender', ['gender' => 'kibork']));
+
+		$translator->setLocale('en_US');
+
+		Assert::same('Přelož', $translator->translate('keyOnlyInCsCz', null, [], 'messages', 'cs_CZ'));
 	}
 
 	public function test03(): void
