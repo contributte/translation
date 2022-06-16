@@ -33,14 +33,12 @@ abstract class DatabaseAbstract extends ArrayLoader implements LoaderInterface
 			throw new InvalidArgument('Parameter resource must be string.');
 		}
 
-		$content = @file_get_contents($resource); // @ -> prevent E_WARNING and thrown an exception
-
-		if ($content === false) {
+		if (!\is_readable($resource)) {
 			throw new InvalidArgument('Something wrong with resource file "' . $resource . '".');
 		}
 
 		/** @var array<string, string> $settings */
-		$settings = Neon::decode($content);
+		$settings = Neon::decodeFile($resource);
 
 		$config = [
 			'table' => $settings['table'] ?? $domain,
