@@ -162,6 +162,8 @@ final class TranslationExtensionTest extends TestAbstract
 		Assert::count(1, $tracyPanel->getIgnoredResources());
 		Assert::count(1, $panel->getIgnoredResources());
 
+		Assert::count(2, $panel->getIgnoredResources());
+
 		$symfonyTranslator = $container->getByType(TranslatorInterface::class);
 		Assert::same($translator, $symfonyTranslator);
 
