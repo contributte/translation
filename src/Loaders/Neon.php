@@ -3,7 +3,7 @@
 namespace Contributte\Translation\Loaders;
 
 use Contributte\Translation\Exceptions\InvalidArgument;
-use Nette;
+use Nette\Neon\Neon as NetteNeon;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\Translation\Loader\ArrayLoader;
 use Symfony\Component\Translation\Loader\LoaderInterface;
@@ -27,13 +27,11 @@ class Neon extends ArrayLoader implements LoaderInterface
 			throw new InvalidArgument('Parameter resource must be string.');
 		}
 
-		$content = @file_get_contents($resource); // @ -> prevent E_WARNING and thrown an exception
-
-		if ($content === false) {
+		if (!\is_readable($resource)) {
 			throw new InvalidArgument('Something wrong with resource file "' . $resource . '".');
 		}
 
-		$messages = Nette\Neon\Neon::decode($content);
+		$messages = NetteNeon::decodeFile($resource);
 
 		$catalogue = parent::load($messages ?? [], $locale, $domain);
 
