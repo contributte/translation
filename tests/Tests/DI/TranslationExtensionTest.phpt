@@ -162,15 +162,7 @@ final class TranslationExtensionTest extends TestAbstract
 		Assert::count(1, $tracyPanel->getIgnoredResources());
 		Assert::count(1, $panel->getIgnoredResources());
 
-		$foo = $tracyPanel->getIgnoredResources();
-		$foo = end($foo);
-		Assert::same('messages', end($foo));
-		Assert::true(Strings::contains(key($foo), 'messages.cs_CZ.neon'));
-
-		$foo = $panel->getIgnoredResources();
-		$foo = end($foo);
-		Assert::same('messages', end($foo));
-		Assert::true(Strings::contains(key($foo), 'messages.cs_CZ.neon'));
+		Assert::count(2, $panel->getIgnoredResources()['cs_CZ']);
 
 		$symfonyTranslator = $container->getByType(TranslatorInterface::class);
 		Assert::same($translator, $symfonyTranslator);

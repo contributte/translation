@@ -314,7 +314,7 @@ final class TranslatorTest extends TestAbstract
 		Assert::count(1, $dom->find('tr[class="contributte-translation-missing-translation"]'));
 		Assert::count(1, $dom->find('tr[class="contributte-translation-locale-resolvers"]'));
 		Assert::count(4, $dom->find('tr[class="contributte-translation-resources"]'));// lang/another_domain.en_US.neon, lang/messages+intl-icu.en_US.neon, lang/messages.en_US.neon, lang_overloading/messages.en_US.neon
-		Assert::count(1, $dom->find('tr[class="contributte-translation-ignored-resources"]'));// lang/messages.cs_CZ.neon
+		Assert::count(2, $dom->find('tr[class="contributte-translation-ignored-resources"]'));// lang/messages.cs_CZ.neon
 
 		$psrLogger = new class() extends AbstractLogger {
 
