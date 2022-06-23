@@ -217,6 +217,10 @@ final class TranslatorTest extends TestAbstract
 		$translator->setLocale('en_US');
 
 		Assert::same('Přelož', $translator->translate('keyOnlyInCsCz', null, [], 'messages', 'cs_CZ'));
+
+		// not working parameters in untranslated message
+		$translator->returnOriginalMessage = true;
+		Assert::same('Hi Ales!', $translator->translate('Hi %name%!', ['name' => 'Ales']));
 	}
 
 	public function test03(): void
