@@ -74,6 +74,15 @@ jobs:
     name: "Static analysis"
     runs-on: "ubuntu-latest"
 
+    strategy:
+      matrix:
+        composer-args: [ "" ]
+        command: [ "phpstan" ]
+        include:
+          - composer-args: "--prefer-lowest"
+            command: "phpstan-lowest"
+      fail-fast: false
+
     steps:
       - name: "Checkout"
         uses: "actions/checkout@v2"
@@ -115,10 +124,10 @@ jobs:
           restore-keys: "${{ runner.os }}-composer-"
 
       - name: "Install dependencies"
-        run: "${{ env.composer-install }}"
+        run: "${{ env.composer-install }} ${{ matrix.composer-args }}"
 
       - name: "PHPStan"
-        run: "make phpstan"
+        run: "make ${{ matrix.command}}"
 
   tests:
     name: "Tests"
