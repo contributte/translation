@@ -9,6 +9,7 @@ use Latte\Engine;
 use Latte\MacroNode;
 use Latte\Macros\MacroSet;
 use Latte\PhpWriter;
+use Nette\Utils\Strings;
 
 class Macros extends MacroSet
 {
@@ -50,8 +51,10 @@ class Macros extends MacroSet
 				$value = 'ob_get_clean()';
 			}
 
+			/** @phpstan-ignore-next-line */
 			if (!defined(Engine::class . '::VERSION_ID') || Engine::VERSION_ID < 20900) {
 				$latteProp = '$_fi';
+			/** @phpstan-ignore-next-line */
 			} elseif (Engine::VERSION_ID >= 20900 && Engine::VERSION_ID < 20902) {
 				$latteProp = '$__fi';
 			} else {
@@ -65,7 +68,7 @@ class Macros extends MacroSet
 			$messageProp = Helpers::createLatteProperty('Message');
 			$prefixProp = Helpers::createLatteProperty('Prefix');
 
-			$macroCodeEcho = Helpers::macroWithoutParameters($node)
+			$macroCodeEcho = self::macroWithoutParameters($node)
 				? sprintf('echo %%modify(call_user_func($this->filters->translate, %s))', $messageProp)
 				: sprintf('echo %%modify(call_user_func($this->filters->translate, %s, %%node.args))', $messageProp);
 
@@ -119,6 +122,15 @@ class Macros extends MacroSet
 
 			%s = [%%node.word];
 		', $tempPrefixProp, $tempPrefixProp, $prefixProp, $tempPrefixProp, $prefixProp, $prefixProp));
+	}
+
+	public static function macroWithoutParameters(
+		MacroNode $node
+	): bool
+	{
+		$result = Strings::trim($node->tokenizer->joinUntil(',')) === Strings::trim($node->args);
+		$node->tokenizer->reset();
+		return $result;
 	}
 
 }

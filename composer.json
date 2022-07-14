@@ -16,7 +16,7 @@
   ],
   "require": {
     "php": "^8.0.2",
-    "latte/latte": "^2.6",
+    "latte/latte": "^2.6|^3.0",
     "nette/di": "^3.0.6",
     "nette/finder": "^2.5.2",
     "nette/http": "^3.0",
@@ -37,7 +37,7 @@
     "nette/tester": "^2.3.1",
     "ninjify/nunjuck": "^0.3.0",
     "ninjify/qa": "^0.13",
-    "phpstan/phpstan": "^1.4",
+    "phpstan/phpstan": "^1.8",
     "phpstan/phpstan-deprecation-rules": "^1.0",
     "phpstan/phpstan-nette": "^1.0",
     "phpstan/phpstan-strict-rules": "^1.1",
@@ -55,7 +55,10 @@
     }
   },
   "config": {
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   },
   "extra": {
     "branch-alias": {

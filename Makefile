@@ -20,6 +20,9 @@ csf: vendor
 phpstan: vendor
 	vendor/bin/phpstan analyse -l max -c phpstan.neon src
 
+phpstan-lowest: vendor
+	vendor/bin/phpstan analyse -l max -c phpstan.lowest.neon src
+
 tests: vendor
 	vendor/bin/tester -s -p php --colors 1 -C tests/Tests
 

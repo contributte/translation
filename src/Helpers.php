@@ -2,7 +2,6 @@
 
 namespace Contributte\Translation;
 
-use Latte\MacroNode;
 use Nette\Utils\Strings;
 
 class Helpers
@@ -38,15 +37,6 @@ class Helpers
 		return [$domain, $message];
 	}
 
-	public static function macroWithoutParameters(
-		MacroNode $node
-	): bool
-	{
-		$result = Strings::trim($node->tokenizer->joinUntil(',')) === Strings::trim($node->args);
-		$node->tokenizer->reset();
-		return $result;
-	}
-
 	public static function isAbsoluteMessage(
 		string $message
 	): bool
@@ -54,11 +44,28 @@ class Helpers
 		return Strings::startsWith($message, '//');
 	}
 
+	/**
+	 * @param mixed $message
+	 * @param array<string>|null $prefix
+	 * @return mixed
+	 */
+	public static function prefixMessage(
+		$message,
+		?array $prefix
+	)
+	{
+		if (is_string($message) && $prefix !== null && !self::isAbsoluteMessage($message)) {
+			$message = implode('.', $prefix) . '.' . $message;
+		}
+
+		return $message;
+	}
+
 	public static function createLatteProperty(
 		string $suffix
 	): string
 	{
-		return '$ʟ_contributteTranslation' . $suffix;
+		return '$ᴛ_contributteTranslation' . $suffix;
 	}
 
 }

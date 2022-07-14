@@ -7,6 +7,7 @@ use Contributte\Translation\FallbackResolver;
 use Contributte\Translation\Helpers;
 use Contributte\Translation\Latte\Filters;
 use Contributte\Translation\Latte\Macros;
+use Contributte\Translation\Latte\TranslatorExtension;
 use Contributte\Translation\Loaders\Neon;
 use Contributte\Translation\LocaleResolver;
 use Contributte\Translation\LocalesResolvers\Header;
@@ -238,10 +239,18 @@ class TranslationExtension extends CompilerExtension
 			/** @var \Nette\DI\Definitions\FactoryDefinition $latteFactory */
 			$latteFactory = $builder->getDefinition($latteFactoryName);
 
-			$latteFactory->getResultDefinition()
-				->addSetup('?->onCompile[] = function (Latte\\Engine $engine): void { ?::install($engine->getCompiler()); }', ['@self', new PhpLiteral(Macros::class)])
-				->addSetup('addProvider', ['translator', $iTranslator])
-				->addSetup('addFilter', ['translate', [$latteFilters, 'translate']]);
+			/** @phpstan-ignore-next-line */
+			if (version_compare(\Latte\Engine::VERSION, '3', '<')) {
+				$latteFactory->getResultDefinition()
+					->addSetup('?->onCompile[] = function (Latte\\Engine $engine): void { ?::install($engine->getCompiler()); }', ['@self', new PhpLiteral(Macros::class)])
+					->addSetup('addProvider', ['translator', $iTranslator])
+					->addSetup('addFilter', ['translate', [$latteFilters, 'translate']]);
+			} else {
+				$latteExtension = $builder->addDefinition($this->prefix('latte.extension'))
+					->setFactory(TranslatorExtension::class);
+				$latteFactory->getResultDefinition()
+					->addSetup('addExtension', [$latteExtension]);
+			}
 		}
 
 		/** @var \Contributte\Translation\DI\TranslationProviderInterface $v1 */

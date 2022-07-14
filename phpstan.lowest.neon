@@ -10,39 +10,17 @@ parameters:
 		- src
 		- tests
 	excludePaths:
-		- src/Latte/Filters.php
-		- src/Latte/Macros.php
+		- src/Latte/TranslatorExtension.php
+		- src/Latte/Nodes/*
 	ignoreErrors:
 		-
 			count: 2
 			message: '#^Variable property access on object\.$#'
 			path: 'src/Loaders/Doctrine.php'
 
-		-
-			count: 2
-			message: '#^Comparison operation "\<" between \d+ and \d+ is always false\.$#'
-			path: 'src/Latte/Macros.php'
-
-		-
-			count: 1
-			message: '#^Comparison operation "\>=" between \d+ and \d+ is always true\.$#'
-			path: 'src/Latte/Macros.php'
-
-		-
-			count: 1
-			message: '#^Result of && is always false\.$#'
-			path: 'src/Latte/Macros.php'
-
 		# -------------------------------------------------------------------
 		# for back compatibility with old packages - will be remove in future
 		# -------------------------------------------------------------------
-		-
-			message: """
-				#^Fetching class constant class of deprecated class Nette\\\\Bridges\\\\ApplicationLatte\\\\ILatteFactory\\:
-				use Nette\\\\Bridges\\\\ApplicationLatte\\\\LatteFactory$#
-			"""
-			count: 1
-			path: src/DI/TranslationExtension.php
 
 		-
 			message: """
@@ -57,6 +35,13 @@ parameters:
 			message: """
 				#^Parameter \\$translator of method Contributte\\\\Translation\\\\Latte\\\\Filters\\:\\:__construct\\(\\) has typehint with deprecated interface Nette\\\\Localization\\\\ITranslator\\:
 				use Nette\\\\Localization\\\\Translator$#
+			"""
+			path: src/Latte/Filters.php
+
+		-
+			count: 1
+			message: """
+				#^Call to an undefined method Nette\\\\Localization\\\\ITranslator::translate\\(\\)#
 			"""
 			path: src/Latte/Filters.php
 
@@ -84,10 +69,3 @@ parameters:
 			"""
 			path: src/Translator.php
 
-		-
-			message: """
-				#^Instantiation of deprecated class Nette\\\\PhpGenerator\\\\PhpLiteral\\:
-				use Nette\\\\PhpGenerator\\\\Literal$#
-			"""
-			count: 1
-			path: src/DI/TranslationExtension.php
