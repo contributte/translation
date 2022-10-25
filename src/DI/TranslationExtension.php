@@ -2,6 +2,7 @@
 
 namespace Contributte\Translation\DI;
 
+use Contributte\Translation\DI\Helpers as DIHelpers;
 use Contributte\Translation\Exceptions\InvalidArgument;
 use Contributte\Translation\FallbackResolver;
 use Contributte\Translation\Helpers;
@@ -112,7 +113,7 @@ class TranslationExtension extends CompilerExtension
 		$localeResolvers = [];
 
 		foreach ($this->config->localeResolvers as $v1) {
-			$reflection = new ReflectionClass($v1);
+			$reflection = new ReflectionClass(DIHelpers::unwrapEntity($v1));
 
 			if (!$reflection->implementsInterface(ResolverInterface::class)) {
 				throw new InvalidArgument('Resolver must implement interface "' . ResolverInterface::class . '".');
@@ -187,7 +188,7 @@ class TranslationExtension extends CompilerExtension
 
 		// Loaders
 		foreach ($this->config->loaders as $k1 => $v1) {
-			$reflection = new ReflectionClass($v1);
+			$reflection = new ReflectionClass(DIHelpers::unwrapEntity($v1));
 
 			if (!$reflection->implementsInterface(LoaderInterface::class)) {
 				throw new InvalidArgument('Loader must implement interface "' . LoaderInterface::class . '".');
