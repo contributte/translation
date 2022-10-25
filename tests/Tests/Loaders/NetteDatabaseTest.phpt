@@ -3,7 +3,9 @@
 namespace Tests\Loaders;
 
 use Contributte\Translation\Loaders\NetteDatabase;
+use Contributte\Translation\Translator;
 use Nette\Database\Connection;
+use Nette\Database\ConnectionException;
 use Nette\Localization\ITranslator;
 use Tester\Assert;
 use Tests\Helpers;
@@ -14,8 +16,14 @@ $container = require __DIR__ . '/../../bootstrap.php';
 final class NetteDatabaseTest extends TestAbstract
 {
 
-	public function test01(): void
+	private Translator $translator;
+
+	private Connection $connection;
+
+	protected function setUp()
 	{
+		parent::setUp();
+
 		$container = Helpers::createContainerFromConfigurator(
 			$this->container->getParameters()['tempDir'],
 			[
@@ -23,6 +31,9 @@ final class NetteDatabaseTest extends TestAbstract
 					'dsn' => 'mysql:host=127.0.0.1;port=13306;dbname=test',
 					'user' => 'root',
 					'password' => '1234',
+					'options' => [
+						'lazy' => true,
+					],
 				],
 				'translation' => [
 					'loaders' => [
@@ -32,19 +43,26 @@ final class NetteDatabaseTest extends TestAbstract
 			]
 		);
 
-		/** @var \Contributte\Translation\Translator $translator */
-		$translator = $container->getByType(ITranslator::class);
-		$connection = $container->getByType(Connection::class);
+		$this->translator = $container->getByType(ITranslator::class);
+		$this->connection = $container->getByType(Connection::class);
 
-		$connection->query(file_get_contents(__DIR__ . '/../../sql.sql'));
+		try {
+			$this->connection->connect();
+		} catch (ConnectionException $e) {
+			$this->skip('Database not connected');
+		}
+	}
 
-		$translator->setLocale('cs_CZ');
+	public function test01(): void
+	{
+		$this->connection->query(file_get_contents(__DIR__ . '/../../sql.sql'));
+		$this->translator->setLocale('cs_CZ');
 
-		Assert::same('Ahoj', $translator->translate('db_table.hello'));
+		Assert::same('Ahoj', $this->translator->translate('db_table.hello'));
 
-		$translator->setLocale('en_US');
+		$this->translator->setLocale('en_US');
 
-		Assert::same('Hello', $translator->translate('db_table.hello'));
+		Assert::same('Hello', $this->translator->translate('db_table.hello'));
 	}
 
 }
