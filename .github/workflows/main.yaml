@@ -91,7 +91,7 @@ jobs:
         id: "extcache"
         uses: "shivammathur/cache-extensions@v1"
         with:
-          php-version: "8.0"
+          php-version: "8.1"
           extensions: "${{ env.extensions }}"
           key: "${{ env.cache-version }}"
 
@@ -105,7 +105,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "8.0"
+          php-version: "8.1"
           extensions: "${{ env.extensions }}"
           tools: "composer:${{ env.composer-version }}"
 
