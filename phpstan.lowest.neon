@@ -41,13 +41,6 @@ parameters:
 		-
 			count: 1
 			message: """
-				#^Call to an undefined method Nette\\\\Localization\\\\ITranslator::translate\\(\\)#
-			"""
-			path: src/Latte/Filters.php
-
-		-
-			count: 1
-			message: """
 				#^Parameter \\$translator of method Contributte\\\\Translation\\\\Latte\\\\TranslatorExtension\\:\\:__construct\\(\\) has typehint with deprecated interface Nette\\\\Localization\\\\ITranslator\\:
 				use Nette\\\\Localization\\\\Translator$#
 			"""
@@ -69,3 +62,10 @@ parameters:
 			"""
 			path: src/Translator.php
 
+		-
+			message: """
+				#^Fetching class constant class of deprecated class Nette\\\\Bridges\\\\ApplicationLatte\\\\ILatteFactory\\:
+				use Nette\\\\Bridges\\\\ApplicationLatte\\\\LatteFactory$#
+			"""
+			count: 1
+			path: src/DI/TranslationExtension.php
