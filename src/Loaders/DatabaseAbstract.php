@@ -41,8 +41,6 @@ abstract class DatabaseAbstract extends ArrayLoader implements LoaderInterface
 		/** @var array<string, string> $settings */
 		$settings = Neon::decodeFile($resource);
 
-		$settings['table'] = $settings['table'] ?? $domain;
-
 		$config = [
 			'table' => $settings['table'] ?? $domain,
 			'id' => $settings['id'] ?? self::$defaults['id'],
