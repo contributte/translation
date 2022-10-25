@@ -18,7 +18,7 @@ final class NeonTest extends TestAbstract
 	{
 		$file = FileMock::create('
 test:
-	for: "translate"');
+	for: "translate"', 'neon');
 
 		$catalogue = (new Neon())->load($file, 'en');
 
@@ -38,10 +38,12 @@ test:
 		Assert::same('missing.translate', $catalogue->get('missing.translate'));
 		Assert::same(['domain' => ['test.for' => 'translate']], $catalogue->all());
 
-		$catalogue = (new Neon())->load(FileMock::create(''), 'en');
+		$catalogue = (new Neon())->load(FileMock::create('', 'neon'), 'en');
 		Assert::same('en', $catalogue->getLocale());
-		Assert::same(['messages'], $catalogue->getDomains());
-		Assert::same(['messages' => []], $catalogue->all());
+		// Assert::same(['messages'], $catalogue->getDomains()); // 6.0
+		// Assert::same(['messages' => []], $catalogue->all()); // 6.0
+		// Assert::same([], $catalogue->getDomains()); // 6.1
+		// Assert::same([], $catalogue->all()); // 6.1
 	}
 
 	public function test02(): void

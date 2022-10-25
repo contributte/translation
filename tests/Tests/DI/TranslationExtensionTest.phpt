@@ -21,9 +21,12 @@ use Symfony\Component\Translation\Loader\LoaderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Tester\Assert;
 use Tests\CustomTranslatorMock;
+use Tests\Fixtures\DummyLoader;
 use Tests\Helpers;
 use Tests\PsrLoggerMock;
 use Tests\TestAbstract;
+use Tests\Toolkit\Container;
+use Tests\Toolkit\Helpers as ToolkitHelpers;
 use UnexpectedValueException;
 
 $container = require __DIR__ . '/../../bootstrap.php';
@@ -256,6 +259,57 @@ final class TranslationExtensionTest extends TestAbstract
 			},
 			MissingServiceException::class
 		);
+	}
+
+	public function test10(): void
+	{
+		$container = Container::of()
+			->withDefaults()
+			->withCompiler(function (Compiler $compiler): void {
+				$compiler->addConfig(ToolkitHelpers::neon('
+				translation:
+					loaders:
+						dummy: Tests\Fixtures\DummyLoader
+				'));
+			})
+			->build();
+
+		Assert::notNull($container->getByType(DummyLoader::class));
+	}
+
+	public function test11(): void
+	{
+		$container = Container::of()
+			->withDefaults()
+			->withCompiler(function (Compiler $compiler): void {
+				$compiler->addConfig(ToolkitHelpers::neon('
+				services:
+					myservice: Tests\Fixtures\DummyService
+
+				translation:
+					loaders:
+						dummy: Tests\Fixtures\DummyServiceLoader(@myservice)
+				'));
+			})
+			->build();
+
+		Assert::notNull($container->getByType(DummyLoader::class));
+	}
+
+	public function test12(): void
+	{
+		Assert::exception(static function () {
+			Container::of()
+				->withDefaults()
+				->withCompiler(function (Compiler $compiler): void {
+					$compiler->addConfig(ToolkitHelpers::neon('
+				translation:
+					loaders:
+						dummy: Tests\Fixtures\DummyService
+				'));
+				})
+				->build();
+		}, InvalidArgument::class, 'Loader must implement interface "Symfony\Component\Translation\Loader\LoaderInterface".');
 	}
 
 }
