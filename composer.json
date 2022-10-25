@@ -51,7 +51,9 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\": "tests/Tests"
+      "Tests\\": "tests/Tests",
+      "Tests\\Fixtures\\": "tests/Fixtures",
+      "Tests\\Toolkit\\": "tests/Toolkit"
     }
   },
   "config": {

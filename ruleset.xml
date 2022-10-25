@@ -19,6 +19,8 @@
 			<property name="rootNamespaces" type="array">
 				<element key="src" value="Contributte\Translation" />
 				<element key="tests/Tests" value="Tests" />
+				<element key="tests/Fixtures" value="Tests\Fixtures" />
+				<element key="tests/Toolkit" value="Tests\Toolkit" />
 			</property>
 		</properties>
 	</rule>
