@@ -6,6 +6,7 @@ use Contributte\Translation\Exceptions\InvalidArgument;
 use Contributte\Translation\Tracy\Panel;
 use Contributte\Translation\Wrappers\Message;
 use Contributte\Translation\Wrappers\NotTranslate;
+use Generator;
 use Nette\Localization\ITranslator;
 use Nette\Utils\Strings;
 use Nette\Utils\Validators;
@@ -44,6 +45,9 @@ class Translator extends SymfonyTranslator implements ITranslator
 	private ?Panel $tracyPanel = null;
 
 	private string $initLang;
+
+	/** @var callable(mixed[] $params): Generator|null */
+	private $translateKeyGenerator = null;
 
 	/**
 	 * @param array<string> $cacheVary
@@ -151,6 +155,27 @@ class Translator extends SymfonyTranslator implements ITranslator
 	): self
 	{
 		$this->prefix[] = $string;
+		return $this;
+	}
+
+	public function getTranslateKeyGenerator(): callable
+	{
+		if ($this->translateKeyGenerator === null) {
+			$this->translateKeyGenerator = function (array $params): Generator {
+				foreach ($params as $k1 => $v1) {
+					yield '%' . $k1 . '%' => $v1;
+				}
+			};
+		}
+
+		return $this->translateKeyGenerator;
+	}
+
+	public function setTranslateKeyGenerator(
+		callable $generator
+	): self
+	{
+		$this->translateKeyGenerator = $generator;
 		return $this;
 	}
 
@@ -316,13 +341,9 @@ class Translator extends SymfonyTranslator implements ITranslator
 			[$domain, $message] = Helpers::extractMessage($message);
 		}
 
-		$tmp = [];
+		$generator = $this->getTranslateKeyGenerator();
 
-		foreach ($params as $k1 => $v1) {
-			$tmp['%' . $k1 . '%'] = $v1;
-		}
-
-		$params = $tmp;
+		$params = iterator_to_array($generator($params));
 
 		if (Validators::isNumeric($count)) {
 			$params += ['%count%' => $count];
