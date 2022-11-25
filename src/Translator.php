@@ -376,7 +376,7 @@ class Translator extends SymfonyTranslator implements ITranslator
 
 		if ($id !== null) {
 			if ($this->psrLogger !== null) {
-				if (!$this->getCatalogue()->has($id, $domain)) {
+				if (!$this->getCatalogue($locale)->has($id, $domain)) {
 					$this->psrLogger
 						->notice(
 							'Missing translation',
@@ -390,7 +390,7 @@ class Translator extends SymfonyTranslator implements ITranslator
 			}
 
 			if ($this->tracyPanel !== null) {
-				if (!$this->getCatalogue()->has($id, $domain)) {
+				if (!$this->getCatalogue($locale)->has($id, $domain)) {
 					$this->tracyPanel
 						->addMissingTranslation($id, $domain);
 				}
