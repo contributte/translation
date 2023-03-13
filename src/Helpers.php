@@ -2,8 +2,6 @@
 
 namespace Contributte\Translation;
 
-use Nette\Utils\Strings;
-
 class Helpers
 {
 
@@ -41,7 +39,7 @@ class Helpers
 		string $message
 	): bool
 	{
-		return Strings::startsWith($message, '//');
+		return str_starts_with($message, '//');
 	}
 
 	/**

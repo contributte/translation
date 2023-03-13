@@ -45,7 +45,7 @@ class TranslatorExtension extends Extension
 	public function getFilters(): array
 	{
 		return [
-			'translate' => fn(FilterInfo $fi, ...$args): string => $this->translator->translate(...$args),
+			'translate' => fn(FilterInfo $fi, ...$args): string => (string) $this->translator->translate(...$args),
 		];
 	}
 
