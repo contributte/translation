@@ -15,6 +15,7 @@
 	- [Database loaders](#database-loaders)
 		- [Doctrine](#doctrine)
 		- [Nette Database](#nette-database)
+		- [Nextras Dbal](#nextras-dbal)
 - [Features](#features)
 	- [Wrappers](#wrappers)
 	- [TranslationProviderInterface](#translationproviderinterface)
@@ -219,7 +220,7 @@ yml: Symfony\Component\Translation\Loader\YamlFileLoader
 
 ### Database loaders
 
-Package includes database loaders for **[Doctrine 2](https://www.doctrine-project.org/)** and **[Nette Database 3](https://doc.nette.org/cs/3.0/database)**.
+Package includes database loaders for **[Doctrine 2](https://www.doctrine-project.org/)** and **[Nette Database 3](https://doc.nette.org/cs/3.0/database)** and **[Nextras Dbal](https://nextras.org/dbal/docs/main/)**.
 
 #### Doctrine
 
@@ -298,6 +299,25 @@ Add loader to translation configuration:
 translation:
 	loaders:
 		nettedatabase: Contributte\Translation\Loaders\NetteDatabase
+```
+
+#### Nextras Dbal
+
+You must create a file with specific format in scanned dirs such as **messages.en_US.nextrasdbal**. All parameters are optional, but the file has to exist.
+
+```neon
+table: "my_table" # if you specify table key, "messages" from file name will be ignored
+id: "id" # id column name, default is "id"
+locale: "locale" # locale column name, default is "locale"
+message: "message" # message column name, default is "message"
+```
+
+Add loader to translation configuration:
+
+```neon
+translation:
+	loaders:
+		nextrasdbal: Contributte\Translation\Loaders\NextrasDbal
 ```
 
 DB table example:
