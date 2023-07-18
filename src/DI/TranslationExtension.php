@@ -82,6 +82,7 @@ class TranslationExtension extends CompilerExtension
 			'translatorFactory' => Expect::string()->default(null),
 			'returnOriginalMessage' => Expect::bool()->default(true),
 			'autowired' => Expect::type('bool|array')->default(true),
+			'latteFactory' => Expect::string(ILatteFactory::class)->nullable(),
 		]);
 	}
 
@@ -229,7 +230,7 @@ class TranslationExtension extends CompilerExtension
 			$tracyPanel = $builder->getDefinition($this->prefix('tracyPanel'));
 		}
 
-		$latteFactoryName = $builder->getByType(ILatteFactory::class);
+		$latteFactoryName = $this->config->latteFactory ? $builder->getByType($this->config->latteFactory) : null;
 
 		if ($latteFactoryName !== null) {
 			$iTranslator = $builder->getDefinitionByType(ITranslator::class);
