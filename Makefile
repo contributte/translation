@@ -9,7 +9,7 @@ vendor: composer.json composer.lock
 qa: lint phpstan cs
 
 lint: vendor
-	vendor/bin/linter src tests
+	vendor/bin/parallel-lint src tests
 
 cs: vendor
 	vendor/bin/codesniffer src tests
