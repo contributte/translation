@@ -30,7 +30,7 @@
   "require-dev": {
     "contributte/qa": "^0.2.0",
     "doctrine/orm": "^2.8",
-    "mockery/mockery": "^1.4",
+    "mockery/mockery": "^1.5",
     "nette/application": "^3.1.0",
     "nette/bootstrap": "^3.0",
     "nette/database": "^3.1.1",
