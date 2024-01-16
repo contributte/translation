@@ -51,32 +51,23 @@ final class HeaderTest extends TestAbstract
 					return new UrlScript();
 				}
 
-				/**
-				 * @return mixed
-				 */
 				public function getQuery(
 					?string $key = null
-				)
+				): mixed
 				{
 					return null;
 				}
 
-				/**
-				 * @return mixed
-				 */
 				public function getPost(
 					?string $key = null
-				)
+				): mixed
 				{
 					return null;
 				}
 
-				/**
-				 * @return mixed
-				 */
 				public function getFile(
 					string $key
-				)
+				): mixed
 				{
 					return null;
 				}
@@ -89,12 +80,9 @@ final class HeaderTest extends TestAbstract
 					return [];
 				}
 
-				/**
-				 * @return mixed
-				 */
 				public function getCookie(
 					string $key
-				)
+				): mixed
 				{
 					return null;
 				}
@@ -118,6 +106,7 @@ final class HeaderTest extends TestAbstract
 				{
 					return true;
 				}
+
 				public function getHeader(
 					string $header
 				): ?string

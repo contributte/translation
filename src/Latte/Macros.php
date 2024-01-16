@@ -21,16 +21,6 @@ class Macros extends MacroSet
 		parent::__construct($compiler);
 	}
 
-	public static function install(
-		Compiler $compiler
-	): void
-	{
-		$me = new static($compiler);
-
-		$me->addMacro('_', [$me, 'macroTranslate'], [$me, 'macroTranslate']);
-		$me->addMacro('translator', [$me, 'macroPrefix'], [$me, 'macroPrefix']);
-	}
-
 	/**
 	 * {_ ...}
 	 *
@@ -124,12 +114,23 @@ class Macros extends MacroSet
 		', $tempPrefixProp, $tempPrefixProp, $prefixProp, $tempPrefixProp, $prefixProp, $prefixProp));
 	}
 
+	public static function install(
+		Compiler $compiler
+	): void
+	{
+		$me = new static($compiler);
+
+		$me->addMacro('_', [$me, 'macroTranslate'], [$me, 'macroTranslate']);
+		$me->addMacro('translator', [$me, 'macroPrefix'], [$me, 'macroPrefix']);
+	}
+
 	public static function macroWithoutParameters(
 		MacroNode $node
 	): bool
 	{
 		$result = Strings::trim($node->tokenizer->joinUntil(',')) === Strings::trim($node->args);
 		$node->tokenizer->reset();
+
 		return $result;
 	}
 

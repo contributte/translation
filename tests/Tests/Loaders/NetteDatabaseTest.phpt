@@ -20,7 +20,19 @@ final class NetteDatabaseTest extends TestAbstract
 
 	private Connection $connection;
 
-	protected function setUp()
+	public function test01(): void
+	{
+		$this->connection->query(file_get_contents(__DIR__ . '/../../sql.sql'));
+		$this->translator->setLocale('cs_CZ');
+
+		Assert::same('Ahoj', $this->translator->translate('db_table.hello'));
+
+		$this->translator->setLocale('en_US');
+
+		Assert::same('Hello', $this->translator->translate('db_table.hello'));
+	}
+
+	protected function setUp(): void
 	{
 		parent::setUp();
 
@@ -51,18 +63,6 @@ final class NetteDatabaseTest extends TestAbstract
 		} catch (ConnectionException $e) {
 			$this->skip('Database not connected');
 		}
-	}
-
-	public function test01(): void
-	{
-		$this->connection->query(file_get_contents(__DIR__ . '/../../sql.sql'));
-		$this->translator->setLocale('cs_CZ');
-
-		Assert::same('Ahoj', $this->translator->translate('db_table.hello'));
-
-		$this->translator->setLocale('en_US');
-
-		Assert::same('Hello', $this->translator->translate('db_table.hello'));
 	}
 
 }

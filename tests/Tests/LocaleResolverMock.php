@@ -15,6 +15,7 @@ final class LocaleResolverMock implements ResolverInterface
 	): self
 	{
 		$this->locale = $locale;
+
 		return $this;
 	}
 

@@ -16,6 +16,8 @@ use Symfony\Component\Translation\Translator as SymfonyTranslator;
 class Translator extends SymfonyTranslator implements ITranslator
 {
 
+	public bool $returnOriginalMessage = true;
+
 	private LocaleResolver $localeResolver;
 
 	private FallbackResolver $fallbackResolver;
@@ -25,8 +27,6 @@ class Translator extends SymfonyTranslator implements ITranslator
 	private ?string $cacheDir;
 
 	private bool $debug;
-
-	public bool $returnOriginalMessage = true;
 
 	/** @var array<string>|null */
 	private ?array $localesWhitelist = null;
@@ -155,6 +155,7 @@ class Translator extends SymfonyTranslator implements ITranslator
 	): self
 	{
 		$this->prefix[] = $string;
+
 		return $this;
 	}
 
@@ -176,6 +177,7 @@ class Translator extends SymfonyTranslator implements ITranslator
 	): self
 	{
 		$this->translateKeyGenerator = $generator;
+
 		return $this;
 	}
 
@@ -224,12 +226,13 @@ class Translator extends SymfonyTranslator implements ITranslator
 	{
 		$locales = array_keys($this->resourcesLocales);
 		sort($locales);
+
 		return $locales;
 	}
 
 	public function addResource(
 		string $format,
-		$resource,
+		mixed $resource,
 		string $locale,
 		?string $domain = null
 	): void
@@ -271,6 +274,7 @@ class Translator extends SymfonyTranslator implements ITranslator
 	): self
 	{
 		$this->psrLogger = $psrLogger;
+
 		return $this;
 	}
 
@@ -284,16 +288,13 @@ class Translator extends SymfonyTranslator implements ITranslator
 	): self
 	{
 		$this->tracyPanel = $tracyPanel;
+
 		return $this;
 	}
 
-	/**
-	 * @param mixed $message
-	 * @param mixed ...$parameters
-	 */
 	public function translate(
-		$message,
-		...$parameters
+		mixed $message,
+		mixed ...$parameters
 	): string
 	{
 		if ($message === null || $message === '') {

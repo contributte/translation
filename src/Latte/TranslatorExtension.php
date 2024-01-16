@@ -19,20 +19,23 @@ use Latte\Compiler\Tag;
 use Latte\Essential\Nodes\PrintNode;
 use Latte\Extension;
 use Latte\Runtime\FilterInfo;
-use Nette\Localization\ITranslator;
+use Nette\Localization\Translator;
 
 class TranslatorExtension extends Extension
 {
 
-	private ITranslator $translator;
+	private Translator $translator;
 
 	public function __construct(
-		ITranslator $translator
+		Translator $translator
 	)
 	{
 		$this->translator = $translator;
 	}
 
+	/**
+	 * @return array{_:callable(Tag):Node, translate:callable(Tag):\Generator, translator:callable(Tag):\Generator}
+	 */
 	public function getTags(): array
 	{
 		return [
@@ -42,13 +45,19 @@ class TranslatorExtension extends Extension
 		];
 	}
 
+	/**
+	 * @return array{translate:callable(FilterInfo $fi, string ...$args):string}
+	 */
 	public function getFilters(): array
 	{
 		return [
-			'translate' => fn(FilterInfo $fi, ...$args): string => (string) $this->translator->translate(...$args),
+			'translate' => fn (FilterInfo $fi, ...$args): string => (string) $this->translator->translate(...$args),
 		];
 	}
 
+	/**
+	 * @return array{translator:Translator}
+	 */
 	public function getProviders(): array
 	{
 		return [
@@ -84,6 +93,7 @@ class TranslatorExtension extends Extension
 		$outputNode->modifier->escape = true;
 		$outputNode->expression = $messageNode;
 		array_unshift($outputNode->modifier->filters, new FilterNode(new IdentifierNode('translate'), $args->toArguments()));
+
 		return $outputNode;
 	}
 

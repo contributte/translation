@@ -43,14 +43,12 @@ class Helpers
 	}
 
 	/**
-	 * @param mixed $message
 	 * @param array<string>|null $prefix
-	 * @return mixed
 	 */
 	public static function prefixMessage(
-		$message,
+		mixed $message,
 		?array $prefix
-	)
+	): mixed
 	{
 		if (is_string($message) && $prefix !== null && !self::isAbsoluteMessage($message)) {
 			$message = implode('.', $prefix) . '.' . $message;

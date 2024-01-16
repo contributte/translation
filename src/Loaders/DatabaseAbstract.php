@@ -20,6 +20,17 @@ abstract class DatabaseAbstract extends ArrayLoader implements LoaderInterface
 	];
 
 	/**
+	 * @param array{table: string, id: string, locale: string, message: string} $config
+	 * @return array<string>
+	 */
+	abstract protected function getMessages(
+		array $config,
+		string $resource,
+		string $locale,
+		string $domain
+	): array;
+
+	/**
 	 * {@inheritdoc}
 	 *
 	 * @throws \Contributte\Translation\Exceptions\InvalidArgument
@@ -63,16 +74,5 @@ abstract class DatabaseAbstract extends ArrayLoader implements LoaderInterface
 
 		return $catalogue;
 	}
-
-	/**
-	 * @param array{table: string, id: string, locale: string, message: string} $config
-	 * @return array<string>
-	 */
-	abstract protected function getMessages(
-		array $config,
-		string $resource,
-		string $locale,
-		string $domain
-	): array;
 
 }

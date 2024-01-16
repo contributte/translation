@@ -63,14 +63,6 @@ parameters:
 		-
 			count: 1
 			message: """
-				#^Parameter \\$translator of method Contributte\\\\Translation\\\\Latte\\\\TranslatorExtension\\:\\:__construct\\(\\) has typehint with deprecated interface Nette\\\\Localization\\\\ITranslator\\:
-				use Nette\\\\Localization\\\\Translator$#
-			"""
-			path: src/Latte/TranslatorExtension.php
-
-		-
-			count: 1
-			message: """
 				#^Class Contributte\\\\Translation\\\\PrefixedTranslator implements deprecated interface Nette\\\\Localization\\\\ITranslator\\:
 				use Nette\\\\Localization\\\\Translator$#
 			"""

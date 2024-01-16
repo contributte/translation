@@ -16,21 +16,6 @@ class TranslatorNode extends StatementNode
 
 	public AreaNode $content;
 
-	/** @return \Generator<int, ?array<mixed>, array{AreaNode, ?Tag}, TranslatorNode> */
-	public static function create(
-		Tag $tag
-	): \Generator
-	{
-		$tag->expectArguments();
-		$variable = $tag->parser->parseUnquotedStringOrExpression();
-
-		$node = new TranslatorNode();
-		$node->prefix = $variable;
-		[$node->content] = yield;
-		return $node;
-	}
-
-
 	public function print(
 		PrintContext $context
 	): string
@@ -54,11 +39,25 @@ class TranslatorNode extends StatementNode
 		);
 	}
 
-
 	public function &getIterator(): \Generator
 	{
 		yield $this->prefix;
 		yield $this->content;
+	}
+
+	/** @return \Generator<int, ?array<mixed>, array{AreaNode, ?Tag}, TranslatorNode> */
+	public static function create(
+		Tag $tag
+	): \Generator
+	{
+		$tag->expectArguments();
+		$variable = $tag->parser->parseUnquotedStringOrExpression();
+
+		$node = new TranslatorNode();
+		$node->prefix = $variable;
+		[$node->content] = yield;
+
+		return $node;
 	}
 
 }

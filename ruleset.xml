@@ -24,4 +24,8 @@
 			</property>
 		</properties>
 	</rule>
+	<rule ref="SlevomatCodingStandard.PHP.DisallowReference.DisallowedReturningReference">
+		<exclude-pattern>src/Latte/Nodes/TranslateNode.php</exclude-pattern>
+		<exclude-pattern>src/Latte/Nodes/TranslatorNode.php</exclude-pattern>
+	</rule>
 </ruleset>

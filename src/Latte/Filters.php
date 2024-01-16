@@ -17,15 +17,10 @@ class Filters
 		$this->translator = $translator;
 	}
 
-	/**
-	 * @param \Latte\Runtime\FilterInfo $filterInfo
-	 * @param mixed $message
-	 * @param mixed ...$parameters
-	 */
 	public function translate(
 		FilterInfo $filterInfo,
-		$message,
-		...$parameters
+		mixed $message,
+		mixed ...$parameters
 	): string
 	{
 		return $this->translator->translate($message, ...$parameters);

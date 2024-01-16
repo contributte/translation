@@ -19,6 +19,42 @@ class TranslateNode extends StatementNode
 
 	public ModifierNode $modifier;
 
+	public function print(
+		PrintContext $context
+	): string
+	{
+		return $this->content instanceof TextNode ? $context->format(
+			'
+					$ʟ_fi = new LR\FilterInfo(%dump);
+					echo %modifyContent(%dump) %line;
+				',
+			$context->getEscaper()->export(),
+			$this->modifier,
+			$this->content->content,
+			$this->position,
+		) : $context->format(
+			'
+					ob_start(fn() => ""); try {
+						%node
+					} finally {
+						$ʟ_tmp = ob_get_clean();
+					}
+					$ʟ_fi = new LR\FilterInfo(%dump);
+					echo %modifyContent($ʟ_tmp) %line;
+				',
+			$this->content,
+			$context->getEscaper()->export(),
+			$this->modifier,
+			$this->position,
+		);
+	}
+
+	public function &getIterator(): \Generator
+	{
+		yield $this->content;
+		yield $this->modifier;
+	}
+
 	/** @return \Generator<int, ?array<mixed>, array{AreaNode, ?Tag}, TranslateNode|NopNode> */
 	public static function create(
 		Tag $tag
@@ -43,49 +79,6 @@ class TranslateNode extends StatementNode
 		array_unshift($node->modifier->filters, new Php\FilterNode(new Php\IdentifierNode('translate'), $args->toArguments()));
 
 		return $node;
-	}
-
-
-	public function print(
-		PrintContext $context
-	): string
-	{
-		if ($this->content instanceof TextNode) {
-			return $context->format(
-				'
-					$ʟ_fi = new LR\FilterInfo(%dump);
-					echo %modifyContent(%dump) %line;
-				',
-				$context->getEscaper()->export(),
-				$this->modifier,
-				$this->content->content,
-				$this->position,
-			);
-
-		} else {
-			return $context->format(
-				'
-					ob_start(fn() => ""); try {
-						%node
-					} finally {
-						$ʟ_tmp = ob_get_clean();
-					}
-					$ʟ_fi = new LR\FilterInfo(%dump);
-					echo %modifyContent($ʟ_tmp) %line;
-				',
-				$this->content,
-				$context->getEscaper()->export(),
-				$this->modifier,
-				$this->position,
-			);
-		}
-	}
-
-
-	public function &getIterator(): \Generator
-	{
-		yield $this->content;
-		yield $this->modifier;
 	}
 
 }

@@ -10,12 +10,9 @@ class Message
 	/** @var array<mixed> */
 	public array $parameters;
 
-	/**
-	 * @param array<mixed> ...$parameters
-	 */
 	public function __construct(
 		string $message,
-		...$parameters
+		mixed ...$parameters
 	)
 	{
 		$this->message = $message;
