@@ -12,6 +12,8 @@ parameters:
 	excludePaths:
 		- src/Latte/Filters.php
 		- src/Latte/Macros.php
+	bootstrapFiles:
+		- vendor/latte/latte/src/Latte/Compiler/Nodes/Php/Expression/StaticMethodCallNode.php
 	ignoreErrors:
 		-
 			count: 2
