@@ -52,7 +52,7 @@ jobs:
 
       - name: "Get Composer cache directory"
         id: "composercache"
-        run: 'echo "::set-output name=dir::$(composer config cache-files-dir)"'
+        run: 'echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT'
 
       - name: "Cache PHP dependencies"
         uses: "actions/cache@v3"
@@ -114,7 +114,7 @@ jobs:
 
       - name: "Get Composer cache directory"
         id: "composercache"
-        run: 'echo "::set-output name=dir::$(composer config cache-files-dir)"'
+        run: 'echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT'
 
       - name: "Cache PHP dependencies"
         uses: "actions/cache@v3"
@@ -189,7 +189,7 @@ jobs:
 
       - name: "Get Composer cache directory"
         id: "composercache"
-        run: 'echo "::set-output name=dir::$(composer config cache-files-dir)"'
+        run: 'echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT'
 
       - name: "Cache PHP dependencies"
         uses: "actions/cache@v3"
@@ -257,7 +257,7 @@ jobs:
 
       - name: "Get Composer cache directory"
         id: "composercache"
-        run: 'echo "::set-output name=dir::$(composer config cache-files-dir)"'
+        run: 'echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT'
 
       - name: "Cache PHP dependencies"
         uses: "actions/cache@v3"
