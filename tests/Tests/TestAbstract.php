@@ -25,7 +25,7 @@ abstract class TestAbstract extends TestCase
 			$composerRaw = FileSystem::read(__DIR__ . '/../../composer.lock');
 
 			/** @var array{ packages: array<array{ name: string, version: string }> } $composerData */
-			$composerData = Json::decode($composerRaw, true);
+			$composerData = Json::decode($composerRaw, 1);
 
 			$netteUtilsVersion = null;
 
