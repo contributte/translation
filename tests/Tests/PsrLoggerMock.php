@@ -14,7 +14,7 @@ final class PsrLoggerMock extends AbstractLogger
 		$level,
 		$message,
 		array $context = []
-	)
+	): void
 	{
 	}
 

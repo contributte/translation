@@ -2,7 +2,10 @@
 
 namespace Tests;
 
+use Composer\InstalledVersions;
 use Nette\DI\Container;
+use Nette\Utils\FileSystem;
+use Nette\Utils\Json;
 use Tester\TestCase;
 
 abstract class TestAbstract extends TestCase
@@ -17,22 +20,26 @@ abstract class TestAbstract extends TestCase
 	)
 	{
 		if (class_exists('\Composer\InstalledVersions')) { // Composer 2
-			$netteUtilsVersion = \Composer\InstalledVersions::getPrettyVersion('nette/utils');
+			$netteUtilsVersion = InstalledVersions::getPrettyVersion('nette/utils');
 		} else { // Composer 1
-			$composerRaw = \Nette\Utils\FileSystem::read(__DIR__ . '/../../composer.lock');
-			$composerData = \Nette\Utils\Json::decode($composerRaw);
-			$netteUtilsVersion = '0.0.0';
-			foreach ($composerData->packages as $package) {
-				if ($package->name !== 'nette/utils') {
+			$composerRaw = FileSystem::read(__DIR__ . '/../../composer.lock');
+
+			/** @var array{ packages: array<array{ name: string, version: string }> } $composerData */
+			$composerData = Json::decode($composerRaw, 1);
+
+			$netteUtilsVersion = null;
+
+			foreach ($composerData['packages'] as $package) {
+				if ($package['name'] !== 'nette/utils') {
 					continue;
 				}
 
-				$netteUtilsVersion = ltrim($package->version, 'v');
+				$netteUtilsVersion = ltrim($package['version'], 'v');
 			}
 		}
 
 		$this->container = $container;
-		$this->isNewNetteUtils = version_compare($netteUtilsVersion, '4.0.0', '>=');
+		$this->isNewNetteUtils = version_compare($netteUtilsVersion ?? '0.0.0', '4.0.0', '>=');
 	}
 
 }

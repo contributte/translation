@@ -9,7 +9,7 @@ use Latte\Compiler\Node;
 use Latte\Compiler\Nodes\Php\ArgumentNode;
 use Latte\Compiler\Nodes\Php\Expression\ArrayNode;
 use Latte\Compiler\Nodes\Php\Expression\BinaryOpNode;
-use Latte\Compiler\Nodes\Php\Expression\StaticCallNode;
+use Latte\Compiler\Nodes\Php\Expression\StaticMethodCallNode;
 use Latte\Compiler\Nodes\Php\Expression\VariableNode;
 use Latte\Compiler\Nodes\Php\FilterNode;
 use Latte\Compiler\Nodes\Php\IdentifierNode;
@@ -70,7 +70,7 @@ class TranslatorExtension extends Extension
 
 		$prefixProp = Helpers::createLatteProperty('Prefix');
 
-		$messageNode = new StaticCallNode(
+		$messageNode = new StaticMethodCallNode(
 			new NameNode('\Contributte\Translation\Helpers', NameNode::KindFullyQualified),
 			new IdentifierNode('prefixMessage'),
 			[

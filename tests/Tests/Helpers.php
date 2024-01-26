@@ -3,7 +3,7 @@
 namespace Tests;
 
 use Contributte\Translation\DI\TranslationExtension;
-use Nette\Configurator;
+use Nette\Bootstrap\Configurator;
 use Nette\DI\Container;
 
 final class Helpers
