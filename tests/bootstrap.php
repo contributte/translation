@@ -2,7 +2,7 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use Nette\Configurator;
+use Nette\Bootstrap\Configurator;
 use Tester\Environment;
 
 Environment::setup();

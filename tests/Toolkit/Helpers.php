@@ -22,11 +22,19 @@ final class Helpers
 	{
 		$container = Container::of()
 			->withDefaults()
-			->withCompiler(function (Compiler $compiler) use ($callback): void {
-				if ($callback) {
+			->withCompiler(
+				static function (
+					Compiler $compiler
+				) use (
+					$callback
+				): void {
+					if ($callback === null) {
+						return;
+					}
+
 					$callback($compiler);
 				}
-			})
+			)
 			->build();
 
 		return $container->getByType(Configuration::class);

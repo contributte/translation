@@ -84,13 +84,19 @@ final class Container
 	public function build(): NetteContainer
 	{
 		$loader = new ContainerLoader(Tests::TEMP_PATH, true);
+
+		/** @var class-string $class */
 		$class = $loader->load(function (Compiler $compiler): void {
 			foreach ($this->onCompile as $cb) {
 				$cb($compiler);
 			}
 		}, $this->key);
 
-		return new $class();
+		$container = new $class();
+
+		assert($container instanceof NetteContainer);
+
+		return $container;
 	}
 
 }
