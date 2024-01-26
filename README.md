@@ -30,10 +30,10 @@ composer require contributte/translation
 For details on how to use this package, check out our [documentation](.docs).
 
 ## Versions
-| State       | Version  | Branch           | PHP          | Symfony |
-|-------------|----------|------------------|--------------|---------|
-| development | `^2.0.0` | `master`         | `^8.0`       | `^6.0`  |
-| stable      | `^1.0.0` | `php74_symfony5` | `^7.4\|^8.0` | `^5.0`  |
+| State  | Version  | Branch           | PHP          | Symfony      |
+|--------|----------|------------------|--------------|--------------|
+| stable | `^2.0.0` | `master`         | `^8.0`       | `^6.0\|^7.0` |
+| stable | `^1.0.0` | `php74_symfony5` | `^7.4\|^8.0` | `^5.0`       |
 
 ## Development
 
