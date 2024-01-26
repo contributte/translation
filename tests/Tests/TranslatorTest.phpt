@@ -339,7 +339,7 @@ final class TranslatorTest extends TestAbstract
 				$level,
 				$message,
 				array $context = []
-			)
+			): void
 			{
 				Assert::same(LogLevel::NOTICE, $level);
 				Assert::same('Missing translation', $message);
