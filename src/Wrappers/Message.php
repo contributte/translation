@@ -2,7 +2,9 @@
 
 namespace Contributte\Translation\Wrappers;
 
-class Message
+use Stringable;
+
+class Message implements Stringable
 {
 
 	public string $message;
@@ -20,6 +22,12 @@ class Message
 	{
 		$this->message = $message;
 		$this->parameters = $parameters;
+	}
+
+
+	public function __toString(): string
+	{
+		return $this->message;
 	}
 
 }

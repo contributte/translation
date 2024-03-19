@@ -2,7 +2,9 @@
 
 namespace Contributte\Translation\Wrappers;
 
-class NotTranslate
+use Stringable;
+
+class NotTranslate implements Stringable
 {
 
 	public string $message;
@@ -12,6 +14,12 @@ class NotTranslate
 	)
 	{
 		$this->message = $message;
+	}
+
+
+	public function __toString(): string
+	{
+		return $this->message;
 	}
 
 }
