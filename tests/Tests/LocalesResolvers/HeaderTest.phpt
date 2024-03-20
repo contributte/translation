@@ -170,7 +170,7 @@ final class HeaderTest extends TestAbstract
 		array $availableLocales
 	): ?string
 	{
-		$request = new Request(new UrlScript(), null, null, null, ['Accept-Language' => $locale]);
+		$request = new Request(new UrlScript(), headers: ['Accept-Language' => $locale]);
 		$resolver = new Header($request);
 		$translatorMock = Mockery::mock(Translator::class);
 
