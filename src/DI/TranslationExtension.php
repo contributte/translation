@@ -40,8 +40,6 @@ use Symfony\Component\Translation\Provider\ProviderFactoryInterface;
 use Symfony\Component\Translation\Provider\ProviderInterface;
 use Symfony\Component\Translation\Provider\TranslationProviderCollection;
 use Symfony\Component\Translation\Provider\TranslationProviderCollectionFactory;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Component\Translation\Provider\Dsn;
 use Contributte\Translation\Dumpers\NeonFileDumper;
 use Symfony\Component\Translation\Writer\TranslationWriter;
 use Symfony\Component\Translation\Reader\TranslationReader;
@@ -421,4 +419,3 @@ class TranslationExtension extends CompilerExtension
 	}
 
 }
-;
