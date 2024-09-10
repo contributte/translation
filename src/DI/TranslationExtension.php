@@ -412,10 +412,6 @@ class TranslationExtension extends CompilerExtension
 		ClassType $class
 	): void
 	{
-		$builder = $this->getContainerBuilder();
-		$providerCollections = $builder->getDefinition($this->prefix('providerCollection'));
-		bdump($providerCollections);
-
 		if (!$this->config->debug || !$this->config->debugger) {
 			return;
 		}
