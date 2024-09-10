@@ -34,8 +34,23 @@ use stdClass;
 use Symfony\Component\Config\ConfigCacheFactory;
 use Symfony\Component\Config\ConfigCacheFactoryInterface;
 use Symfony\Component\Translation\Loader\LoaderInterface;
+use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Translation\Provider\ProviderFactoryInterface;
+use Symfony\Component\Translation\Provider\ProviderInterface;
+use Symfony\Component\Translation\Provider\TranslationProviderCollection;
+use Symfony\Component\Translation\Provider\TranslationProviderCollectionFactory;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\Translation\Provider\Dsn;
+use Contributte\Translation\Dumpers\NeonFileDumper;
+use Symfony\Component\Translation\Writer\TranslationWriter;
+use Symfony\Component\Translation\Reader\TranslationReader;
+use Symfony\Component\Translation\Command\TranslationPushCommand;
+use Symfony\Component\Translation\Command\TranslationPullCommand;
+use Symfony\Component\Translation\Command\XliffLintCommand;
+use Symfony\Component\HttpClient\CurlHttpClient;
 use Tracy\IBarPanel;
+
 
 /**
  * @property stdClass $config
@@ -83,6 +98,7 @@ class TranslationExtension extends CompilerExtension
 			'returnOriginalMessage' => Expect::bool()->default(true),
 			'autowired' => Expect::type('bool|array')->default(true),
 			'latteFactory' => Expect::string(ILatteFactory::class)->nullable(),
+			'providers' => Expect::array()->default([]),
 		]);
 	}
 
@@ -187,6 +203,9 @@ class TranslationExtension extends CompilerExtension
 			$translator->setAutowired($autowired);
 		}
 
+		$reader = $builder->addDefinition($this->prefix('providerTranslationReader'))
+		->setFactory(TranslationReader::class);
+
 		// Loaders
 		foreach ($this->config->loaders as $k1 => $v1) {
 			$reflection = new ReflectionClass(DIHelpers::unwrapEntity($v1));
@@ -199,7 +218,75 @@ class TranslationExtension extends CompilerExtension
 				->setFactory($v1);
 
 			$translator->addSetup('addLoader', [$k1, $loader]);
+			$reader->addSetup('addLoader', [$k1, $loader]);
+
 		}
+
+
+		$neonFileDumper = $builder->addDefinition($this->prefix('neonFileDumper'))
+		->setFactory(NeonFileDumper::class);
+
+		$write = $builder->addDefinition($this->prefix('providerTranslationWriter'))
+		->setFactory(TranslationWriter::class)
+		->addSetup('addDumper', ['neon', $neonFileDumper]);
+
+		// Symfony providers
+
+		$builder->addDefinition($this->prefix('providerCurlHttpClient'))
+		->setFactory(CurlHttpClient::class);
+
+		$xlfLoader = $builder->addDefinition($this->prefix('loaderXLF'))
+		->setFactory(XliffFileLoader::class);
+
+		$providers = [];
+		foreach ($this->config->providers as $k1 => $v1) {
+
+			if (!isset($v1['provider']))
+				throw new InvalidArgument('Missing provider parameter in definitions of providers.');
+			if (!isset($v1['dsn']))
+				throw new InvalidArgument('Missing DSN parameter in definitions of providers.');
+
+			$reflection = new ReflectionClass(DIHelpers::unwrapEntity($v1['provider']));
+			bdump($reflection);
+			if (!$reflection->implementsInterface(ProviderFactoryInterface::class)) {
+				throw new InvalidArgument('Provider must implement interface "' . ProviderFactoryInterface::class . '".');
+
+			}
+
+			$provider = $builder->addDefinition($this->prefix('provider' . Strings::firstUpper($k1)))
+				->setFactory($v1['provider'],['defaultLocale' => $this->config->locales->default, 'loader' => $xlfLoader]);
+
+			$providers[$k1] = $provider;
+
+			/*if (!isset($this->config->providers[$k1]['domains']) || empty($this->config->providers[$k1]['domains'])) {
+				$this->config->providers[$k1]['domains'] = ['common'];
+			}*/
+
+		}
+
+		$builder->addDefinition($this->prefix('providerCollectionFatory'))
+		->setFactory(TranslationProviderCollectionFactory::class, ["factories" => $providers, 'enabledLocales' => $this->config->locales->whitelist]);
+
+
+		$providerCollections = $builder->addDefinition($this->prefix('providerCollection'))
+		->setFactory('@'.$this->prefix('providerCollectionFatory').'::fromConfig', ['config' => $this->config->providers]);
+
+
+		// Symfony commands
+		$builder->addDefinition($this->prefix('translationPullCommand'))
+		->setFactory(TranslationPullCommand::class, ['providerCollection' => $providerCollections, 'defaultLocale' => $this->config->locales->default, 'enabledLocales' => $this->config->locales->whitelist, 'transPaths' => $this->config->dirs])
+		->setAutowired(false);
+
+		$builder->addDefinition($this->prefix('translationPushCommand'))
+		->setFactory(TranslationPushCommand::class, ['providers' =>  $providerCollections, 'enabledLocales' => $this->config->locales->whitelist, 'transPaths' => $this->config->dirs])
+		->setAutowired(false);
+
+		$builder->addDefinition($this->prefix('translationXliffLintCommand'))
+		->setFactory(XliffLintCommand::class)
+		->setAutowired(false);
+
+
+
 
 		// Tracy\Panel
 		if (!$this->config->debug || !$this->config->debugger) {
@@ -325,6 +412,10 @@ class TranslationExtension extends CompilerExtension
 		ClassType $class
 	): void
 	{
+		$builder = $this->getContainerBuilder();
+		$providerCollections = $builder->getDefinition($this->prefix('providerCollection'));
+		bdump($providerCollections);
+
 		if (!$this->config->debug || !$this->config->debugger) {
 			return;
 		}
@@ -334,3 +425,4 @@ class TranslationExtension extends CompilerExtension
 	}
 
 }
+;

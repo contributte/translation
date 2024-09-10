@@ -12,6 +12,9 @@ use Nette\Utils\Strings;
 use Nette\Utils\Validators;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Translation\Translator as SymfonyTranslator;
+use Symfony\Component\Translation\Provider\ProviderFactoryInterface;
+use Symfony\Component\Translation\Provider\Dsn;
+
 
 class Translator extends SymfonyTranslator implements ITranslator
 {
