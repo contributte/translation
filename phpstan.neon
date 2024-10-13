@@ -38,7 +38,7 @@ parameters:
 		# -------------------------------------------------------------------
 		-
 			message: """
-				#^Fetching class constant class of deprecated class Nette\\\\Bridges\\\\ApplicationLatte\\\\ILatteFactory\\:
+				#^Fetching class constant class of deprecated interface Nette\\\\Bridges\\\\ApplicationLatte\\\\ILatteFactory\\:
 				use Nette\\\\Bridges\\\\ApplicationLatte\\\\LatteFactory$#
 			"""
 			count: 1
@@ -46,7 +46,7 @@ parameters:
 
 		-
 			message: """
-				#^Fetching class constant class of deprecated class Nette\\\\Localization\\\\ITranslator\\:
+				#^Fetching class constant class of deprecated interface Nette\\\\Localization\\\\ITranslator\\:
 				use Nette\\\\Localization\\\\Translator$#
 			"""
 			count: 2
