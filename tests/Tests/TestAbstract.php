@@ -20,7 +20,7 @@ abstract class TestAbstract extends TestCase
 	)
 	{
 		if (class_exists('\Composer\InstalledVersions')) { // Composer 2
-			$netteUtilsVersion = InstalledVersions::getPrettyVersion('nette/utils');
+			$netteUtilsVersion = ltrim(InstalledVersions::getPrettyVersion('nette/utils'), 'v');
 		} else { // Composer 1
 			$composerRaw = FileSystem::read(__DIR__ . '/../../composer.lock');
 
