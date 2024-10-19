@@ -2,7 +2,6 @@
 
 namespace Contributte\Translation\LocalesResolvers;
 
-use Contributte\Translation\Exceptions\InvalidArgument;
 use Contributte\Translation\Translator;
 use Nette\Http\IRequest;
 use Nette\Http\Request;
@@ -11,19 +10,12 @@ use Nette\Utils\Strings;
 class Header implements ResolverInterface
 {
 
-	private Request $httpRequest;
+	private IRequest $httpRequest;
 
-	/**
-	 * @throws \Contributte\Translation\Exceptions\InvalidArgument
-	 */
 	public function __construct(
 		IRequest $httpRequest
 	)
 	{
-		if (!is_a($httpRequest, Request::class, true)) {
-			throw new InvalidArgument('Header locale resolver need "Nette\\Http\\Request" or his child for using "detectLanguage" method.');
-		}
-
 		$this->httpRequest = $httpRequest;
 	}
 
@@ -31,24 +23,27 @@ class Header implements ResolverInterface
 		Translator $translator
 	): ?string
 	{
-		/** @var array<string> $langs */
-		$langs = [];
+		/** @var array<string> $locales */
+		$locales = [];
 
 		foreach ($translator->getAvailableLocales() as $v1) {
-			$langs[] = $v1;
+			$locales[] = $v1;
 
 			if (Strings::length($v1) < 3) {
 				continue;
 			}
 
-			$langs[] = Strings::substring($v1, 0, 2);// en_US => en
+			$locales[] = Strings::substring($v1, 0, 2);// en_US => en
 		}
 
-		if (count($langs) === 0) {
+		if (count($locales) === 0) {
 			return null;
 		}
 
-		return $this->httpRequest->detectLanguage($langs);
+		return (new Request(
+			$this->httpRequest->getUrl(),
+			headers: $this->httpRequest->getHeaders()
+		))->detectLanguage($locales);
 	}
 
 }
