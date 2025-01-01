@@ -245,7 +245,7 @@ class TranslationExtension extends CompilerExtension
 				throw new InvalidArgument('Missing DSN parameter in definitions of providers.');
 
 			$reflection = new ReflectionClass(DIHelpers::unwrapEntity($v1['provider']));
-			bdump($reflection);
+
 			if (!$reflection->implementsInterface(ProviderFactoryInterface::class)) {
 				throw new InvalidArgument('Provider must implement interface "' . ProviderFactoryInterface::class . '".');
 
