@@ -13,7 +13,6 @@ on:
 env:
   extensions: "json, pdo_mysql, pdo_sqlite, intl"
   cache-version: "1"
-  composer-version: "v1"
   composer-install: "composer update --no-interaction --no-progress --no-suggest --prefer-dist --prefer-stable"
 
 jobs:
@@ -45,7 +44,7 @@ jobs:
         with:
           php-version: "8.0"
           extensions: "${{ env.extensions }}"
-          tools: "composer:${{ env.composer-version }}"
+          tools: "composer"
 
       - name: "Setup problem matchers for PHP"
         run: 'echo "::add-matcher::${{ runner.tool_cache }}/php.json"'
@@ -107,7 +106,7 @@ jobs:
         with:
           php-version: "8.1"
           extensions: "${{ env.extensions }}"
-          tools: "composer:${{ env.composer-version }}"
+          tools: "composer"
 
       - name: "Setup problem matchers for PHP"
         run: 'echo "::add-matcher::${{ runner.tool_cache }}/php.json"'
@@ -182,7 +181,7 @@ jobs:
         with:
           php-version: "${{ matrix.php-version }}"
           extensions: "${{ env.extensions }}"
-          tools: "composer:${{ env.composer-version }}"
+          tools: "composer"
 
       - name: "Setup problem matchers for PHP"
         run: 'echo "::add-matcher::${{ runner.tool_cache }}/php.json"'
@@ -250,7 +249,7 @@ jobs:
           php-version: "8.0"
           coverage: "xdebug"
           extensions: "${{ env.extensions }}"
-          tools: "composer:${{ env.composer-version }}"
+          tools: "composer"
 
       - name: "Setup problem matchers for PHP"
         run: 'echo "::add-matcher::${{ runner.tool_cache }}/php.json"'
