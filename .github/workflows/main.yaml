@@ -153,6 +153,8 @@ jobs:
         include:
           - php-version: "8.0"
             composer-args: "--prefer-lowest"
+          - php-version: "8.1"
+            composer-args: "--prefer-lowest"
       fail-fast: false
 
     steps:
