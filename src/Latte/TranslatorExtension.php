@@ -81,7 +81,7 @@ class TranslatorExtension extends Extension
 
 		$outputNode = new PrintNode();
 		$outputNode->modifier = $tag->parser->parseModifier();
-		$outputNode->modifier->escape = true;
+		$outputNode->modifier->escape = !$outputNode->modifier->removeFilter('noescape');
 		$outputNode->expression = $messageNode;
 		array_unshift($outputNode->modifier->filters, new FilterNode(new IdentifierNode('translate'), $args->toArguments()));
 		return $outputNode;

@@ -29,7 +29,7 @@ class TranslateNode extends StatementNode
 		$node = new TranslateNode();
 		$args = $tag->parser->parseArguments();
 		$node->modifier = $tag->parser->parseModifier();
-		$node->modifier->escape = true;
+		$node->modifier->escape = !$node->modifier->removeFilter('noescape');
 		if ($tag->void) {
 			return new NopNode();
 		}
