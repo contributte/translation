@@ -15,8 +15,8 @@ use Latte\Compiler\Nodes\Php\FilterNode;
 use Latte\Compiler\Nodes\Php\IdentifierNode;
 use Latte\Compiler\Nodes\Php\NameNode;
 use Latte\Compiler\Nodes\Php\Scalar\NullNode;
+use Latte\Compiler\Nodes\PrintNode;
 use Latte\Compiler\Tag;
-use Latte\Essential\Nodes\PrintNode;
 use Latte\Extension;
 use Latte\Runtime\FilterInfo;
 use Nette\Localization\ITranslator;
@@ -81,7 +81,7 @@ class TranslatorExtension extends Extension
 
 		$outputNode = new PrintNode();
 		$outputNode->modifier = $tag->parser->parseModifier();
-		$outputNode->modifier->escape = !$outputNode->modifier->removeFilter('noescape');
+		$outputNode->modifier->escape = $outputNode->modifier->removeFilter('noescape') === null;
 		$outputNode->expression = $messageNode;
 		array_unshift($outputNode->modifier->filters, new FilterNode(new IdentifierNode('translate'), $args->toArguments()));
 		return $outputNode;
