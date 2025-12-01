@@ -6,8 +6,6 @@ use Contributte\Translation\DI\Helpers as DIHelpers;
 use Contributte\Translation\Exceptions\InvalidArgument;
 use Contributte\Translation\FallbackResolver;
 use Contributte\Translation\Helpers;
-use Contributte\Translation\Latte\Filters;
-use Contributte\Translation\Latte\Macros;
 use Contributte\Translation\Latte\TranslatorExtension;
 use Contributte\Translation\Loaders\Neon;
 use Contributte\Translation\LocaleResolver;
@@ -18,12 +16,11 @@ use Contributte\Translation\LocalesResolvers\Router;
 use Contributte\Translation\LocalesResolvers\Session;
 use Contributte\Translation\Tracy\Panel;
 use Contributte\Translation\Translator;
-use Nette\Bridges\ApplicationLatte\ILatteFactory;
+use Nette\Bridges\ApplicationLatte\LatteFactory;
 use Nette\DI\CompilerExtension;
 use Nette\DI\MissingServiceException;
-use Nette\Localization\ITranslator;
+use Nette\Localization\Translator as NetteTranslator;
 use Nette\PhpGenerator\ClassType;
-use Nette\PhpGenerator\PhpLiteral;
 use Nette\Schema\Expect;
 use Nette\Schema\Schema;
 use Nette\Utils\Finder;
@@ -82,7 +79,7 @@ class TranslationExtension extends CompilerExtension
 			'translatorFactory' => Expect::string()->default(null),
 			'returnOriginalMessage' => Expect::bool()->default(true),
 			'autowired' => Expect::type('bool|array')->default(true),
-			'latteFactory' => Expect::string(ILatteFactory::class)->nullable(),
+			'latteFactory' => Expect::string(LatteFactory::class)->nullable(),
 		]);
 	}
 
@@ -144,7 +141,7 @@ class TranslationExtension extends CompilerExtension
 
 		if ($this->config->autowired === true) {
 			$autowired = [
-				ITranslator::class,
+				NetteTranslator::class,
 				TranslatorInterface::class,
 				Translator::class,
 			];
@@ -233,26 +230,13 @@ class TranslationExtension extends CompilerExtension
 		$latteFactoryName = $this->config->latteFactory ? $builder->getByType($this->config->latteFactory) : null;
 
 		if ($latteFactoryName !== null) {
-			$iTranslator = $builder->getDefinitionByType(ITranslator::class);
-
-			$latteFilters = $builder->addDefinition($this->prefix('latte.filters'))
-				->setFactory(Filters::class);
-
 			/** @var \Nette\DI\Definitions\FactoryDefinition $latteFactory */
 			$latteFactory = $builder->getDefinition($latteFactoryName);
 
-			/** @phpstan-ignore-next-line */
-			if (version_compare(\Latte\Engine::VERSION, '3', '<')) {
-				$latteFactory->getResultDefinition()
-					->addSetup('?->onCompile[] = function (Latte\\Engine $engine): void { ?::install($engine->getCompiler()); }', ['@self', new PhpLiteral(Macros::class)])
-					->addSetup('addProvider', ['translator', $iTranslator])
-					->addSetup('addFilter', ['translate', [$latteFilters, 'translate']]);
-			} else {
-				$latteExtension = $builder->addDefinition($this->prefix('latte.extension'))
-					->setFactory(TranslatorExtension::class);
-				$latteFactory->getResultDefinition()
-					->addSetup('addExtension', [$latteExtension]);
-			}
+			$latteExtension = $builder->addDefinition($this->prefix('latte.extension'))
+				->setFactory(TranslatorExtension::class);
+			$latteFactory->getResultDefinition()
+				->addSetup('addExtension', [$latteExtension]);
 		}
 
 		/** @var \Contributte\Translation\DI\TranslationProviderInterface $v1 */

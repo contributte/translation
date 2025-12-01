@@ -2,9 +2,9 @@
 
 namespace Contributte\Translation;
 
-use Nette\Localization\ITranslator;
+use Nette\Localization\Translator as NetteTranslator;
 
-class PrefixedTranslator implements ITranslator
+class PrefixedTranslator implements NetteTranslator
 {
 
 	private Translator $translator;
