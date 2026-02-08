@@ -7,13 +7,13 @@ use Contributte\Translation\Tracy\Panel;
 use Contributte\Translation\Wrappers\Message;
 use Contributte\Translation\Wrappers\NotTranslate;
 use Generator;
-use Nette\Localization\ITranslator;
+use Nette\Localization\Translator as NetteTranslator;
 use Nette\Utils\Strings;
 use Nette\Utils\Validators;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Translation\Translator as SymfonyTranslator;
 
-class Translator extends SymfonyTranslator implements ITranslator
+class Translator extends SymfonyTranslator implements NetteTranslator
 {
 
 	private LocaleResolver $localeResolver;
