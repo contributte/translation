@@ -52,25 +52,38 @@ class TranslationExtension extends CompilerExtension
 			'debugger' => Expect::bool(interface_exists(IBarPanel::class)),
 			'factory' => Expect::string()->default(null),
 			'logger' => Expect::mixed()->default(null),
-			'locales' => Expect::structure([
-				'whitelist' => Expect::array()->default(null)->assert(static function (mixed $array): bool {
-					/** @var array<mixed> $array */
-				if (count($array) !== count(array_unique($array))) {
-						throw new InvalidArgument('Whitelist settings have not unique values.');
+			'locales' => Expect::structure(
+				[
+					'whitelist' => Expect::array()
+						->default(null)
+						->assert(
+							static function (
+								mixed $array
+							): bool {
+								/** @phpstan-var array<mixed> $array */
+								if (count($array) !== count(array_unique($array))) {
+									throw new InvalidArgument('Whitelist settings have not unique values.');
+								}
+
+								return true;
+							}
+						),
+					'default' => Expect::string('en'),
+					'fallback' => Expect::array()->default(null),
+				]
+			)
+			->assert(
+				static function (
+					mixed $locales
+				): bool {
+					/** @phpstan-var stdClass $locales */
+					if ($locales->whitelist !== null && !in_array($locales->default, $locales->whitelist, true)) {
+						throw new InvalidArgument('If you set whitelist, default locale must be on him.');
 					}
 
 					return true;
-				}),
-				'default' => Expect::string('en'),
-				'fallback' => Expect::array()->default(null),
-			])->assert(static function (mixed $locales): bool {
-				/** @var stdClass $locales */
-			if ($locales->whitelist !== null && !in_array($locales->default, $locales->whitelist, true)) {
-					throw new InvalidArgument('If you set whitelist, default locale must be on him.');
 				}
-
-				return true;
-			}),
+			),
 			'localeResolvers' => Expect::array()->default(null),
 			'loaders' => Expect::array()->default([
 				'neon' => Neon::class,
