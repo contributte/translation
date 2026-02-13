@@ -11,7 +11,7 @@ class Cookie implements ResolverInterface
 
 	public static string $parameter = 'locale';
 
-	public static ?string $expire = '+1 year';
+	public static string $expire = '+1 year';
 
 	private IRequest $httpRequest;
 
