@@ -271,11 +271,11 @@ jobs:
       - name: "Tests"
         run: "make coverage"
 
-      - name: "Coveralls.io"
+      - name: "Codecov"
+        uses: "codecov/codecov-action@v4"
+        with:
+          files: "./coverage.xml"
+          fail_ci_if_error: true
+          verbose: true
         env:
-          CI_NAME: github
-          CI: true
-          COVERALLS_REPO_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        run: |
-          wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.5.2/php-coveralls.phar
-          php php-coveralls.phar --verbose --config tests/.coveralls.yml
+          CODECOV_TOKEN: "${{ secrets.CODECOV_TOKEN }}"
