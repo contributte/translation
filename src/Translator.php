@@ -46,7 +46,7 @@ class Translator extends SymfonyTranslator implements ITranslator
 
 	private string $initLang;
 
-	/** @var callable(mixed[] $params): Generator|null */
+	/** @var (callable(mixed[]): Generator)|null */
 	private $translateKeyGenerator = null;
 
 	/**
@@ -158,6 +158,9 @@ class Translator extends SymfonyTranslator implements ITranslator
 		return $this;
 	}
 
+	/**
+	 * @return callable(mixed[]): Generator
+	 */
 	public function getTranslateKeyGenerator(): callable
 	{
 		if ($this->translateKeyGenerator === null) {
@@ -171,6 +174,9 @@ class Translator extends SymfonyTranslator implements ITranslator
 		return $this->translateKeyGenerator;
 	}
 
+	/**
+	 * @param callable(mixed[]): Generator $generator
+	 */
 	public function setTranslateKeyGenerator(
 		callable $generator
 	): self
@@ -316,16 +322,37 @@ class Translator extends SymfonyTranslator implements ITranslator
 			throw new InvalidArgument('Message must be string, ' . gettype($message) . ' given.');
 		}
 
-		$count = array_key_exists(0, $parameters) ? $parameters[0] : null;
-		$params = array_key_exists(1, $parameters) ? $parameters[1] : [];
-		$domain = array_key_exists(2, $parameters) ? $parameters[2] : null;
-		$locale = array_key_exists(3, $parameters) ? $parameters[3] : null;
+		$count = $parameters[0] ?? null;
+		$params = $parameters[1] ?? [];
+		$domain = $parameters[2] ?? null;
+		$locale = $parameters[3] ?? null;
 
 		if (is_array($count)) {
-			$locale = $domain !== null ? (string) $domain : null;
-			$domain = $params !== null && $params !== [] ? (string) $params : null;
+			// Nette ITranslator alternate signature: translate($message, array $parameters = [], string $domain = null, string $locale = null)
+			if ($domain !== null && !is_string($domain)) {
+				throw new InvalidArgument('Locale must be string or null, ' . gettype($domain) . ' given.');
+			}
+
+			if ($params !== [] && !is_string($params)) {
+				throw new InvalidArgument('Domain must be string, ' . gettype($params) . ' given.');
+			}
+
+			$locale = $domain;
+			$domain = $params === [] ? null : $params;
 			$params = $count;
 			$count = null;
+		}
+
+		if (!is_array($params)) {
+			throw new InvalidArgument('Parameters must be array, ' . gettype($params) . ' given.');
+		}
+
+		if ($domain !== null && !is_string($domain)) {
+			throw new InvalidArgument('Domain must be string or null, ' . gettype($domain) . ' given.');
+		}
+
+		if ($locale !== null && !is_string($locale)) {
+			throw new InvalidArgument('Locale must be string or null, ' . gettype($locale) . ' given.');
 		}
 
 		$originalMessage = $message;
