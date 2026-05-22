@@ -305,6 +305,10 @@ class TranslationExtension extends CompilerExtension
 					->from(array_values($dirs));
 
 				foreach ($finder as $fileInfo) {
+					if (!$fileInfo instanceof \SplFileInfo) {
+						continue;
+					}
+
 					$match = Strings::match($fileInfo->getFilename(), '~^(?P<domain>.*?)\.(?P<locale>[^\.]+)\.(?P<format>[^\.]+)$~');
 
 					if ($match === null) {

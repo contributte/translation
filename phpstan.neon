@@ -18,6 +18,13 @@ parameters:
 			message: '#^Variable property access on object\.$#'
 			path: 'src/Loaders/Doctrine.php'
 
+		# upstream Finder iteration types vary between phpstan-nette versions;
+		# the instanceof guard is needed for phpstan-lowest but redundant here.
+		-
+			message: '#^Instanceof between Nette\\Utils\\FileInfo and SplFileInfo will always evaluate to true\.$#'
+			count: 1
+			path: src/DI/TranslationExtension.php
+
 		-
 			count: 2
 			message: '#^Comparison operation "\<" between \d+ and \d+ is always false\.$#'
