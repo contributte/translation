@@ -15,9 +15,9 @@ class Helpers
 	public static function unwrapEntity(Statement|string $input): string
 	{
 		if ($input instanceof Statement) {
+			/** @var class-string|null $entity */
 			$entity = $input->getEntity();
 			if (is_string($entity)) {
-				/** @var class-string $entity */
 				return $entity;
 			}
 
