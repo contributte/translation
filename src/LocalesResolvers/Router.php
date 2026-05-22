@@ -31,7 +31,9 @@ class Router implements ResolverInterface
 		$match = $this->router->match($this->request);
 
 		if ($match !== null && array_key_exists(self::$parameter, $match)) {
-			return $match[self::$parameter];
+			$locale = $match[self::$parameter];
+
+			return is_string($locale) ? $locale : null;
 		}
 
 		return null;
