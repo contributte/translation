@@ -47,6 +47,14 @@ class Doctrine extends DatabaseAbstract implements LoaderInterface
 			$id = $v1->{$config['id']};
 			$message = $v1->{$config['message']};
 
+			if (!is_string($id) && !is_int($id)) {
+				throw new InvalidState('Id column "' . $config['id'] . '" must be string or int, ' . gettype($id) . ' given.');
+			}
+
+			if (!is_string($message)) {
+				throw new InvalidState('Message column "' . $config['message'] . '" must be string, ' . gettype($message) . ' given.');
+			}
+
 			if (array_key_exists($id, $messages)) {
 				throw new InvalidState('Id "' . $id . '" declared twice in "' . $config['table'] . '" table/domain.');
 			}
