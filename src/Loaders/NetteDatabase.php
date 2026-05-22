@@ -31,7 +31,6 @@ class NetteDatabase extends DatabaseAbstract implements LoaderInterface
 	{
 		$messages = [];
 
-		/** @var array<array{id: int|string, locale: string, message: string}> $result */
 		$result = $this->connection
 			->query(
 				'SELECT ? AS `id`, ? AS `locale`, ? AS `message` FROM ? WHERE ?',
@@ -44,11 +43,22 @@ class NetteDatabase extends DatabaseAbstract implements LoaderInterface
 			->fetchAll();
 
 		foreach ($result as $row) {
-			if (array_key_exists($row['id'], $messages)) {
-				throw new InvalidState('Id "' . $row['id'] . '" declared twice in "' . $config['table'] . '" table/domain.');
+			$id = $row['id'];
+			$message = $row['message'];
+
+			if (!is_string($id) && !is_int($id)) {
+				throw new InvalidState('Id column "' . $config['id'] . '" must be string or int, ' . gettype($id) . ' given.');
 			}
 
-			$messages[$row['id']] = $row['message'];
+			if (!is_string($message)) {
+				throw new InvalidState('Message column "' . $config['message'] . '" must be string, ' . gettype($message) . ' given.');
+			}
+
+			if (array_key_exists($id, $messages)) {
+				throw new InvalidState('Id "' . $id . '" declared twice in "' . $config['table'] . '" table/domain.');
+			}
+
+			$messages[$id] = $message;
 		}
 
 		return $messages;
