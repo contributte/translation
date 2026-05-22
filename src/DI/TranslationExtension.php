@@ -20,6 +20,7 @@ use Contributte\Translation\Tracy\Panel;
 use Contributte\Translation\Translator;
 use Nette\Bridges\ApplicationLatte\ILatteFactory;
 use Nette\DI\CompilerExtension;
+use Nette\DI\Definitions\Statement;
 use Nette\DI\MissingServiceException;
 use Nette\Localization\ITranslator;
 use Nette\PhpGenerator\ClassType;
@@ -30,7 +31,6 @@ use Nette\Utils\Finder;
 use Nette\Utils\Strings;
 use Psr\Log\LoggerInterface;
 use ReflectionClass;
-use stdClass;
 use Symfony\Component\Config\ConfigCacheFactory;
 use Symfony\Component\Config\ConfigCacheFactoryInterface;
 use Symfony\Component\Translation\Loader\LoaderInterface;
@@ -38,7 +38,30 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Tracy\IBarPanel;
 
 /**
- * @property stdClass $config
+ * @phpstan-type ExtensionConfig array{
+ *     debug: bool,
+ *     debugger: bool,
+ *     factory: string|null,
+ *     logger: bool|class-string|null,
+ *     locales: array{
+ *         whitelist: array<string>|null,
+ *         default: string,
+ *         fallback: array<string>|null,
+ *     },
+ *     localeResolvers: array<class-string|Statement>|null,
+ *     loaders: array<string, class-string|Statement>,
+ *     dirs: array<string>,
+ *     cache: array{
+ *         dir: string,
+ *         factory: class-string,
+ *         vary: array<string>,
+ *     },
+ *     translatorFactory: class-string|null,
+ *     returnOriginalMessage: bool,
+ *     autowired: bool|array<class-string>,
+ *     latteFactory: class-string|null,
+ * }
+ * @property ExtensionConfig $config
  */
 class TranslationExtension extends CompilerExtension
 {
@@ -46,6 +69,11 @@ class TranslationExtension extends CompilerExtension
 	public function getConfigSchema(): Schema
 	{
 		$builder = $this->getContainerBuilder();
+		$tempDir = $builder->parameters['tempDir'];
+
+		if (!is_string($tempDir)) {
+			throw new InvalidArgument('Container parameter "tempDir" must be a string.');
+		}
 
 		return Expect::structure([
 			'debug' => Expect::bool($builder->parameters['debugMode']),
@@ -54,13 +82,13 @@ class TranslationExtension extends CompilerExtension
 			'logger' => Expect::mixed()->default(null),
 			'locales' => Expect::structure(
 				[
-					'whitelist' => Expect::array()
+					'whitelist' => Expect::listOf('string')
 						->default(null)
 						->assert(
 							static function (
 								mixed $array
 							): bool {
-								/** @phpstan-var array<mixed> $array */
+								/** @phpstan-var array<string> $array */
 								if (count($array) !== count(array_unique($array))) {
 									throw new InvalidArgument('Whitelist settings have not unique values.');
 								}
@@ -69,15 +97,16 @@ class TranslationExtension extends CompilerExtension
 							}
 						),
 					'default' => Expect::string('en'),
-					'fallback' => Expect::array()->default(null),
+					'fallback' => Expect::listOf('string')->default(null),
 				]
 			)
+			->castTo('array')
 			->assert(
 				static function (
 					mixed $locales
 				): bool {
-					/** @phpstan-var stdClass $locales */
-					if ($locales->whitelist !== null && !in_array($locales->default, $locales->whitelist, true)) {
+					/** @phpstan-var array{whitelist: array<string>|null, default: string, fallback: array<string>|null} $locales */
+					if ($locales['whitelist'] !== null && !in_array($locales['default'], $locales['whitelist'], true)) {
 						throw new InvalidArgument('If you set whitelist, default locale must be on him.');
 					}
 
@@ -88,17 +117,17 @@ class TranslationExtension extends CompilerExtension
 			'loaders' => Expect::array()->default([
 				'neon' => Neon::class,
 			]),
-			'dirs' => Expect::array()->default([]),
+			'dirs' => Expect::listOf('string')->default([]),
 			'cache' => Expect::structure([
-				'dir' => Expect::string($builder->parameters['tempDir'] . '/cache/translation'),
+				'dir' => Expect::string($tempDir . '/cache/translation'),
 				'factory' => Expect::string(ConfigCacheFactory::class),
-				'vary' => Expect::array()->default([]),
-			]),
+				'vary' => Expect::listOf('string')->default([]),
+			])->castTo('array'),
 			'translatorFactory' => Expect::string()->default(null),
 			'returnOriginalMessage' => Expect::bool()->default(true),
 			'autowired' => Expect::type('bool|array')->default(true),
 			'latteFactory' => Expect::string(ILatteFactory::class)->nullable(),
-		]);
+		])->castTo('array');
 	}
 
 	/**
@@ -107,19 +136,15 @@ class TranslationExtension extends CompilerExtension
 	public function loadConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
+		$config = $this->config;
 
-		if ($this->config->locales->fallback === null) {
-			$this->config->locales->fallback = ['en_US'];
-		}
-
-		if ($this->config->localeResolvers === null) {
-			$this->config->localeResolvers = [
-				Session::class,
-				Router::class,
-				Parameter::class,
-				Header::class,
-			];
-		}
+		$fallbackLocales = $config['locales']['fallback'] ?? ['en_US'];
+		$localeResolverClasses = $config['localeResolvers'] ?? [
+			Session::class,
+			Router::class,
+			Parameter::class,
+			Header::class,
+		];
 
 		// LocaleResolver
 		$localeResolver = $builder->addDefinition($this->prefix('localeResolver'))
@@ -128,7 +153,7 @@ class TranslationExtension extends CompilerExtension
 		// LocaleResolvers
 		$localeResolvers = [];
 
-		foreach ($this->config->localeResolvers as $v1) {
+		foreach ($localeResolverClasses as $v1) {
 			$reflection = new ReflectionClass(DIHelpers::unwrapEntity($v1));
 
 			if (!$reflection->implementsInterface(ResolverInterface::class)) {
@@ -146,43 +171,39 @@ class TranslationExtension extends CompilerExtension
 			->setFactory(FallbackResolver::class);
 
 		// ConfigCacheFactory
-		$reflection = new ReflectionClass($this->config->cache->factory);
+		$reflection = new ReflectionClass($config['cache']['factory']);
 
 		if (!$reflection->implementsInterface(ConfigCacheFactoryInterface::class)) {
 			throw new InvalidArgument('Cache factory must implement interface "' . ConfigCacheFactoryInterface::class . '".');
 		}
 
 		$configCacheFactory = $builder->addDefinition($this->prefix('configCacheFactory'))
-			->setFactory($this->config->cache->factory, [$this->config->debug]);
+			->setFactory($config['cache']['factory'], [$config['debug']]);
 
 		$autowired = [];
 
-		if ($this->config->autowired === true) {
+		if ($config['autowired'] === true) {
 			$autowired = [
 				ITranslator::class,
 				TranslatorInterface::class,
 				Translator::class,
 			];
 
-		} elseif (is_array($this->config->autowired)) {
-			$autowired = $this->config->autowired;
-		}
-
-		if (is_array($this->config->autowired)) {
-			$autowired = $this->config->autowired;
+		} elseif (is_array($config['autowired'])) {
+			$autowired = $config['autowired'];
 		}
 
 		// Translator
-		if ($this->config->translatorFactory !== null) {
-			$reflectionTranslatorFactory = new ReflectionClass($this->config->translatorFactory);
+		if ($config['translatorFactory'] !== null) {
+			$reflectionTranslatorFactory = new ReflectionClass($config['translatorFactory']);
 
 			if (!$reflectionTranslatorFactory->isSubclassOf(Translator::class)) {
 				throw new InvalidArgument('Translator must extends class "' . Translator::class . '".');
 			}
 
-			$factory = $this->config->translatorFactory;
+			$factory = $config['translatorFactory'];
 
-			if ($this->config->autowired) {
+			if ($config['autowired'] !== false) {
 				$autowired[] = $factory;
 			}
 		} else {
@@ -190,20 +211,20 @@ class TranslationExtension extends CompilerExtension
 		}
 
 		$translator = $builder->addDefinition($this->prefix('translator'))
-			->setFactory($factory, ['defaultLocale' => $this->config->locales->default, 'cacheDir' => $this->config->cache->dir, 'debug' => $this->config->debug, 'cacheVary' => $this->config->cache->vary])
-			->addSetup('setLocalesWhitelist', [$this->config->locales->whitelist])
+			->setFactory($factory, ['defaultLocale' => $config['locales']['default'], 'cacheDir' => $config['cache']['dir'], 'debug' => $config['debug'], 'cacheVary' => $config['cache']['vary']])
+			->addSetup('setLocalesWhitelist', [$config['locales']['whitelist']])
 			->addSetup('setConfigCacheFactory', [$configCacheFactory])
-			->addSetup('setFallbackLocales', [$this->config->locales->fallback])
-			->addSetup('$returnOriginalMessage', [$this->config->returnOriginalMessage]);
+			->addSetup('setFallbackLocales', [$fallbackLocales])
+			->addSetup('$returnOriginalMessage', [$config['returnOriginalMessage']]);
 
-		if ($this->config->autowired === false) {
+		if ($config['autowired'] === false) {
 			$translator->setAutowired(false);
 		} else {
 			$translator->setAutowired($autowired);
 		}
 
 		// Loaders
-		foreach ($this->config->loaders as $k1 => $v1) {
+		foreach ($config['loaders'] as $k1 => $v1) {
 			$reflection = new ReflectionClass(DIHelpers::unwrapEntity($v1));
 
 			if (!$reflection->implementsInterface(LoaderInterface::class)) {
@@ -217,7 +238,7 @@ class TranslationExtension extends CompilerExtension
 		}
 
 		// Tracy\Panel
-		if (!$this->config->debug || !$this->config->debugger) {
+		if (!$config['debug'] || !$config['debugger']) {
 			return;
 		}
 
@@ -235,17 +256,18 @@ class TranslationExtension extends CompilerExtension
 	public function beforeCompile(): void
 	{
 		$builder = $this->getContainerBuilder();
+		$config = $this->config;
 
 		/** @var \Nette\DI\Definitions\ServiceDefinition $translator */
 		$translator = $builder->getDefinition($this->prefix('translator'));
-		$whitelistRegexp = Helpers::whitelistRegexp($this->config->locales->whitelist);
+		$whitelistRegexp = Helpers::whitelistRegexp($config['locales']['whitelist']);
 
-		if ($this->config->debug && $this->config->debugger) {
+		if ($config['debug'] && $config['debugger']) {
 			/** @var \Nette\DI\Definitions\ServiceDefinition $tracyPanel */
 			$tracyPanel = $builder->getDefinition($this->prefix('tracyPanel'));
 		}
 
-		$latteFactoryName = $this->config->latteFactory ? $builder->getByType($this->config->latteFactory) : null;
+		$latteFactoryName = $config['latteFactory'] !== null ? $builder->getByType($config['latteFactory']) : null;
 
 		if ($latteFactoryName !== null) {
 			$iTranslator = $builder->getDefinitionByType(ITranslator::class);
@@ -272,15 +294,15 @@ class TranslationExtension extends CompilerExtension
 
 		/** @var array<TranslationProviderInterface> $providers */
 		$providers = $this->compiler->getExtensions(TranslationProviderInterface::class); // @phpstan-ignore-line
+		$dirs = $config['dirs'];
 		foreach ($providers as $v1) {
-			$this->config->dirs = array_merge($v1->getTranslationResources(), $this->config->dirs);
+			$dirs = array_merge($v1->getTranslationResources(), $dirs);
 		}
 
-		if (count($this->config->dirs) > 0) {
-			foreach ($this->config->loaders as $k1 => $v1) {
-				/** @var array<\SplFileInfo> $finder */
+		if (count($dirs) > 0) {
+			foreach ($config['loaders'] as $k1 => $v1) {
 				$finder = Finder::find('*.' . $k1)
-					->from($this->config->dirs);
+					->from(array_values($dirs));
 
 				foreach ($finder as $fileInfo) {
 					$match = Strings::match($fileInfo->getFilename(), '~^(?P<domain>.*?)\.(?P<locale>[^\.]+)\.(?P<format>[^\.]+)$~');
@@ -308,27 +330,27 @@ class TranslationExtension extends CompilerExtension
 			}
 		}
 
-		if ($this->config->logger === null) {
+		if ($config['logger'] === null) {
 			return;
 		}
 
 		// \Psr\Log\LoggerInterface
-		if ($this->config->logger === true) {
+		if ($config['logger'] === true) {
 			$psrLogger = $builder->getDefinitionByType(LoggerInterface::class);
 
-		} elseif (is_string($this->config->logger) && class_exists($this->config->logger)) {
-			$reflection = new ReflectionClass($this->config->logger);
+		} elseif (is_string($config['logger']) && class_exists($config['logger'])) {
+			$reflection = new ReflectionClass($config['logger']);
 
 			if (!$reflection->implementsInterface(LoggerInterface::class)) {
 				throw new InvalidArgument('Logger must implement interface "' . LoggerInterface::class . '".');
 			}
 
 			try {
-				$psrLogger = $builder->getDefinitionByType($this->config->logger);
+				$psrLogger = $builder->getDefinitionByType($config['logger']);
 
 			} catch (MissingServiceException $e) {
 				$psrLogger = $builder->addDefinition($this->prefix('psrLogger'))
-					->setFactory($this->config->logger);
+					->setFactory($config['logger']);
 			}
 		} else {
 			throw new InvalidArgument('Option "logger" must be bool for autowired or class name as string.');
@@ -341,7 +363,7 @@ class TranslationExtension extends CompilerExtension
 		ClassType $class
 	): void
 	{
-		if (!$this->config->debug || !$this->config->debugger) {
+		if (!$this->config['debug'] || !$this->config['debugger']) {
 			return;
 		}
 
