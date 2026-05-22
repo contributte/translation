@@ -270,8 +270,9 @@ class TranslationExtension extends CompilerExtension
 			}
 		}
 
-		/** @var \Contributte\Translation\DI\TranslationProviderInterface $v1 */
-		foreach ($this->compiler->getExtensions(TranslationProviderInterface::class) as $v1) {
+		/** @var array<TranslationProviderInterface> $providers */
+		$providers = $this->compiler->getExtensions(TranslationProviderInterface::class); // @phpstan-ignore-line
+		foreach ($providers as $v1) {
 			$this->config->dirs = array_merge($v1->getTranslationResources(), $this->config->dirs);
 		}
 
