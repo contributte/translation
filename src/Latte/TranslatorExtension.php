@@ -19,15 +19,15 @@ use Latte\Compiler\Nodes\PrintNode;
 use Latte\Compiler\Tag;
 use Latte\Extension;
 use Latte\Runtime\FilterInfo;
-use Nette\Localization\ITranslator;
+use Nette\Localization\Translator;
 
 class TranslatorExtension extends Extension
 {
 
-	private ITranslator $translator;
+	private Translator $translator;
 
 	public function __construct(
-		ITranslator $translator
+		Translator $translator
 	)
 	{
 		$this->translator = $translator;
