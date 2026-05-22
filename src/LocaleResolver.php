@@ -2,6 +2,8 @@
 
 namespace Contributte\Translation;
 
+use Contributte\Translation\Exceptions\InvalidState;
+use Contributte\Translation\LocalesResolvers\ResolverInterface;
 use Nette\DI\Container;
 use Nette\Utils\Strings;
 
@@ -47,6 +49,10 @@ class LocaleResolver
 		foreach ($this->resolvers as $v1) {
 			$resolver = $this->container
 				->getByType($v1);
+
+			if (!$resolver instanceof ResolverInterface) {
+				throw new InvalidState('Resolver "' . $v1 . '" must implement interface "' . ResolverInterface::class . '".');
+			}
 
 			$locale = $resolver->resolve($translator);
 
