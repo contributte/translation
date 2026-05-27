@@ -311,6 +311,18 @@ final class TranslationExtensionTest extends TestAbstract
 		}, InvalidArgument::class, 'Loader must implement interface "Symfony\Component\Translation\Loader\LoaderInterface".');
 	}
 
+	public function test13(): void
+	{
+		$container = Container::of()
+			->withDefaults()
+			->withCompiler(function (Compiler $compiler): void {
+				$compiler->setDynamicParameterNames(['tempDir']);
+			})
+			->build();
+
+		Assert::notNull($container->getByType(ITranslator::class));
+	}
+
 }
 
 (new TranslationExtensionTest($container))->run();

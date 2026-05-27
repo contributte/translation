@@ -52,7 +52,7 @@ use Tracy\IBarPanel;
  *     loaders: array<string, class-string|Statement>,
  *     dirs: array<string>,
  *     cache: array{
- *         dir: string,
+ *         dir: string|Statement,
  *         factory: class-string,
  *         vary: array<string>,
  *     },
@@ -69,11 +69,11 @@ class TranslationExtension extends CompilerExtension
 	public function getConfigSchema(): Schema
 	{
 		$builder = $this->getContainerBuilder();
-		$tempDir = $builder->parameters['tempDir'];
+		$tempDir = $builder->parameters['tempDir'] ?? null;
 
-		if (!is_string($tempDir)) {
-			throw new InvalidArgument('Container parameter "tempDir" must be a string.');
-		}
+		$cacheDir = is_string($tempDir)
+			? $tempDir . '/cache/translation'
+			: new Statement('::implode', [[$tempDir, '/cache/translation']]);
 
 		return Expect::structure([
 			'debug' => Expect::bool($builder->parameters['debugMode']),
@@ -119,7 +119,7 @@ class TranslationExtension extends CompilerExtension
 			]),
 			'dirs' => Expect::listOf('string')->default([]),
 			'cache' => Expect::structure([
-				'dir' => Expect::string($tempDir . '/cache/translation'),
+				'dir' => Expect::string($cacheDir),
 				'factory' => Expect::string(ConfigCacheFactory::class),
 				'vary' => Expect::listOf('string')->default([]),
 			])->castTo('array'),
