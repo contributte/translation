@@ -10,6 +10,7 @@ use Contributte\Translation\Tracy\Panel;
 use Contributte\Translation\Translator;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
+use Nette\DI\Container as NetteContainer;
 use Nette\DI\ContainerLoader;
 use Nette\DI\MissingServiceException;
 use Nette\InvalidStateException;
@@ -24,10 +25,12 @@ use Tester\Assert;
 use Tests\CustomTranslatorMock;
 use Tests\Fixtures\DummyLoader;
 use Tests\Helpers;
+use Tests\LocaleResolverMock;
 use Tests\PsrLoggerMock;
 use Tests\TestAbstract;
 use Tests\Toolkit\Container;
 use Tests\Toolkit\Helpers as ToolkitHelpers;
+use Tests\Toolkit\Tests as ToolkitTests;
 use UnexpectedValueException;
 
 $container = require __DIR__ . '/../../bootstrap.php';
@@ -309,6 +312,108 @@ final class TranslationExtensionTest extends TestAbstract
 				})
 				->build();
 		}, InvalidArgument::class, 'Loader must implement interface "Symfony\Component\Translation\Loader\LoaderInterface".');
+	}
+
+	public function testCacheDirFromStringTempDir(): void
+	{
+		$loader = new ContainerLoader(ToolkitTests::TEMP_PATH, true);
+
+		/** @var class-string $class */
+		$class = $loader->load(function (Compiler $compiler): void {
+			$compiler->addExtension('translation', new TranslationExtension());
+			$compiler->addConfig([
+				'parameters' => ['tempDir' => 'relative/temp', 'debugMode' => false],
+				'translation' => [
+					'localeResolvers' => [LocaleResolverMock::class],
+					'dirs' => [__DIR__ . '/../../lang'],
+				],
+			]);
+		}, uniqid(random_bytes(16)));
+
+		$container = new $class();
+		assert($container instanceof NetteContainer);
+
+		/** @var Translator $translator */
+		$translator = $container->getByType(ITranslator::class);
+
+		Assert::same('relative/temp/cache/translation', $translator->getCacheDir());
+	}
+
+	public function testCacheDirFromNullTempDir(): void
+	{
+		$loader = new ContainerLoader(ToolkitTests::TEMP_PATH, true);
+
+		/** @var class-string $class */
+		$class = $loader->load(function (Compiler $compiler): void {
+			$compiler->addExtension('translation', new TranslationExtension());
+			$compiler->addConfig([
+				'parameters' => ['tempDir' => null, 'debugMode' => false],
+				'translation' => [
+					'localeResolvers' => [LocaleResolverMock::class],
+					'dirs' => [__DIR__ . '/../../lang'],
+				],
+			]);
+		}, uniqid(random_bytes(16)));
+
+		$container = new $class();
+		assert($container instanceof NetteContainer);
+
+		/** @var Translator $translator */
+		$translator = $container->getByType(ITranslator::class);
+
+		Assert::same('/cache/translation', $translator->getCacheDir());
+	}
+
+	public function testCacheDirFromDynamicTempDir(): void
+	{
+		$loader = new ContainerLoader(ToolkitTests::TEMP_PATH, true);
+
+		/** @var class-string $class */
+		$class = $loader->load(function (Compiler $compiler): void {
+			$compiler->addExtension('translation', new TranslationExtension());
+			$compiler->addConfig([
+				'parameters' => ['debugMode' => false],
+				'translation' => [
+					'localeResolvers' => [LocaleResolverMock::class],
+					'dirs' => [__DIR__ . '/../../lang'],
+				],
+			]);
+			$compiler->setDynamicParameterNames(['tempDir']);
+		}, uniqid(random_bytes(16)));
+
+		$container = new $class(['tempDir' => 'relative/temp']);
+		assert($container instanceof NetteContainer);
+
+		/** @var Translator $translator */
+		$translator = $container->getByType(ITranslator::class);
+
+		Assert::same('relative/temp/cache/translation', $translator->getCacheDir());
+	}
+
+	public function testCacheDirFromExplicitConfig(): void
+	{
+		$loader = new ContainerLoader(ToolkitTests::TEMP_PATH, true);
+
+		/** @var class-string $class */
+		$class = $loader->load(function (Compiler $compiler): void {
+			$compiler->addExtension('translation', new TranslationExtension());
+			$compiler->addConfig([
+				'parameters' => ['tempDir' => 'relative/temp', 'debugMode' => false],
+				'translation' => [
+					'localeResolvers' => [LocaleResolverMock::class],
+					'dirs' => [__DIR__ . '/../../lang'],
+					'cache' => ['dir' => 'explicit/cache/dir'],
+				],
+			]);
+		}, uniqid(random_bytes(16)));
+
+		$container = new $class();
+		assert($container instanceof NetteContainer);
+
+		/** @var Translator $translator */
+		$translator = $container->getByType(ITranslator::class);
+
+		Assert::same('explicit/cache/dir', $translator->getCacheDir());
 	}
 
 }
