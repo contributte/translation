@@ -27,6 +27,7 @@
     "symfony/config": "^6.0|^7.0|^8.0"
   },
   "require-dev": {
+    "contributte/phpstan": "^0.3.1",
     "contributte/qa": "^0.4.0",
     "contributte/tester": "^0.4.1",
     "doctrine/orm": "^2.8",
@@ -36,10 +37,6 @@
     "nette/database": "^3.1.1",
     "nette/robot-loader": "^3.4.0|^4.0.0",
     "nette/tester": "^2.3.1",
-    "phpstan/phpstan": "^2.1",
-    "phpstan/phpstan-deprecation-rules": "^2.0",
-    "phpstan/phpstan-nette": "^2.0",
-    "phpstan/phpstan-strict-rules": "^2.0",
     "psr/log": "^1.1|^2.0|^3.0",
     "tracy/tracy": "^2.8"
   },
