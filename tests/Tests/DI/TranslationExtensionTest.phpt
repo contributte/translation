@@ -24,6 +24,7 @@ use Tester\Assert;
 use Tests\CustomTranslatorMock;
 use Tests\Fixtures\DummyLoader;
 use Tests\Helpers;
+use Tests\LocaleResolverMock;
 use Tests\PsrLoggerMock;
 use Tests\TestAbstract;
 use Tests\Toolkit\Container;
@@ -313,14 +314,70 @@ final class TranslationExtensionTest extends TestAbstract
 
 	public function test13(): void
 	{
-		$container = Container::of()
-			->withDefaults()
-			->withCompiler(function (Compiler $compiler): void {
-				$compiler->setDynamicParameterNames(['tempDir']);
-			})
-			->build();
+		// tempDir as a plain string
+		$translator = $this->buildTranslator(['tempDir' => 'relative/temp']);
 
-		Assert::notNull($container->getByType(ITranslator::class));
+		Assert::same('relative/temp/cache/translation', $translator->getCacheDir());
+	}
+
+	public function test14(): void
+	{
+		// tempDir as null
+		$translator = $this->buildTranslator(['tempDir' => null]);
+
+		Assert::same('/cache/translation', $translator->getCacheDir());
+	}
+
+	public function test15(): void
+	{
+		// tempDir as a dynamic parameter (resolved at runtime)
+		$translator = $this->buildTranslator(['tempDir' => 'relative/temp'], [], ['tempDir']);
+
+		Assert::same('relative/temp/cache/translation', $translator->getCacheDir());
+	}
+
+	public function test16(): void
+	{
+		// cache.dir explicitly provided wins over tempDir
+		$translator = $this->buildTranslator(['tempDir' => 'relative/temp'], [
+			'cache' => ['dir' => 'explicit/cache/dir'],
+		]);
+
+		Assert::same('explicit/cache/dir', $translator->getCacheDir());
+	}
+
+	/**
+	 * @param array<string, mixed> $parameters
+	 * @param array<string, mixed> $translation
+	 * @param string[] $dynamicParameterNames
+	 */
+	private function buildTranslator(array $parameters, array $translation = [], array $dynamicParameterNames = []): Translator
+	{
+		$loader = new ContainerLoader($this->container->getParameters()['tempDir'], true);
+
+		/** @var class-string $class */
+		$class = $loader->load(function (Compiler $compiler) use ($parameters, $translation, $dynamicParameterNames): void {
+			if ($dynamicParameterNames !== []) {
+				$compiler->setDynamicParameterNames($dynamicParameterNames);
+			}
+
+			$compiler->addExtension('translation', new TranslationExtension());
+			$compiler->addConfig([
+				'parameters' => array_merge(['debugMode' => false], $parameters),
+				'translation' => array_merge([
+					'localeResolvers' => [LocaleResolverMock::class],
+					'dirs' => [__DIR__ . '/../../lang'],
+				], $translation),
+			]);
+		}, uniqid(random_bytes(16)));
+
+		$container = new $class();
+		assert($container instanceof \Nette\DI\Container);
+
+		/** @var Translator $translator */
+		$translator = $container->getByType(ITranslator::class);
+
+		return $translator;
 	}
 
 }
