@@ -8,9 +8,9 @@ use Contributte\Translation\Exceptions\InvalidArgument;
 use Contributte\Translation\LocalesResolvers\ResolverInterface;
 use Contributte\Translation\Tracy\Panel;
 use Contributte\Translation\Translator;
-use Contributte\Tester\Utils\ContainerBuilder;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
+use Nette\DI\Container as NetteContainer;
 use Nette\DI\ContainerLoader;
 use Nette\DI\MissingServiceException;
 use Nette\InvalidStateException;
@@ -316,19 +316,22 @@ final class TranslationExtensionTest extends TestAbstract
 
 	public function testCacheDirFromStringTempDir(): void
 	{
-		$container = ContainerBuilder::of()
-			->withTempDir(ToolkitTests::TEMP_PATH)
-			->withCompiler(function (Compiler $compiler): void {
-				$compiler->addExtension('translation', new TranslationExtension());
-				$compiler->addConfig([
-					'parameters' => ['tempDir' => 'relative/temp', 'debugMode' => false],
-					'translation' => [
-						'localeResolvers' => [LocaleResolverMock::class],
-						'dirs' => [__DIR__ . '/../../lang'],
-					],
-				]);
-			})
-			->build();
+		$loader = new ContainerLoader(ToolkitTests::TEMP_PATH, true);
+
+		/** @var class-string $class */
+		$class = $loader->load(function (Compiler $compiler): void {
+			$compiler->addExtension('translation', new TranslationExtension());
+			$compiler->addConfig([
+				'parameters' => ['tempDir' => 'relative/temp', 'debugMode' => false],
+				'translation' => [
+					'localeResolvers' => [LocaleResolverMock::class],
+					'dirs' => [__DIR__ . '/../../lang'],
+				],
+			]);
+		}, uniqid(random_bytes(16)));
+
+		$container = new $class();
+		assert($container instanceof NetteContainer);
 
 		/** @var Translator $translator */
 		$translator = $container->getByType(ITranslator::class);
@@ -338,19 +341,22 @@ final class TranslationExtensionTest extends TestAbstract
 
 	public function testCacheDirFromNullTempDir(): void
 	{
-		$container = ContainerBuilder::of()
-			->withTempDir(ToolkitTests::TEMP_PATH)
-			->withCompiler(function (Compiler $compiler): void {
-				$compiler->addExtension('translation', new TranslationExtension());
-				$compiler->addConfig([
-					'parameters' => ['tempDir' => null, 'debugMode' => false],
-					'translation' => [
-						'localeResolvers' => [LocaleResolverMock::class],
-						'dirs' => [__DIR__ . '/../../lang'],
-					],
-				]);
-			})
-			->build();
+		$loader = new ContainerLoader(ToolkitTests::TEMP_PATH, true);
+
+		/** @var class-string $class */
+		$class = $loader->load(function (Compiler $compiler): void {
+			$compiler->addExtension('translation', new TranslationExtension());
+			$compiler->addConfig([
+				'parameters' => ['tempDir' => null, 'debugMode' => false],
+				'translation' => [
+					'localeResolvers' => [LocaleResolverMock::class],
+					'dirs' => [__DIR__ . '/../../lang'],
+				],
+			]);
+		}, uniqid(random_bytes(16)));
+
+		$container = new $class();
+		assert($container instanceof NetteContainer);
 
 		/** @var Translator $translator */
 		$translator = $container->getByType(ITranslator::class);
@@ -360,19 +366,23 @@ final class TranslationExtensionTest extends TestAbstract
 
 	public function testCacheDirFromDynamicTempDir(): void
 	{
-		$container = ContainerBuilder::of()
-			->withTempDir(ToolkitTests::TEMP_PATH)
-			->withCompiler(function (Compiler $compiler): void {
-				$compiler->addExtension('translation', new TranslationExtension());
-				$compiler->addConfig([
-					'parameters' => ['debugMode' => false],
-					'translation' => [
-						'localeResolvers' => [LocaleResolverMock::class],
-						'dirs' => [__DIR__ . '/../../lang'],
-					],
-				]);
-			})
-			->buildWith(['tempDir' => 'relative/temp']);
+		$loader = new ContainerLoader(ToolkitTests::TEMP_PATH, true);
+
+		/** @var class-string $class */
+		$class = $loader->load(function (Compiler $compiler): void {
+			$compiler->addExtension('translation', new TranslationExtension());
+			$compiler->addConfig([
+				'parameters' => ['debugMode' => false],
+				'translation' => [
+					'localeResolvers' => [LocaleResolverMock::class],
+					'dirs' => [__DIR__ . '/../../lang'],
+				],
+			]);
+			$compiler->setDynamicParameterNames(['tempDir']);
+		}, uniqid(random_bytes(16)));
+
+		$container = new $class(['tempDir' => 'relative/temp']);
+		assert($container instanceof NetteContainer);
 
 		/** @var Translator $translator */
 		$translator = $container->getByType(ITranslator::class);
@@ -382,20 +392,23 @@ final class TranslationExtensionTest extends TestAbstract
 
 	public function testCacheDirFromExplicitConfig(): void
 	{
-		$container = ContainerBuilder::of()
-			->withTempDir(ToolkitTests::TEMP_PATH)
-			->withCompiler(function (Compiler $compiler): void {
-				$compiler->addExtension('translation', new TranslationExtension());
-				$compiler->addConfig([
-					'parameters' => ['tempDir' => 'relative/temp', 'debugMode' => false],
-					'translation' => [
-						'localeResolvers' => [LocaleResolverMock::class],
-						'dirs' => [__DIR__ . '/../../lang'],
-						'cache' => ['dir' => 'explicit/cache/dir'],
-					],
-				]);
-			})
-			->build();
+		$loader = new ContainerLoader(ToolkitTests::TEMP_PATH, true);
+
+		/** @var class-string $class */
+		$class = $loader->load(function (Compiler $compiler): void {
+			$compiler->addExtension('translation', new TranslationExtension());
+			$compiler->addConfig([
+				'parameters' => ['tempDir' => 'relative/temp', 'debugMode' => false],
+				'translation' => [
+					'localeResolvers' => [LocaleResolverMock::class],
+					'dirs' => [__DIR__ . '/../../lang'],
+					'cache' => ['dir' => 'explicit/cache/dir'],
+				],
+			]);
+		}, uniqid(random_bytes(16)));
+
+		$container = new $class();
+		assert($container instanceof NetteContainer);
 
 		/** @var Translator $translator */
 		$translator = $container->getByType(ITranslator::class);
