@@ -1,4 +1,4 @@
-.PHONY: qa lint cs csf phpstan tests coverage
+.PHONY: qa cs csf phpstan tests coverage
 
 all:
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs
@@ -6,10 +6,7 @@ all:
 vendor: composer.json composer.lock
 	composer install
 
-qa: lint phpstan cs
-
-lint: vendor
-	vendor/bin/linter src tests
+qa: phpstan cs
 
 cs: vendor
 	vendor/bin/codesniffer src tests

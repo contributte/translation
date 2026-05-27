@@ -33,6 +33,9 @@ class TranslatorExtension extends Extension
 		$this->translator = $translator;
 	}
 
+	/**
+	 * @return array<string, callable(\Latte\Compiler\Tag, \Latte\Compiler\TemplateParser): (\Latte\Compiler\Node|\Generator|void)|\stdClass>
+	 */
 	public function getTags(): array
 	{
 		return [
@@ -42,6 +45,9 @@ class TranslatorExtension extends Extension
 		];
 	}
 
+	/**
+	 * @return array<string, callable>
+	 */
 	public function getFilters(): array
 	{
 		return [
@@ -57,6 +63,9 @@ class TranslatorExtension extends Extension
 		];
 	}
 
+	/**
+	 * @return array<string, mixed>
+	 */
 	public function getProviders(): array
 	{
 		return [
@@ -92,6 +101,7 @@ class TranslatorExtension extends Extension
 		$outputNode->modifier->escape = $outputNode->modifier->removeFilter('noescape') === null;
 		$outputNode->expression = $messageNode;
 		array_unshift($outputNode->modifier->filters, new FilterNode(new IdentifierNode('translate'), $args->toArguments()));
+
 		return $outputNode;
 	}
 

@@ -297,7 +297,7 @@ final class TranslationExtensionTest extends TestAbstract
 
 	public function test12(): void
 	{
-		Assert::exception(static function () {
+		Assert::exception(static function (): void {
 			Container::of()
 				->withDefaults()
 				->withCompiler(function (Compiler $compiler): void {

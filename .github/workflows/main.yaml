@@ -28,7 +28,7 @@ jobs:
         id: "extcache"
         uses: "shivammathur/cache-extensions@v1"
         with:
-          php-version: "8.0"
+          php-version: "8.2"
           extensions: "${{ env.extensions }}"
           key: "${{ env.cache-version }}"
 
@@ -42,7 +42,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "8.0"
+          php-version: "8.2"
           extensions: "${{ env.extensions }}"
           tools: "composer"
 
@@ -90,7 +90,7 @@ jobs:
         id: "extcache"
         uses: "shivammathur/cache-extensions@v1"
         with:
-          php-version: "8.1"
+          php-version: "8.2"
           extensions: "${{ env.extensions }}"
           key: "${{ env.cache-version }}"
 
@@ -104,7 +104,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "8.1"
+          php-version: "8.2"
           extensions: "${{ env.extensions }}"
           tools: "composer"
 
@@ -148,12 +148,10 @@ jobs:
 
     strategy:
       matrix:
-        php-version: [ "8.0", "8.1", "8.2", "8.3", "8.4", "8.5" ]
+        php-version: [ "8.2", "8.3", "8.4", "8.5" ]
         composer-args: [ "" ]
         include:
-          - php-version: "8.0"
-            composer-args: "--prefer-lowest"
-          - php-version: "8.1"
+          - php-version: "8.2"
             composer-args: "--prefer-lowest"
       fail-fast: false
 
@@ -232,7 +230,7 @@ jobs:
         id: "extcache"
         uses: "shivammathur/cache-extensions@v1"
         with:
-          php-version: "8.0"
+          php-version: "8.2"
           extensions: "${{ env.extensions }}"
           key: "${{ env.cache-version }}"
 
@@ -246,7 +244,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "8.0"
+          php-version: "8.2"
           coverage: "xdebug"
           extensions: "${{ env.extensions }}"
           tools: "composer"

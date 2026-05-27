@@ -16,6 +16,7 @@ final class PsrLoggerMock extends AbstractLogger
 		array $context = []
 	): void
 	{
+		// noop mock logger
 	}
 
 }

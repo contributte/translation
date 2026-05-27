@@ -18,6 +18,7 @@ class FallbackResolver
 	): self
 	{
 		$this->fallbackLocales = $array;
+
 		return $this;
 	}
 

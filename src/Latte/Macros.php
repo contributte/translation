@@ -31,6 +31,16 @@ class Macros extends MacroSet
 		$me->addMacro('translator', [$me, 'macroPrefix'], [$me, 'macroPrefix']);
 	}
 
+	public static function macroWithoutParameters(
+		MacroNode $node
+	): bool
+	{
+		$result = Strings::trim($node->tokenizer->joinUntil(',')) === Strings::trim($node->args);
+		$node->tokenizer->reset();
+
+		return $result;
+	}
+
 	/**
 	 * {_ ...}
 	 *
@@ -122,15 +132,6 @@ class Macros extends MacroSet
 
 			%s = [%%node.word];
 		', $tempPrefixProp, $tempPrefixProp, $prefixProp, $tempPrefixProp, $prefixProp, $prefixProp));
-	}
-
-	public static function macroWithoutParameters(
-		MacroNode $node
-	): bool
-	{
-		$result = Strings::trim($node->tokenizer->joinUntil(',')) === Strings::trim($node->args);
-		$node->tokenizer->reset();
-		return $result;
 	}
 
 }

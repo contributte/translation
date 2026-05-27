@@ -16,7 +16,6 @@ class NotTranslate implements Stringable
 		$this->message = $message;
 	}
 
-
 	public function __toString(): string
 	{
 		return $this->message;
