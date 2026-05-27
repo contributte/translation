@@ -11,7 +11,6 @@ use Contributte\Translation\Translator;
 use Contributte\Tester\Utils\ContainerBuilder;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
-use Nette\DI\Container as NetteContainer;
 use Nette\DI\ContainerLoader;
 use Nette\DI\MissingServiceException;
 use Nette\InvalidStateException;
@@ -320,11 +319,21 @@ final class TranslationExtensionTest extends TestAbstract
 		$container = ContainerBuilder::of()
 			->withTempDir(ToolkitTests::TEMP_PATH)
 			->withCompiler(function (Compiler $compiler): void {
-				$this->configureTranslation($compiler, ['tempDir' => 'relative/temp']);
+				$compiler->addExtension('translation', new TranslationExtension());
+				$compiler->addConfig([
+					'parameters' => ['tempDir' => 'relative/temp', 'debugMode' => false],
+					'translation' => [
+						'localeResolvers' => [LocaleResolverMock::class],
+						'dirs' => [__DIR__ . '/../../lang'],
+					],
+				]);
 			})
 			->build();
 
-		Assert::same('relative/temp/cache/translation', $this->getTranslator($container)->getCacheDir());
+		/** @var Translator $translator */
+		$translator = $container->getByType(ITranslator::class);
+
+		Assert::same('relative/temp/cache/translation', $translator->getCacheDir());
 	}
 
 	public function testCacheDirFromNullTempDir(): void
@@ -332,11 +341,21 @@ final class TranslationExtensionTest extends TestAbstract
 		$container = ContainerBuilder::of()
 			->withTempDir(ToolkitTests::TEMP_PATH)
 			->withCompiler(function (Compiler $compiler): void {
-				$this->configureTranslation($compiler, ['tempDir' => null]);
+				$compiler->addExtension('translation', new TranslationExtension());
+				$compiler->addConfig([
+					'parameters' => ['tempDir' => null, 'debugMode' => false],
+					'translation' => [
+						'localeResolvers' => [LocaleResolverMock::class],
+						'dirs' => [__DIR__ . '/../../lang'],
+					],
+				]);
 			})
 			->build();
 
-		Assert::same('/cache/translation', $this->getTranslator($container)->getCacheDir());
+		/** @var Translator $translator */
+		$translator = $container->getByType(ITranslator::class);
+
+		Assert::same('/cache/translation', $translator->getCacheDir());
 	}
 
 	public function testCacheDirFromDynamicTempDir(): void
@@ -344,11 +363,21 @@ final class TranslationExtensionTest extends TestAbstract
 		$container = ContainerBuilder::of()
 			->withTempDir(ToolkitTests::TEMP_PATH)
 			->withCompiler(function (Compiler $compiler): void {
-				$this->configureTranslation($compiler);
+				$compiler->addExtension('translation', new TranslationExtension());
+				$compiler->addConfig([
+					'parameters' => ['debugMode' => false],
+					'translation' => [
+						'localeResolvers' => [LocaleResolverMock::class],
+						'dirs' => [__DIR__ . '/../../lang'],
+					],
+				]);
 			})
 			->buildWith(['tempDir' => 'relative/temp']);
 
-		Assert::same('relative/temp/cache/translation', $this->getTranslator($container)->getCacheDir());
+		/** @var Translator $translator */
+		$translator = $container->getByType(ITranslator::class);
+
+		Assert::same('relative/temp/cache/translation', $translator->getCacheDir());
 	}
 
 	public function testCacheDirFromExplicitConfig(): void
@@ -356,37 +385,22 @@ final class TranslationExtensionTest extends TestAbstract
 		$container = ContainerBuilder::of()
 			->withTempDir(ToolkitTests::TEMP_PATH)
 			->withCompiler(function (Compiler $compiler): void {
-				$this->configureTranslation($compiler, ['tempDir' => 'relative/temp'], [
-					'cache' => ['dir' => 'explicit/cache/dir'],
+				$compiler->addExtension('translation', new TranslationExtension());
+				$compiler->addConfig([
+					'parameters' => ['tempDir' => 'relative/temp', 'debugMode' => false],
+					'translation' => [
+						'localeResolvers' => [LocaleResolverMock::class],
+						'dirs' => [__DIR__ . '/../../lang'],
+						'cache' => ['dir' => 'explicit/cache/dir'],
+					],
 				]);
 			})
 			->build();
 
-		Assert::same('explicit/cache/dir', $this->getTranslator($container)->getCacheDir());
-	}
-
-	/**
-	 * @param array<string, mixed> $parameters
-	 * @param array<string, mixed> $translation
-	 */
-	private function configureTranslation(Compiler $compiler, array $parameters = [], array $translation = []): void
-	{
-		$compiler->addExtension('translation', new TranslationExtension());
-		$compiler->addConfig([
-			'parameters' => array_merge(['debugMode' => false], $parameters),
-			'translation' => array_merge([
-				'localeResolvers' => [LocaleResolverMock::class],
-				'dirs' => [__DIR__ . '/../../lang'],
-			], $translation),
-		]);
-	}
-
-	private function getTranslator(NetteContainer $container): Translator
-	{
 		/** @var Translator $translator */
 		$translator = $container->getByType(ITranslator::class);
 
-		return $translator;
+		Assert::same('explicit/cache/dir', $translator->getCacheDir());
 	}
 
 }
