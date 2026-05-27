@@ -8,8 +8,10 @@ use Contributte\Translation\Exceptions\InvalidArgument;
 use Contributte\Translation\LocalesResolvers\ResolverInterface;
 use Contributte\Translation\Tracy\Panel;
 use Contributte\Translation\Translator;
+use Contributte\Tester\Utils\ContainerBuilder;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
+use Nette\DI\Container as NetteContainer;
 use Nette\DI\ContainerLoader;
 use Nette\DI\MissingServiceException;
 use Nette\InvalidStateException;
@@ -29,6 +31,7 @@ use Tests\PsrLoggerMock;
 use Tests\TestAbstract;
 use Tests\Toolkit\Container;
 use Tests\Toolkit\Helpers as ToolkitHelpers;
+use Tests\Toolkit\Tests as ToolkitTests;
 use UnexpectedValueException;
 
 $container = require __DIR__ . '/../../bootstrap.php';
@@ -312,68 +315,74 @@ final class TranslationExtensionTest extends TestAbstract
 		}, InvalidArgument::class, 'Loader must implement interface "Symfony\Component\Translation\Loader\LoaderInterface".');
 	}
 
-	public function test13(): void
+	public function testCacheDirFromStringTempDir(): void
 	{
-		// tempDir as a plain string
-		$translator = $this->buildTranslator(['tempDir' => 'relative/temp']);
+		$container = ContainerBuilder::of()
+			->withTempDir(ToolkitTests::TEMP_PATH)
+			->withCompiler(function (Compiler $compiler): void {
+				$this->configureTranslation($compiler, ['tempDir' => 'relative/temp']);
+			})
+			->build();
 
-		Assert::same('relative/temp/cache/translation', $translator->getCacheDir());
+		Assert::same('relative/temp/cache/translation', $this->getTranslator($container)->getCacheDir());
 	}
 
-	public function test14(): void
+	public function testCacheDirFromNullTempDir(): void
 	{
-		// tempDir as null
-		$translator = $this->buildTranslator(['tempDir' => null]);
+		$container = ContainerBuilder::of()
+			->withTempDir(ToolkitTests::TEMP_PATH)
+			->withCompiler(function (Compiler $compiler): void {
+				$this->configureTranslation($compiler, ['tempDir' => null]);
+			})
+			->build();
 
-		Assert::same('/cache/translation', $translator->getCacheDir());
+		Assert::same('/cache/translation', $this->getTranslator($container)->getCacheDir());
 	}
 
-	public function test15(): void
+	public function testCacheDirFromDynamicTempDir(): void
 	{
-		// tempDir as a dynamic parameter (resolved at runtime)
-		$translator = $this->buildTranslator(['tempDir' => 'relative/temp'], [], ['tempDir']);
+		$container = ContainerBuilder::of()
+			->withTempDir(ToolkitTests::TEMP_PATH)
+			->withCompiler(function (Compiler $compiler): void {
+				$this->configureTranslation($compiler);
+			})
+			->buildWith(['tempDir' => 'relative/temp']);
 
-		Assert::same('relative/temp/cache/translation', $translator->getCacheDir());
+		Assert::same('relative/temp/cache/translation', $this->getTranslator($container)->getCacheDir());
 	}
 
-	public function test16(): void
+	public function testCacheDirFromExplicitConfig(): void
 	{
-		// cache.dir explicitly provided wins over tempDir
-		$translator = $this->buildTranslator(['tempDir' => 'relative/temp'], [
-			'cache' => ['dir' => 'explicit/cache/dir'],
-		]);
+		$container = ContainerBuilder::of()
+			->withTempDir(ToolkitTests::TEMP_PATH)
+			->withCompiler(function (Compiler $compiler): void {
+				$this->configureTranslation($compiler, ['tempDir' => 'relative/temp'], [
+					'cache' => ['dir' => 'explicit/cache/dir'],
+				]);
+			})
+			->build();
 
-		Assert::same('explicit/cache/dir', $translator->getCacheDir());
+		Assert::same('explicit/cache/dir', $this->getTranslator($container)->getCacheDir());
 	}
 
 	/**
 	 * @param array<string, mixed> $parameters
 	 * @param array<string, mixed> $translation
-	 * @param string[] $dynamicParameterNames
 	 */
-	private function buildTranslator(array $parameters, array $translation = [], array $dynamicParameterNames = []): Translator
+	private function configureTranslation(Compiler $compiler, array $parameters = [], array $translation = []): void
 	{
-		$loader = new ContainerLoader($this->container->getParameters()['tempDir'], true);
+		$compiler->addExtension('translation', new TranslationExtension());
+		$compiler->addConfig([
+			'parameters' => array_merge(['debugMode' => false], $parameters),
+			'translation' => array_merge([
+				'localeResolvers' => [LocaleResolverMock::class],
+				'dirs' => [__DIR__ . '/../../lang'],
+			], $translation),
+		]);
+	}
 
-		/** @var class-string $class */
-		$class = $loader->load(function (Compiler $compiler) use ($parameters, $translation, $dynamicParameterNames): void {
-			if ($dynamicParameterNames !== []) {
-				$compiler->setDynamicParameterNames($dynamicParameterNames);
-			}
-
-			$compiler->addExtension('translation', new TranslationExtension());
-			$compiler->addConfig([
-				'parameters' => array_merge(['debugMode' => false], $parameters),
-				'translation' => array_merge([
-					'localeResolvers' => [LocaleResolverMock::class],
-					'dirs' => [__DIR__ . '/../../lang'],
-				], $translation),
-			]);
-		}, uniqid(random_bytes(16)));
-
-		$container = new $class();
-		assert($container instanceof \Nette\DI\Container);
-
+	private function getTranslator(NetteContainer $container): Translator
+	{
 		/** @var Translator $translator */
 		$translator = $container->getByType(ITranslator::class);
 

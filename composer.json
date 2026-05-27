@@ -27,6 +27,7 @@
     "symfony/config": "^6.0|^7.0|^8.0"
   },
   "require-dev": {
+    "contributte/tester": "^0.4.0",
     "doctrine/orm": "^2.8",
     "mockery/mockery": "^1.4",
     "nette/application": "^3.1.0",
