@@ -8,10 +8,17 @@ use Nette\Database\Connection;
 use Nette\Database\ConnectionException;
 use Nette\Localization\ITranslator;
 use Tester\Assert;
+use Tester\Environment;
 use Tests\Helpers;
 use Tests\TestAbstract;
 
 $container = require __DIR__ . '/../../bootstrap.php';
+
+try {
+	(new Connection('mysql:host=127.0.0.1;port=13306;dbname=test', 'root', '1234'))->connect();
+} catch (ConnectionException $e) {
+	Environment::skip('Database not connected');
+}
 
 final class NetteDatabaseTest extends TestAbstract
 {
