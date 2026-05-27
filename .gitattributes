@@ -1,7 +1,11 @@
 .docs export-ignore
-tests export-ignore
+.editorconfig export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
+.github export-ignore
+Makefile export-ignore
+README.md export-ignore
+phpstan.lowest.neon export-ignore
 phpstan.neon export-ignore
-readme.md export-ignore
 ruleset.xml export-ignore
+tests export-ignore

@@ -44,7 +44,7 @@ jobs:
         with:
           php-version: "8.2"
           extensions: "${{ env.extensions }}"
-          tools: "composer"
+          tools: "composer, cs2pr"
 
       - name: "Setup problem matchers for PHP"
         run: 'echo "::add-matcher::${{ runner.tool_cache }}/php.json"'
@@ -106,7 +106,7 @@ jobs:
         with:
           php-version: "8.2"
           extensions: "${{ env.extensions }}"
-          tools: "composer"
+          tools: "composer, cs2pr"
 
       - name: "Setup problem matchers for PHP"
         run: 'echo "::add-matcher::${{ runner.tool_cache }}/php.json"'
@@ -179,7 +179,7 @@ jobs:
         with:
           php-version: "${{ matrix.php-version }}"
           extensions: "${{ env.extensions }}"
-          tools: "composer"
+          tools: "composer, cs2pr"
 
       - name: "Setup problem matchers for PHP"
         run: 'echo "::add-matcher::${{ runner.tool_cache }}/php.json"'
@@ -247,7 +247,7 @@ jobs:
           php-version: "8.2"
           coverage: "xdebug"
           extensions: "${{ env.extensions }}"
-          tools: "composer"
+          tools: "composer, cs2pr"
 
       - name: "Setup problem matchers for PHP"
         run: 'echo "::add-matcher::${{ runner.tool_cache }}/php.json"'
