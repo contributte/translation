@@ -17,7 +17,7 @@ class Panel implements IBarPanel
 
 	private int $missingTranslationCount = 0;
 
-	/** @var array<\Contributte\Translation\LocalesResolvers\ResolverInterface> */
+	/** @var array<ResolverInterface> */
 	private array $localeResolvers = [];
 
 	/** @var array<string, array<string, string>> */

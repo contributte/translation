@@ -209,7 +209,7 @@ final class TranslationExtensionTest extends TestAbstract
 			],
 		]);
 
-		/** @var \Contributte\Translation\Translator $translator */
+		/** @var Translator $translator */
 		$translator = $container->getByType(NetteTranslator::class);
 
 		Assert::type(CustomTranslatorMock::class, $translator);
@@ -226,7 +226,7 @@ final class TranslationExtensionTest extends TestAbstract
 			],
 		]);
 
-		/** @var \Contributte\Translation\Translator $translator */
+		/** @var Translator $translator */
 		$translator = $container->getByType(NetteTranslator::class);
 
 		Assert::false($translator->returnOriginalMessage);
@@ -240,7 +240,7 @@ final class TranslationExtensionTest extends TestAbstract
 			],
 		]);
 
-		/** @var \Contributte\Translation\Translator $translator */
+		/** @var Translator $translator */
 		$translator = $container->getByType(NetteTranslator::class);
 
 		Assert::false($translator->returnOriginalMessage);

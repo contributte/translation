@@ -10,6 +10,7 @@ use Contributte\Translation\Translator;
 use Contributte\Translation\Wrappers\Message;
 use Contributte\Translation\Wrappers\NotTranslate;
 use Latte\CompileException;
+use Latte\Engine;
 use Mockery;
 use Nette\Bridges\ApplicationLatte\ILatteFactory;
 use Nette\DI\Container;
@@ -91,7 +92,7 @@ final class TranslatorTest extends TestAbstract
 	{
 		$container = Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir']);
 
-		/** @var \Contributte\Translation\Translator $translator */
+		/** @var Translator $translator */
 		$translator = $container->getByType(ITranslator::class);
 
 		Assert::throws(static function () use ($translator): void {
@@ -223,10 +224,10 @@ final class TranslatorTest extends TestAbstract
 	{
 		$container = Helpers::createContainerFromConfigurator($this->container->getParameters()['tempDir']);
 
-		/** @var \Latte\Engine $latte */
+		/** @var Engine $latte */
 		$latte = $container->getByType(ILatteFactory::class)->create();
 
-		/** @var \Contributte\Translation\Translator $translator */
+		/** @var Translator $translator */
 		$translator = $container->getByType(ITranslator::class);
 
 		Assert::same('Hello', $latte->renderToString(FileMock::create('{_messages.hello}')));
@@ -244,7 +245,7 @@ final class TranslatorTest extends TestAbstract
 		Assert::same('Hello', $latte->renderToString(FileMock::create('{_hello, null, [], messages, en}')));
 		Assert::same('Hello', $latte->renderToString(FileMock::create('{php $message = "hello"}{$message|translate: null, [], messages, en}')));
 
-		if (version_compare(\Latte\Engine::VERSION, '3', '<')) {
+		if (version_compare(Engine::VERSION, '3', '<')) {
 			Assert::same('Hello', $latte->renderToString(FileMock::create('{_}messages.hello{/_}')));
 			Assert::same('Hello', $latte->renderToString(FileMock::create('{_}{php $message = "messages.hello"}{$message}{/_}')));
 
@@ -314,10 +315,10 @@ final class TranslatorTest extends TestAbstract
 			],
 		]);
 
-		/** @var \Contributte\Translation\Tracy\Panel $panel */
+		/** @var Panel $panel */
 		$panel = $container->getByType(Panel::class);
 
-		/** @var \Contributte\Translation\Translator $translator */
+		/** @var Translator $translator */
 		$translator = $container->getByType(ITranslator::class);
 
 		$translator->translate('untranslated');// add missing translation

@@ -188,7 +188,7 @@ class Translator extends SymfonyTranslator implements NetteTranslator
 	}
 
 	/**
-	 * @throws \Contributte\Translation\Exceptions\InvalidArgument
+	 * @throws InvalidArgument
 	 */
 	public function removePrefix(
 		?string $string = null

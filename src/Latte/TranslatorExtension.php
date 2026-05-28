@@ -5,6 +5,7 @@ namespace Contributte\Translation\Latte;
 use Contributte\Translation\Helpers;
 use Contributte\Translation\Latte\Nodes\TranslateNode;
 use Contributte\Translation\Latte\Nodes\TranslatorNode;
+use Generator;
 use Latte\Compiler\Node;
 use Latte\Compiler\Nodes\Php\ArgumentNode;
 use Latte\Compiler\Nodes\Php\Expression\ArrayNode;
@@ -17,9 +18,11 @@ use Latte\Compiler\Nodes\Php\NameNode;
 use Latte\Compiler\Nodes\Php\Scalar\NullNode;
 use Latte\Compiler\Nodes\PrintNode;
 use Latte\Compiler\Tag;
+use Latte\Compiler\TemplateParser;
 use Latte\Extension;
 use Latte\Runtime\FilterInfo;
 use Nette\Localization\Translator;
+use stdClass;
 
 class TranslatorExtension extends Extension
 {
@@ -34,7 +37,7 @@ class TranslatorExtension extends Extension
 	}
 
 	/**
-	 * @return array<string, callable(\Latte\Compiler\Tag, \Latte\Compiler\TemplateParser): (\Latte\Compiler\Node|\Generator|void)|\stdClass>
+	 * @return array<string, callable(Tag, TemplateParser): (Node|Generator|void)|stdClass>
 	 */
 	public function getTags(): array
 	{

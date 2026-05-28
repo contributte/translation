@@ -18,6 +18,8 @@ use Contributte\Translation\Tracy\Panel;
 use Contributte\Translation\Translator;
 use Nette\Bridges\ApplicationLatte\LatteFactory;
 use Nette\DI\CompilerExtension;
+use Nette\DI\Definitions\FactoryDefinition;
+use Nette\DI\Definitions\ServiceDefinition;
 use Nette\DI\Definitions\Statement;
 use Nette\DI\MissingServiceException;
 use Nette\Localization\Translator as NetteTranslator;
@@ -128,7 +130,7 @@ class TranslationExtension extends CompilerExtension
 	}
 
 	/**
-	 * @throws \Contributte\Translation\Exceptions\InvalidArgument|\ReflectionException
+	 * @throws InvalidArgument|\ReflectionException
 	 */
 	public function loadConfiguration(): void
 	{
@@ -248,26 +250,26 @@ class TranslationExtension extends CompilerExtension
 	}
 
 	/**
-	 * @throws \Contributte\Translation\Exceptions\InvalidArgument|\ReflectionException
+	 * @throws InvalidArgument|\ReflectionException
 	 */
 	public function beforeCompile(): void
 	{
 		$builder = $this->getContainerBuilder();
 		$config = $this->config;
 
-		/** @var \Nette\DI\Definitions\ServiceDefinition $translator */
+		/** @var ServiceDefinition $translator */
 		$translator = $builder->getDefinition($this->prefix('translator'));
 		$whitelistRegexp = Helpers::whitelistRegexp($config['locales']['whitelist']);
 
 		if ($config['debug'] && $config['debugger']) {
-			/** @var \Nette\DI\Definitions\ServiceDefinition $tracyPanel */
+			/** @var ServiceDefinition $tracyPanel */
 			$tracyPanel = $builder->getDefinition($this->prefix('tracyPanel'));
 		}
 
 		$latteFactoryName = $config['latteFactory'] !== null ? $builder->getByType($config['latteFactory']) : null;
 
 		if ($latteFactoryName !== null) {
-			/** @var \Nette\DI\Definitions\FactoryDefinition $latteFactory */
+			/** @var FactoryDefinition $latteFactory */
 			$latteFactory = $builder->getDefinition($latteFactoryName);
 
 			$latteExtension = $builder->addDefinition($this->prefix('latte.extension'))

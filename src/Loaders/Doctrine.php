@@ -20,7 +20,7 @@ class Doctrine extends DatabaseAbstract implements LoaderInterface
 
 	/**
 	 * @inheritdoc
-	 * @throws \Contributte\Translation\Exceptions\InvalidState
+	 * @throws InvalidState
 	 */
 	protected function getMessages(
 		array $config,
