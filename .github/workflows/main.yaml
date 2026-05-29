@@ -202,7 +202,30 @@ jobs:
         run: 'echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"'
 
       - name: "Tests"
-        run: "make tests"
+        run: "make tests 2>&1 | tee tester.out"
+
+      - name: "Surface test failure"
+        if: failure() && matrix.php-version == '8.4' && matrix.composer-args == ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo '<details><summary>tester output (PHP ${{ matrix.php-version }})</summary>'
+            echo
+            echo '```'
+            sed -E 's/\x1b\[[0-9;]*m//g' tester.out | tail -200
+            echo '```'
+            for f in $(find tests -name '*.actual' 2>/dev/null); do
+              echo
+              echo "**$f**"
+              echo
+              echo '```'
+              cat "$f"
+              echo '```'
+            done
+            echo '</details>'
+          } > comment.md
+          gh pr comment ${{ github.event.pull_request.number }} --body-file comment.md
 
   tests-code-coverage:
     if: "github.event_name == 'push'"
