@@ -1,30 +1,38 @@
-.PHONY: qa lint cs csf phpstan tests coverage
+.PHONY: install
+install:
+	composer update
 
-all:
-	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs
+.PHONY: qa
+qa: phpstan cs
 
-vendor: composer.json composer.lock
-	composer install
+.PHONY: cs
+cs:
+ifdef GITHUB_ACTION
+	vendor/bin/phpcs --standard=ruleset.xml --encoding=utf-8 --extensions="php,phpt" --colors -nsp -q --report=checkstyle src tests | cs2pr
+else
+	vendor/bin/phpcs --standard=ruleset.xml --encoding=utf-8 --extensions="php,phpt" --colors -nsp src tests
+endif
 
-qa: lint phpstan cs
+.PHONY: csf
+csf:
+	vendor/bin/phpcbf --standard=ruleset.xml --encoding=utf-8 --extensions="php,phpt" --colors -nsp src tests
 
-lint: vendor
-	vendor/bin/linter src tests
+.PHONY: phpstan
+phpstan:
+	vendor/bin/phpstan analyse -c phpstan.neon
 
-cs: vendor
-	vendor/bin/codesniffer src tests
+.PHONY: phpstan-lowest
+phpstan-lowest:
+	vendor/bin/phpstan analyse -c phpstan.lowest.neon
 
-csf: vendor
-	vendor/bin/codefixer src tests
-
-phpstan: vendor
-	vendor/bin/phpstan analyse -l max -c phpstan.neon src
-
-phpstan-lowest: vendor
-	vendor/bin/phpstan analyse -l max -c phpstan.lowest.neon src
-
-tests: vendor
+.PHONY: tests
+tests:
 	vendor/bin/tester -s -p php --colors 1 -C tests/Tests
 
-coverage: vendor
-	vendor/bin/tester -s --colors 1 -C --coverage ./coverage.xml --coverage-src ./src tests/Tests
+.PHONY: coverage
+coverage:
+ifdef GITHUB_ACTION
+	vendor/bin/tester -s -p php --colors 1 -C --coverage coverage.xml --coverage-src src tests/Tests
+else
+	vendor/bin/tester -s -p php --colors 1 -C --coverage coverage.html --coverage-src src tests/Tests
+endif

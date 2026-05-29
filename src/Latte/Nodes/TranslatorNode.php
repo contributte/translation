@@ -27,9 +27,9 @@ class TranslatorNode extends StatementNode
 		$node = new TranslatorNode();
 		$node->prefix = $variable;
 		[$node->content] = yield;
+
 		return $node;
 	}
-
 
 	public function print(
 		PrintContext $context
@@ -53,7 +53,6 @@ class TranslatorNode extends StatementNode
 			$this->content
 		);
 	}
-
 
 	public function &getIterator(): \Generator
 	{

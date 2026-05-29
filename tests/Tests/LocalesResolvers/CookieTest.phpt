@@ -17,6 +17,7 @@ $container = require __DIR__ . '/../../bootstrap.php';
 final class CookieTest extends TestAbstract
 {
 
+	/** @var array<string, string> */
 	private static array $cookies;
 
 	public function test01(): void
@@ -34,18 +35,16 @@ final class CookieTest extends TestAbstract
 	): ?string
 	{
 		$response = Mockery::mock(IResponse::class);
-		$response->shouldReceive('setCookie')->andReturnUsing(function ($name, $value) {
+		$response->shouldReceive('setCookie')->andReturnUsing(function ($name, $value): void {
 			self::$cookies[$name] = $value;
 			self::$cookies = array_filter(self::$cookies);
 		});
-		$response->shouldReceive('deleteCookie')->andReturnUsing(function ($name) {
+		$response->shouldReceive('deleteCookie')->andReturnUsing(function ($name): void {
 			unset(self::$cookies[$name]);
 		});
 
 		$request = Mockery::mock(IRequest::class);
-		$request->shouldReceive('getCookie')->andReturnUsing(function ($name) {
-			return self::$cookies[$name] ?? null;
-		});
+		$request->shouldReceive('getCookie')->andReturnUsing(fn ($name) => self::$cookies[$name] ?? null);
 
 		$resolver = new Cookie(
 			$request,

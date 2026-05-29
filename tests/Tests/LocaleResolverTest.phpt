@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Contributte\Translation\Translator;
 use Nette\Localization\ITranslator;
 use Tester\Assert;
 
@@ -21,10 +22,10 @@ final class LocaleResolverTest extends TestAbstract
 			],
 		]);
 
-		/** @var \Contributte\Translation\Translator $translator */
+		/** @var Translator $translator */
 		$translator = $container->getByType(ITranslator::class);
 
-		/** @var \Tests\LocaleResolverMock $mockResolver */
+		/** @var LocaleResolverMock $mockResolver */
 		$mockResolver = $container->getByType(LocaleResolverMock::class);
 
 		$localeResolver = $translator->getLocaleResolver();

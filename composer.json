@@ -15,8 +15,8 @@
     }
   ],
   "require": {
-    "php": "^8.0.2",
-    "latte/latte": "^2.6|^3.0.25",
+    "php": "^8.2",
+    "latte/latte": "^3.0.25",
     "nette/di": "^3.0.6",
     "nette/http": "^3.0.7",
     "nette/neon": "^3.3.1",
@@ -27,6 +27,9 @@
     "symfony/config": "^6.0|^7.0|^8.0"
   },
   "require-dev": {
+    "contributte/phpstan": "^0.3.1",
+    "contributte/qa": "^0.4.0",
+    "contributte/tester": "^0.4.1",
     "doctrine/orm": "^2.8",
     "mockery/mockery": "^1.4",
     "nette/application": "^3.1.0",
@@ -34,12 +37,6 @@
     "nette/database": "^3.1.1",
     "nette/robot-loader": "^3.4.0|^4.0.0",
     "nette/tester": "^2.3.1",
-    "ninjify/nunjuck": "^0.4.0",
-    "ninjify/qa": "^0.13",
-    "phpstan/phpstan": "^2.1",
-    "phpstan/phpstan-deprecation-rules": "^2.0",
-    "phpstan/phpstan-nette": "^2.0",
-    "phpstan/phpstan-strict-rules": "^2.0",
     "psr/log": "^1.1|^2.0|^3.0",
     "tracy/tracy": "^2.8"
   },

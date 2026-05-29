@@ -45,26 +45,21 @@ class TranslateNode extends StatementNode
 		return $node;
 	}
 
-
 	public function print(
 		PrintContext $context
 	): string
 	{
-		if ($this->content instanceof TextNode) {
-			return $context->format(
-				'
+		return $this->content instanceof TextNode ? $context->format(
+			'
 					$ʟ_fi = new LR\FilterInfo(%dump);
 					echo %modifyContent(%dump) %line;
 				',
-				$context->getEscaper()->export(),
-				$this->modifier,
-				$this->content->content,
-				$this->position,
-			);
-
-		} else {
-			return $context->format(
-				'
+			$context->getEscaper()->export(),
+			$this->modifier,
+			$this->content->content,
+			$this->position,
+		) : $context->format(
+			'
 					ob_start(fn() => ""); try {
 						%node
 					} finally {
@@ -73,14 +68,12 @@ class TranslateNode extends StatementNode
 					$ʟ_fi = new LR\FilterInfo(%dump);
 					echo %modifyContent($ʟ_tmp) %line;
 				',
-				$this->content,
-				$context->getEscaper()->export(),
-				$this->modifier,
-				$this->position,
-			);
-		}
+			$this->content,
+			$context->getEscaper()->export(),
+			$this->modifier,
+			$this->position,
+		);
 	}
-
 
 	public function &getIterator(): \Generator
 	{

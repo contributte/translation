@@ -5,6 +5,7 @@ namespace Contributte\Translation\Latte;
 use Contributte\Translation\Helpers;
 use Contributte\Translation\Latte\Nodes\TranslateNode;
 use Contributte\Translation\Latte\Nodes\TranslatorNode;
+use Generator;
 use Latte\Compiler\Node;
 use Latte\Compiler\Nodes\Php\ArgumentNode;
 use Latte\Compiler\Nodes\Php\Expression\ArrayNode;
@@ -17,22 +18,27 @@ use Latte\Compiler\Nodes\Php\NameNode;
 use Latte\Compiler\Nodes\Php\Scalar\NullNode;
 use Latte\Compiler\Nodes\PrintNode;
 use Latte\Compiler\Tag;
+use Latte\Compiler\TemplateParser;
 use Latte\Extension;
 use Latte\Runtime\FilterInfo;
-use Nette\Localization\ITranslator;
+use Nette\Localization\Translator;
+use stdClass;
 
 class TranslatorExtension extends Extension
 {
 
-	private ITranslator $translator;
+	private Translator $translator;
 
 	public function __construct(
-		ITranslator $translator
+		Translator $translator
 	)
 	{
 		$this->translator = $translator;
 	}
 
+	/**
+	 * @return array<string, callable(Tag, TemplateParser): (Node|Generator|void)|stdClass>
+	 */
 	public function getTags(): array
 	{
 		return [
@@ -42,6 +48,9 @@ class TranslatorExtension extends Extension
 		];
 	}
 
+	/**
+	 * @return array<string, callable>
+	 */
 	public function getFilters(): array
 	{
 		return [
@@ -57,6 +66,9 @@ class TranslatorExtension extends Extension
 		];
 	}
 
+	/**
+	 * @return array<string, mixed>
+	 */
 	public function getProviders(): array
 	{
 		return [
@@ -92,6 +104,7 @@ class TranslatorExtension extends Extension
 		$outputNode->modifier->escape = $outputNode->modifier->removeFilter('noescape') === null;
 		$outputNode->expression = $messageNode;
 		array_unshift($outputNode->modifier->filters, new FilterNode(new IdentifierNode('translate'), $args->toArguments()));
+
 		return $outputNode;
 	}
 

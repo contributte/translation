@@ -13,9 +13,9 @@ use Nette\DI\CompilerExtension;
 use Nette\DI\Container as NetteContainer;
 use Nette\DI\ContainerLoader;
 use Nette\DI\MissingServiceException;
+use Nette\DI\ServiceCreationException;
 use Nette\InvalidStateException;
-use Nette\Localization\ITranslator;
-use Nette\Utils\Strings;
+use Nette\Localization\Translator as NetteTranslator;
 use Psr\Log\LoggerInterface;
 use stdClass;
 use Symfony\Component\Config\ConfigCacheFactoryInterface;
@@ -143,7 +143,7 @@ final class TranslationExtensionTest extends TestAbstract
 				$compiler->addConfig(['parameters' => $this->container->getParameters(), 'translation' => ['dirs' => [__DIR__ . '__config_dir__']]]);
 			});
 		}, $this->isNewNetteUtils ? InvalidStateException::class : UnexpectedValueException::class);
-		Assert::true(Strings::contains($e->getMessage(), __DIR__ . '/__translation_provider_dir__'));// translation provider dirs first !!
+		Assert::true(str_contains($e->getMessage(), __DIR__ . '/__translation_provider_dir__'));// translation provider dirs first !!
 	}
 
 	public function test03(): void
@@ -158,7 +158,7 @@ final class TranslationExtensionTest extends TestAbstract
 		$panel = $container->getByType(Panel::class);
 
 		/** @var Translator $translator */
-		$translator = $container->getByType(ITranslator::class);
+		$translator = $container->getByType(NetteTranslator::class);
 
 		$tracyPanel = $translator->getTracyPanel();
 
@@ -198,7 +198,7 @@ final class TranslationExtensionTest extends TestAbstract
 		]);
 
 		/** @var Translator $translator */
-		$translator = $container->getByType(ITranslator::class);
+		$translator = $container->getByType(NetteTranslator::class);
 
 		Assert::same($translator->getFallbackLocales(), ['cs_CZ']);
 	}
@@ -212,8 +212,8 @@ final class TranslationExtensionTest extends TestAbstract
 			],
 		]);
 
-		/** @var \Contributte\Translation\Translator $translator */
-		$translator = $container->getByType(ITranslator::class);
+		/** @var Translator $translator */
+		$translator = $container->getByType(NetteTranslator::class);
 
 		Assert::type(CustomTranslatorMock::class, $translator);
 
@@ -229,8 +229,8 @@ final class TranslationExtensionTest extends TestAbstract
 			],
 		]);
 
-		/** @var \Contributte\Translation\Translator $translator */
-		$translator = $container->getByType(ITranslator::class);
+		/** @var Translator $translator */
+		$translator = $container->getByType(NetteTranslator::class);
 
 		Assert::false($translator->returnOriginalMessage);
 	}
@@ -243,8 +243,8 @@ final class TranslationExtensionTest extends TestAbstract
 			],
 		]);
 
-		/** @var \Contributte\Translation\Translator $translator */
-		$translator = $container->getByType(ITranslator::class);
+		/** @var Translator $translator */
+		$translator = $container->getByType(NetteTranslator::class);
 
 		Assert::false($translator->returnOriginalMessage);
 	}
@@ -259,7 +259,7 @@ final class TranslationExtensionTest extends TestAbstract
 					],
 				]);
 			},
-			MissingServiceException::class
+			ServiceCreationException::class
 		);
 	}
 
@@ -300,7 +300,7 @@ final class TranslationExtensionTest extends TestAbstract
 
 	public function test12(): void
 	{
-		Assert::exception(static function () {
+		Assert::exception(static function (): void {
 			Container::of()
 				->withDefaults()
 				->withCompiler(function (Compiler $compiler): void {

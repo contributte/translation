@@ -32,13 +32,13 @@ class LocaleResolver
 
 	/**
 	 * @param class-string $resolver
-	 * @return self
 	 */
 	public function addResolver(
 		string $resolver
 	): self
 	{
 		$this->resolvers[] = $resolver;
+
 		return $this;
 	}
 

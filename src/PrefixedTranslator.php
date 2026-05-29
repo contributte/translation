@@ -2,9 +2,9 @@
 
 namespace Contributte\Translation;
 
-use Nette\Localization\ITranslator;
+use Nette\Localization\Translator as NetteTranslator;
 
-class PrefixedTranslator implements ITranslator
+class PrefixedTranslator implements NetteTranslator
 {
 
 	private Translator $translator;
@@ -30,18 +30,15 @@ class PrefixedTranslator implements ITranslator
 		return $this->prefix;
 	}
 
-	/**
-	 * @param mixed $message
-	 * @param mixed ...$parameters
-	 */
 	public function translate(
-		$message,
-		...$parameters
+		mixed $message,
+		mixed ...$parameters
 	): string
 	{
 		$this->translator->addPrefix($this->prefix);
 		$message = $this->translator->translate($message, ...$parameters);
 		$this->translator->removePrefix();
+
 		return $message;
 	}
 

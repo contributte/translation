@@ -28,7 +28,7 @@ jobs:
         id: "extcache"
         uses: "shivammathur/cache-extensions@v1"
         with:
-          php-version: "8.0"
+          php-version: "8.2"
           extensions: "${{ env.extensions }}"
           key: "${{ env.cache-version }}"
 
@@ -42,9 +42,9 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "8.0"
+          php-version: "8.2"
           extensions: "${{ env.extensions }}"
-          tools: "composer"
+          tools: "composer, cs2pr"
 
       - name: "Setup problem matchers for PHP"
         run: 'echo "::add-matcher::${{ runner.tool_cache }}/php.json"'
@@ -90,7 +90,7 @@ jobs:
         id: "extcache"
         uses: "shivammathur/cache-extensions@v1"
         with:
-          php-version: "8.1"
+          php-version: "8.2"
           extensions: "${{ env.extensions }}"
           key: "${{ env.cache-version }}"
 
@@ -104,9 +104,9 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "8.1"
+          php-version: "8.2"
           extensions: "${{ env.extensions }}"
-          tools: "composer"
+          tools: "composer, cs2pr"
 
       - name: "Setup problem matchers for PHP"
         run: 'echo "::add-matcher::${{ runner.tool_cache }}/php.json"'
@@ -148,12 +148,10 @@ jobs:
 
     strategy:
       matrix:
-        php-version: [ "8.0", "8.1", "8.2", "8.3", "8.4", "8.5" ]
+        php-version: [ "8.2", "8.3", "8.4", "8.5" ]
         composer-args: [ "" ]
         include:
-          - php-version: "8.0"
-            composer-args: "--prefer-lowest"
-          - php-version: "8.1"
+          - php-version: "8.2"
             composer-args: "--prefer-lowest"
       fail-fast: false
 
@@ -181,7 +179,7 @@ jobs:
         with:
           php-version: "${{ matrix.php-version }}"
           extensions: "${{ env.extensions }}"
-          tools: "composer"
+          tools: "composer, cs2pr"
 
       - name: "Setup problem matchers for PHP"
         run: 'echo "::add-matcher::${{ runner.tool_cache }}/php.json"'
@@ -204,7 +202,30 @@ jobs:
         run: 'echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"'
 
       - name: "Tests"
-        run: "make tests"
+        run: "make tests 2>&1 | tee tester.out"
+
+      - name: "Surface test failure"
+        if: failure() && matrix.php-version == '8.4' && matrix.composer-args == ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo '<details><summary>tester output (PHP ${{ matrix.php-version }})</summary>'
+            echo
+            echo '```'
+            sed -E 's/\x1b\[[0-9;]*m//g' tester.out | tail -200
+            echo '```'
+            for f in $(find tests -name '*.actual' 2>/dev/null); do
+              echo
+              echo "**$f**"
+              echo
+              echo '```'
+              cat "$f"
+              echo '```'
+            done
+            echo '</details>'
+          } > comment.md
+          gh pr comment ${{ github.event.pull_request.number }} --body-file comment.md
 
   tests-code-coverage:
     if: "github.event_name == 'push'"
@@ -232,7 +253,7 @@ jobs:
         id: "extcache"
         uses: "shivammathur/cache-extensions@v1"
         with:
-          php-version: "8.0"
+          php-version: "8.2"
           extensions: "${{ env.extensions }}"
           key: "${{ env.cache-version }}"
 
@@ -246,10 +267,10 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@v2"
         with:
-          php-version: "8.0"
+          php-version: "8.2"
           coverage: "xdebug"
           extensions: "${{ env.extensions }}"
-          tools: "composer"
+          tools: "composer, cs2pr"
 
       - name: "Setup problem matchers for PHP"
         run: 'echo "::add-matcher::${{ runner.tool_cache }}/php.json"'

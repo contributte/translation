@@ -8,6 +8,8 @@ use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\Translation\Loader\ArrayLoader;
 use Symfony\Component\Translation\Loader\LoaderInterface;
 use Symfony\Component\Translation\MessageCatalogue;
+use function is_readable;
+use function is_string;
 
 abstract class DatabaseAbstract extends ArrayLoader implements LoaderInterface
 {
@@ -22,7 +24,7 @@ abstract class DatabaseAbstract extends ArrayLoader implements LoaderInterface
 	/**
 	 * {@inheritdoc}
 	 *
-	 * @throws \Contributte\Translation\Exceptions\InvalidArgument
+	 * @throws InvalidArgument
 	 */
 	public function load(
 		mixed $resource,
@@ -30,11 +32,11 @@ abstract class DatabaseAbstract extends ArrayLoader implements LoaderInterface
 		string $domain = 'messages'
 	): MessageCatalogue
 	{
-		if (!\is_string($resource)) {
+		if (!is_string($resource)) {
 			throw new InvalidArgument('Parameter resource must be string.');
 		}
 
-		if (!\is_readable($resource)) {
+		if (!is_readable($resource)) {
 			throw new InvalidArgument('Something wrong with resource file "' . $resource . '".');
 		}
 
