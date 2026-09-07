@@ -25,6 +25,7 @@ use Nette\DI\MissingServiceException;
 use Nette\Localization\ITranslator;
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\PhpLiteral;
+use Nette\Schema\DynamicParameter;
 use Nette\Schema\Expect;
 use Nette\Schema\Schema;
 use Nette\Utils\Finder;
@@ -52,7 +53,7 @@ use Tracy\IBarPanel;
  *     loaders: array<string, class-string|Statement>,
  *     dirs: array<string>,
  *     cache: array{
- *         dir: string|Statement,
+ *         dir: string|DynamicParameter,
  *         factory: class-string,
  *         vary: array<string>,
  *     },
@@ -119,7 +120,7 @@ class TranslationExtension extends CompilerExtension
 			]),
 			'dirs' => Expect::listOf('string')->default([]),
 			'cache' => Expect::structure([
-				'dir' => Expect::string($cacheDir),
+				'dir' => Expect::string($cacheDir)->dynamic(),
 				'factory' => Expect::string(ConfigCacheFactory::class),
 				'vary' => Expect::listOf('string')->default([]),
 			])->castTo('array'),

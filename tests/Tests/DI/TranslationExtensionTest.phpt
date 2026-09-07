@@ -416,6 +416,33 @@ final class TranslationExtensionTest extends TestAbstract
 		Assert::same('explicit/cache/dir', $translator->getCacheDir());
 	}
 
+	public function testCacheDirFromExplicitConfigWithDynamicTempDir(): void
+	{
+		$loader = new ContainerLoader(ToolkitTests::TEMP_PATH, true);
+
+		/** @var class-string $class */
+		$class = $loader->load(function (Compiler $compiler): void {
+			$compiler->addExtension('translation', new TranslationExtension());
+			$compiler->addConfig([
+				'parameters' => ['debugMode' => false],
+				'translation' => [
+					'localeResolvers' => [LocaleResolverMock::class],
+					'dirs' => [__DIR__ . '/../../lang'],
+					'cache' => ['dir' => '%tempDir%/custom/translation'],
+				],
+			]);
+			$compiler->setDynamicParameterNames(['tempDir']);
+		}, uniqid(random_bytes(16)));
+
+		$container = new $class(['tempDir' => 'relative/temp']);
+		assert($container instanceof NetteContainer);
+
+		/** @var Translator $translator */
+		$translator = $container->getByType(ITranslator::class);
+
+		Assert::same('relative/temp/custom/translation', $translator->getCacheDir());
+	}
+
 }
 
 (new TranslationExtensionTest($container))->run();
