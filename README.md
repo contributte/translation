@@ -1,51 +1,51 @@
 ![](https://heatbadger.now.sh/github/readme/contributte/translation/)
 
 <p align=center>
-    <a href="https://github.com/contributte/translation/actions"><img src="https://badgen.net/github/checks/contributte/translation"></a>
-    <a href="https://codecov.io/gh/contributte/translation"><img src="https://badgen.net/codecov/c/github/contributte/translation"></a>
-    <a href="https://packagist.org/packages/contributte/translation"><img src="https://badgen.net/packagist/dm/contributte/translation"></a>
-    <a href="https://packagist.org/packages/contributte/translation"><img src="https://badgen.net/packagist/v/contributte/translation"></a>
-</p>
-<p align=center>
-    <a href="https://packagist.org/packages/contributte/translation"><img src="https://badgen.net/packagist/php/contributte/translation"></a>
-    <a href="https://github.com/contributte/translation"><img src="https://badgen.net/github/license/contributte/translation"></a>
-    <a href="https://bit.ly/ctteg"><img src="https://badgen.net/badge/support/gitter/cyan"></a>
-    <a href="https://bit.ly/cttfo"><img src="https://badgen.net/badge/support/forum/yellow"></a>
-    <a href="https://contributte.org/partners.html"><img src="https://badgen.net/badge/sponsor/donations/F96854"></a>
+	<a href="https://github.com/contributte/translation/actions"><img src="https://badgen.net/github/checks/contributte/translation"></a>
+	<a href="https://codecov.io/gh/contributte/translation"><img src="https://badgen.net/codecov/c/github/contributte/translation"></a>
+	<a href="https://packagist.org/packages/contributte/translation"><img src="https://badgen.net/packagist/v/contributte/translation"></a>
 </p>
 
-<p align=center>
-    Website 🚀 <a href="https://contributte.org">contributte.org</a> | Contact 👨🏻‍💻 <a href="https://f3l1x.io">f3l1x.io</a> | Twitter 🐦 <a href="https://twitter.com/contributte">@contributte</a>
-</p>
+Symfony Translation integration for Nette Framework.
 
-## Usage
+## Quick start
 
-To install the latest version of `contributte/translation` use [Composer](https://getcomposer.org).
+Install the package and register its extension:
 
 ```bash
 composer require contributte/translation
 ```
-## Documentation
 
-For details on how to use this package, check out our [documentation](.docs).
+```neon
+extensions:
+	translation: Contributte\Translation\DI\TranslationExtension
 
-## Versions
-| State  | Version  | Branch           | PHP          | Symfony      |
-|--------|----------|------------------|--------------|--------------|
-| stable | `^2.0.0` | `master`         | `^8.0`       | `^6.0\|^7.0` |
-| stable | `^1.0.0` | `php74_symfony5` | `^7.4\|^8.0` | `^5.0`       |
+translation:
+	locales:
+		default: en
+	dirs:
+		- %appDir%/lang
+```
+
+Create `%appDir%/lang/messages.en.neon` (the filename is `domain.locale.neon`):
+
+```neon
+homepage:
+	welcome: Welcome!
+```
+
+Inject `Nette\Localization\ITranslator` and translate the message, or render it directly in Latte:
+
+```php
+$message = $translator->translate('homepage.welcome');
+```
+
+```latte
+{_homepage.welcome}
+```
+
+Both forms render `Welcome!`. See [the detailed documentation](.docs/README.md) for locale resolvers, loaders, and reference material.
 
 ## Development
 
 See [how to contribute](https://contributte.org/contributing.html) to this package.
-
-This package is currently maintaining by these authors.
-
-<a href="https://github.com/aleswita">
-  <img width="80" height="80" src="https://avatars1.githubusercontent.com/u/6991688?s=80&amp;v=3">
-</a>
-
------
-
-Consider to [support](https://contributte.org/partners.html) **contributte** development team.
-Also thank you for using this package.
