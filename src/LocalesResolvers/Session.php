@@ -41,7 +41,7 @@ class Session implements ResolverInterface
 	): ?string
 	{
 		if (!$this->session->isStarted() && !$this->session->exists()) {
-			// No session cookie, so there can be no stored locale
+			// No session exists (no active session, no session cookie)
 			return null;
 		}
 
