@@ -40,6 +40,11 @@ class Session implements ResolverInterface
 		Translator $translator
 	): ?string
 	{
+		if (!$this->session->isStarted() && !$this->session->exists()) {
+			// No session cookie, so there can be no stored locale
+			return null;
+		}
+
 		if (!$this->session->isStarted() && $this->httpResponse->isSent()) {
 			trigger_error('The advice of session locale resolver is required but the session has not been started and headers had been already sent. Either start your sessions earlier or disable the SessionResolver.', E_USER_WARNING);
 			return null;
