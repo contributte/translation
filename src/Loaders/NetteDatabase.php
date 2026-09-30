@@ -33,10 +33,13 @@ class NetteDatabase extends DatabaseAbstract implements LoaderInterface
 
 		$result = $this->connection
 			->query(
-				'SELECT ? AS `id`, ? AS `locale`, ? AS `message` FROM ? WHERE ?',
+				'SELECT ? AS ?name, ? AS ?name, ? AS ?name FROM ? WHERE ?',
 				Connection::literal($config['id']),
+				'id',
 				Connection::literal($config['locale']),
+				'locale',
 				Connection::literal($config['message']),
+				'message',
 				Connection::literal($config['table']),
 				Connection::literal('?', [$config['locale'] => $locale])
 			)
